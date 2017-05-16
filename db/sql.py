@@ -42,9 +42,12 @@ def make_cirobj_label( o ):
 
     if o.object_type.lower() == 'panel':
 
-        # Generate label
+        # It's a panel.  Generate label.
+
+        # Concatenate label fragments
         if o.source:
             label += ' <span class="glyphicon glyphicon-arrow-up"></span>' + o.source
+
         if o.voltage:
             label += ' <span class="glyphicon glyphicon-flash"></span>' + o.voltage
 
@@ -57,18 +60,18 @@ def make_cirobj_label( o ):
             if o.loc_descr:
                 label += " '" + o.loc_descr + "'"
 
+        # Prepend name
+        name = o.path.split( '.' )[-1]
+        label = label.strip()
+        if label:
+            label = name + ':' + label
+        else:
+            label = name
+
     else:
 
-        # Not a panel; use description field from CSV file
+        # Not a panel; use description field from database
         label = o.description
-
-    label = label.strip()
-
-    name = o.path.split( '.' )[-1]
-    if label:
-        label = name + ':' + label
-    else:
-        label = name
 
     return label
 
@@ -127,7 +130,8 @@ class device:
 
 class cirobj:
 
-    def __init__(self,id=None,path=None):
+    def __init__(self,id=None,path=None,getkids=True):
+
         if id:
             cur.execute('SELECT * FROM CircuitObject WHERE id = ?', (id,))
         elif path:
@@ -147,7 +151,7 @@ class cirobj:
         self.object_type = row[5].title()
         self.description = row[6]
         self.parent_path = row[7]
-        self.source = row[11]
+        self.source = row[10]
 
         # Get room information
         cur.execute('SELECT * FROM Room WHERE id = ?', (self.room_id,))
@@ -167,25 +171,32 @@ class cirobj:
         else:
             self.image = ''
 
-        # Retrieve children
-        cur.execute('SELECT id, path, label, object_type FROM CircuitObject WHERE parent = ?', (self.path,))
-        self.children = cur.fetchall()
 
-        # Append child image filenames
-        for i in range( len( self.children ) ):
-            filename = 'images/' + self.children[i][1] + '.jpg'
-            if os.path.isfile( filename ):
-                self.children[i] = self.children[i] + ( filename, )
-            else:
-                self.children[i] = self.children[i] + ('',)
+        if getkids:
 
-        cur.execute('SELECT id FROM Device WHERE parent = ?', (self.path,))
-        dev_ids = cur.fetchall()
-        self.devices = []
-        for i in range( len (dev_ids) ):
-            dev_id = dev_ids[i][0]
-            dev = device( dev_id )
-            self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
+            # Retrieve children
+            cur.execute('SELECT path FROM CircuitObject WHERE parent = ?', (self.path,))
+            child_paths = cur.fetchall()
+            self.children = []
+
+            for i in range( len( child_paths ) ):
+                child_path = child_paths[i][0]
+                child = cirobj( path=child_path, getkids=False )
+                filename = 'images/' + child_path + '.jpg'
+                if os.path.isfile( filename ):
+                    child.imagefile = filename
+                else:
+                    child.imagefile = ''
+                self.children.append( [ child.id, child.path, child.label, child.object_type, child.imagefile ] )
+
+            # Retrieve devices
+            cur.execute('SELECT id FROM Device WHERE parent = ?', (self.path,))
+            dev_ids = cur.fetchall()
+            self.devices = []
+            for i in range( len (dev_ids) ):
+                dev_id = dev_ids[i][0]
+                dev = device( dev_id )
+                self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
         cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = 'CircuitObject' AND target_column = 'path' AND target_value = ?", (self.path,) )
