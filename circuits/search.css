@@ -1,0 +1,64 @@
+/* Copyright 2017 Panel Spy.  All rights reserved. */
+
+.search-input::-ms-clear
+{
+  display: none;
+}
+
+.search-menu
+{
+  width: 422px;
+  margin: 0px 15px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.search-result
+{
+  padding: 3px 20px;
+  font-size: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.search-result:hover
+{
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.search-result.search-cursor
+{
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.search-result:hover .search-result-highlight
+{
+  border: 1px #e6f8ff solid;
+}
+
+.search-result.search-cursor .search-result-highlight
+{
+  border: 1px #e6f8ff solid;
+}
+
+.search-result:not(.search-cursor):not(:hover) .search-result-highlight
+{
+  border: 1px #0097cf solid;
+}
+
+.glyphicon-remove, .glyphicon-search
+{
+  color: #8c8c8c;
+}

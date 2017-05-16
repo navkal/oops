@@ -1,0 +1,50 @@
+/* Copyright 2017 Panel Spy.  All rights reserved. */
+
+.just-padding
+{
+  padding: 15px;
+}
+
+.list-group.list-group-root
+{
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group
+{
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item
+{
+  border-radius: 0;
+  border-width: 1px 0 0 0;
+  padding-top: 5px;
+  padding-bottom: 2px;
+}
+
+.list-group.list-group-root > .list-group-item:first-child
+{
+  border-top-width: 0;
+}
+
+.toggle
+{
+  margin-right: 5px;
+}
+
+.no-children
+{
+  color: lightgray;
+}
+
+.searchTarget
+{
+  background-color: #e6f8ff;
+}
+
+.headerButton
+{
+  padding-top: 5px;
+}
