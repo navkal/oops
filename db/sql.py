@@ -28,14 +28,49 @@ def make_device_label( name, room_id ):
         label += ': <span class="glyphicon glyphicon-map-marker"></span>'
 
         if location:
-            label += location
+            label += location + ' '
         if location_old:
-            label += ' (' + location_old + ')'
+            label += '(' + location_old + ') '
         if location_descr:
-            label += " '" + location_descr + "'"
+            label += "'" + location_descr + "'"
 
+    label = label.strip()
     return label
 
+def make_cirobj_label( o ):
+    label = ''
+
+    if o.object_type.lower() == 'panel':
+
+        # Generate label
+        if o.source:
+            label += ' <span class="glyphicon glyphicon-arrow-up"></span>' + o.source
+        if o.voltage:
+            label += ' <span class="glyphicon glyphicon-flash"></span>' + o.voltage
+
+        if o.loc_new or o.loc_old or o.loc_descr:
+            label += ' <span class="glyphicon glyphicon-map-marker"></span>'
+            if o.loc_new:
+                label += o.loc_new + ' '
+            if o.loc_old:
+                label += '(' + o.loc_old + ') '
+            if o.loc_descr:
+                label += " '" + o.loc_descr + "'"
+
+    else:
+
+        # Not a panel; use description field from CSV file
+        label = o.description
+
+    label = label.strip()
+
+    name = o.path.split( '.' )[-1]
+    if label:
+        label = name + ':' + label
+    else:
+        label = name
+
+    return label
 
 
 class device:
@@ -112,7 +147,6 @@ class cirobj:
         self.object_type = row[5].title()
         self.description = row[6]
         self.parent_path = row[7]
-        self.label = row[9]
         self.source = row[11]
 
         # Get room information
@@ -122,6 +156,9 @@ class cirobj:
         self.loc_old = room[2]
         self.loc_type = room[3]
         self.loc_descr = room[4]
+
+        # Generate label
+        self.label = make_cirobj_label( self )
 
         # Add image filename
         filename = 'images/' + self.path + '.jpg'
