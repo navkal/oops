@@ -350,7 +350,7 @@ class sortableTableRow:
         self.path = row[2]
         self.object_type = row[5].title()
         self.parent_path = row[7]
-        self.source = row[11]
+        self.source = row[10]
 
         self.name = self.path.split('.')[-1]
         aName = self.name.split( '-', maxsplit=1 )
