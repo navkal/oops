@@ -190,7 +190,19 @@ class cirobj:
                 self.children.append( [ child.id, child.path, child.label, child.object_type, child.imagefile ] )
 
             # Retrieve devices
-            cur.execute('SELECT id FROM Device WHERE parent = ?', (self.path,))
+            cur.execute(
+              '''SELECT device_id
+                  FROM
+                    (SELECT
+                        Device.id AS device_id,
+                        Device.parent_id AS parent_id,
+                        CircuitObject.id AS object_id,
+                        CircuitObject.path AS parent_path
+                    FROM Device
+                        LEFT JOIN CircuitObject ON parent_id = object_id)
+                  WHERE
+                      parent_path = ?''', (self.path,) )
+
             dev_ids = cur.fetchall()
             self.devices = []
             for i in range( len (dev_ids) ):
