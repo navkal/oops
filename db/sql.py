@@ -79,7 +79,23 @@ def make_cirobj_label( o ):
 class device:
     def __init__(self,id=None,row=None):
         if not row:
-            cur.execute('SELECT * FROM Device WHERE id = ?', (id,))
+            cur.execute(
+              '''SELECT *
+                  FROM
+                    (SELECT
+                        Device.id,
+                        Device.room_id,
+                        Device.parent_id,
+                        Device.description,
+                        Device.power,
+                        CircuitObject.path,
+                        Device.name,
+                        CircuitObject.id AS object_id
+                    FROM Device
+                        LEFT JOIN CircuitObject ON Device.parent_id = object_id)
+                  WHERE
+                      id = ?''', (id,) )
+
             row = cur.fetchone()
 
         self.id = row[0]

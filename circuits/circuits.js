@@ -113,7 +113,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   aDeviceInfo.sort( compareNodes );
   for ( var iDevice = 0; iDevice < aDeviceInfo.length; iDevice ++ )
   {
-    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix" path="' + aDeviceInfo[iDevice].path + '" type="device" oid="' + aDeviceInfo[iDevice].oid + '" title="Source: ' + sPath + '" style="padding-left:' + sPadCollapse + '" >';
+    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix" path="' + aDeviceInfo[iDevice].path + '" type="device" oid="' + aDeviceInfo[iDevice].oid + '" title="Source Path: ' + sPath + '" style="padding-left:' + sPadCollapse + '" >';
     sCollapse += aDeviceInfo[iDevice].label;
     sCollapse += '<span class="pull-right">';
     sCollapse += g_sPropertiesButton;
