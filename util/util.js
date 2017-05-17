@@ -138,9 +138,9 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
-  panel_id:
+  parent_id:
   {
-    label: "Panel ID",
+    label: "Parent ID",
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++

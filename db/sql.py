@@ -84,7 +84,7 @@ class device:
 
         self.id = row[0]
         self.room_id = row[1]
-        self.panel_id = row[2]
+        self.parent_id = row[2]
         self.description = row[3]
         self.parent_path = row[5] # For tree structure
         self.source_path = row[5] # For properties display
@@ -112,7 +112,7 @@ class device:
 
     def properties(self):
         print("room_id:", self.room_id)
-        print("panel_id:",self.panel_id)
+        print("parent_id:",self.parent_id)
         print("description:", self.description)
         print("parent_path:",self.parent_path)
         print("loc_new:", self.loc_new)
@@ -121,7 +121,7 @@ class device:
     def get_main_display(self):
         return {'ID': self.id,
                 'Room ID': self.room_id,
-                'Panel ID': self.panel_id,
+                'Parent ID': self.parent_id,
                 'Description':self.description,
                 'Parent Path': self.parent_path,
                 'Location New': self.loc_new,
