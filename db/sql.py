@@ -383,7 +383,19 @@ class sortableTableRow:
         cur.execute('SELECT COUNT(id) FROM CircuitObject WHERE parent = ?', (self.path,))
         self.children = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(id) FROM Device WHERE parent = ?', (self.path,))
+        cur.execute(
+          '''SELECT COUNT(device_id)
+              FROM
+                (SELECT
+                    Device.id AS device_id,
+                    Device.parent_id AS parent_id,
+                    CircuitObject.id AS object_id,
+                    CircuitObject.path AS parent_path
+                FROM Device
+                    LEFT JOIN CircuitObject ON parent_id = object_id)
+              WHERE
+                  parent_path = ?''', (self.path,) )
+
         self.devices = cur.fetchone()[0]
 
 
