@@ -283,14 +283,15 @@ class search:
           '''SELECT path, description
               FROM
               (SELECT
-                Device.parent || "." || Device.id AS path,
+                CircuitObject.path || "." || Device.id AS path,
                 Device.description,
-                Device.name,
-                Device.room_id,
+                CircuitObject.id,
+                Device.name as name,
                 Room.room_num AS location,
                 Room.old_num AS location_old,
                 Room.description AS location_descr
               FROM Device
+                LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id
                 LEFT JOIN Room ON Device.room_id = Room.id)
               WHERE
                 name LIKE "%''' + searchText + '''%"
