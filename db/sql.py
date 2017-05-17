@@ -87,12 +87,11 @@ class device:
                         Device.room_id,
                         Device.parent_id,
                         Device.description,
-                        Device.power,
-                        CircuitObject.path,
                         Device.name,
-                        CircuitObject.id AS object_id
+                        CircuitObject.path,
+                        CircuitObject.id
                     FROM Device
-                        LEFT JOIN CircuitObject ON Device.parent_id = object_id)
+                        LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id)
                   WHERE
                       id = ?''', (id,) )
 
@@ -102,9 +101,9 @@ class device:
         self.room_id = row[1]
         self.parent_id = row[2]
         self.description = row[3]
+        self.name = row[4]
         self.parent_path = row[5] # For tree structure
-        self.source_path = row[5] # For properties display
-        self.name = row[6]
+        self.source_path = row[5] # For properties display and table
         self.label = make_device_label( self.name, self.room_id )
 
         #gets room where device is located
@@ -120,7 +119,6 @@ class device:
             self.loc_old = ''
             self.loc_type = ''
             self.loc_descr = ''
-
 
         cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = 'Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
         self.events = cur.fetchall()
@@ -310,7 +308,22 @@ class sortableTable:
 
         if object_type == 'device':
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM Device')
+            cur.execute(
+              '''SELECT *
+                  FROM
+                    (SELECT
+                        Device.id,
+                        Device.room_id,
+                        Device.parent_id,
+                        Device.description,
+                        Device.name,
+                        CircuitObject.path,
+                        CircuitObject.id
+                    FROM Device
+                        LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id)''')
+
+
+
             objects = cur.fetchall()
 
             # Add other fields to each row
