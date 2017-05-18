@@ -58,7 +58,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           tColumnMap[sLabel].style = 'text-align:right';  // Assume all numeric
           tColumnMap[sLabel].empty = true;
           tColumnMap[sLabel].cells = [];
-          tColumnMap[sLabel].filterBySelect = tRule.filterBySelect;
+          tColumnMap[sLabel].valMap = {};
         }
 
         // If the cell is an array, replace with array length
@@ -73,6 +73,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
         if ( sCell != '' )
         {
+          // Add value to map
+          tColumnMap[sLabel].valMap[sCell] = '';
+
           // Clear column-is-empty flag
           tColumnMap[sLabel].empty = false;
 
@@ -103,7 +106,8 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     var tColumn = tColumnMap[sHeader];
     if ( ! tColumn.empty )
     {
-      sFilter = tColumn.filterBySelect ? ' class="filter-select filter-exact" ' : '';
+      var nVals = Object.keys( tColumn.valMap ).length;
+      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : '';
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sHeader + '</th>';
       aHeaders[iHeader++] = { sorter: tColumn.sorter };
     }

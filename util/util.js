@@ -49,7 +49,6 @@ var g_tPropertyRules =
   voltage:
   {
     label: "Voltage",
-    filterBySelect: true,
     showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
