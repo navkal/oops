@@ -164,8 +164,16 @@ class cirobj:
         self.voltage = voltage[1]
         self.object_type = row[5].title()
         self.description = row[6]
-        self.parent_path = row[7]
+        self.parent_id = row[7]
         self.source = row[10]
+
+        # Retrieve parent path
+        cur.execute('SELECT path FROM CircuitObject WHERE id = ?', (self.parent_id,))
+        path_row = cur.fetchone()
+        if path_row:
+            self.parent_path = path_row[0]
+        else:
+            self.parent_path = ''
 
         # Get room information
         cur.execute('SELECT * FROM Room WHERE id = ?', (self.room_id,))
@@ -189,7 +197,7 @@ class cirobj:
         if getkids:
 
             # Retrieve children
-            cur.execute('SELECT path FROM CircuitObject WHERE parent = ?', (self.path,))
+            cur.execute('SELECT path FROM CircuitObject WHERE parent_id = ?', (self.id,))
             child_paths = cur.fetchall()
             self.children = []
 
@@ -206,16 +214,15 @@ class cirobj:
             # Retrieve devices
             cur.execute(
               '''SELECT device_id
-                  FROM
-                    (SELECT
-                        Device.id AS device_id,
-                        Device.parent_id AS parent_id,
-                        CircuitObject.id AS object_id,
-                        CircuitObject.path AS parent_path
-                    FROM Device
-                        LEFT JOIN CircuitObject ON parent_id = object_id)
-                  WHERE
-                      parent_path = ?''', (self.path,) )
+                    FROM
+                        (SELECT
+                            Device.id AS device_id,
+                            Device.parent_id,
+                            CircuitObject.id,
+                            CircuitObject.path
+                        FROM Device
+                            LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id)
+                        WHERE path = ?''', (self.path,) )
 
             dev_ids = cur.fetchall()
             self.devices = []
@@ -391,7 +398,7 @@ class sortableTableRow:
         self.room_id = row[1]
         self.path = row[2]
         self.object_type = row[5].title()
-        self.parent_path = row[7]
+        self.parent_id = row[7]
         self.source = row[10]
 
         self.name = self.path.split('.')[-1]
@@ -410,21 +417,20 @@ class sortableTableRow:
         self.loc_type = room[3]
         self.loc_descr = room[4]
 
-        cur.execute('SELECT COUNT(id) FROM CircuitObject WHERE parent = ?', (self.path,))
+        cur.execute('SELECT COUNT(id) FROM CircuitObject WHERE parent_id = ?', (self.id,))
         self.children = cur.fetchone()[0]
 
         cur.execute(
-          '''SELECT COUNT(device_id)
-              FROM
-                (SELECT
-                    Device.id AS device_id,
-                    Device.parent_id AS parent_id,
-                    CircuitObject.id AS object_id,
-                    CircuitObject.path AS parent_path
-                FROM Device
-                    LEFT JOIN CircuitObject ON parent_id = object_id)
-              WHERE
-                  parent_path = ?''', (self.path,) )
+          '''SELECT COUNT( device_id )
+                FROM
+                    (SELECT
+                        Device.id AS device_id,
+                        Device.parent_id,
+                        CircuitObject.id,
+                        CircuitObject.path
+                    FROM Device
+                        LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id)
+                    WHERE path = ?''', (self.path,) )
 
         self.devices = cur.fetchone()[0]
 
