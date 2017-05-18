@@ -55,7 +55,6 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           tColumnMap[sLabel] = {};
           tColumnMap[sLabel].key = sKey;
           tColumnMap[sLabel].label = sLabel;
-          tColumnMap[sLabel].sorter = 'digit';
           tColumnMap[sLabel].empty = true;
           tColumnMap[sLabel].cells = [];
           tColumnMap[sLabel].filterBySelect = tRule.filterBySelect;
@@ -75,12 +74,6 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         {
           // Clear column-is-empty flag
           tColumnMap[sLabel].empty = false;
-
-          // Determine whether column sort should be changed from numeric to alphabetic
-          if ( ! /^\d+$/.test( sCell ) )
-          {
-            tColumnMap[sLabel].sorter = 'text';
-          }
         }
 
         // Append current cell to the column
