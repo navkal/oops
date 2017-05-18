@@ -52,14 +52,16 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         if ( ! tColumnMap[sLabel] )
         {
           // Insert first column map entry for this label
-          tColumnMap[sLabel] = {};
-          tColumnMap[sLabel].key = sKey;
-          tColumnMap[sLabel].label = sLabel;
-          tColumnMap[sLabel].defaultAlign = 'right';
-          tColumnMap[sLabel].overrideAlign = tRule.overrideAlign;
-          tColumnMap[sLabel].empty = true;
-          tColumnMap[sLabel].cells = [];
-          tColumnMap[sLabel].valMap = {};
+          tColumnMap[sLabel] =
+          {
+            key: sKey,
+            label: sLabel,
+            defaultAlign: 'right',
+            overrideAlign: tRule.overrideAlign,
+            empty: true,
+            cells: [],
+            valMap: {}
+          };
         }
 
         // If the cell is an array, replace with array length
