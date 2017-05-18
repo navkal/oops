@@ -55,6 +55,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           tColumnMap[sLabel] = {};
           tColumnMap[sLabel].key = sKey;
           tColumnMap[sLabel].label = sLabel;
+          tColumnMap[sLabel].style = 'text-align:right';  // Assume all numeric
           tColumnMap[sLabel].empty = true;
           tColumnMap[sLabel].cells = [];
           tColumnMap[sLabel].filterBySelect = tRule.filterBySelect;
@@ -74,6 +75,12 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         {
           // Clear column-is-empty flag
           tColumnMap[sLabel].empty = false;
+
+          // If column contains non-digit character, remove right alignment
+          if ( ! /^\d+$/.test( sCell ) )
+          {
+            tColumnMap[sLabel].style = '';
+          }
         }
 
         // Append current cell to the column
@@ -117,7 +124,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       if ( ! tColumn.empty )
       {
         var sCell = tColumn.cells[nRow];
-        sHtml += '<td>' + sCell + '</td>';
+        sHtml += '<td style=' + tColumn.style + '>' + sCell + '</td>';
         bDone = ( nRow == tColumn.cells.length - 1 );
       }
     }
