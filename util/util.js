@@ -51,7 +51,6 @@ var g_tPropertyRules =
     label: "Voltage",
     showInPropertiesWindow: true,
     showInSortableTable: true,
-    overrideAlign: 'center',
     displayIndex: displayIndex ++
   },
   loc_new:
@@ -59,7 +58,6 @@ var g_tPropertyRules =
     label: "Location",
     showInPropertiesWindow: true,
     showInSortableTable: true,
-    overrideAlign: 'center',
     displayIndex: displayIndex ++
   },
   loc_old:
@@ -67,7 +65,7 @@ var g_tPropertyRules =
     label: "Old Location",
     showInPropertiesWindow: true,
     showInSortableTable: true,
-    overrideAlign: 'center',
+    columnType: 'text', // Controls text-align
     displayIndex: displayIndex ++
   },
   loc_descr:

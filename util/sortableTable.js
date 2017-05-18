@@ -56,10 +56,11 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           {
             key: sKey,
             label: sLabel,
-            defaultAlign: 'right',
-            overrideAlign: tRule.overrideAlign,
+            align: ( tRule.columnType == 'text' ) ? '' : 'right',
             empty: true,
             cells: [],
+            minLength: Number.MAX_SAFE_INTEGER,
+            maxLength: 0,
             valMap: {}
           };
         }
@@ -79,13 +80,17 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           // Add value to map
           tColumnMap[sLabel].valMap[sCell] = '';
 
+          // Track min and max lengths
+          tColumnMap[sLabel].minLength = Math.min( tColumnMap[sLabel].minLength, sCell.length );
+          tColumnMap[sLabel].maxLength = Math.max( tColumnMap[sLabel].maxLength, sCell.length );
+
           // Clear column-is-empty flag
           tColumnMap[sLabel].empty = false;
 
           // If column contains non-digit character, change the default alignment
           if ( ! /^\d+$/.test( sCell ) )
           {
-            tColumnMap[sLabel].defaultAlign = '';
+            tColumnMap[sLabel].align = '';
           }
         }
 
@@ -131,7 +136,11 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       if ( ! tColumn.empty )
       {
         var sCell = tColumn.cells[nRow];
-        var sAlign = 'text-align:' + ( tColumn.overrideAlign || tColumn.defaultAlign );
+        if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
+        {
+          tColumn.align = 'center';
+        }
+        var sAlign = 'text-align:' + tColumn.align;
         sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
         bDone = ( nRow == tColumn.cells.length - 1 );
       }
