@@ -55,7 +55,8 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           tColumnMap[sLabel] = {};
           tColumnMap[sLabel].key = sKey;
           tColumnMap[sLabel].label = sLabel;
-          tColumnMap[sLabel].style = 'text-align:right';  // Assume all numeric
+          tColumnMap[sLabel].defaultAlign = 'right';
+          tColumnMap[sLabel].overrideAlign = tRule.overrideAlign;
           tColumnMap[sLabel].empty = true;
           tColumnMap[sLabel].cells = [];
           tColumnMap[sLabel].valMap = {};
@@ -79,10 +80,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           // Clear column-is-empty flag
           tColumnMap[sLabel].empty = false;
 
-          // If column contains non-digit character, remove right alignment
+          // If column contains non-digit character, change the default alignment
           if ( ! /^\d+$/.test( sCell ) )
           {
-            tColumnMap[sLabel].style = '';
+            tColumnMap[sLabel].defaultAlign = '';
           }
         }
 
@@ -128,7 +129,8 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       if ( ! tColumn.empty )
       {
         var sCell = tColumn.cells[nRow];
-        sHtml += '<td style=' + tColumn.style + '>' + sCell + '</td>';
+        var sAlign = 'text-align:' + ( tColumn.overrideAlign || tColumn.defaultAlign );
+        sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
         bDone = ( nRow == tColumn.cells.length - 1 );
       }
     }
