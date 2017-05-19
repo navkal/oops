@@ -4,9 +4,10 @@
   error_log( '====> post=' . print_r( $_POST, true ) );
 
   $sSearchText = $_POST['searchText'];
+  $sSearchTargets = $_POST['searchTargets'];
   $iRequestTime = $_POST['requestTime'];
 
-  $command = quote( getenv( "PYTHON" ) ) . " ../db/search.py 2>&1 -s " . quote( $sSearchText, false );
+  $command = quote( getenv( "PYTHON" ) ) . " ../db/search.py 2>&1 -s " . quote( $sSearchText, false ) . " -t " . $sSearchTargets;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

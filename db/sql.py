@@ -250,63 +250,79 @@ class cirobj:
 
 
 class search:
-    def __init__(self, searchText):
+    def __init__(self, searchText, searchTargets=None):
 
-        cur.execute('SELECT path, path FROM CircuitObject WHERE tail LIKE "%' + searchText + '%"')
-        pathRows = cur.fetchall()
+        if searchTargets:
+            aTargets = searchTargets.split( ',' )
+        else:
+            aTargets = []
 
-        cur.execute(
-          '''SELECT path, description
-              FROM
-                (SELECT
-                    CircuitObject.object_type,
-                    CircuitObject.description,
-                    CircuitObject.path,
-                    CircuitObject.tail AS tail,
-                    CircuitObject.search_text AS search_text,
-                    CircuitObject.source AS source,
-                    Voltage.description AS voltage,
+        if 'Path' in aTargets:
+            cur.execute('SELECT path, path FROM CircuitObject WHERE tail LIKE "%' + searchText + '%"')
+            pathRows = cur.fetchall()
+        else:
+            pathRows = []
+
+        if ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
+
+            cur.execute(
+              '''SELECT path, description
+                  FROM
+                    (SELECT
+                        CircuitObject.object_type,
+                        CircuitObject.description,
+                        CircuitObject.path,
+                        CircuitObject.tail AS tail,
+                        CircuitObject.search_text AS search_text,
+                        CircuitObject.source AS source,
+                        Voltage.description AS voltage,
+                        Room.room_num AS location,
+                        Room.old_num AS location_old,
+                        Room.description AS location_descr
+                    FROM CircuitObject
+                        LEFT JOIN Voltage ON CircuitObject.voltage_id = Voltage.id
+                        LEFT JOIN Room ON CircuitObject.room_id = Room.id)
+                  WHERE
+                      (object_type = "Panel"
+                        AND
+                        (tail LIKE "%''' + searchText + '''%"
+                        OR source LIKE "%''' + searchText + '''%"
+                        OR voltage LIKE "%''' + searchText + '''%"
+                        OR location LIKE "%''' + searchText + '''%"
+                        OR location_old LIKE "%''' + searchText + '''%"
+                        OR location_descr LIKE "%''' + searchText + '''%"))
+                      OR
+                        search_text LIKE "%''' + searchText + '''%"''' )
+
+            descrRows = cur.fetchall()
+        else:
+            descrRows = []
+
+
+        if 'Device' in aTargets:
+            cur.execute(
+              '''SELECT path, description
+                  FROM
+                  (SELECT
+                    CircuitObject.path || "." || Device.id AS path,
+                    Device.description,
+                    CircuitObject.id,
+                    Device.name as name,
                     Room.room_num AS location,
                     Room.old_num AS location_old,
                     Room.description AS location_descr
-                FROM CircuitObject
-                    LEFT JOIN Voltage ON CircuitObject.voltage_id = Voltage.id
-                    LEFT JOIN Room ON CircuitObject.room_id = Room.id)
-              WHERE
-                  (object_type = "Panel"
-                    AND
-                    (tail LIKE "%''' + searchText + '''%"
-                    OR source LIKE "%''' + searchText + '''%"
-                    OR voltage LIKE "%''' + searchText + '''%"
+                  FROM Device
+                    LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id
+                    LEFT JOIN Room ON Device.room_id = Room.id)
+                  WHERE
+                    name LIKE "%''' + searchText + '''%"
                     OR location LIKE "%''' + searchText + '''%"
                     OR location_old LIKE "%''' + searchText + '''%"
-                    OR location_descr LIKE "%''' + searchText + '''%"))
-                  OR
-                    search_text LIKE "%''' + searchText + '''%"''' )
+                    OR location_descr LIKE "%''' + searchText + '''%"''')
 
-        descrRows = cur.fetchall()
-
-        cur.execute(
-          '''SELECT path, description
-              FROM
-              (SELECT
-                CircuitObject.path || "." || Device.id AS path,
-                Device.description,
-                CircuitObject.id,
-                Device.name as name,
-                Room.room_num AS location,
-                Room.old_num AS location_old,
-                Room.description AS location_descr
-              FROM Device
-                LEFT JOIN CircuitObject ON Device.parent_id = CircuitObject.id
-                LEFT JOIN Room ON Device.room_id = Room.id)
-              WHERE
-                name LIKE "%''' + searchText + '''%"
-                OR location LIKE "%''' + searchText + '''%"
-                OR location_old LIKE "%''' + searchText + '''%"
-                OR location_descr LIKE "%''' + searchText + '''%"''')
-
-        devRows = cur.fetchall()
+            devRows = cur.fetchall()
+        else:
+            devRows = []
 
         self.searchResults = pathRows + descrRows + devRows
 

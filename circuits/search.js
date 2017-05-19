@@ -46,6 +46,7 @@ function getSearchResults()
       var tPostData = new FormData();
       tPostData.append( "requestTime", g_iLastRequestTime );
       tPostData.append( "searchText", sText );
+      tPostData.append( "searchTargets", 'Path,Circuit,Panel,Transformer,Device' );
 
       $.ajax(
         "circuits/search.php",
