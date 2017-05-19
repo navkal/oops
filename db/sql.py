@@ -268,6 +268,7 @@ class search:
         # Search CircuitObject objects
         if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
 
+            # Generate condition to select requested object types
             if ( 'All' in aTargets ) or ( ( 'Circuit' in aTargets ) and ( 'Panel' in aTargets ) and ( 'Transformer' in aTargets ) ):
                 sWhere = ''
             else:
@@ -285,9 +286,6 @@ class search:
                     sWhere += aWhere[i]
                     if i < ( len( aWhere ) - 1 ):
                         sWhere += ' OR '
-
-
-            print ( 'where=' + sWhere )
 
             cur.execute(
               '''SELECT path, description
@@ -321,9 +319,9 @@ class search:
                       OR
                         search_text LIKE "%''' + searchText + '''%"''' )
 
-            descrRows = cur.fetchall()
+            cirobjRows = cur.fetchall()
         else:
-            descrRows = []
+            cirobjRows = []
 
 
         # Search devices
@@ -353,7 +351,7 @@ class search:
             devRows = []
 
         # Concatenate all search results
-        self.searchResults = pathRows + descrRows + devRows
+        self.searchResults = pathRows + cirobjRows + devRows
 
 
 class sortableTable:
