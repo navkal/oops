@@ -250,20 +250,20 @@ class cirobj:
 
 
 class search:
-    def __init__(self, searchText, searchTargets=None):
+    def __init__(self, searchText, searchTargets=['All']):
 
-        if searchTargets:
-            aTargets = searchTargets.split( ',' )
-        else:
-            aTargets = []
+        aTargets = searchTargets.split( ',' )
 
-        if 'Path' in aTargets:
+        # Search CircuitObject paths
+        if ( 'All' in aTargets ) or ( 'Path' in aTargets ):
             cur.execute('SELECT path, path FROM CircuitObject WHERE tail LIKE "%' + searchText + '%"')
             pathRows = cur.fetchall()
         else:
             pathRows = []
 
-        if ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
+
+        # Search CircuitObject objects
+        if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
 
             cur.execute(
               '''SELECT path, description
@@ -299,7 +299,8 @@ class search:
             descrRows = []
 
 
-        if 'Device' in aTargets:
+        # Search devices
+        if ( 'All' in aTargets ) or ( 'Device' in aTargets ):
             cur.execute(
               '''SELECT path, description
                   FROM
@@ -324,6 +325,7 @@ class search:
         else:
             devRows = []
 
+        # Concatenate all search results
         self.searchResults = pathRows + descrRows + devRows
 
 
