@@ -250,9 +250,12 @@ class cirobj:
 
 
 class search:
-    def __init__(self, searchText, searchTargets=['All']):
+    def __init__(self, searchText, searchTargets=None):
 
-        aTargets = searchTargets.split( ',' )
+        if searchTargets:
+            aTargets = searchTargets.split( ',' )
+        else:
+            aTargets = ['All']
 
         # Search CircuitObject paths
         if ( 'All' in aTargets ) or ( 'Path' in aTargets ):
