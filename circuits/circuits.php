@@ -32,10 +32,10 @@
 
         <!-- Search input control -->
         <div id="search-control" class="input-group" >
-        <div class="input-group-addon">
-          <span class="glyphicon glyphicon-search">
-          </span>
-        </div>
+          <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search">
+            </span>
+          </div>
           <input class="form-control search-input" id="search-input" type="text" placeholder="Search..." >
           <div class="input-group-btn">
             <button type="button" id="search-input-clear" class="btn btn-default" title="Clear search input" onclick="clearSearchInput()">
