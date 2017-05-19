@@ -268,6 +268,27 @@ class search:
         # Search CircuitObject objects
         if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
 
+            if ( 'All' in aTargets ) or ( ( 'Circuit' in aTargets ) and ( 'Panel' in aTargets ) and ( 'Transformer' in aTargets ) ):
+                sWhere = ''
+            else:
+                aWhere = []
+                if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ):
+                    aWhere.append( 'CircuitObject.object_type = "Circuit"' )
+                if ( 'All' in aTargets ) or ( 'Panel' in aTargets ):
+                    aWhere.append( 'CircuitObject.object_type = "Panel"' )
+                if ( 'All' in aTargets ) or ( 'Transformer' in aTargets ):
+                    aWhere.append( 'CircuitObject.object_type = "Transformer"' )
+
+                sWhere = 'WHERE '
+
+                for i in range( len (aWhere) ):
+                    sWhere += aWhere[i]
+                    if i < ( len( aWhere ) - 1 ):
+                        sWhere += ' OR '
+
+
+            print ( 'where=' + sWhere )
+
             cur.execute(
               '''SELECT path, description
                   FROM
@@ -284,7 +305,10 @@ class search:
                         Room.description AS location_descr
                     FROM CircuitObject
                         LEFT JOIN Voltage ON CircuitObject.voltage_id = Voltage.id
-                        LEFT JOIN Room ON CircuitObject.room_id = Room.id)
+                        LEFT JOIN Room ON CircuitObject.room_id = Room.id
+                    '''
+                    + sWhere +
+                    ''')
                   WHERE
                       (object_type = "Panel"
                         AND
