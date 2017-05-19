@@ -32,9 +32,11 @@
 
         <!-- Search input control -->
         <div id="search-control" class="input-group" >
-          <div class="input-group-addon">
-            <span class="glyphicon glyphicon-search">
-            </span>
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default" title="Search Targets" data-toggle="modal" data-target="#searchTargetDialog">
+              <span class="glyphicon glyphicon-search">
+              </span>
+            </button>
           </div>
           <input class="form-control search-input" id="search-input" type="text" placeholder="Search..." >
           <div class="input-group-btn">
@@ -63,4 +65,43 @@
     </div>
   </div>
 
+</div>
+
+
+<!-- Search Target dialog -->
+<div class="modal fade" id="searchTargetDialog" tabindex="-1" role="dialog" aria-labelledby="searchTargetLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="searchTargetLabel">Search Targets</h4>
+      </div>
+      <div class="modal-body bg-info">
+        <dl>
+          <dd>
+            THIS IS A STUB
+          </dd>
+        </dl>
+        <dl>
+          <dd>
+            <ol>
+              <li>
+                poo
+              </li>
+              <li>
+                too
+              </li>
+              <li>
+                yoo
+              </li>
+            </ol>
+          </dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="alert('you said OK')">OK</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
