@@ -102,25 +102,25 @@
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Panel" checked >
-                  <span>Panel</span>
+                  <span>Panels</span>
                 </label>
               </li>
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Transformer" checked >
-                  <span>Transformer</span>
+                  <span>Transformers</span>
                 </label>
               </li>
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Device" checked >
-                  <span>Device</span>
+                  <span>Devices</span>
                 </label>
               </li>
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Path" checked >
-                  <span>Path</span>
+                  <span>Paths</span>
                 </label>
               </li>
             </ul>
