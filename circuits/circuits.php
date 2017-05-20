@@ -33,7 +33,7 @@
         <!-- Search input control -->
         <div id="search-control" class="input-group" >
           <div class="input-group-btn">
-            <button type="button" class="btn btn-default" title="Search Targets" data-toggle="modal" data-target="#searchTargetDialog">
+            <button type="button" id="searchTargetButton" class="btn btn-default" title="Search Targets" data-toggle="modal" data-target="#searchTargetDialog">
               <span class="glyphicon glyphicon-search">
               </span>
             </button>

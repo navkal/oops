@@ -22,6 +22,7 @@ function initSearch()
   $( '#search-input' ).on( 'blur', hideSearchResults );
   $( '#search-input' ).on( 'click', showSearchResults );
 
+  // Initialize list of search targets
   listSearchTargets();
   $( '#searchTargetDialog' ).on( 'hidden.bs.modal', listSearchTargets );
 }
@@ -34,20 +35,32 @@ function resizeSearchInput()
 
 function listSearchTargets( tEvent )
 {
+  // Get list of checked checkboxes
   var aChecked = $( '#searchTargetList input[type=checkbox]:checked' );
 
+  // Format comma-separated list of search targets
   g_sSearchTargets = '';
   for ( var iChk = 0; iChk < aChecked.length; iChk ++ )
   {
     g_sSearchTargets += $( aChecked[iChk] ).val() + ',';
   }
-
   g_sSearchTargets = g_sSearchTargets.slice( 0, -1 );
-  console.log( g_sSearchTargets );
 
-  if ( tEvent )
+  if ( g_sSearchTargets == '' )
   {
-    getSearchResults( tEvent );
+    // No targets are selected.  Treat as error.
+    $( '#searchTargetButton' ).addClass( 'btn-danger' );
+    closeSearchResults();
+  }
+  else
+  {
+    // Targets are selected.  Update search results accordingly.
+    $( '#searchTargetButton' ).removeClass( 'btn-danger' );
+
+    if ( tEvent )
+    {
+      getSearchResults( tEvent );
+    }
   }
 }
 
