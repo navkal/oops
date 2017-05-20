@@ -3,6 +3,7 @@
 var g_iLastRequestTime = 0;
 var g_sLastText = '';
 var g_nResultHeight = null;
+var g_sSearchTargets = '';
 
 $(document).ready( initSearch );
 
@@ -20,6 +21,9 @@ function initSearch()
   $( '#search-input' ).on( 'keyup', getSearchResults );
   $( '#search-input' ).on( 'blur', hideSearchResults );
   $( '#search-input' ).on( 'click', showSearchResults );
+
+  listSearchTargets();
+  $( '#searchTargetDialog' ).on( 'hidden.bs.modal', listSearchTargets );
 }
 
 function resizeSearchInput()
@@ -28,7 +32,26 @@ function resizeSearchInput()
   $( '#search-control, #search-menu' ).css( 'width', sWidth );
 }
 
-function getSearchResults()
+function listSearchTargets( tEvent )
+{
+  var aChecked = $( '#searchTargetList input[type=checkbox]:checked' );
+
+  g_sSearchTargets = '';
+  for ( var iChk = 0; iChk < aChecked.length; iChk ++ )
+  {
+    g_sSearchTargets += $( aChecked[iChk] ).val() + ',';
+  }
+
+  g_sSearchTargets = g_sSearchTargets.slice( 0, -1 );
+  console.log( g_sSearchTargets );
+
+  if ( tEvent )
+  {
+    getSearchResults( tEvent );
+  }
+}
+
+function getSearchResults( tEvent )
 {
   var sText = $( '#search-input' ).val();
 
@@ -38,7 +61,7 @@ function getSearchResults()
   }
   else
   {
-    if ( sText != g_sLastText )
+    if ( ( sText != g_sLastText ) || ( $( tEvent.target ).attr( 'id' ) == 'searchTargetDialog' ) )
     {
       g_iLastRequestTime = Date.now();
 
@@ -46,7 +69,7 @@ function getSearchResults()
       var tPostData = new FormData();
       tPostData.append( "requestTime", g_iLastRequestTime );
       tPostData.append( "searchText", sText );
-      tPostData.append( "searchTargets", 'Path,Circuit,Panel,Transformer,Device' );
+      tPostData.append( "searchTargets", g_sSearchTargets );
 
       $.ajax(
         "circuits/search.php",
@@ -336,4 +359,10 @@ function closeSearchResults()
 function hideSearchResults()
 {
   $( '#search-menu' ).hide();
+}
+
+
+function checkAllSearchTargets( bChecked )
+{
+  $( '#searchTargetList input[type=checkbox]' ).prop( 'checked', bChecked );
 }

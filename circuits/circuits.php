@@ -77,30 +77,58 @@
         <h4 class="modal-title" id="searchTargetLabel">Search Targets</h4>
       </div>
       <div class="modal-body bg-info">
-        <dl>
-          <dd>
-            THIS IS A STUB
-          </dd>
-        </dl>
-        <dl>
-          <dd>
-            <ol>
+        <div class="row" >
+          <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3" >
+          </div>
+          <div class="col-xs-10 col-sm-10 col-md-9 col-lg-9" >
+            <ul id="searchTargetList" class="list-unstyled" >
               <li>
-                poo
+                <span class="btn-group btn-group-xs" >
+                  <button type="button" class="btn btn-default btn-xs" title="Select All" onclick="checkAllSearchTargets(true)" >
+                    <span class="glyphicon glyphicon-check" ></span>
+                    All
+                  </button>
+                  <button type="button" class="btn btn-default btn-xs" title="Select None" onclick="checkAllSearchTargets(false)" >
+                    None
+                  </button>
+                </span>
               </li>
               <li>
-                too
+                <label class="checkbox checkbox-inline" >
+                  <input type="checkbox" value="Circuit" checked >
+                  <span>Distribution</span>
+                </label>
               </li>
               <li>
-                yoo
+                <label class="checkbox checkbox-inline" >
+                  <input type="checkbox" value="Panel" checked >
+                  <span>Panel</span>
+                </label>
               </li>
-            </ol>
-          </dd>
-        </dl>
+              <li>
+                <label class="checkbox checkbox-inline" >
+                  <input type="checkbox" value="Transformer" checked >
+                  <span>Transformer</span>
+                </label>
+              </li>
+              <li>
+                <label class="checkbox checkbox-inline" >
+                  <input type="checkbox" value="Device" checked >
+                  <span>Device</span>
+                </label>
+              </li>
+              <li>
+                <label class="checkbox checkbox-inline" >
+                  <input type="checkbox" value="Path" checked >
+                  <span>Path</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="alert('you said OK')">OK</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
       </div>
     </div>
   </div>
