@@ -38,25 +38,36 @@ function listSearchTargets( tEvent )
   // Get list of checked checkboxes
   var aChecked = $( '#searchTargetList input[type=checkbox]:checked' );
 
-  // Format comma-separated list of search targets
+  // Format lists of search targets for internal use and display
   g_sSearchTargets = '';
+  var sHint = '';
   for ( var iChk = 0; iChk < aChecked.length; iChk ++ )
   {
-    g_sSearchTargets += $( aChecked[iChk] ).val() + ',';
+    tCheckbox = $( aChecked[iChk] );
+    g_sSearchTargets += tCheckbox.val() + ',';
+    sHint += tCheckbox.closest( 'label' ).text().trim() + ', ';
   }
   g_sSearchTargets = g_sSearchTargets.slice( 0, -1 );
+  sHint = sHint.slice( 0, -2 );
 
   if ( g_sSearchTargets == '' )
   {
-    // No targets are selected.  Treat as error.
+    // No search targets.  Show error.
+    $( '#search-input' ).attr( 'placeholder', 'No Search Targets' );
+    $( '#searchTargetButton' ).attr( 'title', 'No Search Targets' );
     $( '#searchTargetButton' ).addClass( 'btn-danger' );
     closeSearchResults();
   }
   else
   {
-    // Targets are selected.  Update search results accordingly.
+    // One or more search targets are selected
+
+    // Remove error feedback
+    $( '#search-input' ).attr( 'placeholder', sHint );
+    $( '#searchTargetButton' ).attr( 'title', 'Search Targets: ' + sHint );
     $( '#searchTargetButton' ).removeClass( 'btn-danger' );
 
+    // Update search results
     if ( tEvent )
     {
       getSearchResults( tEvent );
