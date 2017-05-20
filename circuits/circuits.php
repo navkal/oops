@@ -85,7 +85,6 @@
               <li>
                 <span class="btn-group btn-group-xs" >
                   <button type="button" class="btn btn-default btn-xs" title="Select All" onclick="checkAllSearchTargets(true)" >
-                    <span class="glyphicon glyphicon-check" ></span>
                     All
                   </button>
                   <button type="button" class="btn btn-default btn-xs" title="Select None" onclick="checkAllSearchTargets(false)" >
