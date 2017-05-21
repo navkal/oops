@@ -36,7 +36,7 @@
   }
 
 
-  $command = quote( getenv( "PYTHON" ) ) . " ../db/getObject.py 2>&1 -t " . $postTable . $selector;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postTable . $selector;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

@@ -31,7 +31,7 @@
   {
     // Retrieve object
     $sSelector = ( $sPath == "" ) ? "" : ' -p ' . $sPath;
-    $sCommand = quote( getenv( "PYTHON" ) ) . " ../db/getObject.py 2>&1 -t cirobj " . $sSelector;
+    $sCommand = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t cirobj " . $sSelector;
     // error_log( "===> command=" . $sCommand );
     exec( $sCommand, $sOutput, $sStatus );
     // error_log( "===> output=" . print_r( $sOutput, true ) );

@@ -4,7 +4,7 @@
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Save notes in database
-  $command = quote( getenv( "PYTHON" ) ) . " ../db/saveNotes.py 2>&1 -t " . $_POST['targetTable'] . " -c " . $_POST['targetColumn'] . " -v " . $_POST['targetValue'] . " -n " . quote( $_POST['notes'] );
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/saveNotes.py 2>&1 -t " . $_POST['targetTable'] . " -c " . $_POST['targetColumn'] . " -v " . $_POST['targetValue'] . " -n " . quote( $_POST['notes'] );
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

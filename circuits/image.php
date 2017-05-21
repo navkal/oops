@@ -5,7 +5,7 @@
 
   <?php
     $sPath = $_REQUEST['path'];
-    $sImg = '../db/images/' . $sPath . '.jpg';
+    $sImg = '../database/images/' . $sPath . '.jpg';
   ?>
 
   <!-- Head -->
