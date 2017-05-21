@@ -187,7 +187,7 @@ class cirobj:
         self.label = make_cirobj_label( self )
 
         # Add image filename
-        filename = 'images/' + self.path + '.jpg'
+        filename = '../db/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
             self.image = filename
         else:
@@ -204,7 +204,7 @@ class cirobj:
             for i in range( len( child_paths ) ):
                 child_path = child_paths[i][0]
                 child = cirobj( path=child_path, getkids=False )
-                filename = 'images/' + child_path + '.jpg'
+                filename = '../db/images/' + child_path + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
                 else:
