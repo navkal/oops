@@ -96,16 +96,16 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           {
             tColumnMap[sLabel].align = '';
           }
-        }
 
-        // Perform special rendering for images
-        if ( tRule.columnType == 'image' )
-        {
-          sCell = '<a path="' + sCell + '">';
-          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" >';
-          sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
-          sCell += '</button>';
-          sCell += '</a>';
+          // Perform special rendering for images
+          if ( tRule.columnType == 'image' )
+          {
+            sCell = '<a path="' + sCell + '">';
+            sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" >';
+            sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+            sCell += '</button>';
+            sCell += '</a>';
+          }
         }
 
         // Append current cell to the column
