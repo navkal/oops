@@ -1,6 +1,5 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_aImageWindows = [];
 var g_aPropertiesWindows = [];
 var g_tTreeMap = {};
 var g_sImageButton = '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" ><span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span></button>';
@@ -65,7 +64,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   sNode += '<i class="glyphicon glyphicon-chevron-down toggle"></i>';
   sNode += sLabel;
   sNode += '<span class="pull-right">';
-  sNode += tRsp.image ? g_sImageButton : '';
+  sNode += tRsp.image_file ? g_sImageButton : '';
   sNode += g_sPropertiesButton;
   sNode += '</span>';
   sNode += '</a>';
@@ -84,7 +83,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
     var sChildLabel = aChildren[iChild][2];
     var sChildType = aChildren[iChild][3];
     var sChildImage = aChildren[iChild][4];
-    aChildInfo.push( { oid: sChildOid, path: sChildPath, label: sChildLabel, type: sChildType, image: sChildImage } );
+    aChildInfo.push( { oid: sChildOid, path: sChildPath, label: sChildLabel, type: sChildType, image_file: sChildImage } );
   }
   aChildInfo.sort( compareNodes );
   for ( var iChild = 0; iChild < aChildInfo.length; iChild ++ )
@@ -93,7 +92,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
     sCollapse += '<i class="glyphicon glyphicon-chevron-right toggle"></i>';
     sCollapse += aChildInfo[iChild].label;
     sCollapse += '<span class="pull-right">';
-    sCollapse += aChildInfo[iChild].image ? g_sImageButton : '';
+    sCollapse += aChildInfo[iChild].image_file ? g_sImageButton : '';
     sCollapse += g_sPropertiesButton;
     sCollapse += '</span>';
     sCollapse += '</a>';
@@ -340,21 +339,6 @@ function resizeTree()
 function scrollToCenter( tContainer, tItem )
 {
   tContainer.scrollTop( tContainer.scrollTop() + ( tItem.position().top - tContainer.position().top ) - ( tContainer.height() / 2 ) + ( tItem.height() / 2 ) );
-}
-
-function openImageWindow( tEvent )
-{
-  tEvent.preventDefault();
-  tEvent.stopPropagation();
-
-  var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
-  var sUrl = 'circuits/image.php?path=' + sPath;
-
-  var nDefaultWidth = 800;
-  var nDefaultAspect = 2550 / 3300;
-  var nDefaultHeight = nDefaultWidth / nDefaultAspect;
-
-  childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
 }
 
 function openPropertiesWindow( tEvent )

@@ -117,6 +117,14 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  image_file:
+  {
+    label: "Image",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'image', // Controls sortability
+    displayIndex: displayIndex ++
+  },
   description:
   {
     label: "Description",
@@ -176,6 +184,24 @@ function comparePropertyIndex( sLabel1, sLabel2 )
 
   return idx1 - idx2;
 };
+
+
+var g_aImageWindows = [];
+
+function openImageWindow( tEvent )
+{
+  tEvent.preventDefault();
+  tEvent.stopPropagation();
+
+  var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
+  var sUrl = 'circuits/image.php?path=' + sPath;
+
+  var nDefaultWidth = 800;
+  var nDefaultAspect = 2550 / 3300;
+  var nDefaultHeight = nDefaultWidth / nDefaultAspect;
+
+  childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
+}
 
 
 // -> -> -> Manage child windows -> -> ->

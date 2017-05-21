@@ -7,6 +7,9 @@ var g_sSortableTableType = null;
 // Retrieve sortable table from backend
 function getSortableTable()
 {
+  // Set handler to close any child windows
+  $( window ).on( 'unload', closeChildWindows );
+
   // Set wait cursor
   setWaitCursor();
 
@@ -57,6 +60,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
             key: sKey,
             label: sLabel,
             align: ( tRule.columnType == 'text' ) ? '' : 'right',
+            sortable: ! ( tRule.columnType == 'image' ),
             empty: true,
             cells: [],
             minLength: Number.MAX_SAFE_INTEGER,
@@ -94,6 +98,16 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           }
         }
 
+        // Perform special rendering for images
+        if ( tRule.columnType == 'image' )
+        {
+          sCell = '<a path="' + sCell + '">';
+          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" >';
+          sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+        }
+
         // Append current cell to the column
         tColumnMap[sLabel].cells.push( sCell );
       }
@@ -104,10 +118,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   $( '#sortableTableTitle' ).text( g_sSortableTableTitle );
 
   // Format table head/foot HTML, and construct sorter array
-  var iHeader = 0;
   var aSortedHeaders = Object.keys( tColumnMap ).sort( comparePropertyIndex );
   var sHtml = '';
   var aHeaders = [];
+  var iColumn = 0;
   for ( var iHeader in aSortedHeaders )
   {
     var sHeader = aSortedHeaders[iHeader];
@@ -117,7 +131,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       var nVals = Object.keys( tColumn.valMap ).length;
       sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : '';
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sHeader + '</th>';
-      aHeaders[iHeader++] = { sorter: tColumn.sorter };
+      aHeaders[iColumn++] = tColumn.sortable ? {} : { sorter: false };
     }
   }
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
@@ -229,4 +243,9 @@ function onSortableTableReady( tEvent )
 
   // Clear the wait cursor
   clearWaitCursor();
+}
+
+function closeChildWindows()
+{
+  childWindowsClose( g_aImageWindows );
 }

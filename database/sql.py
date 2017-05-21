@@ -189,9 +189,9 @@ class cirobj:
         # Add image filename
         filename = '../database/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
-            self.image = filename
+            self.image_file = filename
         else:
-            self.image = ''
+            self.image_file = ''
 
 
         if getkids:
@@ -459,6 +459,13 @@ class sortableTableRow:
         self.loc_old = room[2]
         self.loc_type = room[3]
         self.loc_descr = room[4]
+
+        # Add image filename
+        filename = '../database/images/' + self.path + '.jpg'
+        if os.path.isfile( filename ):
+            self.image_file = self.path
+        else:
+            self.image_file = ''
 
         cur.execute('SELECT COUNT(id) FROM CircuitObject WHERE parent_id = ?', (self.id,))
         self.children = cur.fetchone()[0]
