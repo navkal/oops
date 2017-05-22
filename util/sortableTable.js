@@ -41,16 +41,19 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   for ( var iRow in aRows )
   {
     // Get next row
-    var aRow = aRows[iRow];
+    var tRow = aRows[iRow];
+
+    // Insert artificial index cell
+    tRow['index'] = iRow;
 
     // Traverse fields of the current row
-    for ( sKey in aRow )
+    for ( sKey in tRow )
     {
       // Map key to label
       var tRule =  g_tPropertyRules[sKey];
       var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
 
-      if ( sLabel )
+      if ( sLabel != null )
       {
         if ( ! tColumnMap[sLabel] )
         {
@@ -60,7 +63,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
             key: sKey,
             label: sLabel,
             align: ( tRule.columnType == 'text' ) ? '' : 'right',
-            sortable: ! ( tRule.columnType == 'image' ),
+            sortable: ! ( ( tRule.columnType == 'image' ) || ( tRule.columnType == 'index' ) ),
             empty: true,
             cells: [],
             minLength: Number.MAX_SAFE_INTEGER,
@@ -70,7 +73,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         }
 
         // If the cell is an array, replace with array length
-        var sCell = aRow[sKey];
+        var sCell = tRow[sKey];
         if ( Array.isArray( sCell ) )
         {
           sCell = sCell.length;
@@ -129,7 +132,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     if ( ! tColumn.empty )
     {
       var nVals = Object.keys( tColumn.valMap ).length;
-      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : '';
+      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : ( sHeader == '' ? ' class="filter-false" ' : '' );
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sHeader + '</th>';
       aHeaders[iColumn++] = tColumn.sortable ? {} : { sorter: false };
     }
@@ -224,7 +227,7 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
     // Set sort completion handler
-    tTable.on( "sortEnd", function( event ){ tSortState.aSortState = event.target.config.sortList; console.log(JSON.stringify(tSortState.aSortState));} );
+    tTable.on( "sortEnd", function( event ){ renumberIndex(); tSortState.aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); console.log(JSON.stringify(tFilterState.aFilterState)); } );
@@ -239,10 +242,19 @@ function onSortableTableReady( tEvent )
   $( tEvent.target ).off( 'tablesorter-ready' );
 
   // Trigger initial column sort
-  $( $( '#sortableTableHead th' )[0] ).click();
+  $( $( '#sortableTableHead th' )[1] ).click();
 
   // Clear the wait cursor
   clearWaitCursor();
+}
+
+function renumberIndex()
+{
+  var aCells = $( '#sortableTableBody tr td:first-of-type' );
+  for ( var i = 0; i < aCells.length; i ++ )
+  {
+    $( aCells[i] ).text( i + 1 );
+  }
 }
 
 function closeChildWindows()

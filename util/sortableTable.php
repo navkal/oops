@@ -16,6 +16,13 @@
 <script type="text/javascript" src="../lib/tablesorter/jquery.tablesorter.widgets.js"></script>
 
 
+<style>
+.tablesorter .tablesorter-filter-row .disabled
+{
+  display: none;
+}
+</style>
+
 <div class="container-fluid">
   <h4 id="sortableTableTitle"></h4>
 

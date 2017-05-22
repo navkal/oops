@@ -18,6 +18,14 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  index:
+  {
+    label: "",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'index', // Controls sortability
+    displayIndex: displayIndex ++
+  },
   path:
   {
     label: "Path",
