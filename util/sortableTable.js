@@ -223,6 +223,9 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
 
     $.tablesorter.setFilters( tTable, tFilterState.aFilterState, true );
 
+    // Restore default column widths
+    tTable.trigger( 'resizableReset' );
+
     // Set handler to finish table initialization
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
