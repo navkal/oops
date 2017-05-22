@@ -230,7 +230,7 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
     tTable.on( "sortEnd", function( event ){ renumberIndex(); tSortState.aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
-    tTable.on( "filterEnd", function( event ){ tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); console.log(JSON.stringify(tFilterState.aFilterState)); } );
+    tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
   }
 
   $( '#' + sId ).addClass( 'table-condensed' );
@@ -250,7 +250,7 @@ function onSortableTableReady( tEvent )
 
 function renumberIndex()
 {
-  var aCells = $( '#sortableTableBody tr td:first-of-type' );
+  var aCells = $( '#sortableTableBody tr:not(.filtered) td:first-of-type' );
   for ( var i = 0; i < aCells.length; i ++ )
   {
     $( aCells[i] ).text( i + 1 );
