@@ -15,17 +15,36 @@
   <title>
     Image: <?=$sPath?>
   </title>
+  <style>
+    .glyphicon-arrow-left
+    {
+      font-size: 16px;
+    }
+  </style>
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headEnd.php";
   ?>
 
   <!-- Body -->
 	<body>
+
+    <div class="container">
+      <div class="clearfix" style="padding-top: 5px">
+        <span class="pull-right">
+          <button class="btn btn-link btn-xs" onclick="goBack('<?=$sPath?>')" title="Back to Circuits">
+            <span class="glyphicon glyphicon-arrow-left" ></span>
+          </button>
+        </span>
+      </div>
+    </div>
+
     <div class="container-fluid">
       <img class="img-responsive" src="<?=$sImg?>" alt="<?=$sPath?>">
     </div>
- 	</body>
+
+  </body>
 </html>
+
 <script>
 
   $( document ).ready( resizeWindow );
@@ -55,5 +74,14 @@
       var nHeight = nWinWidth * tImg.naturalHeight / tImg.naturalWidth;
       window.resizeTo( nWinWidth, nHeight );
     }
-   }
+  }
+
+
+  function goBack( sPath )
+  {
+    var tOpener = window.opener;
+    tOpener.g_sSearchTargetPath = sPath;
+    tOpener.navigateToSearchTarget();
+  }
+
 </script>
