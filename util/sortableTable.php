@@ -24,7 +24,12 @@
 </style>
 
 <div class="container-fluid">
-  <h4 id="sortableTableTitle"></h4>
+  <p>
+    <span id="sortableTableTitle" class="h4"></span>
+    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Diagram in a new page" >
+      <span class="glyphicon glyphicon-blackboard"></span> Circuit Diagram
+    </a>
+  <p>
 
   <div id="spinner" class="spinner" >
   </div>

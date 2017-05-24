@@ -23,7 +23,12 @@
 
 <div class="container">
 
-  <h4>Circuits</h4>
+  <p>
+    <span class="h4">Circuits</span>
+    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Diagram in a new page" >
+      <span class="glyphicon glyphicon-blackboard"></span> Circuit Diagram
+    </a>
+  <p>
 
   <!-- Search -->
   <div class="row" >
