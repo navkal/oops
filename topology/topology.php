@@ -15,8 +15,4 @@
       </div>
     </div>
   </div>
-  <div id="dumpStatus" class="well well-sm hidden" >
-    <span class="glyphicon glyphicon-hourglass" style="font-size:18px;" ></span> Generating tree. <span id="dumpTime"></span>
-  </div>
-
 </div>
