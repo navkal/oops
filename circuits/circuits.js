@@ -48,7 +48,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
 {
   // Get path and related values
   var sPath = tRsp.path;
-  var sEncode = sPath.replace( /\./g, '-_-_-' );
+  var sEncode = sPath.replace( /\./g, g_sReservedDelimiter );
   var aPath = sPath.split( "." );
   var nDepth = aPath.length;
   var sLabel = ( tRsp.error ? tRsp.error : tRsp.label );
@@ -220,13 +220,10 @@ function navigateToSearchTarget()
   // Terminate or continue navigation to search target
   if ( sNavPath == g_sSearchTargetPath )
   {
-    // Navigation done: Clean up and update display
-
-    // Clear search target path
-    g_sSearchTargetPath = '';
+    // Navigation done: Update display and clean up
 
     // Highlight search target in tree
-    var tSearchTarget = $( '#circuitTree a[path="' + sNavPath + '"]' );
+    var tSearchTarget = $( '#circuitTree a[path="' + g_sSearchTargetPath + '"]' );
     $( '.searchTarget' ).removeClass( 'searchTarget' );
     tSearchTarget.addClass( 'searchTarget' );
 
@@ -236,8 +233,15 @@ function navigateToSearchTarget()
     // Set tooltips on toggle buttons
     setToggleTooltips();
 
+    // Clear search target path
+    g_sSearchTargetPath = '';
+
     // Clear the goto parameter
     $( '#goto' ).val( '' );
+
+    // Mark search target so 'shown' event handler can center search target
+    $( '.searchTargetToCenter' ).removeClass( 'searchTargetToCenter' );
+    tSearchTarget.addClass( 'searchTargetToCenter' );
   }
   else
   {
@@ -286,11 +290,41 @@ function toggleFolder( tEvent )
 
 function collapseShown( tEvent )
 {
+  console.log( 'collapseShown(): event target=' + $( tEvent.target ).attr('id') );
   collapseComplete( tEvent, true );
+
+  // For special case, when navigating to a search target that is present but hidden
+  var tSearchTarget = $( '.searchTargetToCenter' );
+  if ( tSearchTarget.length )
+  {
+    // Determine whether search target is showing
+    var tDiv = tSearchTarget.closest( 'div' );
+    var sId = tDiv.attr( 'id' );
+    var aSplit = sId.split( g_sReservedDelimiter );
+    var bShowing = tDiv.hasClass( 'in' );
+    while( bShowing && aSplit.length )
+    {
+      console.log( '=>' + JSON.stringify( aSplit ) );
+      sId = aSplit.join( g_sReservedDelimiter );
+      console.log( '=>' + sId );
+      tDiv = $( '#' + sId );
+      bShowing = tDiv.hasClass( 'in' );
+      aSplit.pop();
+    }
+
+    if ( bShowing )
+    {
+      console.log( 'SHOWING' );
+      tSearchTarget.removeClass( 'searchTargetToCenter' );
+      scrollToCenter( $( '#circuitTree' ), tSearchTarget );
+    }
+    else console.log( 'NOT SHOWING' );
+  }
 }
 
 function collapseHidden( tEvent )
 {
+  $( '.searchTargetToCenter' ).removeClass( 'searchTargetToCenter' );
   collapseComplete( tEvent, false );
 }
 
@@ -338,6 +372,7 @@ function resizeTree()
 
 function scrollToCenter( tContainer, tItem )
 {
+  console.log( 'scrollToCenter' );
   tContainer.scrollTop( tContainer.scrollTop() + ( tItem.position().top - tContainer.position().top ) - ( tContainer.height() / 2 ) + ( tItem.height() / 2 ) );
 }
 

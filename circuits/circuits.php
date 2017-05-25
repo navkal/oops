@@ -9,6 +9,9 @@
   $sGoto = isset( $_REQUEST['goto'] ) ? $_REQUEST['goto'] : '';
 ?>
 
+<script>
+  var g_sReservedDelimiter = "<?=$_SESSION["reservedDelimiter"]?>";
+</script>
 
 <!-- Circuit Navigator scripts -->
 <link rel="stylesheet" href="circuits/circuits.css?version=<?=$iVersion?>">
