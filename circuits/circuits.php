@@ -31,7 +31,7 @@
     <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Topology diagram" >
       <span class="glyphicon glyphicon-blackboard"></span> Topology
     </a>
-  <p>
+  </p>
 
   <!-- Search -->
   <div class="row" >
