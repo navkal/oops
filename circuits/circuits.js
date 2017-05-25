@@ -290,7 +290,6 @@ function toggleFolder( tEvent )
 
 function collapseShown( tEvent )
 {
-  console.log( 'collapseShown(): event target=' + $( tEvent.target ).attr('id') );
   collapseComplete( tEvent, true );
 
   // For special case, when navigating to a search target that is present but hidden
@@ -304,9 +303,7 @@ function collapseShown( tEvent )
     var bShowing = tDiv.hasClass( 'in' );
     while( bShowing && aSplit.length )
     {
-      console.log( '=>' + JSON.stringify( aSplit ) );
       sId = aSplit.join( g_sReservedDelimiter );
-      console.log( '=>' + sId );
       tDiv = $( '#' + sId );
       bShowing = tDiv.hasClass( 'in' );
       aSplit.pop();
@@ -314,11 +311,9 @@ function collapseShown( tEvent )
 
     if ( bShowing )
     {
-      console.log( 'SHOWING' );
       tSearchTarget.removeClass( 'searchTargetToCenter' );
       scrollToCenter( $( '#circuitTree' ), tSearchTarget );
     }
-    else console.log( 'NOT SHOWING' );
   }
 }
 
@@ -372,7 +367,6 @@ function resizeTree()
 
 function scrollToCenter( tContainer, tItem )
 {
-  console.log( 'scrollToCenter' );
   tContainer.scrollTop( tContainer.scrollTop() + ( tItem.position().top - tContainer.position().top ) - ( tContainer.height() / 2 ) + ( tItem.height() / 2 ) );
 }
 
