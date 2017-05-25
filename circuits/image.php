@@ -76,12 +76,20 @@
     }
   }
 
-
   function goBack( sPath )
   {
     var tOpener = window.opener;
-    tOpener.g_sSearchTargetPath = sPath;
-    tOpener.navigateToSearchTarget();
-  }
 
+    if ( tOpener.location.search.indexOf( 'page=panels' ) != -1 )
+    {
+      // Image window was opened from the Panels view
+      tOpener.location.assign( '/?goto=' + sPath );
+    }
+    else
+    {
+      // Image window was opened from the Circuits view
+      tOpener.g_sSearchTargetPath = sPath;
+      tOpener.navigateToSearchTarget();
+    }
+  }
 </script>

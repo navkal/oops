@@ -104,7 +104,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           if ( tRule.columnType == 'image' )
           {
             sCell = '<a path="' + sCell + '">';
-            sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" >';
+            sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
             sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
             sCell += '</button>';
             sCell += '</a>';
@@ -258,6 +258,13 @@ function renumberIndex()
   {
     $( aCells[i] ).text( i + 1 );
   }
+}
+
+function openImageWindowEtc( tEvent )
+{
+  $( '#sortableTableBody' ).find( '.text-primary' ).removeClass( 'text-primary' );
+  $( tEvent.target ).closest( 'tr' ).addClass( 'text-primary' );
+  openImageWindow( tEvent );
 }
 
 function closeChildWindows()

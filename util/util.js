@@ -208,7 +208,7 @@ function openImageWindow( tEvent )
   var nDefaultAspect = 2550 / 3300;
   var nDefaultHeight = nDefaultWidth / nDefaultAspect;
 
-  childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
+  return childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
 }
 
 
@@ -247,6 +247,8 @@ function childWindowOpen( tEvent, aChildWindows, sUrl, sName, sNameSuffix, iWidt
   {
     aChildWindows[iIndex].focus();
   }
+  
+  return aChildWindows[iIndex];
 }
 
 // Close all child windows in given array
