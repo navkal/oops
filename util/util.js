@@ -242,9 +242,6 @@ function childWindowOpen( tEvent, aChildWindows, sUrl, sName, sNameSuffix, iWidt
   // Open the new child window
   aChildWindows[iIndex] = window.open( sUrl, sName, sWindowFeatures );
 
-  // Set handler to track window refreshed by F5
-  $( aChildWindows[iIndex] ).on( 'unload', function(){childWindowOpen(tEvent,aChildWindows,sUrl,sName,sNameSuffix,iWidth,iHeight,bAllowDefault);} );
-
   // Optionally focus on the new child window
   if ( bFocus )
   {

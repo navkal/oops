@@ -26,6 +26,9 @@
 <div class="container-fluid">
   <p>
     <span id="sortableTableTitle" class="h4"></span>
+    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Topology diagram" >
+      <span class="glyphicon glyphicon-blackboard"></span> Topology
+    </a>
   </p>
 
   <div id="spinner" class="spinner" >
