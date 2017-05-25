@@ -26,8 +26,8 @@
 <div class="container-fluid">
   <p>
     <span id="sortableTableTitle" class="h4"></span>
-    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Diagram in a new page" >
-      <span class="glyphicon glyphicon-blackboard"></span> Circuit Diagram
+    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Topology diagram" >
+      <span class="glyphicon glyphicon-blackboard"></span> Topology
     </a>
   <p>
 
