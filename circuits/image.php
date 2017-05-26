@@ -30,11 +30,9 @@
 
     <div class="container">
       <div class="clearfix" style="padding-top: 5px">
-        <span class="pull-right">
-          <button class="btn btn-link btn-xs" onclick="goBack('<?=$sPath?>')" title="Back to Circuits">
-            <span class="glyphicon glyphicon-arrow-left" ></span>
-          </button>
-        </span>
+        <button class="btn btn-link btn-xs" onclick="goBack('<?=$sPath?>')" title="Back to Circuits">
+          <span class="glyphicon glyphicon-arrow-left" ></span>
+        </button>
       </div>
     </div>
 

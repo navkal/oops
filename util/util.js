@@ -202,13 +202,22 @@ function openImageWindow( tEvent )
   tEvent.stopPropagation();
 
   var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
-  var sUrl = 'circuits/image.php?path=' + sPath;
+  var sUrl = '../circuits/image.php?path=' + sPath;
 
   var nDefaultWidth = 800;
   var nDefaultAspect = 2550 / 3300;
   var nDefaultHeight = nDefaultWidth / nDefaultAspect;
 
   return childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
+}
+
+var g_aTopologyWindows = [];
+
+function openTopologyWindow( tEvent )
+{
+  tEvent.preventDefault();
+  tEvent.stopPropagation();
+  return childWindowOpen( tEvent, g_aTopologyWindows, 'database/FAKE.php', "Topology", "notUsed", 500, 300, false );
 }
 
 
@@ -247,7 +256,7 @@ function childWindowOpen( tEvent, aChildWindows, sUrl, sName, sNameSuffix, iWidt
   {
     aChildWindows[iIndex].focus();
   }
-  
+
   return aChildWindows[iIndex];
 }
 

@@ -28,9 +28,9 @@
 
   <p>
     <span class="h4">Circuits</span>
-    <a class="pull-right" href="database/circuitTopology.pdf" target="_blank" title="Open Circuit Topology diagram" >
-      <span class="glyphicon glyphicon-blackboard"></span> Topology
-    </a>
+    <?php
+      require_once $_SERVER["DOCUMENT_ROOT"]."/util/topologyLink.php";
+    ?>
   </p>
 
   <!-- Search -->
