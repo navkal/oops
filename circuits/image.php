@@ -74,47 +74,53 @@
     }
   }
 
+  var g_tMainWindow = null;
+
   function goBack( tEvent, sPath )
   {
     var tOpener = window.opener.opener || window.opener;
     var sTitle = tOpener.document.title;
-    var sUrl = '/?goto=' + sPath;
+    var sGotoUrl = '/?goto=' + sPath;
 
-    if ( sTitle.indexOf( 'Circuits' ) == 0 )
+    if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
-      // Circuits view is open
-      tOpener.g_sSearchTargetPath = sPath;
-      tOpener.navigateToSearchTarget();
-    }
-    else if ( sTitle.indexOf( 'Topology' ) == 0 )
-    {
-      if ( tOpener.g_aMainWindows.length )
+      alert( 'Original Circuits page was closed' );
+
+      // Image opened from Topology window
+      if ( g_tMainWindow && ! g_tMainWindow.closed )
       {
-        var tMainWindow = tOpener.g_aMainWindows[0];
-        var sMainTitle = tMainWindow.document.title;
-        alert( 'title=' + sMainTitle );
+        alert( 'Reopened main window still there' );
+        var sMainTitle = g_tMainWindow.document.title;
         if ( sMainTitle.indexOf( 'Circuits' ) == 0 )
         {
-          alert( 'navigate' );
-          tMainWindow.g_sSearchTargetPath = sPath;
-          tMainWindow.navigateToSearchTarget();
+          alert( 'Navigating on reopened Circuits page' );
+          g_tMainWindow.g_sSearchTargetPath = sPath;
+          g_tMainWindow.navigateToSearchTarget();
         }
         else
         {
-          alert( 'assign' );
-          tMainWindow.location.assign( sUrl );
+          alert( 'Returning to reopened Circuits page' );
+          g_tMainWindow.location.assign( sGotoUrl );
         }
       }
       else
       {
-        alert( 'open' );
-        tOpener.openMainWindow( tEvent, sUrl );
+        alert( 'Reopening Circuits page using goto' );
+        g_tMainWindow = tOpener.openMainWindow( tEvent, sGotoUrl );
       }
+    }
+    else if ( sTitle.indexOf( 'Circuits' ) == 0 )
+    {
+      alert( 'Navigating on original Circuits page' );
+      // Image opened from main page, and Circuits view is open
+      tOpener.g_sSearchTargetPath = sPath;
+      tOpener.navigateToSearchTarget();
     }
     else
     {
-      // Main window still open, but not Circuits
-      tOpener.location.assign( sUrl );
+      // Image opened from main page, but Circuits is not open
+      alert( 'Returning to original Circuits page' );
+      tOpener.location.assign( sGotoUrl );
     }
   }
 </script>
