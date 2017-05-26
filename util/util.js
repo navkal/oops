@@ -217,7 +217,7 @@ function openTopologyWindow( tEvent )
 {
   tEvent.preventDefault();
   tEvent.stopPropagation();
-  return childWindowOpen( tEvent, g_aTopologyWindows, 'database/FAKE.php', "Topology", "notUsed", 500, 300, false );
+  return childWindowOpen( tEvent, g_aTopologyWindows, 'database/FAKE.php', "Topology", "notUsed", 600, 600, false );
 }
 
 

@@ -17,18 +17,15 @@
 
   <!-- Body -->
 	<body>
-
-    <br/>
-    <div class="container">
-      <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
-      <br/>
-      <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
-      <br/>
-      <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
+    <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
+    <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
+    <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
+    <div class='embed-responsive' style='padding-bottom:150%'>
+        <object data='../database/circuitTopology.pdf' type='application/pdf' width='100%' height='100%'></object>
     </div>
-
   </body>
 </html>
+
 <script>
   $( window ).on( 'unload', closeChildWindows );
   
