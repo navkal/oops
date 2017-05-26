@@ -20,7 +20,11 @@
 
     <br/>
     <div class="container">
-      <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">FAKE</a>
+      <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
+      <br/>
+      <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
+      <br/>
+      <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
     </div>
 
   </body>
