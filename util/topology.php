@@ -8,7 +8,7 @@
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headStart.php";
   ?>
   <title>
-    Circuit Topology
+    Topology
   </title>
   <script src="../util/util.js?version=<?=time()?>"></script>
   <?php
@@ -38,5 +38,12 @@
   function resizePdf()
   {
     $( '#pdf' ).attr( 'data', '../database/circuitTopology.pdf' );
+  }
+
+  var g_aMainWindows = [];
+
+  function openMainWindow( tEvent, sUrl )
+  {
+    childWindowOpen( tEvent, g_aMainWindows, sUrl, 'Main', '', 0, 0, true );
   }
 </script>

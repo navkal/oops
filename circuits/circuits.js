@@ -372,9 +372,6 @@ function scrollToCenter( tContainer, tItem )
 
 function openPropertiesWindow( tEvent )
 {
-  tEvent.preventDefault();
-  tEvent.stopPropagation();
-
   var tTarget = $( tEvent.target );
   var tAnchor = tTarget.closest( 'a' );
   var sPath = tAnchor.attr( "path" );

@@ -30,7 +30,7 @@
 
     <div class="container">
       <div class="clearfix" style="padding-top: 5px">
-        <button class="btn btn-link btn-xs" onclick="goBack('<?=$sPath?>')" title="Back to Circuits">
+        <button class="btn btn-link btn-xs" onclick="goBack(event,'<?=$sPath?>')" title="Back to Circuits">
           <span class="glyphicon glyphicon-arrow-left" ></span>
         </button>
       </div>
@@ -74,10 +74,11 @@
     }
   }
 
-  function goBack( sPath )
+  function goBack( tEvent, sPath )
   {
     var tOpener = window.opener.opener || window.opener;
     var sTitle = tOpener.document.title;
+    var sUrl = '/?goto=' + sPath;
 
     if ( sTitle.indexOf( 'Circuits' ) == 0 )
     {
@@ -85,10 +86,35 @@
       tOpener.g_sSearchTargetPath = sPath;
       tOpener.navigateToSearchTarget();
     }
+    else if ( sTitle.indexOf( 'Topology' ) == 0 )
+    {
+      if ( tOpener.g_aMainWindows.length )
+      {
+        var tMainWindow = tOpener.g_aMainWindows[0];
+        var sMainTitle = tMainWindow.document.title;
+        alert( 'title=' + sMainTitle );
+        if ( sMainTitle.indexOf( 'Circuits' ) == 0 )
+        {
+          alert( 'navigate' );
+          tMainWindow.g_sSearchTargetPath = sPath;
+          tMainWindow.navigateToSearchTarget();
+        }
+        else
+        {
+          alert( 'assign' );
+          tMainWindow.location.assign( sUrl );
+        }
+      }
+      else
+      {
+        alert( 'open' );
+        tOpener.openMainWindow( tEvent, sUrl );
+      }
+    }
     else
     {
-      // Circuits view is not open
-      tOpener.location.assign( '/?goto=' + sPath );
+      // Main window still open, but not Circuits
+      tOpener.location.assign( sUrl );
     }
   }
 </script>

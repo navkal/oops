@@ -198,8 +198,6 @@ var g_aImageWindows = [];
 
 function openImageWindow( tEvent )
 {
-  tEvent.preventDefault();
-  tEvent.stopPropagation();
 
   var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
   var sUrl = '../circuits/image.php?path=' + sPath;
@@ -215,8 +213,6 @@ var g_aTopologyWindows = [];
 
 function openTopologyWindow( tEvent )
 {
-  tEvent.preventDefault();
-  tEvent.stopPropagation();
   return childWindowOpen( tEvent, g_aTopologyWindows, 'util/topology.php', "Topology", "notUsed", 600, 600, false );
 }
 
@@ -228,6 +224,15 @@ function openTopologyWindow( tEvent )
 // - If opened with <key>+Click, save in new element.
 function childWindowOpen( tEvent, aChildWindows, sUrl, sName, sNameSuffix, iWidth, iHeight, bAllowDefault )
 {
+  if ( tEvent.preventDefault )
+  {
+    tEvent.preventDefault();
+  }
+  if ( tEvent.stopPropagation )
+  {
+    tEvent.stopPropagation();
+  }
+
   var iIndex, sWindowFeatures, bFocus;
 
   if ( bAllowDefault && ( tEvent.altKey || tEvent.shiftKey || tEvent.ctrlKey ) )
