@@ -29,3 +29,11 @@
 
   </body>
 </html>
+<script>
+  $( window ).on( 'unload', closeChildWindows );
+  
+  function closeChildWindows()
+  {
+    childWindowsClose( g_aImageWindows );
+  }
+</script>
