@@ -85,6 +85,9 @@
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
       alert( 'Original Circuits page was closed' );
+      alert( 'mainwindow=' + g_tMainWindow );
+      
+      if ( g_tMainWindow ) alert( 'closed=' + g_tMainWindow.closed );
 
       // Image opened from Topology window
       if ( g_tMainWindow && ! g_tMainWindow.closed )

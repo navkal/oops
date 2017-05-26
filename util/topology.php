@@ -44,6 +44,6 @@
 
   function openMainWindow( tEvent, sUrl )
   {
-    childWindowOpen( tEvent, g_aMainWindows, sUrl, 'Main', '', 0, 0, true );
+    return childWindowOpen( tEvent, g_aMainWindows, sUrl, 'Main', '', 0, 0, true );
   }
 </script>
