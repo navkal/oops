@@ -198,7 +198,6 @@ var g_aImageWindows = [];
 
 function openImageWindow( tEvent )
 {
-
   var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
   var sUrl = '../circuits/image.php?path=' + sPath;
 

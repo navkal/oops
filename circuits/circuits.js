@@ -2,7 +2,7 @@
 
 var g_aPropertiesWindows = [];
 var g_tTreeMap = {};
-var g_sImageButton = '<button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Image" ><span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span></button>';
+var g_sImageButton = '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" ><span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span></button>';
 var g_sPropertiesButton = '<button class="btn btn-link btn-xs propertiesButton" onclick="openPropertiesWindow(event)" title="Properties" ><span class="glyphicon glyphicon-list" style="font-size:18px;" ></span></button>';
 var g_sSearchTargetPath = '';
 var g_aPropertiesTrail = null;
@@ -401,6 +401,16 @@ function openPropertiesWindow( tEvent )
   var sDirectory = bFromPropertiesWindow ? '' : 'circuits/';
   var sUrl = sDirectory + 'properties.php?path=' + sPath + '&type=' + sType + '&oid=' + sOid;
   childWindowOpen( tEvent, g_aPropertiesWindows, sUrl, "Properties", sPath, 450, 650, false );
+}
+
+function openImageWindowEtc( tEvent )
+{
+  var tTarget = $( tEvent.target );
+  var tAnchor = tTarget.closest( 'a' );
+  $( '.searchTarget' ).removeClass( 'searchTarget' );
+  tAnchor.addClass( 'searchTarget' );
+
+  openImageWindow( tEvent );
 }
 
 function closeChildWindows()
