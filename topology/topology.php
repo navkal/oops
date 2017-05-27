@@ -33,6 +33,16 @@
   {
     $( window ).on( 'unload', closeChildWindows );
 
+    console.log( 'BF body meta length=' + $( 'body meta' ).length );
+    console.log( 'BF head meta length=' + $( 'head meta' ).length );
+    $( 'body meta' ).insertAfter( $( 'head meta' ).last() );
+    console.log( 'AF body meta length=' + $( 'body meta' ).length );
+    console.log( 'AF head meta length=' + $( 'head meta' ).length );
+    console.log( 'BF body title length=' + $( 'body title' ).length );
+    $( 'body title' ).remove();
+    console.log( 'AF body title length=' + $( 'body title' ).length );
+    
+
     $( 'AREA' ).each(
       function( i, el )
       {
