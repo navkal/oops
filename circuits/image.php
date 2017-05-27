@@ -74,79 +74,95 @@
     }
   }
 
+
   var g_tMainWindow = null;
 
   function goBack( tEvent, sPath )
   {
-    var tOpener = window.opener.opener || window.opener;
-    var sTitle = '';
-    try
-    {
-      sTitle = tOpener.document.title;
-    }
-    catch( e )
-    {
-      tOpener = window.opener;
-      sTitle = tOpener.document.title;
-      g_tMainWindow = null;
-    }
+    var tOpener = window.opener;
+    var sTitle = tOpener.document.title;
 
-    var sGotoUrl = '/?goto=' + sPath;
-
+    // Establish pointer to main window
+    var tMain = null;
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
-      console.log( 'Original Circuits page was closed' );
-      var sMainTitle = '';
-      if ( g_tMainWindow && ! g_tMainWindow.closed )
-      {
-        try
-        {
-          var sMainTitle = g_tMainWindow.document.title;
-        }
-        catch( e )
-        {
-          
-          g_tMainWindow = null;
-        }
-      }
+      // Opener is Topology page.  Find main window.
+      alert( 'Opener is Topology page' );
+      var tOpenerOpener = tOpener.opener;
 
-      console.log( 'main title=' + sMainTitle );
-
-
-      // Image opened from Topology window
-      if ( g_tMainWindow && ! g_tMainWindow.closed )
+      try
       {
-        console.log( 'Reopened main window still there' );
-        if ( sMainTitle.indexOf( 'Circuits' ) == 0 )
-        {
-          console.log( 'Navigating on reopened Circuits page' );
-          g_tMainWindow.g_sSearchTargetPath = sPath;
-          g_tMainWindow.navigateToSearchTarget();
-        }
-        else
-        {
-          console.log( 'Returning to reopened Circuits page' );
-          g_tMainWindow.location.assign( sGotoUrl );
-        }
+        // Determine whether original main window is available
+        var sTestTitle = tOpenerOpener.document.title;
+
+        // No exception: Original main window available
+        alert( 'Second-level opener available, title=' + sTestTitle );
+        tMain = tOpenerOpener;
       }
-      else
+      catch( e )
       {
-        console.log( 'Reopening Circuits page using goto' );
-        g_tMainWindow = window.open( sGotoUrl, 'Main' );
+        // Exception: Original main window not available
+        alert( 'Second-level opener NOT available' );
+
+        // Determine whether reopened main window is available
+        if ( g_tMainWindow )
+        {
+          if ( g_tMainWindow.closed )
+          {
+            alert( 'Reopened main window CLOSED' );
+            g_tMainWindow = null;
+          }
+          else
+          {
+            try
+            {
+              sTestTitle = g_tMainWindow.document.title;
+              alert( 'Reopened main window available, title=' + sTestTitle );
+            }
+            catch( e )
+            {
+              // Reopened main window not available
+              g_tMainWindow = null;
+              alert( 'Reopened main window NOT available' );
+            }
+          }
+        }
+
+        tMain = g_tMainWindow;
       }
-    }
-    else if ( sTitle.indexOf( 'Circuits' ) == 0 )
-    {
-      console.log( 'Navigating on original Circuits page' );
-      // Image opened from main page, and Circuits view is open
-      tOpener.g_sSearchTargetPath = sPath;
-      tOpener.navigateToSearchTarget();
     }
     else
     {
-      // Image opened from main page, but Circuits is not open
-      console.log( 'Returning to original Circuits page' );
-      tOpener.location.assign( sGotoUrl );
+      // Opener is main window
+      tMain = tOpener;
+    }
+
+
+    // Find panel on main window
+    var sGotoUrl = '/?goto=' + sPath;
+    if ( tMain )
+    {
+      // Main window is available: use it
+
+      if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
+      {
+        // Main window is currently on Circuits page
+        alert( 'Navigating on Circuits page' );
+        tMain.g_sSearchTargetPath = sPath;
+        tMain.navigateToSearchTarget();
+      }
+      else
+      {
+        // Main window is not currently on Circuits page
+        alert( 'Returning to Circuits page using goto' );
+        tMain.location.assign( sGotoUrl );
+      }
+    }
+    else
+    {
+      // Main window is not available: Open a new one
+      alert( 'Reopening main window using goto' );
+      g_tMainWindow = window.open( sGotoUrl, 'Main' );
     }
   }
 </script>
