@@ -41,7 +41,7 @@
     console.log( 'BF body title length=' + $( 'body title' ).length );
     $( 'body title' ).remove();
     console.log( 'AF body title length=' + $( 'body title' ).length );
-    
+
 
     $( 'AREA' ).each(
       function( i, el )
@@ -56,10 +56,5 @@
   function closeChildWindows()
   {
     childWindowsClose( g_aImageWindows );
-  }
-
-  function openMainWindow( tEvent, sUrl )
-  {
-    return childWindowOpen( tEvent, [], sUrl, 'Main', '', 0, 0, true );
   }
 </script>

@@ -93,37 +93,37 @@
 
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
-      alert( 'Original Circuits page was closed' );
-      alert( 'mainwindow=' + g_tMainWindow );
+      console.log( 'Original Circuits page was closed' );
+      console.log( 'mainwindow=' + g_tMainWindow );
 
-      if ( g_tMainWindow ) alert( 'closed=' + g_tMainWindow.closed );
+      if ( g_tMainWindow ) console.log( 'closed=' + g_tMainWindow.closed );
 
       // Image opened from Topology window
       if ( g_tMainWindow && ! g_tMainWindow.closed )
       {
-        alert( 'Reopened main window still there' );
+        console.log( 'Reopened main window still there' );
         var sMainTitle = g_tMainWindow.document.title;
         if ( sMainTitle.indexOf( 'Circuits' ) == 0 )
         {
-          alert( 'Navigating on reopened Circuits page' );
+          console.log( 'Navigating on reopened Circuits page' );
           g_tMainWindow.g_sSearchTargetPath = sPath;
           g_tMainWindow.navigateToSearchTarget();
         }
         else
         {
-          alert( 'Returning to reopened Circuits page' );
+          console.log( 'Returning to reopened Circuits page' );
           g_tMainWindow.location.assign( sGotoUrl );
         }
       }
       else
       {
-        alert( 'Reopening Circuits page using goto' );
-        g_tMainWindow = tOpener.openMainWindow( tEvent, sGotoUrl );
+        console.log( 'Reopening Circuits page using goto' );
+        g_tMainWindow = window.open( sGotoUrl, 'Main' );
       }
     }
     else if ( sTitle.indexOf( 'Circuits' ) == 0 )
     {
-      alert( 'Navigating on original Circuits page' );
+      console.log( 'Navigating on original Circuits page' );
       // Image opened from main page, and Circuits view is open
       tOpener.g_sSearchTargetPath = sPath;
       tOpener.navigateToSearchTarget();
@@ -131,7 +131,7 @@
     else
     {
       // Image opened from main page, but Circuits is not open
-      alert( 'Returning to original Circuits page' );
+      console.log( 'Returning to original Circuits page' );
       tOpener.location.assign( sGotoUrl );
     }
   }

@@ -204,8 +204,8 @@ function openImageWindow( tEvent )
     tA = $( tEvent.target ).closest( "AREA" );
   }
   
-  alert( 'a len=' + tA.length );
-  alert( JSON.stringify( tA ) );
+  console.log( 'a len=' + tA.length );
+  console.log( JSON.stringify( tA ) );
 
   var sPath = tA.attr( "path" );
   var sUrl = '../circuits/image.php?path=' + sPath;
