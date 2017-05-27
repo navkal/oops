@@ -29,7 +29,7 @@
   <p>
     <span class="h4">Circuits</span>
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/util/topologyLink.php";
+      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
     ?>
   </p>
 

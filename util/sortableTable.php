@@ -27,7 +27,7 @@
   <p>
     <span id="sortableTableTitle" class="h4"></span>
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/util/topologyLink.php";
+      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
     ?>
   </p>
 

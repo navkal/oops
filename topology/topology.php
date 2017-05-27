@@ -20,24 +20,32 @@
     <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
     <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
     <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
-    <div class="embed-responsive" style="padding-bottom:150%">
-        <object id="pdf" data="../database/circuitTopology.pdf" type="application/pdf" width="100%" ></object>
-    </div>
+    <?php
+      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/circuitTopology.htm";
+    ?>
   </body>
 </html>
 
 <script>
-  $( window ).on( 'unload', closeChildWindows );
-  $( window ).on( 'resize', resizePdf );
+  $( document ).ready( init );
+
+  function init()
+  {
+    $( window ).on( 'unload', closeChildWindows );
+
+    $( 'AREA' ).each(
+      function( i, el )
+      {
+        $(el).attr( "path", $(el).attr("HREF").split('=')[1] );
+        $(el).attr( "href", "javascript:void(null)" );
+        $(el).click( openImageWindow );
+      }
+    );
+  }
 
   function closeChildWindows()
   {
     childWindowsClose( g_aImageWindows );
-  }
-
-  function resizePdf()
-  {
-    $( '#pdf' ).attr( 'data', '../database/circuitTopology.pdf' );
   }
 
   var g_aMainWindows = [];

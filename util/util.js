@@ -198,7 +198,16 @@ var g_aImageWindows = [];
 
 function openImageWindow( tEvent )
 {
-  var sPath = $( tEvent.target ).closest( "a" ).attr( "path" );
+  var tA = $( tEvent.target ).closest( "a" );
+  if ( ! tA.length )
+  {
+    tA = $( tEvent.target ).closest( "AREA" );
+  }
+  
+  alert( 'a len=' + tA.length );
+  alert( JSON.stringify( tA ) );
+
+  var sPath = tA.attr( "path" );
   var sUrl = '../circuits/image.php?path=' + sPath;
 
   var nDefaultWidth = 800;
@@ -212,7 +221,7 @@ var g_aTopologyWindows = [];
 
 function openTopologyWindow( tEvent )
 {
-  return childWindowOpen( tEvent, g_aTopologyWindows, 'util/topology.php', "Topology", "notUsed", 600, 600, false );
+  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topology.php', "Topology", "notUsed", 600, 600, false );
 }
 
 
