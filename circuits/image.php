@@ -79,14 +79,23 @@
   function goBack( tEvent, sPath )
   {
     var tOpener = window.opener.opener || window.opener;
-    var sTitle = tOpener.document.title;
+    try
+    {
+      var sTitle = tOpener.document.title;
+    }
+    catch( e )
+    {
+      tOpener = window.opener;
+      var sTitle = tOpener.document.title;
+    }
+
     var sGotoUrl = '/?goto=' + sPath;
 
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
       alert( 'Original Circuits page was closed' );
       alert( 'mainwindow=' + g_tMainWindow );
-      
+
       if ( g_tMainWindow ) alert( 'closed=' + g_tMainWindow.closed );
 
       // Image opened from Topology window
