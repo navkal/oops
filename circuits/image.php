@@ -88,47 +88,56 @@
     {
       // Opener is Topology page.  Find main window.
       alert( 'Opener is Topology page' );
-      var tOpenerOpener = tOpener.opener;
-
       try
       {
-        // Determine whether original main window is available
-        var sTestTitle = tOpenerOpener.document.title;
+        alert( 'Trying to get second-level opener' );
+        var tOpenerOpener = tOpener.opener;
 
-        // No exception: Original main window available
-        alert( 'Second-level opener available, title=' + sTestTitle );
-        tMain = tOpenerOpener;
+        try
+        {
+          // Determine whether original main window is available
+          var sTestTitle = tOpenerOpener.document.title;
+
+          // No exception: Original main window available
+          alert( 'Second-level opener available, title=' + sTestTitle );
+          tMain = tOpenerOpener;
+        }
+        catch( e )
+        {
+          // Exception: Original main window not available
+          alert( 'Second-level opener NOT available' );
+
+          // Determine whether reopened main window is available
+          if ( g_tMainWindow )
+          {
+            if ( g_tMainWindow.closed )
+            {
+              alert( 'Reopened main window CLOSED' );
+              g_tMainWindow = null;
+            }
+            else
+            {
+              try
+              {
+                sTestTitle = g_tMainWindow.document.title;
+                alert( 'Reopened main window available, title=' + sTestTitle );
+              }
+              catch( e )
+              {
+                // Reopened main window not available
+                g_tMainWindow = null;
+                alert( 'Reopened main window NOT available' );
+              }
+            }
+          }
+
+          tMain = g_tMainWindow;
+        }
       }
       catch( e )
       {
-        // Exception: Original main window not available
-        alert( 'Second-level opener NOT available' );
-
-        // Determine whether reopened main window is available
-        if ( g_tMainWindow )
-        {
-          if ( g_tMainWindow.closed )
-          {
-            alert( 'Reopened main window CLOSED' );
-            g_tMainWindow = null;
-          }
-          else
-          {
-            try
-            {
-              sTestTitle = g_tMainWindow.document.title;
-              alert( 'Reopened main window available, title=' + sTestTitle );
-            }
-            catch( e )
-            {
-              // Reopened main window not available
-              g_tMainWindow = null;
-              alert( 'Reopened main window NOT available' );
-            }
-          }
-        }
-
-        tMain = g_tMainWindow;
+        // Exception: Could not get second-level opener
+        alert( 'Could not get second-level opener' );
       }
     }
     else
