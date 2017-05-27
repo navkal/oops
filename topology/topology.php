@@ -58,10 +58,8 @@
     childWindowsClose( g_aImageWindows );
   }
 
-  var g_aMainWindows = [];
-
   function openMainWindow( tEvent, sUrl )
   {
-    return childWindowOpen( tEvent, g_aMainWindows, sUrl, 'Main', '', 0, 0, true );
+    return childWindowOpen( tEvent, [], sUrl, 'Main', '', 0, 0, true );
   }
 </script>
