@@ -79,14 +79,16 @@
   function goBack( tEvent, sPath )
   {
     var tOpener = window.opener.opener || window.opener;
+    var sTitle = '';
     try
     {
-      var sTitle = tOpener.document.title;
+      sTitle = tOpener.document.title;
     }
     catch( e )
     {
       tOpener = window.opener;
-      var sTitle = tOpener.document.title;
+      sTitle = tOpener.document.title;
+      g_tMainWindow = null;
     }
 
     var sGotoUrl = '/?goto=' + sPath;
@@ -94,15 +96,27 @@
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
       console.log( 'Original Circuits page was closed' );
-      console.log( 'mainwindow=' + g_tMainWindow );
+      var sMainTitle = '';
+      if ( g_tMainWindow && ! g_tMainWindow.closed )
+      {
+        try
+        {
+          var sMainTitle = g_tMainWindow.document.title;
+        }
+        catch( e )
+        {
+          
+          g_tMainWindow = null;
+        }
+      }
 
-      if ( g_tMainWindow ) console.log( 'closed=' + g_tMainWindow.closed );
+      console.log( 'main title=' + sMainTitle );
+
 
       // Image opened from Topology window
       if ( g_tMainWindow && ! g_tMainWindow.closed )
       {
         console.log( 'Reopened main window still there' );
-        var sMainTitle = g_tMainWindow.document.title;
         if ( sMainTitle.indexOf( 'Circuits' ) == 0 )
         {
           console.log( 'Navigating on reopened Circuits page' );
