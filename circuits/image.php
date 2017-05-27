@@ -87,10 +87,10 @@
     if ( sTitle.indexOf( 'Topology' ) == 0 )
     {
       // Opener is Topology page.  Find main window.
-      alert( 'Opener is Topology page' );
+      console.log( 'Opener is Topology page' );
       try
       {
-        alert( 'Trying to get second-level opener' );
+        console.log( 'Trying to get second-level opener' );
         var tOpenerOpener = tOpener.opener;
 
         try
@@ -99,20 +99,20 @@
           var sTestTitle = tOpenerOpener.document.title;
 
           // No exception: Original main window available
-          alert( 'Second-level opener available, title=' + sTestTitle );
+          console.log( 'Second-level opener available, title=' + sTestTitle );
           tMain = tOpenerOpener;
         }
         catch( e )
         {
           // Exception: Original main window not available
-          alert( 'Second-level opener NOT available' );
+          console.log( 'Second-level opener NOT available' );
 
           // Determine whether reopened main window is available
           if ( g_tMainWindow )
           {
             if ( g_tMainWindow.closed )
             {
-              alert( 'Reopened main window CLOSED' );
+              console.log( 'Reopened main window CLOSED' );
               g_tMainWindow = null;
             }
             else
@@ -120,13 +120,13 @@
               try
               {
                 sTestTitle = g_tMainWindow.document.title;
-                alert( 'Reopened main window available, title=' + sTestTitle );
+                console.log( 'Reopened main window available, title=' + sTestTitle );
               }
               catch( e )
               {
                 // Reopened main window not available
                 g_tMainWindow = null;
-                alert( 'Reopened main window NOT available' );
+                console.log( 'Reopened main window NOT available' );
               }
             }
           }
@@ -137,7 +137,7 @@
       catch( e )
       {
         // Exception: Could not get second-level opener
-        alert( 'Could not get second-level opener' );
+        console.log( 'Could not get second-level opener' );
       }
     }
     else
@@ -156,22 +156,29 @@
       if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
       {
         // Main window is currently on Circuits page
-        alert( 'Navigating on Circuits page' );
+        console.log( 'Navigating on Circuits page' );
         tMain.g_sSearchTargetPath = sPath;
         tMain.navigateToSearchTarget();
       }
       else
       {
         // Main window is not currently on Circuits page
-        alert( 'Returning to Circuits page using goto' );
+        console.log( 'Returning to Circuits page using goto' );
         tMain.location.assign( sGotoUrl );
       }
     }
     else
     {
       // Main window is not available: Open a new one
-      alert( 'Reopening main window using goto' );
-      g_tMainWindow = window.open( sGotoUrl, 'Main' );
+      console.log( 'Reopening main window using goto' );
+      try
+      {
+        g_tMainWindow = window.open( sGotoUrl, 'Main' );
+      }
+      catch( e )
+      {
+        alert( 'Error: Could not reopen main window.' );
+      }
     }
   }
 </script>
