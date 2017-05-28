@@ -21,7 +21,7 @@
     <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
     <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/circuitTopology.htm";
+      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.htm";
     ?>
   </body>
 </html>
