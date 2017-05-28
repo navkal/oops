@@ -75,8 +75,6 @@
   }
 
 
-  var g_tMainWindow = null;
-
   function goBack( tEvent, sPath )
   {
     var tOpener = window.opener;
@@ -108,30 +106,30 @@
           console.log( 'Second-level opener NOT available' );
 
           // Determine whether reopened main window is available
-          if ( g_tMainWindow )
+          if ( tOpener.g_tMainWindow )
           {
-            if ( g_tMainWindow.closed )
+            if ( tOpener.g_tMainWindow.closed )
             {
               console.log( 'Reopened main window CLOSED' );
-              g_tMainWindow = null;
+              tOpener.g_tMainWindow = null;
             }
             else
             {
               try
               {
-                sTestTitle = g_tMainWindow.document.title;
+                sTestTitle = tOpener.g_tMainWindow.document.title;
                 console.log( 'Reopened main window available, title=' + sTestTitle );
               }
               catch( e )
               {
                 // Reopened main window not available
-                g_tMainWindow = null;
+                tOpener.g_tMainWindow = null;
                 console.log( 'Reopened main window NOT available' );
               }
             }
           }
 
-          tMain = g_tMainWindow;
+          tMain = tOpener.g_tMainWindow;
         }
       }
       catch( e )
@@ -173,7 +171,7 @@
       console.log( 'Reopening main window using goto' );
       try
       {
-        g_tMainWindow = window.open( sGotoUrl, 'Main' );
+        tOpener.g_tMainWindow = window.open( sGotoUrl, 'Main' );
       }
       catch( e )
       {

@@ -27,6 +27,8 @@
 </html>
 
 <script>
+  var g_tMainWindow = null;
+
   $( document ).ready( init );
 
   function init()
