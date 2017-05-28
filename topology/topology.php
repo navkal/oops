@@ -46,7 +46,7 @@
     $( 'AREA' ).each(
       function( i, el )
       {
-        $(el).attr( "path", $(el).attr("HREF").split('=')[1] );
+        $(el).attr( "path", $(el).attr("HREF") );
         $(el).attr( "href", "javascript:void(null)" );
         $(el).click( openImageWindow );
       }
