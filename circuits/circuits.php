@@ -27,7 +27,7 @@
 <div class="container">
 
   <p>
-    <span class="h4">Circuits <?=session_id()?></span>
+    <span class="h4">Circuits <?=session_id();print_r($_SESSION);?> </span>
     <?php
       require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
     ?>

@@ -57,7 +57,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <span id="propertiesTitle" class="panel-title" ></span>
-           <?=session_id()?>
+           <?=session_id();print_r($_SESSION);?>
         </div>
         <div class="panel-body">
           <div id="objectArea" style="overflow:auto;">
