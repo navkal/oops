@@ -3,7 +3,6 @@
 <?php
   $_SESSION["reservedDelimiter"] = '-_-_-';
   $_SESSION['user'] = [];
-  $_SESSION['user']['role'] = ( isset( $_REQUEST['role'] ) && ( ( strpos( $_SERVER['TMP'], 'xampp' ) !== false ) || ( $_SERVER['SERVER_ADDR'] == '192.168.1.194' ) ) ) ? $_REQUEST['role'] : '';
   $_SESSION['user']['role'] = isset( $_REQUEST['role'] ) ? $_REQUEST['role'] : '';
 
   $iVersion = time();
@@ -28,7 +27,7 @@
 <div class="container">
 
   <p>
-    <span class="h4">Circuits <?=session_id();print_r($_SESSION);?> </span>
+    <span class="h4">Circuits</span>
     <?php
       require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
     ?>
