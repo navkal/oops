@@ -221,7 +221,7 @@ var g_aTopologyWindows = [];
 
 function openTopologyWindow( tEvent )
 {
-  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topology.php', "Topology", "notUsed", 600, 600, false );
+  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topology.php', "Topology", "notUsed", 900, 450, false );
 }
 
 

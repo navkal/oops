@@ -20,11 +20,27 @@
     <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
     <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
     <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
-    <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.htm";
-    ?>
+    <div id="outer" style="visibility:hidden">
+      <div id="wrap">
+        <?php
+          require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.htm";
+        ?>
+      </div>
+    </div>
   </body>
 </html>
+
+<style>
+  #wrap
+  {
+    position: relative;
+  }
+  #outer
+  {
+    position: relative;
+    -webkit-transform-origin: top left;
+  }
+</style>
 
 <script>
   var g_tMainWindow = null;
@@ -33,8 +49,11 @@
 
   function init()
   {
+    // Set handlers
     $( window ).on( 'unload', closeChildWindows );
+    $( window ).resize( resizeDiagram );
 
+    // Remove head tags from body
     console.log( 'BF body meta length=' + $( 'body meta' ).length );
     console.log( 'BF head meta length=' + $( 'head meta' ).length );
     $( 'body meta' ).insertAfter( $( 'head meta' ).last() );
@@ -44,19 +63,44 @@
     $( 'body title' ).remove();
     console.log( 'AF body title length=' + $( 'body title' ).length );
 
-
+    // Generate hyperlinks to open image window
     $( 'AREA' ).each(
-      function( i, el )
+      function( i, tArea )
       {
-        $(el).attr( "path", $(el).attr("HREF") );
-        $(el).attr( "href", "javascript:void(null)" );
-        $(el).click( openImageWindow );
+        $( tArea ).attr( 'path', $( tArea ).attr( 'HREF' ) );
+        $( tArea ).attr( 'href', 'javascript:void(null)' );
+        $( tArea ).click( openImageWindow );
       }
     );
+
+    // Set initial size of circuit diagram
+    resizeDiagram();
+    $( '#outer' ).css( 'visibility', 'visible' );
   }
 
   function closeChildWindows()
   {
     childWindowsClose( g_aImageWindows );
+  }
+
+  function resizeDiagram()
+  {
+    var tWin = $( window );
+    var iWidth = tWin.width();
+    var iHeight = tWin.height();
+    var iMaxWidth = $( 'IMG' ).width() + 100;
+    var iMaxHeight = $( 'IMG' ).height() + 100;
+
+    if ( ( iWidth >= iMaxWidth ) && ( iHeight >= iMaxHeight ) )
+    {
+      $( '#outer' ).css( { '-webkit-transform': '' } );
+      $( '#wrap' ).css( { width: '', height: '' } );
+    }
+    else
+    {
+      var scale = Math.min( iWidth / iMaxWidth, iHeight / iMaxHeight );
+      $( '#outer' ).css( { '-webkit-transform': 'scale(' + scale + ')' } );
+      $( '#wrap' ).css( { width: iMaxWidth * scale, height: iMaxHeight * scale } );
+    }
   }
 </script>
