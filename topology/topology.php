@@ -17,9 +17,6 @@
 
   <!-- Body -->
 	<body>
-    <a href="javascript:void(null)" path="MSWB" onclick="openImageWindow(event)">MSWB</a>
-    <a href="javascript:void(null)" path="MSWB.6-DE" onclick="openImageWindow(event)">MSWB.6-DE</a>
-    <a href="javascript:void(null)" path="MSWB.9-AMDP" onclick="openImageWindow(event)">MSWB.9-AMDP</a>
     <div id="outer" style="visibility:hidden">
       <div id="wrap">
         <?php
@@ -89,7 +86,7 @@
     var iWidth = tWin.width();
     var iHeight = tWin.height();
     var iMaxWidth = $( 'IMG' ).width() + 100;
-    var iMaxHeight = $( 'IMG' ).height() + 100;
+    var iMaxHeight = $( 'IMG' ).height() + 50;
 
     if ( ( iWidth >= iMaxWidth ) && ( iHeight >= iMaxHeight ) )
     {

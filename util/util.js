@@ -203,7 +203,7 @@ function openImageWindow( tEvent )
   {
     tA = $( tEvent.target ).closest( "AREA" );
   }
-  
+
   console.log( 'a len=' + tA.length );
   console.log( JSON.stringify( tA ) );
 
@@ -221,7 +221,7 @@ var g_aTopologyWindows = [];
 
 function openTopologyWindow( tEvent )
 {
-  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topology.php', "Topology", "notUsed", 900, 450, false );
+  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topology.php', "Topology", "notUsed", 4745/4, 2179/4, false );
 }
 
 
