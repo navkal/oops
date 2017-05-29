@@ -9,7 +9,6 @@
   ?>
   <title>Properties:
     <?php
-      echo( "LOGGED IN AS: " . $_SESSION["user"]["role"] . '!  ' );
       echo( $_REQUEST["path"] );
     ?>
   </title>
@@ -29,7 +28,6 @@
     var g_sType = '<?=$_REQUEST["type"]?>';
     var g_sOid = '<?=$_REQUEST["oid"]?>';
     var g_sRole = '<?=$_SESSION["user"]["role"]?>';
-    console.log( '==> g_sRole=' + g_sRole );
   </script>
   <?php
     $iVersion = time();
