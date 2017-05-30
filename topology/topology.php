@@ -66,10 +66,9 @@
         // Link is internal
         $( tA ).attr( 'href', 'javascript:void(null)' );
 
-        if ( sLink.indexOf( 'PANEL_SPY:' ) == 0 )
+        if ( sLink == 'PANELSPY' )
         {
           // Link is to main window
-          $( tA ).attr( 'path', sLink.split( ':' )[1] );
           $( tA ).click( openMainWindow );
         }
         else
@@ -139,35 +138,26 @@
       tMain = g_tMainWindow;
     }
 
-    // Find panel on main window
-    var sPath = $( tEvent.target ).closest( 'a' ).attr( 'path' );
-    console.log( '===> sPath=' + sPath );
-    var sGotoUrl = '/?goto=' + sPath;
+    // Open main window
     if ( tMain )
     {
       // Main window is available: use it
 
-      if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
-      {
-        // Main window is currently on Circuits page
-        console.log( 'Navigating on Circuits page' );
-        tMain.g_sSearchTargetPath = sPath;
-        tMain.navigateToSearchTarget();
-      }
-      else
+      if ( tMain.document.title.indexOf( 'Circuits' ) != 0 )
       {
         // Main window is not currently on Circuits page
-        console.log( 'Returning to Circuits page using goto' );
-        tMain.location.assign( sGotoUrl );
+        console.log( 'Returning to Circuits page' );
+        tMain.location.assign( '/' );
       }
     }
     else
     {
       // Main window is not available: Open a new one
       console.log( 'Reopening main window using goto' );
+
       try
       {
-        g_tMainWindow = window.open( sGotoUrl, 'Main' );
+        g_tMainWindow = window.open( '/', 'Main' );
       }
       catch( e )
       {
