@@ -69,14 +69,11 @@
     // Reconfigure hyperlink
     if ( sLink )
     {
-      var sColor = 'white';
-
       if ( sLink.toLowerCase().indexOf( 'http://' ) == 0 )
       {
         // Link is full URL
         $( tA ).attr( 'href', sLink );
         $( tA ).attr( 'target', '_blank' );
-        sColor = 'green';
       }
       else
       {
@@ -93,7 +90,6 @@
           // Link is path
           $( tA ).attr( 'path', sLink );
           $( tA ).click( openImageWindow );
-          sColor = 'black';
         }
       }
 
@@ -102,11 +98,11 @@
 
       // Style clickable rectangle
       var tRect = $( tA ).find( 'rect' );
-      tRect.css( 'fill', sColor );
-      tRect.css( 'stroke', sColor );
-      tRect.css( 'stroke-width', '8' );
-      tRect.css( 'fill-opacity', '0.1' );
-      tRect.css( 'stroke-opacity', '0.5' );
+      tRect.css( 'fill', 'white' );
+      tRect.css( 'stroke', 'black' );
+      tRect.css( 'stroke-width', '5' );
+      tRect.css( 'fill-opacity', '0.001' );
+      tRect.css( 'stroke-opacity', '0.9' );
     }
   }
 
