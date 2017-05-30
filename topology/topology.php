@@ -17,25 +17,19 @@
 
   <!-- Body -->
 	<body>
-    <div id="outer" style="visibility:hidden">
-      <div id="wrap">
-        <?php
-          require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
-        ?>
-      </div>
-    </div>
+    <?php
+      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
+    ?>
   </body>
 </html>
 
 <style>
-  #wrap
+  svg
   {
-    position: relative;
-  }
-  #outer
-  {
-    position: relative;
-    -webkit-transform-origin: top left;
+    display: block;
+    position: absolute;
+    width:100%;
+    height:100%;
   }
 </style>
 
@@ -48,60 +42,30 @@
   {
     // Set handlers
     $( window ).on( 'unload', closeChildWindows );
-    $( window ).resize( resizeDiagram );
-
 
     // Generate hyperlinks to open image window
-    $( 'a' ).each(
-      function( i, tA )
-      {
-        // Configure hyperlink
-        $( tA ).attr( 'path', $( tA ).attr( 'xlink:href' ) );
-        console.log( 'path=' + $( tA ).attr( 'path' ) );
-        $( tA ).attr( 'href', 'javascript:void(null)' );
-        $( tA ).removeAttr( 'xlink:href' );
-        $( tA ).click( openImageWindow );
+    $( 'a' ).each( makeHyperlink );
+  }
 
-        // Make it clickable
-        $( tA ).find( 'rect' ).css( 'fill', 'blue' );
-        $( tA ).find( 'rect' ).css( 'stroke', 'pink' );
-        $( tA ).find( 'rect' ).css( 'stroke-width', '5' );
-        $( tA ).find( 'rect' ).css( 'fill-opacity', '0.001' );
-        $( tA ).find( 'rect' ).css( 'stroke-opacity', '0.9' );
-      }
-    );
+  function makeHyperlink( i, tA )
+  {
+    // Configure hyperlink
+    $( tA ).attr( 'path', $( tA ).attr( 'xlink:href' ) );
+    console.log( 'path=' + $( tA ).attr( 'path' ) );
+    $( tA ).attr( 'href', 'javascript:void(null)' );
+    $( tA ).removeAttr( 'xlink:href' );
+    $( tA ).click( openImageWindow );
 
-    // Set initial size of circuit diagram
-    resizeDiagram();
-    $( '#outer' ).css( 'visibility', 'visible' );
+    // Make it clickable
+    $( tA ).find( 'rect' ).css( 'fill', 'blue' );
+    $( tA ).find( 'rect' ).css( 'stroke', 'pink' );
+    $( tA ).find( 'rect' ).css( 'stroke-width', '5' );
+    $( tA ).find( 'rect' ).css( 'fill-opacity', '0.001' );
+    $( tA ).find( 'rect' ).css( 'stroke-opacity', '0.9' );
   }
 
   function closeChildWindows()
   {
     childWindowsClose( g_aImageWindows );
-  }
-
-  function resizeDiagram()
-  {
-    var tWin = $( window );
-    var iWidth = tWin.width();
-    var iHeight = tWin.height();
-    var iMaxWidth = parseInt( $( 'svg' ).attr( 'width' ) ) * 100;
-    var iMaxHeight = parseInt( $( 'svg' ).attr( 'Height' ) ) * 100;
-
-    
-    console.log( '===> wid=' + iMaxWidth + ' hgt=' + iMaxHeight );
-
-    if ( ( iWidth >= iMaxWidth ) && ( iHeight >= iMaxHeight ) )
-    {
-      $( '#outer' ).css( { '-webkit-transform': '' } );
-      $( '#wrap' ).css( { width: '', height: '' } );
-    }
-    else
-    {
-      var scale = Math.min( iWidth / iMaxWidth, iHeight / iMaxHeight );
-      $( '#outer' ).css( { '-webkit-transform': 'scale(' + scale + ')' } );
-      $( '#wrap' ).css( { width: iMaxWidth * scale, height: iMaxHeight * scale } );
-    }
   }
 </script>
