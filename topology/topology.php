@@ -26,7 +26,6 @@
 <style>
   svg
   {
-    display: block;
     position: absolute;
     width:100%;
     height:100%;
@@ -49,19 +48,38 @@
 
   function makeHyperlink( i, tA )
   {
-    // Configure hyperlink
-    $( tA ).attr( 'path', $( tA ).attr( 'xlink:href' ) );
-    console.log( 'path=' + $( tA ).attr( 'path' ) );
-    $( tA ).attr( 'href', 'javascript:void(null)' );
-    $( tA ).removeAttr( 'xlink:href' );
-    $( tA ).click( openImageWindow );
+    // Get original hyperlink
+    var sLink = $( tA ).attr( 'xlink:href' );
+    console.log( 'link=' + $( tA ).attr( 'sLink' ) );
 
-    // Make it clickable
-    $( tA ).find( 'rect' ).css( 'fill', 'blue' );
-    $( tA ).find( 'rect' ).css( 'stroke', 'pink' );
-    $( tA ).find( 'rect' ).css( 'stroke-width', '5' );
-    $( tA ).find( 'rect' ).css( 'fill-opacity', '0.001' );
-    $( tA ).find( 'rect' ).css( 'stroke-opacity', '0.9' );
+    // Reconfigure hyperlink
+    if ( sLink )
+    {
+      if ( sLink.toLowerCase().indexOf( 'http://' ) == 0 )
+      {
+        // Link is full URL
+        $( tA ).attr( 'href', sLink );
+        $( tA ).attr( 'target', '_blank' );
+      }
+      else
+      {
+        // Link is path
+        $( tA ).attr( 'path', sLink );
+        $( tA ).attr( 'href', 'javascript:void(null)' );
+        $( tA ).click( openImageWindow );
+      }
+
+      // Remove original link
+      $( tA ).removeAttr( 'xlink:href' );
+
+      // Make linked object clickable
+      var tRect = $( tA ).find( 'rect' );
+      tRect.css( 'fill', 'blue' );
+      tRect.css( 'stroke', 'pink' );
+      tRect.css( 'stroke-width', '5' );
+      tRect.css( 'fill-opacity', '0.001' );
+      tRect.css( 'stroke-opacity', '0.9' );
+    }
   }
 
   function closeChildWindows()
