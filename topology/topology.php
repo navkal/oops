@@ -24,28 +24,6 @@
           <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
             <span class="glyphicon glyphicon-plus" ></span>
           </button>
-          <button type="button" class="btn btn-default btn-xs" title="Zoom Out" onclick="zoomDiagram( false )" >
-            <span class="glyphicon glyphicon-zoom-out">
-            </span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs" title="Zoom In" onclick="zoomDiagram( true )" >
-            <span class="glyphicon glyphicon-zoom-in">
-            </span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs" title="Zoom Out" onclick="zoomDiagram( false )" >
-            <span class="glyphicon glyphicon-minus">
-            </span>
-          </button>
-          <button type="button" class="btn btn-default btn-xs" title="Zoom In" onclick="zoomDiagram( true )" >
-            <span class="glyphicon glyphicon-plus">
-            </span>
-          </button>
-          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
-            <span class="glyphicon glyphicon-zoom-out" ></span>
-          </button>
-          <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
-            <span class="glyphicon glyphicon-zoom-in" ></span>
-          </button>
         </span>
       </div>
       <?php
