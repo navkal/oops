@@ -16,25 +16,19 @@
   <!-- Body -->
 	<body>
     <div class="container" >
-      <div style="z-index:200">
-        <div class="affix" data-spy="affix" data-offset-top="100" data-offset-left="100" data-offset-bottom="200">
-          <span class="btn-group btn-group-xs" >
-            <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
-              <span class="glyphicon glyphicon-minus" ></span>
-            </button>
-            <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
-              <span class="glyphicon glyphicon-plus" ></span>
-            </button>
-          </span>
-        </div>
+      <div>
+        <span class="btn-group btn-group-xs" >
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
+            <span class="glyphicon glyphicon-minus" ></span>
+          </button>
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
+            <span class="glyphicon glyphicon-plus" ></span>
+          </button>
+        </span>
       </div>
-    </div>
-    <div class="container" >
-      <div style="z-index:100" >
       <?php
         require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
       ?>
-      </div>
     </div>
   </body>
 </html>
