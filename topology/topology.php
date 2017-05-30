@@ -86,8 +86,11 @@
     var tWin = $( window );
     var iWidth = tWin.width();
     var iHeight = tWin.height();
-    var iMaxWidth = $( 'IMG' ).width() + 100;
-    var iMaxHeight = $( 'IMG' ).height() + 50;
+    var iMaxWidth = parseInt( $( 'svg' ).attr( 'width' ) ) * 100;
+    var iMaxHeight = parseInt( $( 'svg' ).attr( 'Height' ) ) * 100;
+
+    
+    console.log( '===> wid=' + iMaxWidth + ' hgt=' + iMaxHeight );
 
     if ( ( iWidth >= iMaxWidth ) && ( iHeight >= iMaxHeight ) )
     {
