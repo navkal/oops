@@ -273,44 +273,44 @@ viewBox="0 0 50000 23386"
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
   <line class="fil0 str0" x1="2797" y1="3206" x2="48657" y2= "3206" />
-  <text x="24335" y="1626"  class="fil1 fnt0">MSWB</text>
-  <text x="2987" y="5628"  class="fil1 fnt1">PBA</text>
+  <text x="24353" y="1626"  class="fil1 fnt0">MSWB</text>
+  <text x="2993" y="5628"  class="fil1 fnt1">PBA</text>
   <text x="4526" y="5601"  class="fil1 fnt1">1068</text>
   <text x="6127" y="5601"  class="fil1 fnt1">Spare</text>
   <text x="8043" y="5601"  class="fil1 fnt1">M1</text>
-  <text x="9741" y="5607"  class="fil1 fnt1">DHB</text>
-  <g id="_664165648">
+  <text x="9747" y="5607"  class="fil1 fnt1">DHB</text>
+  <g id="_805061904">
    <line class="fil0 str1" x1="3216" y1="3208" x2="3216" y2= "3958" />
    <line class="fil0 str1" x1="3216" y1="4446" x2="3216" y2= "5196" />
    <line class="fil0 str2" x1="3216" y1="3935" x2="3599" y2= "4459" />
   </g>
-  <g id="_664165744">
+  <g id="_805061744">
    <line class="fil0 str1" x1="4936" y1="3208" x2="4936" y2= "3958" />
    <line class="fil0 str1" x1="4936" y1="4446" x2="4936" y2= "5196" />
    <line class="fil0 str2" x1="4936" y1="3935" x2="5318" y2= "4459" />
   </g>
-  <g id="_664163984">
+  <g id="_805058960">
    <line class="fil0 str1" x1="6562" y1="3208" x2="6562" y2= "3958" />
    <line class="fil0 str1" x1="6562" y1="4446" x2="6562" y2= "5196" />
    <line class="fil0 str2" x1="6562" y1="3935" x2="6944" y2= "4459" />
   </g>
-  <g id="_664163280">
+  <g id="_805059248">
    <line class="fil0 str1" x1="8248" y1="3208" x2="8248" y2= "3958" />
    <line class="fil0 str1" x1="8248" y1="4446" x2="8248" y2= "5196" />
    <line class="fil0 str2" x1="8248" y1="3935" x2="8630" y2= "4459" />
   </g>
-  <g id="_664162096">
+  <g id="_805058064">
    <line class="fil0 str1" x1="10052" y1="3208" x2="10052" y2= "3958" />
    <line class="fil0 str1" x1="10052" y1="4446" x2="10052" y2= "5196" />
    <line class="fil0 str2" x1="10052" y1="3935" x2="10434" y2= "4459" />
   </g>
-  <g id="_664160944">
+  <g id="_805057648">
    <line class="fil0 str3" x1="20737" y1="3200" x2="20737" y2= "3950" />
    <line class="fil0 str3" x1="20737" y1="4438" x2="20737" y2= "5188" />
    <line class="fil0 str4" x1="20737" y1="3927" x2="21119" y2= "4451" />
   </g>
   <line class="fil0 str5" x1="10039" y1="6049" x2="10039" y2= "7803" />
-  <text x="20544" y="5670"  class="fil2 fnt1">DE</text>
+  <text x="20550" y="5670"  class="fil2 fnt1">DE</text>
   <text x="3108" y="3084"  class="fil1 fnt1">1</text>
   <text x="4819" y="3084"  class="fil1 fnt1">2</text>
   <text x="6485" y="3080"  class="fil1 fnt1">3</text>
@@ -322,33 +322,33 @@ viewBox="0 0 50000 23386"
   <g transform="matrix(1.0254 0 0 1 -4958.05 -8563.99)">
    <text x="25000" y="11693"  class="fil1 fnt1">6</text>
   </g>
-  <g id="_664158416">
+  <g id="_805053776">
    <g>
     <line class="fil0 str1" x1="22869" y1="3182" x2="22869" y2= "3932" />
     <line class="fil0 str1" x1="22869" y1="4420" x2="22869" y2= "5170" />
     <line class="fil0 str2" x1="22869" y1="3909" x2="23252" y2= "4433" />
    </g>
-   <text x="22660" y="5612"  class="fil1 fnt1">DG</text>
+   <text x="22665" y="5612"  class="fil1 fnt1">DG</text>
    <line class="fil0 str5" x1="22857" y1="6207" x2="22857" y2= "16819" />
    <g transform="matrix(1.0254 0 0 1 -2836.24 -8621.62)">
     <text x="25000" y="11693"  class="fil1 fnt1">7</text>
    </g>
   </g>
-  <text x="34279" y="5602"  class="fil1 fnt1">DL</text>
-  <g id="_664155056">
+  <text x="34285" y="5602"  class="fil1 fnt1">DL</text>
+  <g id="_805052368">
    <line class="fil0 str5" x1="34459" y1="3208" x2="34459" y2= "3958" />
    <line class="fil0 str5" x1="34459" y1="4446" x2="34459" y2= "5196" />
    <line class="fil0 str2" x1="34459" y1="3935" x2="34841" y2= "4459" />
   </g>
-  <g id="_664156528">
+  <g id="_805051664">
    <line class="fil0 str5" x1="34447" y1="6144" x2="34447" y2= "7803" />
    <g transform="matrix(1.0254 0 0 1 8733.41 -8612.65)">
     <text x="25000" y="11693"  class="fil1 fnt1">8</text>
    </g>
   </g>
   <line class="fil0 str0" x1="23761" y1="7822" x2="47463" y2= "7822" />
-  <g id="_664222160">
-   <text x="24525" y="9091"  class="fil1 fnt1">PK</text>
+  <g id="_805048208">
+   <text x="24530" y="9091"  class="fil1 fnt1">PK</text>
    <g>
     <line class="fil0 str5" x1="24718" y1="9263" x2="24718" y2= "10012" />
     <line class="fil0 str5" x1="24718" y1="10501" x2="24718" y2= "11250" />
@@ -356,14 +356,16 @@ viewBox="0 0 50000 23386"
     <circle class="fil0 str0" cx="24731" cy="10351" r="154"/>
    </g>
    <line class="fil0 str5" x1="24706" y1="7829" x2="24706" y2= "8578" />
-   <text x="24425" y="11575"  class="fil1 fnt1">PKA</text>
-   <text x="25046" y="10241"  class="fil1 fnt1">TK</text>
+   <text x="24431" y="11575"  class="fil1 fnt1">PKA</text>
+   <text x="25052" y="10241"  class="fil1 fnt1">TK</text>
    <text x="24604" y="7709"  class="fil1 fnt1">1</text>
    <text x="24143" y="8758"  class="fil1 fnt2">P4K</text>
-   <text x="23487" y="11191"  class="fil1 fnt2">PKA Left side</text>
+   <text x="23490" y="11191"  class="fil1 fnt2">PKA</text>
+   <text x="23829" y="11191"  class="fil1 fnt2"> Left side</text>
   </g>
-  <g id="_664219024">
-   <text x="25832" y="10253"  class="fil1 fnt1">ACCU2</text>
+  <g id="_805047600">
+   <text x="25838" y="10253"  class="fil1 fnt1">ACCU</text>
+   <text x="26823" y="10253"  class="fil1 fnt1">2</text>
    <g>
     <line class="fil0 str1" x1="26354" y1="7833" x2="26354" y2= "8583" />
     <line class="fil0 str1" x1="26354" y1="9071" x2="26354" y2= "9821" />
@@ -371,7 +373,7 @@ viewBox="0 0 50000 23386"
    </g>
    <text x="26284" y="7709"  class="fil1 fnt1">2</text>
   </g>
-  <g id="_664218224">
+  <g id="_805043536">
    <text x="27646" y="9077"  class="fil1 fnt1">L42D</text>
    <g>
     <line class="fil0 str1" x1="28008" y1="9263" x2="28008" y2= "10012" />
@@ -387,25 +389,27 @@ viewBox="0 0 50000 23386"
    <text x="28975" y="9077"  class="fil3 fnt1">P4D</text>
    <line class="fil0 str5" x1="29232" y1="8199" x2="29232" y2= "8574" />
   </g>
-  <g id="_664213488">
+  <g id="_805039248">
    <text x="29889" y="9043"  class="fil1 fnt1">L4G</text>
    <line class="fil0 str5" x1="30182" y1="7800" x2="30182" y2= "8549" />
-   <text x="28727" y="12424"  class="fil1 fnt1">LGSec1</text>
+   <text x="28733" y="12424"  class="fil1 fnt1">LG</text>
+   <text x="29195" y="12424"  class="fil1 fnt1">sec1</text>
    <g>
     <line class="fil0 str5" x1="30194" y1="9505" x2="30194" y2= "9983" />
     <line class="fil0 str5" x1="30194" y1="10472" x2="30194" y2= "11119" />
     <circle class="fil0 str0" cx="30207" cy="10133" r="154"/>
     <circle class="fil0 str0" cx="30207" cy="10323" r="154"/>
-    <text x="30522" y="10212"  class="fil1 fnt1">TG</text>
+    <text x="30528" y="10212"  class="fil1 fnt1">TG</text>
    </g>
    <text x="30079" y="7680"  class="fil1 fnt1">4</text>
    <line class="fil0 str5" x1="29408" y1="11119" x2="30980" y2= "11119" />
    <line class="fil0 str5" x1="29419" y1="11119" x2="29419" y2= "12100" />
-   <text x="30379" y="12916"  class="fil1 fnt1">LGSec2</text>
+   <text x="30385" y="12916"  class="fil1 fnt1">LG</text>
+   <text x="30848" y="12916"  class="fil1 fnt1">sec2</text>
    <line class="fil0 str5" x1="30969" y1="11119" x2="30969" y2= "12444" />
   </g>
   <text x="31701" y="9072"  class="fil1 fnt1">L42B</text>
-  <g id="_664211632">
+  <g id="_805037200">
    <line class="fil0 str1" x1="32056" y1="9263" x2="32056" y2= "10012" />
    <line class="fil0 str1" x1="32056" y1="10501" x2="32056" y2= "11250" />
    <circle class="fil0 str0" cx="32069" cy="10161" r="154"/>
@@ -421,7 +425,7 @@ viewBox="0 0 50000 23386"
   <line class="fil0 str2" x1="33724" y1="8250" x2="34106" y2= "8774" />
   <text x="33644" y="7709"  class="fil1 fnt1">6</text>
   <text x="34718" y="9077"  class="fil1 fnt1">L41D</text>
-  <g id="_664206832">
+  <g id="_805033840">
    <line class="fil0 str1" x1="34969" y1="9263" x2="34969" y2= "10012" />
    <line class="fil0 str1" x1="34969" y1="10501" x2="34969" y2= "11250" />
    <circle class="fil0 str0" cx="34983" cy="10161" r="154"/>
@@ -434,7 +438,7 @@ viewBox="0 0 50000 23386"
   <g transform="matrix(1.01967 0 0 1 10745.6 -2632.46)">
    <text x="25000" y="11693"  class="fil1 fnt3">L42</text>
   </g>
-  <g id="_664204464">
+  <g id="_805030352">
    <line class="fil0 str1" x1="36516" y1="9263" x2="36516" y2= "10012" />
    <line class="fil0 str1" x1="36516" y1="10501" x2="36516" y2= "11250" />
    <circle class="fil0 str0" cx="36529" cy="10161" r="154"/>
@@ -444,18 +448,20 @@ viewBox="0 0 50000 23386"
   <text x="36359" y="11582"  class="fil1 fnt1">L2</text>
   <text x="36844" y="10241"  class="fil1 fnt1">T2</text>
   <text x="36402" y="7709"  class="fil1 fnt1">8</text>
-  <text x="37410" y="9077"  class="fil1 fnt1">L4GB</text>
-  <g id="_664202800">
+  <text x="37410" y="9077"  class="fil1 fnt1">L4</text>
+  <text x="37787" y="9077"  class="fil1 fnt1">GB</text>
+  <g id="_805026928">
    <line class="fil0 str1" x1="37808" y1="9263" x2="37808" y2= "10012" />
    <line class="fil0 str1" x1="37808" y1="10501" x2="37808" y2= "10875" />
    <circle class="fil0 str0" cx="37822" cy="10161" r="154"/>
    <circle class="fil0 str0" cx="37822" cy="10351" r="154"/>
   </g>
   <line class="fil0 str5" x1="37796" y1="7829" x2="37796" y2= "8578" />
-  <text x="36276" y="12629"  class="fil1 fnt1">LGB(Sec1)</text>
-  <text x="38136" y="10241"  class="fil1 fnt1">TGB</text>
+  <text x="36281" y="12629"  class="fil1 fnt1">LGB</text>
+  <text x="36978" y="12629"  class="fil1 fnt1">(sec1)</text>
+  <text x="38142" y="10241"  class="fil1 fnt1">TGB</text>
   <text x="37694" y="7709"  class="fil1 fnt1">9</text>
-  <g id="_664196752">
+  <g id="_805012944">
    <text x="39467" y="9043"  class="fil1 fnt1">L41C</text>
    <line class="fil0 str5" x1="39810" y1="7800" x2="39810" y2= "8549" />
    <text x="38701" y="12244"  class="fil1 fnt1">L1C</text>
@@ -469,35 +475,39 @@ viewBox="0 0 50000 23386"
    <text x="39708" y="7680"  class="fil1 fnt1">10</text>
    <line class="fil0 str5" x1="39036" y1="11119" x2="40608" y2= "11119" />
    <line class="fil0 str1" x1="39047" y1="11119" x2="39047" y2= "11868" />
-   <text x="40152" y="12849"  class="fil1 fnt1">L1CA</text>
+   <text x="40152" y="12849"  class="fil1 fnt1">L1</text>
+   <text x="40529" y="12849"  class="fil1 fnt1">CA</text>
    <line class="fil0 str1" x1="40588" y1="11119" x2="40588" y2= "12444" />
   </g>
-  <g id="_664193840">
+  <g id="_856952064">
    <text x="40270" y="9497"  class="fil1 fnt1">Spare</text>
    <line class="fil0 str1" x1="40682" y1="7833" x2="40682" y2= "8310" />
    <line class="fil0 str1" x1="40682" y1="8800" x2="40682" y2= "9138" />
    <line class="fil0 str2" x1="40682" y1="8280" x2="41065" y2= "8804" />
    <text x="40612" y="7709"  class="fil1 fnt1">11</text>
   </g>
-  <text x="42345" y="8926"  class="fil1 fnt1">Old LGB</text>
+  <text x="42345" y="8926"  class="fil1 fnt1">Old </text>
+  <text x="42962" y="8926"  class="fil1 fnt1">LGB</text>
   <line class="fil0 str5" x1="42943" y1="7800" x2="42943" y2= "8549" />
-  <text x="41105" y="13194"  class="fil1 fnt1">LGC </text>
-  <text x="41883" y="13194"  class="fil1 fnt4">(Left)</text>
-  <g id="_664191952">
+  <text x="41110" y="13194"  class="fil1 fnt1">LGC</text>
+  <text x="41825" y="13194"  class="fil1 fnt1"> </text>
+  <text x="41918" y="13194"  class="fil1 fnt4">(Left)</text>
+  <g id="_856949504">
    <line class="fil0 str1" x1="42226" y1="10034" x2="42226" y2= "10783" />
    <line class="fil0 str5" x1="42226" y1="11272" x2="42226" y2= "11919" />
    <circle class="fil0 str0" cx="42239" cy="10933" r="154"/>
    <circle class="fil0 str0" cx="42239" cy="11123" r="154"/>
-   <text x="42401" y="10905"  class="fil1 fnt1">TLGC</text>
+   <text x="42407" y="10905"  class="fil1 fnt1">TLGC</text>
   </g>
   <text x="42841" y="7680"  class="fil1 fnt1">12</text>
   <line class="fil0 str5" x1="41440" y1="11919" x2="43011" y2= "11919" />
   <line class="fil0 str1" x1="41450" y1="11919" x2="41450" y2= "12668" />
-  <text x="42206" y="13789"  class="fil1 fnt1">LGC </text>
-  <text x="42984" y="13789"  class="fil1 fnt4">(Right)</text>
+  <text x="42212" y="13789"  class="fil1 fnt1">LGC</text>
+  <text x="42926" y="13789"  class="fil1 fnt1"> </text>
+  <text x="43019" y="13789"  class="fil1 fnt4">(Right)</text>
   <line class="fil0 str1" x1="42991" y1="11919" x2="42991" y2= "13244" />
   <text x="41982" y="9196"  class="fil1 fnt5">L4G in Drawings</text>
-  <g id="_664188656">
+  <g id="_856946816">
    <text x="45029" y="9072"  class="fil1 fnt1">L41B</text>
    <g>
     <line class="fil0 str1" x1="45384" y1="9263" x2="45384" y2= "10012" />
@@ -510,7 +520,7 @@ viewBox="0 0 50000 23386"
    <text x="45712" y="10241"  class="fil1 fnt1">T1B</text>
    <text x="45270" y="7709"  class="fil1 fnt1">13</text>
   </g>
-  <g id="_662344352">
+  <g id="_856941696">
    <text x="46781" y="9067"  class="fil1 fnt1">L41</text>
    <g>
     <line class="fil0 str1" x1="47026" y1="9263" x2="47026" y2= "10012" />
@@ -524,7 +534,7 @@ viewBox="0 0 50000 23386"
    <text x="46911" y="7709"  class="fil1 fnt1">14</text>
   </g>
   <text x="46929" y="5563"  class="fil1 fnt1">Collins Center</text>
-  <g id="_662342240">
+  <g id="_856940288">
    <line class="fil0 str5" x1="47970" y1="6148" x2="47970" y2= "13363" />
    <g transform="matrix(1.0254 0 0 1 22246.6 -8612.65)">
     <text x="25000" y="11693"  class="fil1 fnt1">9</text>
@@ -532,42 +542,49 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str5" x1="47950" y1="3208" x2="47950" y2= "3958" />
    <line class="fil0 str5" x1="47950" y1="4446" x2="47950" y2= "5196" />
    <line class="fil0 str2" x1="47950" y1="3935" x2="48332" y2= "4459" />
-   <text x="47517" y="13943"  class="fil1 fnt1">AMDP</text>
+   <text x="47523" y="13943"  class="fil1 fnt1">AMDP</text>
    <line class="fil0 str5" x1="47942" y1="14457" x2="47942" y2= "14881" />
    <line class="fil0 str5" x1="47932" y1="15369" x2="47932" y2= "16834" />
    <line class="fil0 str2" x1="47932" y1="14849" x2="48314" y2= "15373" />
    <text x="48097" y="13389"  class="fil1 fnt1">1</text>
   </g>
-  <g id="_662327712">
+  <g id="_856995008">
    <line class="fil0 str3" x1="8445" y1="12760" x2="21001" y2= "12760" />
    <g>
-    <text x="8651" y="14767"  class="fil1 fnt1">LE3A</text>
+    <text x="8657" y="14767"  class="fil1 fnt1">LE</text>
+    <text x="9082" y="14767"  class="fil1 fnt1">3A</text>
     <line class="fil0 str5" x1="9007" y1="12781" x2="9007" y2= "14234" />
     <text x="8895" y="12651"  class="fil1 fnt1">1</text>
     <line class="fil0 str5" x1="9020" y1="13421" x2="9707" y2= "13421" />
     <line class="fil0 str5" x1="9681" y1="13412" x2="9681" y2= "15212" />
-    <text x="9356" y="15579"  class="fil1 fnt1">LE 3</text>
+    <text x="9362" y="15579"  class="fil1 fnt1">LE</text>
+    <text x="9787" y="15579"  class="fil1 fnt1"> 3</text>
    </g>
    <g>
-    <text x="10137" y="14767"  class="fil1 fnt1">LE2A</text>
+    <text x="10143" y="14767"  class="fil1 fnt1">LE</text>
+    <text x="10569" y="14767"  class="fil1 fnt1">2A</text>
     <line class="fil0 str5" x1="10494" y1="12781" x2="10494" y2= "14234" />
     <text x="10382" y="12651"  class="fil1 fnt1">2</text>
     <line class="fil0 str5" x1="10507" y1="13421" x2="11193" y2= "13421" />
     <line class="fil0 str5" x1="11168" y1="13412" x2="11168" y2= "15212" />
-    <text x="10843" y="15579"  class="fil1 fnt1">LE 2</text>
+    <text x="10848" y="15579"  class="fil1 fnt1">LE</text>
+    <text x="11274" y="15579"  class="fil1 fnt1"> 2</text>
    </g>
    <g>
-    <text x="11728" y="14767"  class="fil1 fnt1">LE1A</text>
+    <text x="11734" y="14767"  class="fil1 fnt1">LE</text>
+    <text x="12159" y="14767"  class="fil1 fnt1">1A</text>
     <line class="fil0 str5" x1="12085" y1="12781" x2="12085" y2= "14234" />
     <text x="11982" y="12651"  class="fil1 fnt1">3</text>
     <line class="fil0 str5" x1="12098" y1="13421" x2="12784" y2= "13421" />
     <line class="fil0 str5" x1="12759" y1="13412" x2="12759" y2= "15212" />
-    <text x="12433" y="15579"  class="fil1 fnt1">LE 1 </text>
+    <text x="12439" y="15579"  class="fil1 fnt1">LE</text>
+    <text x="12865" y="15579"  class="fil1 fnt1"> 1 </text>
    </g>
    <text x="13273" y="14767"  class="fil1 fnt1">Elevator</text>
    <line class="fil0 str1" x1="13858" y1="12760" x2="13858" y2= "14310" />
    <text x="13798" y="12596"  class="fil1 fnt1">4</text>
-   <text x="14970" y="15253"  class="fil1 fnt1">Old DE</text>
+   <text x="14970" y="15253"  class="fil1 fnt1">Old </text>
+   <text x="15587" y="15253"  class="fil1 fnt1">DE</text>
    <text x="15479" y="12666"  class="fil1 fnt1">5</text>
    <g>
     <line class="fil0 str1" x1="16948" y1="12783" x2="16948" y2= "13533" />
@@ -575,18 +592,20 @@ viewBox="0 0 50000 23386"
     <circle class="fil0 str0" cx="16961" cy="13682" r="154"/>
     <circle class="fil0 str0" cx="16961" cy="13872" r="154"/>
    </g>
-   <text x="16655" y="15096"  class="fil1 fnt1">PKE</text>
-   <text x="17276" y="13802"  class="fil1 fnt1">TKE</text>
+   <text x="16661" y="15096"  class="fil1 fnt1">PKE</text>
+   <text x="17282" y="13802"  class="fil1 fnt1">TKE</text>
    <text x="16834" y="12662"  class="fil1 fnt1">6</text>
    <line class="fil0 str1" x1="18359" y1="12760" x2="18359" y2= "14310" />
    <text x="18299" y="12596"  class="fil1 fnt1">7</text>
    <text x="17872" y="14767"  class="fil1 fnt1">Elevator</text>
-   <text x="19704" y="14767"  class="fil1 fnt1">PMESec1</text>
+   <text x="19710" y="14767"  class="fil1 fnt1">PME</text>
+   <text x="20461" y="14767"  class="fil1 fnt1">sec1</text>
    <line class="fil0 str5" x1="20060" y1="12781" x2="20060" y2= "14234" />
    <text x="19948" y="12651"  class="fil1 fnt1">8</text>
    <line class="fil0 str5" x1="20060" y1="13421" x2="21370" y2= "13421" />
    <line class="fil0 str5" x1="21345" y1="13412" x2="21345" y2= "15212" />
-   <text x="21019" y="15579"  class="fil1 fnt1">PMESec2</text>
+   <text x="21025" y="15579"  class="fil1 fnt1">PME</text>
+   <text x="21777" y="15579"  class="fil1 fnt1">sec2</text>
    <g>
     <line class="fil0 str1" x1="15542" y1="12783" x2="15542" y2= "13533" />
     <line class="fil0 str1" x1="15542" y1="14022" x2="15542" y2= "14771" />
@@ -659,7 +678,7 @@ viewBox="0 0 50000 23386"
   <text x="20184" y="15093"  class="fil1 fnt7">Boiler Rm</text>
   <text x="20999" y="15856"  class="fil1 fnt6">1046 / </text>
   <text x="21509" y="15856"  class="fil1 fnt7">Boiler Rm</text>
-  <g id="_662294592">
+  <g id="_856957920">
    <line class="fil0 str0" x1="33134" y1="16834" x2="48859" y2= "16834" />
    <g>
     <text x="32922" y="19217"  class="fil1 fnt1">Spare</text>
@@ -669,13 +688,13 @@ viewBox="0 0 50000 23386"
      <line class="fil0 str2" x1="33334" y1="17575" x2="33716" y2= "18099" />
     </g>
    </g>
-   <text x="34243" y="19253"  class="fil1 fnt1">HSHTA</text>
+   <text x="34249" y="19253"  class="fil1 fnt1">HSHTA</text>
    <line class="fil0 str1" x1="34803" y1="16809" x2="34803" y2= "17559" />
    <line class="fil0 str1" x1="34803" y1="18047" x2="34803" y2= "18851" />
    <line class="fil0 str2" x1="34803" y1="17536" x2="35185" y2= "18060" />
    <text x="34694" y="16686"  class="fil1 fnt1">3</text>
    <text x="33269" y="16686"  class="fil1 fnt1">2</text>
-   <text x="35736" y="19229"  class="fil1 fnt1">HSHTB</text>
+   <text x="35742" y="19229"  class="fil1 fnt1">HSHTB</text>
    <g>
     <line class="fil0 str1" x1="36332" y1="16809" x2="36332" y2= "17559" />
     <line class="fil0 str1" x1="36332" y1="18047" x2="36332" y2= "18797" />
@@ -688,25 +707,27 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str1" x1="37920" y1="18047" x2="37920" y2= "18820" />
    <line class="fil0 str2" x1="37920" y1="17536" x2="38302" y2= "18060" />
    <text x="37811" y="16686"  class="fil1 fnt1">5</text>
-   <text x="39287" y="19242"  class="fil1 fnt1">HSHLB</text>
+   <text x="39293" y="19242"  class="fil1 fnt1">HSHLB</text>
    <g>
     <line class="fil0 str1" x1="39681" y1="16809" x2="39681" y2= "17559" />
     <line class="fil0 str1" x1="39681" y1="18047" x2="39681" y2= "18797" />
     <line class="fil0 str2" x1="39681" y1="17536" x2="40063" y2= "18060" />
    </g>
    <text x="39572" y="16686"  class="fil1 fnt1">6</text>
-   <text x="41452" y="18084"  class="fil1 fnt1">HSHLA</text>
+   <text x="41458" y="18084"  class="fil1 fnt1">HSHLA</text>
    <line class="fil0 str5" x1="41795" y1="16841" x2="41795" y2= "17590" />
-   <text x="40340" y="21301"  class="fil1 fnt1">HSLA #1</text>
+   <text x="40346" y="21301"  class="fil1 fnt1">HSLA</text>
+   <text x="41239" y="21301"  class="fil1 fnt1"> #1</text>
    <line class="fil0 str5" x1="41807" y1="18215" x2="41807" y2= "19024" />
    <line class="fil0 str5" x1="41807" y1="19513" x2="41807" y2= "20160" />
    <circle class="fil0 str0" cx="41821" cy="19173" r="154"/>
    <circle class="fil0 str0" cx="41821" cy="19363" r="154"/>
-   <text x="42135" y="19253"  class="fil1 fnt1">TCC</text>
+   <text x="42141" y="19253"  class="fil1 fnt1">TCC</text>
    <text x="41693" y="16721"  class="fil1 fnt1">7</text>
    <line class="fil0 str5" x1="41022" y1="20160" x2="42593" y2= "20160" />
    <line class="fil0 str1" x1="41032" y1="20159" x2="41032" y2= "20909" />
-   <text x="41943" y="21877"  class="fil1 fnt1">HSLA #2</text>
+   <text x="41949" y="21877"  class="fil1 fnt1">HSLA</text>
+   <text x="42842" y="21877"  class="fil1 fnt1"> #2</text>
    <line class="fil0 str1" x1="42573" y1="20159" x2="42573" y2= "21484" />
    <g>
     <text x="43634" y="19855"  class="fil1 fnt1">Elevator</text>
@@ -726,21 +747,26 @@ viewBox="0 0 50000 23386"
    <g>
     <path class="fil5" d="M46869 17528l-684 684 -15 -15 684 -684 15 15zm44 -59l-59 147 -1 -4 -2 -4 -2 -4 -2 -4 -2 -4 -2 -4 -2 -4 -2 -3 -2 -3 -2 -3 -2 -3 -2 -3 -2 -3 -3 -3 -3 -3 -3 -3 -3 -3 -3 -3 -3 -3 -3 -2 -3 -2 -3 -2 -3 -2 -3 -2 -3 -2 -4 -2 -4 -2 -4 -2 -4 -2 -4 -2 -4 -2 -4 -1 0 0 147 -59z"/>
    </g>
-   <text x="46875" y="18001"  class="fil1 fnt1">75 kVA</text>
+   <text x="46875" y="18001"  class="fil1 fnt1">75 k</text>
+   <text x="47511" y="18001"  class="fil1 fnt1">VA</text>
    <line class="fil0 str1" x1="48523" y1="16833" x2="48523" y2= "17583" />
    <line class="fil0 str1" x1="48523" y1="18071" x2="48523" y2= "18821" />
    <circle class="fil0 str0" cx="48536" cy="17732" r="154"/>
    <circle class="fil0 str0" cx="48536" cy="17922" r="154"/>
-   <text x="48349" y="19269"  class="fil1 fnt1">TV</text>
+   <text x="48343" y="19269"  class="fil1 fnt1">TV</text>
    <text x="48090" y="19642"  class="fil1 fnt1">Studio</text>
    <text x="48350" y="16706"  class="fil1 fnt1">10</text>
-   <text x="48873" y="18001"  class="fil1 fnt1">TTV</text>
-   <text x="34223" y="19676"  class="fil1 fnt10">CS02-1</text>
-   <text x="35751" y="19688"  class="fil1 fnt10">CS03-1</text>
-   <text x="39256" y="19688"  class="fil1 fnt10">CS03-1</text>
-   <text x="41187" y="22524"  class="fil1 fnt10">CS02-1</text>
+   <text x="48879" y="18001"  class="fil1 fnt1">TTV</text>
+   <text x="34229" y="19676"  class="fil1 fnt10">CS</text>
+   <text x="34709" y="19676"  class="fil1 fnt10">02-1</text>
+   <text x="35756" y="19688"  class="fil1 fnt10">CS</text>
+   <text x="36237" y="19688"  class="fil1 fnt10">03-1</text>
+   <text x="39261" y="19688"  class="fil1 fnt10">CS</text>
+   <text x="39742" y="19688"  class="fil1 fnt10">03-1</text>
+   <text x="41193" y="22524"  class="fil1 fnt10">CS</text>
+   <text x="41673" y="22524"  class="fil1 fnt10">02-1</text>
   </g>
-  <text x="502" y="9771"  class="fil1 fnt1">L42CSec1</text>
+  <text x="502" y="9771"  class="fil1 fnt1">L42Csec1</text>
   <g>
    <line class="fil0 str1" x1="2574" y1="9263" x2="2574" y2= "10012" />
    <line class="fil0 str1" x1="2574" y1="10501" x2="2574" y2= "11250" />
@@ -757,10 +783,13 @@ viewBox="0 0 50000 23386"
    <circle class="fil0 str5" cx="3978" cy="8732" r="154"/>
    <circle class="fil0 str5" cx="3978" cy="8922" r="154"/>
   </g>
-  <text x="2939" y="10861"  class="fil1 fnt1">L2BAsec1</text>
-  <text x="4290" y="8864"  class="fil1 fnt1">T2BA</text>
+  <text x="2939" y="10861"  class="fil1 fnt1">L2</text>
+  <text x="3316" y="10861"  class="fil1 fnt1">BA</text>
+  <text x="3778" y="10861"  class="fil1 fnt1">sec1</text>
+  <text x="4290" y="8864"  class="fil1 fnt1">T2</text>
+  <text x="4684" y="8864"  class="fil1 fnt1">BA</text>
   <g>
-   <g id="_662356832">
+   <g id="_856356656">
     <line class="fil0 str5" x1="5591" y1="7854" x2="5591" y2= "8603" />
     <line class="fil0 str5" x1="5591" y1="9092" x2="5591" y2= "9841" />
     <circle class="fil0 str5" cx="5604" cy="8752" r="154"/>
@@ -771,7 +800,7 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str1" x1="6719" y1="8309" x2="6719" y2= "9058" />
    <line class="fil0 str2" x1="6719" y1="9036" x2="7101" y2= "9560" />
    <line class="fil0 str5" x1="5611" y1="8290" x2="6716" y2= "8290" />
-   <g id="_662356032">
+   <g id="_856354672">
     <line class="fil0 str1" x1="6719" y1="9463" x2="6719" y2= "10213" />
     <line class="fil0 str1" x1="6719" y1="10701" x2="6719" y2= "11451" />
     <circle class="fil0 str0" cx="6732" cy="10362" r="154"/>
@@ -780,18 +809,20 @@ viewBox="0 0 50000 23386"
    <text x="6556" y="11862"  class="fil3 fnt1">P1</text>
   </g>
   <g>
-   <g id="_662353632">
+   <g id="_856351632">
     <line class="fil0 str5" x1="7720" y1="7854" x2="7720" y2= "8603" />
     <line class="fil0 str5" x1="7720" y1="9092" x2="7720" y2= "9841" />
     <circle class="fil0 str5" cx="7733" cy="8752" r="154"/>
     <circle class="fil0 str5" cx="7733" cy="8942" r="154"/>
    </g>
-   <text x="7422" y="10363"  class="fil1 fnt1">L1DA</text>
-   <text x="7907" y="8806"  class="fil1 fnt1">T1DA</text>
+   <text x="7422" y="10363"  class="fil1 fnt1">L1</text>
+   <text x="7798" y="10363"  class="fil1 fnt1">DA</text>
+   <text x="7907" y="8806"  class="fil1 fnt1">T1</text>
+   <text x="8302" y="8806"  class="fil1 fnt1">DA</text>
    <line class="fil0 str1" x1="8848" y1="8309" x2="8848" y2= "9058" />
    <line class="fil0 str2" x1="8848" y1="9036" x2="9230" y2= "9560" />
    <line class="fil0 str5" x1="7740" y1="8290" x2="8845" y2= "8290" />
-   <g id="_662350912">
+   <g id="_856350128">
     <line class="fil0 str1" x1="8848" y1="9463" x2="8848" y2= "10213" />
     <line class="fil0 str1" x1="8848" y1="10701" x2="8848" y2= "11451" />
     <circle class="fil0 str0" cx="8861" cy="10362" r="154"/>
@@ -804,7 +835,7 @@ viewBox="0 0 50000 23386"
   <text x="5501" y="7709"  class="fil1 fnt1">3</text>
   <text x="7615" y="7709"  class="fil1 fnt1">4</text>
   <g>
-   <g id="_660370064">
+   <g id="_856347024">
     <line class="fil0 str5" x1="9728" y1="7854" x2="9728" y2= "8603" />
     <line class="fil0 str5" x1="9728" y1="9092" x2="9728" y2= "9841" />
     <circle class="fil0 str5" cx="9741" cy="8752" r="154"/>
@@ -815,7 +846,7 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str1" x1="10856" y1="8309" x2="10856" y2= "9058" />
    <line class="fil0 str2" x1="10856" y1="9036" x2="11238" y2= "9560" />
    <line class="fil0 str5" x1="9747" y1="8290" x2="10853" y2= "8290" />
-   <g id="_660368176">
+   <g id="_856345008">
     <line class="fil0 str1" x1="10856" y1="9463" x2="10856" y2= "10213" />
     <line class="fil0 str1" x1="10856" y1="10701" x2="10856" y2= "11451" />
     <circle class="fil0 str0" cx="10869" cy="10362" r="154"/>
@@ -825,18 +856,20 @@ viewBox="0 0 50000 23386"
   </g>
   <text x="9623" y="7709"  class="fil1 fnt1">5</text>
   <g>
-   <g id="_660366000">
+   <g id="_856344144">
     <line class="fil0 str5" x1="11862" y1="7854" x2="11862" y2= "8603" />
     <line class="fil0 str5" x1="11862" y1="9092" x2="11862" y2= "9841" />
     <circle class="fil0 str5" cx="11875" cy="8752" r="154"/>
     <circle class="fil0 str5" cx="11875" cy="8942" r="154"/>
    </g>
-   <text x="11533" y="10369"  class="fil1 fnt1">L2DA</text>
-   <text x="12048" y="8806"  class="fil1 fnt1">T2DA</text>
+   <text x="11533" y="10369"  class="fil1 fnt1">L2</text>
+   <text x="11909" y="10369"  class="fil1 fnt1">DA</text>
+   <text x="12048" y="8806"  class="fil1 fnt1">T2</text>
+   <text x="12443" y="8806"  class="fil1 fnt1">DA</text>
    <line class="fil0 str1" x1="12990" y1="8309" x2="12990" y2= "9058" />
    <line class="fil0 str2" x1="12990" y1="9036" x2="13372" y2= "9560" />
    <line class="fil0 str5" x1="11881" y1="8290" x2="12987" y2= "8290" />
-   <g id="_660364944">
+   <g id="_856340912">
     <line class="fil0 str1" x1="12990" y1="9463" x2="12990" y2= "10213" />
     <line class="fil0 str1" x1="12990" y1="10701" x2="12990" y2= "11451" />
     <circle class="fil0 str0" cx="13003" cy="10362" r="154"/>
@@ -848,7 +881,7 @@ viewBox="0 0 50000 23386"
   <text x="11792" y="7709"  class="fil1 fnt1">6</text>
   <g>
    <text x="13561" y="10344"  class="fil1 fnt1">Spare</text>
-   <g id="_660363152">
+   <g id="_856340656">
     <line class="fil0 str1" x1="13974" y1="7865" x2="13974" y2= "8615" />
     <line class="fil0 str1" x1="13974" y1="9103" x2="13974" y2= "9853" />
     <line class="fil0 str2" x1="13974" y1="8592" x2="14356" y2= "9116" />
@@ -856,7 +889,7 @@ viewBox="0 0 50000 23386"
   </g>
   <g>
    <text x="14756" y="10304"  class="fil1 fnt1">Spare</text>
-   <g id="_660360304">
+   <g id="_856338576">
     <line class="fil0 str1" x1="15168" y1="7855" x2="15168" y2= "8605" />
     <line class="fil0 str1" x1="15168" y1="9093" x2="15168" y2= "9843" />
     <line class="fil0 str2" x1="15168" y1="8582" x2="15550" y2= "9106" />
@@ -870,18 +903,22 @@ viewBox="0 0 50000 23386"
    <circle class="fil0 str0" cx="16126" cy="8741" r="154"/>
    <circle class="fil0 str0" cx="16126" cy="8931" r="154"/>
   </g>
-  <text x="15820" y="10285"  class="fil1 fnt1">L2CA</text>
+  <text x="15820" y="10285"  class="fil1 fnt1">L2</text>
+  <text x="16197" y="10285"  class="fil1 fnt1">CA</text>
   <text x="15999" y="7709"  class="fil1 fnt1">9</text>
-  <text x="16328" y="8729"  class="fil1 fnt1">T2CA</text>
+  <text x="16328" y="8729"  class="fil1 fnt1">T2</text>
+  <text x="16722" y="8729"  class="fil1 fnt1">CA</text>
   <g>
    <line class="fil0 str1" x1="17447" y1="7843" x2="17447" y2= "8592" />
    <line class="fil0 str1" x1="17447" y1="9081" x2="17447" y2= "9830" />
    <circle class="fil0 str0" cx="17460" cy="8741" r="154"/>
    <circle class="fil0 str0" cx="17460" cy="8931" r="154"/>
   </g>
-  <text x="17154" y="10315"  class="fil1 fnt1">L1BA</text>
+  <text x="17154" y="10315"  class="fil1 fnt1">L1</text>
+  <text x="17530" y="10315"  class="fil1 fnt1">BA</text>
   <text x="17333" y="7709"  class="fil1 fnt1">10</text>
-  <text x="17681" y="8729"  class="fil1 fnt1">T1BA</text>
+  <text x="17681" y="8729"  class="fil1 fnt1">T1</text>
+  <text x="18076" y="8729"  class="fil1 fnt1">BA</text>
   <text x="2185" y="11956"  class="fil1 fnt6">4054 / </text>
   <text x="2694" y="11956"  class="fil1 fnt7">350</text>
   <text x="3873" y="12089"  class="fil1 fnt6">4031A / </text>
@@ -900,10 +937,10 @@ viewBox="0 0 50000 23386"
   <text x="17573" y="10637"  class="fil1 fnt7">263</text>
   <line class="fil0 str5" x1="2562" y1="8210" x2="1042" y2= "8210" />
   <line class="fil0 str5" x1="1062" y1="8206" x2="1062" y2= "9317" />
-  <text x="1812" y="9005"  class="fil1 fnt1">L42CSec2</text>
+  <text x="1812" y="9005"  class="fil1 fnt1">L42Csec2</text>
   <g>
    <text x="18281" y="10304"  class="fil1 fnt1">Spare</text>
-   <g id="_660350832">
+   <g id="_856327312">
     <line class="fil0 str1" x1="18693" y1="7865" x2="18693" y2= "8615" />
     <line class="fil0 str1" x1="18693" y1="9103" x2="18693" y2= "9853" />
     <line class="fil0 str2" x1="18693" y1="8592" x2="19075" y2= "9116" />
@@ -911,7 +948,7 @@ viewBox="0 0 50000 23386"
   </g>
   <g>
    <text x="19355" y="10304"  class="fil1 fnt1">Blank</text>
-   <g id="_660350256">
+   <g id="_856324464">
     <line class="fil0 str1" x1="19767" y1="7855" x2="19767" y2= "8605" />
     <line class="fil0 str1" x1="19767" y1="9093" x2="19767" y2= "9843" />
     <line class="fil0 str2" x1="19767" y1="8582" x2="20149" y2= "9106" />
@@ -920,40 +957,41 @@ viewBox="0 0 50000 23386"
   <text x="18530" y="7695"  class="fil1 fnt1">11</text>
   <text x="19710" y="7695"  class="fil1 fnt1">12</text>
   <g>
-   <g id="_660347696">
+   <g id="_856322832">
     <circle class="fil7 str9" cx="7912" cy="3665" r="161"/>
     <line class="fil0 str0" x1="7912" y1="3665" x2="8260" y2= "3665" />
    </g>
-   <g id="_660348784">
+   <g id="_856323568">
     <circle class="fil7 str9" cx="9729" cy="3665" r="161"/>
     <line class="fil0 str0" x1="9729" y1="3665" x2="10077" y2= "3665" />
    </g>
-   <g id="_660345264">
+   <g id="_856323792">
     <circle class="fil7 str9" cx="20369" cy="3665" r="161"/>
     <line class="fil0 str0" x1="20369" y1="3665" x2="20717" y2= "3665" />
    </g>
-   <g id="_660347216">
+   <g id="_856322256">
     <circle class="fil7 str9" cx="22524" cy="3646" r="161"/>
     <line class="fil0 str0" x1="22524" y1="3646" x2="22872" y2= "3646" />
    </g>
-   <g id="_660345776">
+   <g id="_856320432">
     <circle class="fil7 str9" cx="34128" cy="3646" r="161"/>
     <line class="fil0 str0" x1="34128" y1="3646" x2="34476" y2= "3646" />
    </g>
-   <g id="_660414256">
+   <g id="_856320976">
     <circle class="fil7 str9" cx="47470" cy="3646" r="161"/>
     <line class="fil0 str0" x1="47670" y1="3646" x2="48017" y2= "3646" />
    </g>
   </g>
   <g>
-   <circle class="fil7 str9" cx="43631" cy="22723" r="161"/>
-   <line class="fil0 str0" x1="43631" y1="22723" x2="43979" y2= "22723" />
+   <circle class="fil7 str9" cx="2006" cy="21085" r="161"/>
+   <line class="fil0 str0" x1="2006" y1="21085" x2="2354" y2= "21085" />
   </g>
-  <text x="44300" y="22865"  class="fil1 fnt1">Energy Meter</text>
+  <text x="2550" y="21218"  class="fil1 fnt1">Energy Meter</text>
   <line class="fil0 str0" x1="9558" y1="16834" x2="29608" y2= "16834" />
   <g>
-   <text x="19260" y="19276"  class="fil1 fnt1">ACCU1</text>
-   <g id="_660412016">
+   <text x="19266" y="19276"  class="fil1 fnt1">ACCU</text>
+   <text x="20251" y="19276"  class="fil1 fnt1">1</text>
+   <g id="_856318064">
     <line class="fil0 str1" x1="19782" y1="16857" x2="19782" y2= "17606" />
     <line class="fil0 str1" x1="19782" y1="18095" x2="19782" y2= "18844" />
     <line class="fil0 str2" x1="19782" y1="17584" x2="20164" y2= "18108" />
@@ -1003,20 +1041,23 @@ viewBox="0 0 50000 23386"
   <text x="9996" y="16723"  class="fil1 fnt1">1</text>
   <text x="8810" y="20015"  class="fil1 fnt6">1007 / </text>
   <text x="9320" y="20015"  class="fil1 fnt7">101-01</text>
-  <text x="11362" y="18084"  class="fil1 fnt1">L4GC</text>
+  <text x="11362" y="18084"  class="fil1 fnt1">L4</text>
+  <text x="11739" y="18084"  class="fil1 fnt1">GC</text>
   <line class="fil0 str5" x1="11705" y1="16841" x2="11705" y2= "17590" />
-  <text x="12118" y="21301"  class="fil1 fnt1">LGCSec3</text>
+  <text x="12124" y="21301"  class="fil1 fnt1">LGC</text>
+  <text x="12839" y="21301"  class="fil1 fnt1">sec3</text>
   <g>
    <line class="fil0 str5" x1="11718" y1="18489" x2="11718" y2= "19024" />
    <line class="fil0 str5" x1="11718" y1="19513" x2="11718" y2= "20160" />
    <circle class="fil0 str0" cx="11731" cy="19173" r="154"/>
    <circle class="fil0 str0" cx="11731" cy="19363" r="154"/>
-   <text x="12046" y="19253"  class="fil1 fnt1">TGC</text>
+   <text x="12051" y="19253"  class="fil1 fnt1">TGC</text>
   </g>
   <text x="11603" y="16721"  class="fil1 fnt1">2</text>
   <line class="fil0 str5" x1="10602" y1="20160" x2="12771" y2= "20160" />
   <line class="fil0 str5" x1="10612" y1="20159" x2="10612" y2= "20909" />
-  <text x="10983" y="22039"  class="fil1 fnt1">LGCSec2</text>
+  <text x="10989" y="22039"  class="fil1 fnt1">LGC</text>
+  <text x="11704" y="22039"  class="fil1 fnt1">sec2</text>
   <line class="fil0 str5" x1="11723" y1="20159" x2="11723" y2= "21627" />
   <text x="9918" y="21522"  class="fil1 fnt6">1007 / </text>
   <text x="10428" y="21522"  class="fil1 fnt7">101-01</text>
@@ -1024,25 +1065,27 @@ viewBox="0 0 50000 23386"
   <text x="12203" y="22436"  class="fil1 fnt7">113-02</text>
   <text x="11288" y="18390"  class="fil1 fnt6">1007 / </text>
   <text x="11798" y="18390"  class="fil1 fnt7">101-01</text>
-  <text x="15245" y="18118"  class="fil1 fnt1">L4G1Sec1</text>
+  <text x="15245" y="18118"  class="fil1 fnt1">L4G1sec1</text>
   <line class="fil0 str5" x1="15963" y1="16841" x2="15963" y2= "17590" />
-  <text x="14508" y="21311"  class="fil1 fnt1">LG1Sec1</text>
+  <text x="14514" y="21311"  class="fil1 fnt1">LG</text>
+  <text x="14976" y="21311"  class="fil1 fnt1">1sec1</text>
   <g>
    <line class="fil0 str5" x1="15975" y1="18284" x2="15975" y2= "19034" />
    <line class="fil0 str5" x1="15975" y1="19523" x2="15975" y2= "20170" />
    <circle class="fil0 str0" cx="15988" cy="19183" r="154"/>
    <circle class="fil0 str0" cx="15988" cy="19373" r="154"/>
-   <text x="16303" y="19263"  class="fil1 fnt1">TGD</text>
+   <text x="16309" y="19263"  class="fil1 fnt1">TGD</text>
   </g>
   <text x="15861" y="16721"  class="fil1 fnt1">3</text>
   <line class="fil0 str5" x1="15189" y1="20170" x2="16761" y2= "20170" />
   <line class="fil0 str5" x1="15200" y1="20169" x2="15200" y2= "20919" />
-  <text x="16111" y="21887"  class="fil1 fnt1">LG1Sec2</text>
+  <text x="16117" y="21887"  class="fil1 fnt1">LG</text>
+  <text x="16579" y="21887"  class="fil1 fnt1">1sec2</text>
   <line class="fil0 str5" x1="16740" y1="20169" x2="16740" y2= "21494" />
   <text x="15482" y="22409"  class="fil1 fnt6">2007 / </text>
   <text x="15991" y="22409"  class="fil1 fnt7">L1-01</text>
   <line class="fil0 str5" x1="15963" y1="17215" x2="17758" y2= "17215" />
-  <text x="17073" y="18698"  class="fil1 fnt1">L4G1Sec2</text>
+  <text x="17073" y="18698"  class="fil1 fnt1">L4G1sec2</text>
   <line class="fil0 str5" x1="17758" y1="17230" x2="17758" y2= "18273" />
   <g>
    <circle class="fil7 str9" cx="14831" cy="20518" r="161"/>
@@ -1061,7 +1104,8 @@ viewBox="0 0 50000 23386"
   <g>
    <path class="fil8" d="M17659 20930l-378 -378 5 -5 378 378 -2 6 -3 -1zm3 1l-1 0 -1 -1 3 1zm292 -6l-292 6 0 -7 292 -6 0 7zm49 -4l-97 44 1 -3 1 -3 1 -3 1 -3 1 -3 1 -3 1 -3 1 -3 1 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 0 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 -1 -3 0 0 99 40z"/>
   </g>
-  <text x="9730" y="21301"  class="fil1 fnt12">LGCSec1</text>
+  <text x="9736" y="21301"  class="fil1 fnt12">LGC</text>
+  <text x="10451" y="21301"  class="fil1 fnt12">sec1</text>
   <line class="fil0 str5" x1="12761" y1="20159" x2="12761" y2= "20909" />
   <g transform="matrix(2.64845E-014 -1 1 2.64845E-014 9447.06 36064.8)">
    <text x="25000" y="11693"  class="fil9 fnt12">Emergency / Generator backup </text>
@@ -1069,7 +1113,8 @@ viewBox="0 0 50000 23386"
   <line class="fil0 str5" x1="37023" y1="10850" x2="38594" y2= "10850" />
   <line class="fil0 str1" x1="37026" y1="10865" x2="37026" y2= "12254" />
   <line class="fil0 str1" x1="38559" y1="10865" x2="38559" y2= "12701" />
-  <text x="37829" y="13065"  class="fil1 fnt12">LGBSec2</text>
+  <text x="37835" y="13065"  class="fil1 fnt12">LGB</text>
+  <text x="38531" y="13065"  class="fil1 fnt12">sec2</text>
   <line class="fil0 str5" x1="42231" y1="10023" x2="43803" y2= "10023" />
   <line class="fil0 str5" x1="42943" y1="9288" x2="42943" y2= "10038" />
   <g>
@@ -1077,9 +1122,11 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str5" x1="43792" y1="11276" x2="43792" y2= "11923" />
    <circle class="fil0 str0" cx="43805" cy="10937" r="154"/>
    <circle class="fil0 str0" cx="43805" cy="11127" r="154"/>
-   <text x="43902" y="10833"  class="fil1 fnt12">TLG-D</text>
+   <text x="43908" y="10833"  class="fil1 fnt12">TLG</text>
+   <text x="44586" y="10833"  class="fil1 fnt12">-D</text>
   </g>
-  <text x="43472" y="12302"  class="fil1 fnt12">LG-D</text>
+  <text x="43477" y="12302"  class="fil1 fnt12">LG</text>
+  <text x="43940" y="12302"  class="fil1 fnt12">-D</text>
   <text x="42076" y="10570"  class="fil1 fnt13">5</text>
   <text x="43616" y="10570"  class="fil1 fnt13">6</text>
   <g>
@@ -1121,7 +1168,7 @@ viewBox="0 0 50000 23386"
      </g>
      <g style="clip-path:url(#id4)">
       <a xlink:href="MSWB">
-       <text x="1656" y="17161"  class="fil1 fnt16">MSWB</text>
+       <text x="1661" y="17161"  class="fil1 fnt16">MSWB</text>
       </a>
      </g>
     </g>
@@ -1150,7 +1197,7 @@ viewBox="0 0 50000 23386"
      <g>
      </g>
      <g style="clip-path:url(#id8)">
-      <text x="1656" y="17580"  class="fil1 fnt16">DHB</text>
+      <text x="1661" y="17580"  class="fil1 fnt16">DHB</text>
      </g>
     </g>
     <g>
@@ -1178,7 +1225,7 @@ viewBox="0 0 50000 23386"
      <g>
      </g>
      <g style="clip-path:url(#id12)">
-      <text x="1656" y="17999"  class="fil1 fnt16">DE</text>
+      <text x="1661" y="17999"  class="fil1 fnt16">DE</text>
      </g>
     </g>
     <g>
@@ -1206,7 +1253,7 @@ viewBox="0 0 50000 23386"
      <g>
      </g>
      <g style="clip-path:url(#id16)">
-      <text x="1656" y="18419"  class="fil1 fnt16">DG</text>
+      <text x="1661" y="18419"  class="fil1 fnt16">DG</text>
      </g>
     </g>
     <g>
@@ -1234,7 +1281,7 @@ viewBox="0 0 50000 23386"
      <g>
      </g>
      <g style="clip-path:url(#id20)">
-      <text x="1656" y="18838"  class="fil1 fnt16">DL</text>
+      <text x="1661" y="18838"  class="fil1 fnt16">DL</text>
      </g>
     </g>
     <g>
@@ -1262,7 +1309,7 @@ viewBox="0 0 50000 23386"
      <g>
      </g>
      <g style="clip-path:url(#id24)">
-      <text x="1656" y="19257"  class="fil1 fnt16">CC</text>
+      <text x="1661" y="19257"  class="fil1 fnt16">CC</text>
      </g>
     </g>
     <g>
@@ -1330,7 +1377,8 @@ viewBox="0 0 50000 23386"
   </g>
   <text x="3913" y="20233"  class="fil1 fnt17">* Based on 2016 Data</text>
   <line class="fil0 str5" x1="9239" y1="21181" x2="9656" y2= "21181" />
-  <text x="6758" y="21298"  class="fil1 fnt18">LGCSec1-1</text>
+  <text x="6764" y="21298"  class="fil1 fnt18">LGC</text>
+  <text x="7478" y="21298"  class="fil1 fnt18">sec1-1</text>
   <line class="fil0 str5" x1="8548" y1="21181" x2="8965" y2= "21181" />
   <line class="fil0 str0" x1="8952" y1="20885" x2="9247" y2= "21180" />
   <g transform="matrix(1.0002 0 0 1 -17860 9897.75)">
@@ -1368,7 +1416,9 @@ viewBox="0 0 50000 23386"
   <a xlink:href="MSWB.5-DHB.1-L42Csec2.38-T2C.L2C">
    <rect class="fil0 str12" x="2146" y="11268" width="882" height="712"/>
   </a>
-  <text x="4278" y="11811"  class="fil1 fnt18">L2BAsec2</text>
+  <text x="4278" y="11811"  class="fil1 fnt18">L2</text>
+  <text x="4655" y="11811"  class="fil1 fnt18">BA</text>
+  <text x="5117" y="11811"  class="fil1 fnt18">sec2</text>
   <line class="fil0 str5" x1="3982" y1="9807" x2="4668" y2= "9807" />
   <line class="fil0 str5" x1="3612" y1="9804" x2="3955" y2= "9804" />
   <line class="fil0 str5" x1="3618" y1="9807" x2="3618" y2= "10556" />
@@ -1427,7 +1477,6 @@ viewBox="0 0 50000 23386"
   <a xlink:href="MSWB.6-DE.8-PMEsec2">
    <rect class="fil0 str12" x="20963" y="15255" width="1591" height="410"/>
   </a>
-  <rect class="fil0 str12" x="1606" y="16932" width="861" height="266"/>
   <a xlink:href="MSWB.5-DHB">
    <rect class="fil0 str12" x="1606" y="17304" width="717" height="341"/>
   </a>
@@ -1473,28 +1522,30 @@ viewBox="0 0 50000 23386"
    <rect class="fil0 str12" x="11236" y="17740" width="1094" height="446"/>
   </a>
   <g>
-   <polygon class="fil0" points="46801,21786 49621,21786 49621,22958 46801,22958 "/>
-   <text x="47685" y="22473"  class="fil1 fnt21">P</text>
-   <text x="48271" y="22313"  class="fil1 fnt22">anel</text>
-   <text x="47887" y="22936"  class="fil1 fnt23">S</text>
-   <text x="48434" y="22733"  class="fil1 fnt24">py</text>
-   <g>
-    <polygon class="fil10 str13" points="46815,22902 47742,22902 47742,22567 47281,22681 46813,22565 "/>
+   <a xlink:href="PANEL_SPY:MSWB">
+    <polygon class="fil0" points="46801,21786 49621,21786 49621,22958 46801,22958 "/>
+    <text x="47685" y="22473"  class="fil1 fnt21">P</text>
+    <text x="48271" y="22313"  class="fil1 fnt22">anel</text>
+    <text x="47887" y="22936"  class="fil1 fnt23">S</text>
+    <text x="48434" y="22733"  class="fil1 fnt24">py</text>
     <g>
+     <polygon class="fil10 str13" points="46815,22902 47742,22902 47742,22567 47281,22681 46813,22565 "/>
      <g>
-      <path class="fil1" d="M47226 22452c4,9 7,19 7,30 0,40 -34,73 -76,73 -38,0 -70,-28 -75,-64l144 -39z"/>
-      <path class="fil1 str14" d="M47000 22435l200 0c15,0 27,12 27,27l0 0c0,15 -12,27 -27,27l-200 0c-15,0 -27,-12 -27,-27l0 0c0,-15 12,-27 27,-27z"/>
+      <g>
+       <path class="fil1" d="M47226 22452c4,9 7,19 7,30 0,40 -34,73 -76,73 -38,0 -70,-28 -75,-64l144 -39z"/>
+       <path class="fil1 str14" d="M47000 22435l200 0c15,0 27,12 27,27l0 0c0,15 -12,27 -27,27l-200 0c-15,0 -27,-12 -27,-27l0 0c0,-15 12,-27 27,-27z"/>
+      </g>
+      <g>
+       <path class="fil1" d="M47568 22452c4,9 7,19 7,30 0,40 -34,73 -76,73 -38,0 -70,-28 -75,-64l144 -39z"/>
+       <path class="fil1 str14" d="M47343 22435l200 0c15,0 27,12 27,27l0 0c0,15 -12,27 -27,27l-200 0c-15,0 -27,-12 -27,-27l0 0c0,-15 12,-27 27,-27z"/>
+      </g>
      </g>
      <g>
-      <path class="fil1" d="M47568 22452c4,9 7,19 7,30 0,40 -34,73 -76,73 -38,0 -70,-28 -75,-64l144 -39z"/>
-      <path class="fil1 str14" d="M47343 22435l200 0c15,0 27,12 27,27l0 0c0,15 -12,27 -27,27l-200 0c-15,0 -27,-12 -27,-27l0 0c0,-15 12,-27 27,-27z"/>
+      <polygon class="fil10 str13" points="46856,22362 47695,22362 47707,22340 47691,22317 47596,22317 47478,22002 47276,22077 47071,21945 46961,22313 46856,22313 46844,22338 "/>
+      <path class="fil10 str13" d="M46877 22300l794 0c25,0 45,20 45,45l0 0c0,25 -20,45 -45,45l-794 0c-25,0 -45,-20 -45,-45l0 0c0,-25 20,-45 45,-45z"/>
      </g>
     </g>
-    <g>
-     <polygon class="fil10 str13" points="46856,22362 47695,22362 47707,22340 47691,22317 47596,22317 47478,22002 47276,22077 47071,21945 46961,22313 46856,22313 46844,22338 "/>
-     <path class="fil10 str13" d="M46877 22300l794 0c25,0 45,20 45,45l0 0c0,25 -20,45 -45,45l-794 0c-25,0 -45,-20 -45,-45l0 0c0,-25 20,-45 45,-45z"/>
-    </g>
-   </g>
+   </a>
   </g>
   <a xlink:href="MSWB.7-DG.3-L4G1sec1">
    <rect class="fil0 str12" x="15210" y="17812" width="1613" height="416"/>
@@ -1613,7 +1664,7 @@ viewBox="0 0 50000 23386"
   <a xlink:href="MSWB.9-AMDP.7-HSHLA.100-TCC.HSLAsec1">
    <rect class="fil0 str12" x="40224" y="20927" width="1535" height="469"/>
   </a>
-  <rect class="fil0 str15" x="351" y="440" width="49393" height="22671"/>
+  <rect class="fil0 str15" x="351" y="450" width="49393" height="22671"/>
   <a xlink:href="MSWB">
    <rect class="fil0 str16" x="24186" y="755" width="3542" height="979"/>
   </a>

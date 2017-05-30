@@ -27,8 +27,8 @@
   svg
   {
     position: absolute;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
   }
 </style>
 
@@ -63,10 +63,21 @@
       }
       else
       {
-        // Link is path
-        $( tA ).attr( 'path', sLink );
+        // Link is internal
         $( tA ).attr( 'href', 'javascript:void(null)' );
-        $( tA ).click( openImageWindow );
+
+        if ( sLink.indexOf( 'PANEL_SPY:' ) == 0 )
+        {
+          // Link is to main window
+          $( tA ).attr( 'path', sLink.split( ':' )[1] );
+          $( tA ).click( openMainWindow );
+        }
+        else
+        {
+          // Link is path
+          $( tA ).attr( 'path', sLink );
+          $( tA ).click( openImageWindow );
+        }
       }
 
       // Remove original link
@@ -74,11 +85,94 @@
 
       // Make linked object clickable
       var tRect = $( tA ).find( 'rect' );
-      tRect.css( 'fill', 'blue' );
-      tRect.css( 'stroke', 'pink' );
-      tRect.css( 'stroke-width', '5' );
+      tRect.css( 'fill', 'white' );
+      tRect.css( 'stroke', 'black' );
+      tRect.css( 'stroke-width', '8' );
       tRect.css( 'fill-opacity', '0.001' );
-      tRect.css( 'stroke-opacity', '0.9' );
+      tRect.css( 'stroke-opacity', '0.7' );
+    }
+  }
+
+
+  function openMainWindow( tEvent )
+  {
+    console.log( 'Trying to get main window' );
+    var tMain = window.opener;
+
+    try
+    {
+      // Determine whether original main window is available
+      var sTestTitle = tMain.document.title;
+
+      // No exception: Original main window available
+      console.log( 'Original opener available, title=' + sTestTitle );
+    }
+    catch( e )
+    {
+      // Exception: Original main window not available
+      console.log( 'Original opener NOT available' );
+
+      // Determine whether reopened main window is available
+      if ( g_tMainWindow )
+      {
+        if ( g_tMainWindow.closed )
+        {
+          console.log( 'Reopened main window CLOSED' );
+          g_tMainWindow = null;
+        }
+        else
+        {
+          try
+          {
+            sTestTitle = g_tMainWindow.document.title;
+            console.log( 'Reopened main window available, title=' + sTestTitle );
+          }
+          catch( e )
+          {
+            // Reopened main window not available
+            g_tMainWindow = null;
+            console.log( 'Reopened main window NOT available' );
+          }
+        }
+      }
+
+      tMain = g_tMainWindow;
+    }
+
+    // Find panel on main window
+    var sPath = $( tEvent.target ).closest( 'a' ).attr( 'path' );
+    console.log( '===> sPath=' + sPath );
+    var sGotoUrl = '/?goto=' + sPath;
+    if ( tMain )
+    {
+      // Main window is available: use it
+
+      if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
+      {
+        // Main window is currently on Circuits page
+        console.log( 'Navigating on Circuits page' );
+        tMain.g_sSearchTargetPath = sPath;
+        tMain.navigateToSearchTarget();
+      }
+      else
+      {
+        // Main window is not currently on Circuits page
+        console.log( 'Returning to Circuits page using goto' );
+        tMain.location.assign( sGotoUrl );
+      }
+    }
+    else
+    {
+      // Main window is not available: Open a new one
+      console.log( 'Reopening main window using goto' );
+      try
+      {
+        g_tMainWindow = window.open( sGotoUrl, 'Main' );
+      }
+      catch( e )
+      {
+        alert( 'Error: Could not reopen main window.' );
+      }
     }
   }
 
