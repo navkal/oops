@@ -199,10 +199,6 @@ var g_aImageWindows = [];
 function openImageWindow( tEvent )
 {
   var tA = $( tEvent.target ).closest( "a" );
-  if ( ! tA.length )
-  {
-    tA = $( tEvent.target ).closest( "AREA" );
-  }
 
   console.log( 'a len=' + tA.length );
   console.log( JSON.stringify( tA ) );

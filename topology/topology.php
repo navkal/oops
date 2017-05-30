@@ -20,7 +20,7 @@
     <div id="outer" style="visibility:hidden">
       <div id="wrap">
         <?php
-          require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.htm";
+          require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
         ?>
       </div>
     </div>
@@ -50,23 +50,24 @@
     $( window ).on( 'unload', closeChildWindows );
     $( window ).resize( resizeDiagram );
 
-    // Remove head tags from body
-    console.log( 'BF body meta length=' + $( 'body meta' ).length );
-    console.log( 'BF head meta length=' + $( 'head meta' ).length );
-    $( 'body meta' ).insertAfter( $( 'head meta' ).last() );
-    console.log( 'AF body meta length=' + $( 'body meta' ).length );
-    console.log( 'AF head meta length=' + $( 'head meta' ).length );
-    console.log( 'BF body title length=' + $( 'body title' ).length );
-    $( 'body title' ).remove();
-    console.log( 'AF body title length=' + $( 'body title' ).length );
 
     // Generate hyperlinks to open image window
-    $( 'AREA' ).each(
-      function( i, tArea )
+    $( 'a' ).each(
+      function( i, tA )
       {
-        $( tArea ).attr( 'path', $( tArea ).attr( 'HREF' ) );
-        $( tArea ).attr( 'href', 'javascript:void(null)' );
-        $( tArea ).click( openImageWindow );
+        // Configure hyperlink
+        $( tA ).attr( 'path', $( tA ).attr( 'xlink:href' ) );
+        console.log( 'path=' + $( tA ).attr( 'path' ) );
+        $( tA ).attr( 'href', 'javascript:void(null)' );
+        $( tA ).removeAttr( 'xlink:href' );
+        $( tA ).click( openImageWindow );
+
+        // Make it clickable
+        $( tA ).find( 'rect' ).css( 'fill', 'blue' );
+        $( tA ).find( 'rect' ).css( 'stroke', 'pink' );
+        $( tA ).find( 'rect' ).css( 'stroke-width', '5' );
+        $( tA ).find( 'rect' ).css( 'fill-opacity', '0.001' );
+        $( tA ).find( 'rect' ).css( 'stroke-opacity', '0.9' );
       }
     );
 
