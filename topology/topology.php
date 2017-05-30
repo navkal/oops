@@ -1,5 +1,3 @@
-<!-- Copyright 2017 Panel Spy.  All rights reserved. -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,9 +15,43 @@
 
   <!-- Body -->
 	<body>
-    <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
-    ?>
+    <div class="container" >
+      <div>
+        <span class="btn-group btn-group-xs" >
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
+            <span class="glyphicon glyphicon-minus" ></span>
+          </button>
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
+            <span class="glyphicon glyphicon-plus" ></span>
+          </button>
+          <button type="button" class="btn btn-default btn-xs" title="Zoom Out" onclick="zoomDiagram( false )" >
+            <span class="glyphicon glyphicon-zoom-out">
+            </span>
+          </button>
+          <button type="button" class="btn btn-default btn-xs" title="Zoom In" onclick="zoomDiagram( true )" >
+            <span class="glyphicon glyphicon-zoom-in">
+            </span>
+          </button>
+          <button type="button" class="btn btn-default btn-xs" title="Zoom Out" onclick="zoomDiagram( false )" >
+            <span class="glyphicon glyphicon-minus">
+            </span>
+          </button>
+          <button type="button" class="btn btn-default btn-xs" title="Zoom In" onclick="zoomDiagram( true )" >
+            <span class="glyphicon glyphicon-plus">
+            </span>
+          </button>
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
+            <span class="glyphicon glyphicon-zoom-out" ></span>
+          </button>
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
+            <span class="glyphicon glyphicon-zoom-in" ></span>
+          </button>
+        </span>
+      </div>
+      <?php
+        require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
+      ?>
+    </div>
   </body>
 </html>
 
@@ -27,8 +59,12 @@
   svg
   {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 95%;
+    height: 95%;
+  }
+  .glyphicon
+  {
+    font-size: 16px;
   }
 </style>
 
@@ -168,6 +204,14 @@
         alert( 'Error: Could not reopen main window.' );
       }
     }
+  }
+
+  function zoomDiagram( bIn )
+  {
+    var tDiagram = $( 'svg' );
+    var nPercent = bIn ? 6/5 : 5/6;
+    tDiagram.width( tDiagram.width() * nPercent );
+    tDiagram.height( tDiagram.height() * nPercent );
   }
 
   function closeChildWindows()
