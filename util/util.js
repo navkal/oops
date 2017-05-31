@@ -198,12 +198,12 @@ var g_aImageWindows = [];
 
 function openImageWindow( tEvent )
 {
-  var tA = $( tEvent.target ).closest( "a" );
+  var tAnchor = $( tEvent.target ).closest( "a" );
 
-  console.log( 'a len=' + tA.length );
-  console.log( JSON.stringify( tA ) );
+  console.log( 'a len=' + tAnchor.length );
+  console.log( JSON.stringify( tAnchor ) );
 
-  var sPath = tA.attr( "path" );
+  var sPath = tAnchor.attr( "path" );
   var sUrl = '../circuits/image.php?path=' + sPath;
 
   var nDefaultWidth = 800;

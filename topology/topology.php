@@ -37,8 +37,8 @@
   svg
   {
     position: absolute;
-    width: 95%;
-    height: 95%;
+    width: 100%;
+    height: 100%;
   }
   .glyphicon
   {
@@ -58,13 +58,18 @@
 
     // Generate hyperlinks to open image window
     $( 'a' ).each( makeHyperlink );
+
+    // Ensure that initial display has no scroll bars
+    zoomDiagram( false );
   }
 
-  function makeHyperlink( i, tA )
+  function makeHyperlink( i, tEl )
   {
+    var tAnchor = $( tEl );
+
     // Get original hyperlink
-    var sLink = $( tA ).attr( 'xlink:href' );
-    console.log( 'link=' + $( tA ).attr( 'sLink' ) );
+    var sLink = tAnchor.attr( 'xlink:href' );
+    console.log( 'link=' + sLink );
 
     // Reconfigure hyperlink
     if ( sLink )
@@ -72,32 +77,32 @@
       if ( sLink.toLowerCase().indexOf( 'http://' ) == 0 )
       {
         // Link is full URL
-        $( tA ).attr( 'href', sLink );
-        $( tA ).attr( 'target', '_blank' );
+        tAnchor.attr( 'href', sLink );
+        tAnchor.attr( 'target', '_blank' );
       }
       else
       {
         // Link is internal
-        $( tA ).attr( 'href', 'javascript:void(null)' );
+        tAnchor.attr( 'href', 'javascript:void(null)' );
 
         if ( sLink == 'PANELSPY' )
         {
           // Link is to main window
-          $( tA ).click( openMainWindow );
+          tAnchor.click( openMainWindow );
         }
         else
         {
           // Link is path
-          $( tA ).attr( 'path', sLink );
-          $( tA ).click( openImageWindow );
+          tAnchor.attr( 'path', sLink );
+          tAnchor.click( openImageWindow );
         }
       }
 
       // Remove original link
-      $( tA ).removeAttr( 'xlink:href' );
+      tAnchor.removeAttr( 'xlink:href' );
 
       // Style clickable rectangle
-      var tRect = $( tA ).find( 'rect' );
+      var tRect = tAnchor.find( 'rect' );
       tRect.css( 'fill', 'white' );
       tRect.css( 'stroke', 'black' );
       tRect.css( 'stroke-width', '5' );
