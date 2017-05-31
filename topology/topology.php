@@ -15,18 +15,19 @@
 
   <!-- Body -->
 	<body>
-    <div class="container" >
+    <div class="container-fluid" >
       <div id="zoomButtons" >
         <span class="btn-group btn-group-xs" >
-          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
-            <span class="glyphicon glyphicon-minus" ></span>
-          </button>
           <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
             <span class="glyphicon glyphicon-plus" ></span>
           </button>
+          <br/>
+          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
+            <span class="glyphicon glyphicon-minus" ></span>
+          </button>
         </span>
       </div>
-      <div>
+      <div class="clearfix" >
         <?php
           require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
         ?>
