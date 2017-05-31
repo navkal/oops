@@ -16,7 +16,7 @@
   <!-- Body -->
 	<body>
     <div class="container" >
-      <div>
+      <div style="position:fixed; z-index:100;" >
         <span class="btn-group btn-group-xs" >
           <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
             <span class="glyphicon glyphicon-minus" ></span>
@@ -26,9 +26,11 @@
           </button>
         </span>
       </div>
-      <?php
-        require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
-      ?>
+      <div>
+        <?php
+          require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topology.svg";
+        ?>
+      </div>
     </div>
   </body>
 </html>
