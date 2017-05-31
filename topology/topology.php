@@ -16,7 +16,7 @@
   <!-- Body -->
 	<body>
     <div class="container" >
-      <div style="position:fixed; z-index:100;" >
+      <div id="zoomButtons" >
         <span class="btn-group btn-group-xs" >
           <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
             <span class="glyphicon glyphicon-minus" ></span>
@@ -42,6 +42,17 @@
     width: 100%;
     height: 100%;
   }
+
+  #zoomButtons
+  {
+    position: fixed;
+    margin-top: 8px;
+    z-index: 100;
+    border: 1px solid #0097cf;
+    border-radius: 4px;
+    background-color: #e6f8ff;
+  }
+
   .glyphicon
   {
     font-size: 16px;
