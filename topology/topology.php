@@ -40,8 +40,8 @@
   svg
   {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 110%;
+    height: 110%;
   }
 
   #zoomButtons
@@ -202,7 +202,7 @@
   function zoomDiagram( bIn )
   {
     var tDiagram = $( 'svg' );
-    var nPercent = bIn ? 6/5 : 5/6;
+    var nPercent = bIn ? 7/6 : 6/7;
     tDiagram.width( tDiagram.width() * nPercent );
     tDiagram.height( tDiagram.height() * nPercent );
   }
