@@ -51,12 +51,12 @@
     z-index: 100;
     border: 1px solid #0097cf;
     border-radius: 4px;
-    background-color: #e6f8ff;
+    background-color: #f0fbff;
   }
 
   .glyphicon
   {
-    font-size: 16px;
+    font-size: 11px;
   }
 </style>
 
