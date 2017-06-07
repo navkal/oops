@@ -5,38 +5,7 @@
 
   <!-- Head -->
   <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headStart.php";
-  ?>
-  <title>Properties:
-    <?php
-      echo( $_REQUEST["path"] );
-    ?>
-  </title>
-  <style>
-    #objectArea .table > tbody > tr:first-child > td
-    {
-      border: none;
-    }
-    .glyphicon-arrow-up,.glyphicon-arrow-down
-    {
-      font-size: 16px;
-    }
-  </style>
-
-  <script>
-    var g_sPath = '<?=$_REQUEST["path"]?>';
-    var g_sType = '<?=$_REQUEST["type"]?>';
-    var g_sOid = '<?=$_REQUEST["oid"]?>';
-    var g_sRole = '<?=$_SESSION['panelSpy']['user']['role']?>';
-  </script>
-  <?php
-    $iVersion = time();
-  ?>
-  <script src="../util/util.js?version=<?=$iVersion?>"></script>
-  <script src="properties.js?version=<?=$iVersion?>"></script>
-
-  <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headEnd.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/head.php";
   ?>
 
   <!-- Body -->
@@ -116,3 +85,33 @@
     </div>
  	</body>
 </html>
+
+<style>
+  #objectArea .table > tbody > tr:first-child > td
+  {
+    border: none;
+  }
+  .glyphicon-arrow-up,.glyphicon-arrow-down
+  {
+    font-size: 16px;
+  }
+</style>
+
+<script>
+  var g_sPath = '<?=$_REQUEST["path"]?>';
+  var g_sType = '<?=$_REQUEST["type"]?>';
+  var g_sOid = '<?=$_REQUEST["oid"]?>';
+  var g_sRole = '<?=$_SESSION['panelSpy']['user']['role']?>';
+
+  $( document ).ready( init )
+  function init()
+  {
+    document.title = 'Properties: ' + g_sPath;
+  }
+</script>
+
+<?php
+  $iVersion = time();
+?>
+<script src="../util/util.js?version=<?=$iVersion?>"></script>
+<script src="properties.js?version=<?=$iVersion?>"></script>
