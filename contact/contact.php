@@ -1,4 +1,4 @@
-<!-- Copyright 2016 Energize Apps.  All rights reserved. -->
+<!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <div class="container">
   <?php

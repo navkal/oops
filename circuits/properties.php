@@ -27,7 +27,7 @@
     var g_sPath = '<?=$_REQUEST["path"]?>';
     var g_sType = '<?=$_REQUEST["type"]?>';
     var g_sOid = '<?=$_REQUEST["oid"]?>';
-    var g_sRole = '<?=$_SESSION["user"]["role"]?>';
+    var g_sRole = '<?=$_SESSION['panelSpy']['user']['role']?>';
   </script>
   <?php
     $iVersion = time();

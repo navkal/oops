@@ -1,3 +1,5 @@
+<!-- Copyright 2017 Panel Spy.  All rights reserved. -->
+
 <!DOCTYPE html>
 <html lang="en">
 

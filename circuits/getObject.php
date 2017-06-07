@@ -49,9 +49,9 @@
   {
     $sPath = $tResult->path;
 
-    if ( strpos( $sPath, $_SESSION["reservedDelimiter"] ) !== false )
+    if ( strpos( $sPath, $_SESSION['panelSpy']['reservedDelimiter'] ) !== false )
     {
-      $tResult->error = "Path contains reserved substring '" . $_SESSION["reservedDelimiter"] . "'";
+      $tResult->error = "Path contains reserved substring '" . $_SESSION['panelSpy']['reservedDelimiter'] . "'";
       $sResult = json_encode( $tResult );
     }
   }

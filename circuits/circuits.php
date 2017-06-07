@@ -1,16 +1,16 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  $_SESSION["reservedDelimiter"] = '-_-_-';
-  $_SESSION['user'] = [];
-  $_SESSION['user']['role'] = isset( $_REQUEST['role'] ) ? $_REQUEST['role'] : '';
+  $_SESSION['panelSpy']['reservedDelimiter'] = '-_-_-';
+  $_SESSION['panelSpy']['user'] = [];
+  $_SESSION['panelSpy']['user']['role'] = isset( $_REQUEST['role'] ) ? $_REQUEST['role'] : '';
 
   $iVersion = time();
   $sGoto = isset( $_REQUEST['goto'] ) ? $_REQUEST['goto'] : '';
 ?>
 
 <script>
-  var g_sReservedDelimiter = "<?=$_SESSION["reservedDelimiter"]?>";
+  var g_sReservedDelimiter = "<?=$_SESSION['panelSpy']['reservedDelimiter']?>";
 </script>
 
 <!-- Circuit Navigator scripts -->
