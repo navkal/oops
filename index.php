@@ -1,6 +1,7 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
+  require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   require_once $_SERVER["DOCUMENT_ROOT"] . "/session/session.php";
 
   $iVersion = time();
