@@ -19,7 +19,7 @@
     return $g_bSignedIn;
   }
 
-  function isSignedIn()
+  function signedIn()
   {
     global $g_bSignedIn;
     return $g_bSignedIn;

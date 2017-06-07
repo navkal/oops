@@ -3,7 +3,7 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/session.php";
 
-  if ( ! isSignedIn() && signIn() )
+  if ( ! signedIn() && signIn() )
   {
     include "../common/main.php";
     $iVersion = time();
