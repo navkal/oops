@@ -10,19 +10,7 @@
 
   <!-- Head -->
   <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headStart.php";
-  ?>
-  <title>
-    Image: <?=$sPath?>
-  </title>
-  <style>
-    .glyphicon-arrow-left
-    {
-      font-size: 16px;
-    }
-  </style>
-  <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/headEnd.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/head.php";
   ?>
 
   <!-- Body -->
@@ -43,7 +31,15 @@
   </body>
 </html>
 
+<style>
+  .glyphicon-arrow-left
+  {
+    font-size: 16px;
+  }
+</style>
+
 <script>
+  document.title = 'Image: <?=$sPath?>';
 
   $( document ).ready( resizeWindow );
 
