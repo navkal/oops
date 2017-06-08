@@ -29,15 +29,6 @@ function submitCredentials( tEvent )
   }
 }
 
-function makeSignOutButton()
-{
-  var sSignOutHtml = '';
-  sSignOutHtml += '<form class="navbar-form navbar-right">';
-  sSignOutHtml += '<button type="button" class="btn btn-default" onclick="signOut();" >Sign Out</button>';
-  sSignOutHtml += '</form>';
-  $( '#navbar-collapse' ).append( sSignOutHtml );
-}
-
 function signOut()
 {
   // Post request to server
