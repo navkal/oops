@@ -31,6 +31,9 @@ function submitCredentials( tEvent )
 
 function signOut()
 {
+  // Close Topology window
+  childWindowsClose( g_aTopologyWindows )
+
   // Post request to server
   var tPostData = new FormData();
 
