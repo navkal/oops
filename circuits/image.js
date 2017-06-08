@@ -1,7 +1,5 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-$( document ).ready( resizeWindow );
-
 function resizeWindow()
 {
   var tImg = new Image();
