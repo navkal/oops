@@ -21,7 +21,6 @@
               <input type="text" id="username" class="form-control" placeholder="Username" required autofocus >
               <input type="password" id="password" class="form-control" placeholder="Password" required >
               <button class="btn btn-primary btn-block" onclick="submitCredentials(event)" >Sign In</button>
-              <button class="btn btn-default btn-block" onclick="clearCredentials(event)" >Clear</button>
             </div>
           </form>
         </div>

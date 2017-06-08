@@ -67,11 +67,3 @@ function showMain()
 {
   location.assign( '/' );
 }
-
-function clearCredentials( tEvent )
-{
-  $( '#username' ).val( '' );
-  $( '#password' ).val( '' );
-}
-
-
