@@ -57,3 +57,4 @@
 
 <script src="../util/util.js?version=<?=time()?>"></script>
 <script src="../topology/topology.js?version=<?=time()?>"></script>
+<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>

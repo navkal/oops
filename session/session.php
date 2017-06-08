@@ -1,6 +1,8 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
 
+  require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+
   function signIn( $sUsername, $sPassword )
   {
     if ( $bSignedIn = ( strlen( $sUsername ) <= 5 ) )
