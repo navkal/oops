@@ -20,6 +20,7 @@
         $( '#navbar-collapse' ).append( sSignOutHtml );
       }
     </script>
+    <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
 <?php
   }
   else
