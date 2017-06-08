@@ -11,6 +11,42 @@
     include "../common/main.php";
 ?>
     <link rel="stylesheet" href="util/navbar.css?version=<?=$iVersion?>">
+    <script>
+      $( document ).ready( init );
+      function init()
+      {
+        var sSignOutHtml = '';
+        sSignOutHtml += '<form class="navbar-form navbar-right">';
+        sSignOutHtml += '<button type="button" class="btn btn-default" onclick="signOut();" >Sign Out</button>';
+        sSignOutHtml += '</form>';
+        $( '#navbar-collapse' ).append( sSignOutHtml );
+      }
+
+      function signOut()
+      {
+        // Post request to server
+        var tPostData = new FormData();
+
+        $.ajax(
+          "session/signOut.php",
+          {
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            dataType : 'json',
+            data: tPostData
+          }
+        )
+        .done( showMain )
+        .fail( handleAjaxError );
+
+      }
+
+      function showMain()
+      {
+        location.assign( '/' );
+      }
+    </script>
 
 <?php
   }

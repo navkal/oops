@@ -55,7 +55,7 @@ function submitCredentials( tEvent )
     tPostData.append( "password", $( '#password' ).val() );
 
     $.ajax(
-      "session/signin.php",
+      "session/signIn.php",
       {
         type: 'POST',
         processData: false,
