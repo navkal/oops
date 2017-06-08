@@ -3,7 +3,7 @@
 
   function signIn( $sUsername, $sPassword )
   {
-    if ( $bSignedIn = ( (time()%2)==0 ) )
+    if ( $bSignedIn = ( strlen( $sUsername ) <= 5 ) )
     {
       // Initialize Panel Spy session storage
       $_SESSION['panelSpy'] = [];
@@ -11,15 +11,18 @@
       // Initialize session state
       $_SESSION['panelSpy']['session'] = [];
       $_SESSION['panelSpy']['session']['username'] = $sUsername;
-      switch(time()%3)
+
+      switch( strtolower( $sUsername ) )
       {
-        case 0:
+        case 'admin':
           $_SESSION['panelSpy']['session']['role'] = 'admin';
           break;
-        case 1:
+
+        case 'tech':
           $_SESSION['panelSpy']['session']['role'] = 'technician';
           break;
-        case 2:
+
+        default:
           $_SESSION['panelSpy']['session']['role'] = 'visitor';
           break;
       }

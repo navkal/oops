@@ -30,7 +30,6 @@
 
     <script>
       document.title = "Sign In - Panel Spy";
-      $('input').val('FAKE_FAKE_FAKE');
     </script>
 
   </body>
