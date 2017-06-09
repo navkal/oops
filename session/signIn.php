@@ -7,8 +7,37 @@
   $sUsername = $_POST['username'];
   $sPassword = $_POST['password'];
 
-  // Initialize Panel Spy session storage
-  $_SESSION['panelSpy'] = [];
+
+
+
+
+
+
+
+
+/******************************************************** /
+
+
+  // Look up user in database
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . " -p " . $sPassword;
+  error_log( "===> command=" . $command );
+  exec( $command, $output, $status );
+  error_log( "===> output=" . print_r( $output, true ) );
+
+/********************************************************/
+
+
+
+
+
+
+
+
+
+
+  // Initialize session storage
+  $_SESSION['panelSpy']['reservedDelimiter'] = '-_-_-';
+  $_SESSION['panelSpy']['session'] = [];
 
   // Build temporary array
   $aSession = [];
@@ -37,6 +66,7 @@
     $_SESSION['panelSpy']['session'] = $aSession;
   }
 
+
   error_log( '==> echoing sSignInId=' . $sSignInId );
 
   echo json_encode( $sSignInId );
@@ -62,7 +92,7 @@
   function signIn( $sUsername, $sPassword )
   {
     // Initialize Panel Spy session storage
-    $_SESSION['panelSpy'] = [];
+    $_SESSION['panelSpy']['session'] = [];
 
     // Look up user in database
     $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
