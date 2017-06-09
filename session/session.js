@@ -34,6 +34,8 @@ function submitCredentials( tEvent )
 function submitCredentialsFAILED()
 {
   console.log( 'submitCredentials FAILED' );
+  alert( 'submitCredentials FAILED' );
+  signOut();
 }
 
 function signOut()

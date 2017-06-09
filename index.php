@@ -1,11 +1,17 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/session/session.php";
+  require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
 
-  if ( signedIn( 'initial' ) )
+  $bAuth = isset( $_SESSION['panelSpy']['session']['signInId'] );
+  if ( $bAuth )
   {
+    // Determine which menu the user will see
+    global $g_sNavbarCsv;
+    $sSuffix = ( $_SESSION['panelSpy']['session']['role'] == 'administrator' ) ? 'Admin' : '';
+    $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
+
     // Show application
     include "../common/main.php";
 ?>
