@@ -129,6 +129,7 @@ function goBack( tEvent, sPath )
     catch( e )
     {
       alert( 'Error: Could not reopen main window.' );
+      tOpener.close();
     }
   }
 }
