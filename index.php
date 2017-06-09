@@ -4,7 +4,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/session/session.php";
   $iVersion = time();
 
-  if ( signedIn() )
+  if ( signedIn( 'initial' ) )
   {
     // Show application
     include "../common/main.php";
