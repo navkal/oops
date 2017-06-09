@@ -61,7 +61,5 @@
   {
     // Clear Panel Spy session storage
     $_SESSION['panelSpy'] = [];
-
-    // ========> SIGN OUT HERE <====================
   }
 ?>

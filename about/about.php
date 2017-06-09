@@ -1,3 +1,5 @@
+<!-- Copyright 2017 Panel Spy.  All rights reserved. -->
+
 <div class="container">
   <h4>About Panel Spy</h4>
   <hr/>
@@ -10,5 +12,4 @@
     <dt>Naomi Navkal</dt>
     <dd>Developer, user interface</dd>
   </dl>
-
 </div>
