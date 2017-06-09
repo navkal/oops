@@ -46,10 +46,10 @@
     if ( $bSignedIn = isset( $_SESSION['panelSpy']['session'] ) && ( ( $sSignInId == '' ) || ( $sSignInId == $_SESSION['panelSpy']['session']['signInId'] ) ) )
     {
       // Determine which menu the user will see
-      $sNavbarFragement = ( $_SESSION['panelSpy']['session']['role'] == 'admin' ) ? 'Admin' : '';
+      $sSuffix = ( $_SESSION['panelSpy']['session']['role'] == 'admin' ) ? 'Admin' : '';
 
       global $g_sNavbarCsv;
-      $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sNavbarFragement . '.csv';
+      $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
     }
 
     error_log( '==> signedIn() signedin=' . $bSignedIn );
