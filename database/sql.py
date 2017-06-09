@@ -503,5 +503,15 @@ class user:
     def __init__(self, username, password):
 
         self.username = username
-        self.role = 'visitor'
-        self.signInId = str( uuid.uuid4() )
+
+        if username.startswith( 'a' ):
+            self.role = 'administrator'
+        elif username.startswith( 't' ):
+            self.role = 'technician'
+        else:
+            self.role = 'visitor'
+
+        if password == 'error':
+            self.signInId = ''
+        else:
+            self.signInId = str( uuid.uuid4() )

@@ -36,7 +36,7 @@
     if ( $bSignedIn = isset( $_SESSION['panelSpy']['session'] ) && ( ( $sSignInId == '' ) || ( $sSignInId == $_SESSION['panelSpy']['session']['signInId'] ) ) )
     {
       // Determine which menu the user will see
-      $sSuffix = ( $_SESSION['panelSpy']['session']['role'] == 'admin' ) ? 'Admin' : '';
+      $sSuffix = ( $_SESSION['panelSpy']['session']['role'] == 'administrator' ) ? 'Admin' : '';
 
       global $g_sNavbarCsv;
       $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
