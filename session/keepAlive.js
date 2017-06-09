@@ -4,17 +4,24 @@ $( document ).ready( live );
 
 function live()
 {
-  setTimeout( poll, 5000 );
+  console.log( '============> LIVE!' );
+  setTimeout( poll, 3000 );
 };
 
 function poll()
 {
+  var tPostData = new FormData();
+  console.log( '===> id=' + localStorage.getItem( 'signInId' ) );
+  tPostData.append( 'signInId', localStorage.getItem( 'signInId' ) );
+
   $.ajax(
-    "../session/keepAlive.php",
+    "../session/signedIn.php",
     {
-      type: 'GET',
-      cache: false,
-      dataType : 'json'
+      type: 'POST',
+      processData: false,
+      contentType: false,
+      dataType : 'json',
+      data: tPostData
     }
   )
   .done( liveOrDie )
@@ -35,5 +42,11 @@ function liveOrDie( tRsp, sStatus, tJqXhr )
 
 function die()
 {
+  console.log( '============> DIE!' );
+
+  // Try to close the window
   window.close();
+
+  // In case window did not close, go to sign-in page
+  location.assign( '/' );
 }

@@ -42,6 +42,7 @@
   $iVersion = time();
 ?>
 <script src="image.js?version=<?=$iVersion?>"></script>
+<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>
 
 <script>
   $( document ).ready( init )

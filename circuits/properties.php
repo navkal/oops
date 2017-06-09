@@ -115,3 +115,4 @@
 ?>
 <script src="../util/util.js?version=<?=$iVersion?>"></script>
 <script src="properties.js?version=<?=$iVersion?>"></script>
+<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>

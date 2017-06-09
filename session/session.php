@@ -5,13 +5,18 @@
 
   function signIn( $sUsername, $sPassword )
   {
+    $sSignInId = false;
+
     if ( $bSignedIn = ( strlen( $sUsername ) <= 5 ) )
     {
+      $sSignInId = uniqid();
+
       // Initialize Panel Spy session storage
       $_SESSION['panelSpy'] = [];
 
       // Initialize session state
       $_SESSION['panelSpy']['session'] = [];
+      $_SESSION['panelSpy']['session']['signInId'] = $sSignInId;
       $_SESSION['panelSpy']['session']['username'] = $sUsername;
 
       switch( strtolower( $sUsername ) )
@@ -32,13 +37,13 @@
       error_log( '==> signIn() role=' . $_SESSION['panelSpy']['session']['role'] );
     }
 
-    error_log( '==> signIn() signedin=' . $bSignedIn );
-    return $bSignedIn;
+    error_log( '==> signIn() signedin=' . $sSignInId );
+    return $sSignInId;
   }
 
-  function signedIn()
+  function signedIn( $sSignInId = '' )
   {
-    if ( $bSignedIn = isset( $_SESSION['panelSpy']['session'] ) )
+    if ( $bSignedIn = isset( $_SESSION['panelSpy']['session'] ) && ( ( $sSignInId == '' ) || ( $sSignInId == $_SESSION['panelSpy']['session']['signInId'] ) ) )
     {
       // Determine which menu the user will see
       $sNavbarFragement = ( $_SESSION['panelSpy']['session']['role'] == 'admin' ) ? 'Admin' : '';

@@ -63,7 +63,9 @@ function signOut()
   .fail( handleAjaxError );
 }
 
-function showMain()
+function showMain( tRsp, sStatus, tJqXhr )
 {
+  console.log( '===> signin id=' + tRsp );
+  localStorage.setItem( 'signInId', tRsp );
   location.assign( '/' );
 }

@@ -4,9 +4,9 @@
 
   error_log( "====> post=" . print_r( $_POST, true ) );
 
-  $bSignedIn = signIn( $_POST['username'], $_POST['password'] );
+  $sSignInId = signIn( $_POST['username'], $_POST['password'] );
 
-  error_log( '==> echoing bSignedIn=' . $bSignedIn );
+  error_log( '==> echoing sSignInId=' . $sSignInId );
 
-  echo json_encode( $bSignedIn );
+  echo json_encode( $sSignInId );
 ?>
