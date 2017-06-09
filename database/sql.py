@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import time
+import uuid
 from eventTypes import dcEventTypes
 
 conn = sqlite3.connect('../database/database.sqlite')
@@ -495,3 +496,12 @@ class saveNotes:
         conn.commit()
 
         self.status = 'success'
+
+
+
+class user:
+    def __init__(self, username, password):
+
+        self.username = username
+        self.role = 'visitor'
+        self.signInId = str( uuid.uuid4() )

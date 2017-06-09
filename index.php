@@ -2,6 +2,7 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"] . "/session/session.php";
+  $iVersion = time();
 
   if ( signedIn() )
   {
@@ -29,8 +30,6 @@
     // Show sign-in prompt
     include $_SERVER["DOCUMENT_ROOT"] . "/session/challenge.php";
   }
-
-  $iVersion = time();
 ?>
 
 <script src="util/util.js?version=<?=$iVersion?>"></script>

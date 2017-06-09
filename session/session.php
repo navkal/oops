@@ -5,40 +5,30 @@
 
   function signIn( $sUsername, $sPassword )
   {
-    $sSignInId = false;
+    $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
+    error_log( "===> command=" . $command );
+    exec( $command, $output, $status );
+    error_log( "===> output=" . print_r( $output, true ) );
 
-    if ( $bSignedIn = ( strlen( $sUsername ) <= 5 ) )
+    $sUser = $output[ count( $output ) - 1 ];
+    error_log( '===> user=' . $sUser );
+    $tUser = json_decode( $sUser );
+    error_log( '===> user=' . print_r( $tUser, true ) );
+
+    if ( $tUser->signInId )
     {
-      $sSignInId = uniqid();
-
       // Initialize Panel Spy session storage
       $_SESSION['panelSpy'] = [];
 
       // Initialize session state
       $_SESSION['panelSpy']['session'] = [];
-      $_SESSION['panelSpy']['session']['signInId'] = $sSignInId;
       $_SESSION['panelSpy']['session']['username'] = $sUsername;
-
-      switch( strtolower( $sUsername ) )
-      {
-        case 'admin':
-          $_SESSION['panelSpy']['session']['role'] = 'admin';
-          break;
-
-        case 'tech':
-          $_SESSION['panelSpy']['session']['role'] = 'technician';
-          break;
-
-        default:
-          $_SESSION['panelSpy']['session']['role'] = 'visitor';
-          break;
-      }
-
-      error_log( '==> signIn() role=' . $_SESSION['panelSpy']['session']['role'] );
+      $_SESSION['panelSpy']['session']['role'] = $tUser->role;
+      $_SESSION['panelSpy']['session']['signInId'] = $tUser->signInId;
     }
 
-    error_log( '==> signIn() signedin=' . $sSignInId );
-    return $sSignInId;
+    error_log( '==> signIn() signedin=' . $tUser->signInId );
+    return $tUser->signInId;
   }
 
   function signedIn( $sSignInId = '' )
