@@ -11,8 +11,8 @@ function live()
 function poll()
 {
   var tPostData = new FormData();
-  console.log( '===> id=' + localStorage.getItem( 'signInId' ) );
-  tPostData.append( 'signInId', localStorage.getItem( 'signInId' ) );
+  console.log( '===> id=' + g_sSignInId );
+  tPostData.append( 'signInId', g_sSignInId );
 
   $.ajax(
     "../session/signedIn.php",
