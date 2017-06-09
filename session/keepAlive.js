@@ -1,5 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+var g_sSignInId = localStorage.getItem( 'signInId' );
+
 $( document ).ready( live );
 
 function live()

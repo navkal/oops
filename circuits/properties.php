@@ -98,8 +98,6 @@
 </style>
 
 <script>
-  var g_sSignInId = localStorage.getItem( 'signInId' );
-
   var g_sPath = '<?=$_REQUEST["path"]?>';
   var g_sType = '<?=$_REQUEST["type"]?>';
   var g_sOid = '<?=$_REQUEST["oid"]?>';

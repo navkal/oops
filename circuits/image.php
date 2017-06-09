@@ -42,10 +42,9 @@
   $iVersion = time();
 ?>
 <script src="image.js?version=<?=$iVersion?>"></script>
+<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>
 
 <script>
-  var g_sSignInId = localStorage.getItem( 'signInId' );
-
   $( document ).ready( init )
   function init()
   {
@@ -53,4 +52,3 @@
     resizeWindow();
   }
 </script>
-<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>

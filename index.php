@@ -9,8 +9,6 @@
     include "../common/main.php";
 ?>
     <script>
-      var g_sSignInId = localStorage.getItem( 'signInId' );
-
       // Append signout button to navbar
       $( document ).ready( makeSignOutButton );
       function makeSignOutButton()
