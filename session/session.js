@@ -5,14 +5,16 @@ function submitCredentials( tEvent )
   // Trim the username
   var sUsername = $( '#username' ).val().trim();
   $( '#username' ).val( sUsername );
+  var sPassword = $( '#password' ).val().trim();
+  $( '#password' ).val( sPassword );
 
   // If we got a username, submit credentials to the backend
-  if ( sUsername != '' )
+  if ( ( sUsername != '' ) && ( sPassword != '' ) )
   {
     // Post request to server
     var tPostData = new FormData();
-    tPostData.append( "username", $( '#username' ).val() );
-    tPostData.append( "password", $( '#password' ).val() );
+    tPostData.append( "username", sUsername );
+    tPostData.append( "password", sPassword );
 
     $.ajax(
       "session/signIn.php",
@@ -25,8 +27,13 @@ function submitCredentials( tEvent )
       }
     )
     .done( showMain )
-    .fail( handleAjaxError );
+    .fail( submitCredentialsFAILED );
   }
+}
+
+function submitCredentialsFAILED()
+{
+  console.log( 'submitCredentials FAILED' );
 }
 
 function signOut()
@@ -65,7 +72,7 @@ function signOut()
 
 function showMain( tRsp, sStatus, tJqXhr )
 {
-  console.log( '===> signin id=' + tRsp );
+  console.log( '===> showMain(): signin id=' + tRsp );
   localStorage.setItem( 'signInId', tRsp );
   location.assign( '/' );
 }

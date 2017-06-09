@@ -503,15 +503,16 @@ class user:
     def __init__(self, username, password):
 
         self.username = username
+        self.role = ''
+        self.signInId = ''
 
-        if username.startswith( 'a' ):
-            self.role = 'administrator'
-        elif username.startswith( 't' ):
-            self.role = 'technician'
-        else:
-            self.role = 'visitor'
+        # Retrieve the user
+        cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username,password,))
+        user_row = cur.fetchone()
 
-        if password == 'error':
-            self.signInId = ''
-        else:
-            self.signInId = str( uuid.uuid4() )
+        # If we got a user row, load remaining user fields
+        if user_row:
+            role_id = user_row[0]
+            cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+            self.role = cur.fetchone()[0]
+            self.signInId = str( uuid.uuid1() )
