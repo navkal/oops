@@ -246,6 +246,7 @@ function saveNotesCompletion( tRsp, sStatus, tJqXhr )
 function clearNotes( tEvent )
 {
   $( '#notes' ).val( '' );
+  $( '#notes' ).focus();
   setOnBeforeUnload( tEvent );
 }
 
