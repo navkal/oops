@@ -2,6 +2,7 @@ import sqlite3
 import os
 import time
 import uuid
+import hashlib
 from eventTypes import dcEventTypes
 
 conn = sqlite3.connect('../database/database.sqlite')
@@ -498,6 +499,10 @@ class saveNotes:
         self.status = 'success'
 
 
+def hash( text ):
+    h = hashlib.md5()
+    h.update( text.encode() )
+    return h.hexdigest()
 
 class user:
     def __init__(self, username, password):
@@ -507,7 +512,7 @@ class user:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username,password,))
+        cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username,hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
