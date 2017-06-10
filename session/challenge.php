@@ -16,11 +16,11 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <form>
+          <form onsubmit="submitCredentials(); return false;" >
             <div style="text-align:center;" >
               <input type="text" id="username" class="form-control" placeholder="Username" required autofocus >
               <input type="password" id="password" class="form-control" placeholder="Password" required >
-              <button class="btn btn-primary btn-block" onclick="submitCredentials(event)" >Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" >Sign In</button>
             </div>
           </form>
         </div>

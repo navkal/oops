@@ -1,6 +1,6 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-function submitCredentials( tEvent )
+function submitCredentials()
 {
   // Trim the username
   var sUsername = $( '#username' ).val().trim();
