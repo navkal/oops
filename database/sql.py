@@ -1,9 +1,11 @@
+# Copyright 2017 Panel Spy.  All rights reserved.
+
 import sqlite3
 import os
 import time
 import uuid
-import hashlib
-from eventTypes import dcEventTypes
+import dbCommon
+
 
 conn = sqlite3.connect('../database/database.sqlite')
 cur = conn.cursor()
@@ -487,22 +489,16 @@ class sortableTableRow:
         self.devices = cur.fetchone()[0]
 
 
-
 class saveNotes:
     def __init__(self, args):
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), 'bigBird', dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
+            VALUES (?,?,?,?,?,?,? )''', ( time.time(), 'bigBird', dbCommon.dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
 
         conn.commit()
 
         self.status = 'success'
 
-
-def hash( text ):
-    h = hashlib.md5()
-    h.update( text.encode() )
-    return h.hexdigest()
 
 class user:
     def __init__(self, username, password):
@@ -512,7 +508,7 @@ class user:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username,hash(password),))
+        cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
