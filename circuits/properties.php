@@ -75,7 +75,7 @@
       <div id="notesEditor">
         <div class="form-group">
           <label for="notes">Notes</label>
-          <textarea id="notes" class="form-control" maxlength="1000"></textarea>
+          <textarea id="notes" class="form-control" maxlength="1000" autofocus ></textarea>
         </div>
         <div style="text-align:center;" >
           <button class="btn btn-primary btn-xs" onclick="saveNotes(event)" >Save</button>
