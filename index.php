@@ -29,6 +29,7 @@
     </script>
 
     <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
+    <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
 <?php
   }
   else
@@ -40,4 +41,3 @@
 
 <script src="util/util.js?version=<?=$iVersion?>"></script>
 <script src="session/session.js?version=<?=$iVersion?>"></script>
-<link rel="stylesheet" href="util/navbar.css?version=<?=$iVersion?>">
