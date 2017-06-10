@@ -7,7 +7,7 @@ $( document ).ready( live );
 function live()
 {
   console.log( '============> LIVE!' );
-  setTimeout( poll, 3000 );
+  setTimeout( poll, 2000 );
 };
 
 function poll()
