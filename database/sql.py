@@ -361,7 +361,22 @@ class search:
 class sortableTable:
     def __init__(self, object_type):
 
-        if object_type == 'device':
+        if object_type == 'user':
+            # Retrieve all objects of requested type
+            cur.execute('SELECT * FROM User')
+            objects = cur.fetchall()
+
+            # Make table rows
+            self.rows = []
+            for obj in objects:
+                role_id = obj[3]
+                if role_id:
+                    cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+                    role = cur.fetchone()[0]
+                    row = { 'username': obj[1], 'user_description': obj[4], 'role': role }
+                    self.rows.append( row )
+
+        elif object_type == 'device':
             # Retrieve all objects of requested type
             cur.execute(
               '''SELECT *

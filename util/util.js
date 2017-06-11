@@ -26,6 +26,27 @@ var g_tPropertyRules =
     columnType: 'index', // Controls sortability
     displayIndex: displayIndex ++
   },
+  username:
+  {
+    label: "Username",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  user_description:
+  {
+    label: "Description",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  role:
+  {
+    label: "Role",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   path:
   {
     label: "Path",
