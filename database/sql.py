@@ -523,7 +523,7 @@ class sign_in_user:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT role_id, require_password_change FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
+        cur.execute('SELECT role_id, force_password_change FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
