@@ -3,12 +3,19 @@
 
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
+var g_bHideTopologyLink = null;
 
 // Retrieve sortable table from backend
 function getSortableTable()
 {
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
+  
+  // Optionally hide topology link
+  if ( g_bHideTopologyLink )
+  {
+    $( '#topologyLink' ).hide();
+  }
 
   // Set wait cursor
   setWaitCursor();

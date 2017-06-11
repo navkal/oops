@@ -7,5 +7,6 @@
 <script>
   g_sSortableTableTitle = 'Users';
   g_sSortableTableType = 'user';
+  g_bHideTopologyLink = true;
   $( document ).ready( getSortableTable );
 </script>
