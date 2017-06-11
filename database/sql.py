@@ -526,13 +526,10 @@ class sign_in_user:
         cur.execute('SELECT role_id FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
         user_row = cur.fetchone()
 
-        # If we got a user row, load remaining user fields, and log sign-in in database
+        # If we got a user row, load remaining user fields
         if user_row:
             role_id = user_row[0]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
+            self.bChangePassword = user_row[5]
             self.signInId = str( uuid.uuid1() )
-
-            # Update last_access timestamp
-            cur.execute( 'UPDATE User SET last_access=? WHERE username=?', (time.time(), username) )
-            conn.commit()

@@ -10,7 +10,7 @@ dcEventTypes = {
     'notes': 'notes'
 }
 
-def add_interactive_user( cur, username, password, role, description ):
+def add_interactive_user( cur, username, password, role, description, require_password_change ):
 
     # Check whether username is unique
     cur.execute( '''SELECT username FROM User WHERE username = ?''', (username,))
@@ -20,6 +20,6 @@ def add_interactive_user( cur, username, password, role, description ):
     if bUnique:
         cur.execute( '''SELECT id FROM Role WHERE role = ?''', (role,))
         role_id = cur.fetchone()[0]
-        cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description ) VALUES (?,?,?,? )''', (username, hash(password), role_id, description) )
+        cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description, require_password_change ) VALUES (?,?,?,?,? )''', (username, hash(password), role_id, description, require_password_change) )
 
     return bUnique
