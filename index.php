@@ -26,7 +26,6 @@
         sSignOutHtml += '</form>';
         $( '#navbar-collapse' ).append( sSignOutHtml );
         
-        alert( localStorage.getItem( 'signedInUser' ) );
         var bChangePassword = JSON.parse( localStorage.getItem( 'signedInUser' ) )['changePassword'];
       }
     </script>
