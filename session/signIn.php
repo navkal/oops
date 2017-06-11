@@ -17,16 +17,14 @@
 
   // Extract user from database output
   $sUser = $output[ count( $output ) - 1 ];
-  error_log( '===> user=' . $sUser );
-  $tUser = json_decode( $sUser );
-  error_log( '===> user=' . print_r( $tUser, true ) );
+  $aUser = (array) json_decode( $sUser );
+  error_log( '===> user=' . print_r( $aUser, true ) );
 
   // If database assigned a signin id, load session state
-  if ( $tUser->signInId )
+  if ( $aUser['signInId'] )
   {
-    $_SESSION['panelSpy']['session'] = (array) $tUser;
+    $_SESSION['panelSpy']['session'] = $aUser;
   }
 
-  error_log( '==> signInId=' . $tUser->signInId );
   echo $sUser;
 ?>
