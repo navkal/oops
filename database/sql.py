@@ -531,5 +531,5 @@ class sign_in_user:
             role_id = user_row[0]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.bChangePassword = user_row[1]
+            self.changePassword = user_row[1]
             self.signInId = str( uuid.uuid1() )

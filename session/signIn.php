@@ -26,6 +26,7 @@
   {
     $_SESSION['panelSpy']['session']['username'] = $sUsername;
     $_SESSION['panelSpy']['session']['role'] = $tUser->role;
+    $_SESSION['panelSpy']['session']['changePassword'] = $tUser->changePassword;
     $_SESSION['panelSpy']['session']['signInId'] = $tUser->signInId;
   }
 

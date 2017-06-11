@@ -27,11 +27,11 @@ function submitCredentials()
       }
     )
     .done( showMain )
-    .fail( submitCredentialsFAILED );
+    .fail( submitCredentialsFailed );
   }
 }
 
-function submitCredentialsFAILED()
+function submitCredentialsFailed()
 {
   console.log( 'submitCredentials FAILED' );
   alert( 'submitCredentials FAILED' );
