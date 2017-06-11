@@ -25,6 +25,9 @@
         sSignOutHtml += '<button type="button" class="btn btn-default" onclick="signOut();" >Sign Out</button>';
         sSignOutHtml += '</form>';
         $( '#navbar-collapse' ).append( sSignOutHtml );
+        
+        var bChangePassword = JSON.parse( localStorage.getItem( 'signedInUser' ) )['changePassword'];
+        alert( 'change password? ' + bChangePassword );
       }
     </script>
 

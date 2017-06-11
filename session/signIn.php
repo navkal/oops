@@ -24,10 +24,7 @@
   // If database assigned a signin id, load session state
   if ( $tUser->signInId )
   {
-    $_SESSION['panelSpy']['session']['username'] = $sUsername;
-    $_SESSION['panelSpy']['session']['role'] = $tUser->role;
-    $_SESSION['panelSpy']['session']['changePassword'] = $tUser->changePassword;
-    $_SESSION['panelSpy']['session']['signInId'] = $tUser->signInId;
+    $_SESSION['panelSpy']['session'] = (array) $tUser;
   }
 
   error_log( '==> signInId=' . $tUser->signInId );
