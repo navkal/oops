@@ -5,7 +5,7 @@
 ?>
 
 <!-- Utility scripts -->
-<script src="util/sortableTable.js?version=<?=$iVersion?>"></script>
+<script src="sortableTable/sortableTable.js?version=<?=$iVersion?>"></script>
 <link rel="stylesheet" href="util/spinner.css?version=<?=$iVersion?>">
 
 <!-- tablesorter Bootstrap theme -->

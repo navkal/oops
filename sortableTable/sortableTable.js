@@ -25,7 +25,7 @@ function getSortableTable()
   tPostData.append( "object_type", g_sSortableTableType );
 
   $.ajax(
-    'util/getSortableTable.php',
+    'sortableTable/getSortableTable.php',
     {
       type: 'POST',
       processData: false,
