@@ -12,7 +12,7 @@
   <body>
     <div class="container">
       <div class="page-header">
-        <p class="h3">Panel Spy</p>
+        <img src="brand.ico" class="img-responsive" alt="Panel Spy" style="width:50%; max-width:250px; margin:auto">
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
