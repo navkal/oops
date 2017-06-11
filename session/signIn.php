@@ -31,5 +31,5 @@
   }
 
   error_log( '==> signInId=' . $tUser->signInId );
-  echo json_encode( $tUser->signInId );
+  echo $sUser;
 ?>
