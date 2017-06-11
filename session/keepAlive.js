@@ -1,6 +1,6 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_sSignInId = localStorage.getItem( 'signInId' );
+var g_sSignInId = JSON.parse( localStorage.getItem( 'signedInUser' ) )['signInId'];
 
 $( document ).ready( live );
 

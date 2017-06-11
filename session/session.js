@@ -74,8 +74,7 @@ function signOut()
 
 function showMain( tRsp, sStatus, tJqXhr )
 {
-  var sSignInId = tRsp.signInId;
-  alert( '===> showMain(): signin id=' + sSignInId );
-  localStorage.setItem( 'signInId', sSignInId );
+  var sUser = JSON.stringify( tRsp );
+  localStorage.setItem( 'signedInUser', sUser );
   location.assign( '/' );
 }
