@@ -27,6 +27,7 @@
         $( '#navbar-collapse' ).append( sSignOutHtml );
         
         var bChangePassword = JSON.parse( localStorage.getItem( 'signedInUser' ) )['changePassword'];
+        if ( bChangePassword ) alert( 'YOU MUST CHANGE YOUR PASSWORD!!!' );
       }
     </script>
 
