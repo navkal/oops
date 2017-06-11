@@ -14,7 +14,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        user = sql.user( args.username, args.password )
+        user = sql.sign_in_user( args.username, args.password )
     except:
         dict = { 'Error': 'Failed to retrieve user' }
     else:
