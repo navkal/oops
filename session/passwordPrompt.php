@@ -21,7 +21,7 @@
           <form onsubmit="handleClick(event); return false;" >
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['session']['username']?>" readonly>
+              <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" readonly>
             </div>
             <div class="form-group">
               <label for="password">Password</label>

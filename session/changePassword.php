@@ -16,14 +16,14 @@
   $aUser = (array) json_decode( $sUser );
   error_log( '===> user=' . print_r( $aUser, true ) );
 
-  // Update session
+  // Update user
   if ( $aUser['signInId'] )
   {
-    $_SESSION['panelSpy']['session'] = $aUser;
+    $_SESSION['panelSpy']['user'] = $aUser;
   }
   else
   {
-    $_SESSION['panelSpy']['session'] = [];
+    $_SESSION['panelSpy']['user'] = [];
   }
 
   echo $sUser;

@@ -12,9 +12,9 @@
 
   $bSignedIn =
     (
-      isset( $_SESSION['panelSpy']['session']['signInId'] )
+      isset( $_SESSION['panelSpy']['user']['signInId'] )
       &&
-      ( $sSignInId == $_SESSION['panelSpy']['session']['signInId'] )
+      ( $sSignInId == $_SESSION['panelSpy']['user']['signInId'] )
     );
 
   error_log( '==> "' . $sSignInId . '" signed in? ' . ( $bSignedIn ? 'YES' : 'NO' ) );

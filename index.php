@@ -4,16 +4,16 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
 
-  if ( isset( $_SESSION['panelSpy']['session']['forceChangePassword'] ) && $_SESSION['panelSpy']['session']['forceChangePassword'] )
+  if ( isset( $_SESSION['panelSpy']['user']['forceChangePassword'] ) && $_SESSION['panelSpy']['user']['forceChangePassword'] )
   {
     // Force user to change password
     include $_SERVER["DOCUMENT_ROOT"] . "/session/passwordPrompt.php";
   }
-  else if ( isset( $_SESSION['panelSpy']['session']['signInId'] ) )
+  else if ( isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
     // Determine which menu the user will see
     $sSuffix = '';
-    switch( $_SESSION['panelSpy']['session']['role'] )
+    switch( $_SESSION['panelSpy']['user']['role'] )
     {
       case 'administrator':
         $sSuffix = 'Admin';
