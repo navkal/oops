@@ -7,6 +7,7 @@
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
     define( 'MAX_PASSWORD_LENGTH', 32 );
+    define( 'MIN_PASSWORD_LENGTH', 8 );
   ?>
 
   <!-- Body -->
@@ -103,6 +104,12 @@
     if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
     {
       aMessages.push( 'Password length exceeds maximum of <?=MAX_PASSWORD_LENGTH?>.' );
+      tPassword.parent().addClass( 'has-error' );
+    }
+
+    if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
+    {
+      aMessages.push( 'Password length must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
       tPassword.parent().addClass( 'has-error' );
     }
 
