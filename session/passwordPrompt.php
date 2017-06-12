@@ -93,8 +93,8 @@
     var aMessages = [];
     if ( sPassword != sConfirm )
     {
-      aMessages.push( 'Passwords do not match.' );
-      tConfirm.addClass( 'has-error' );
+      aMessages.push( 'Values do not match.' );
+      tConfirm.parent().addClass( 'has-error' );
     }
 
     return aMessages;
