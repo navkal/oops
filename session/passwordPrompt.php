@@ -16,24 +16,35 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <form onsubmit="updatePassword(event); return false;" >
+          <form onsubmit="handleClick(event); return false;" >
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['session']['username']?>" readonly>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="New Password">
+              <input type="password" class="form-control" id="password" placeholder="New Password" required >
             </div>
             <div class="form-group">
               <label for="confirm" >Confirm</label>
-              <input type="password" class="form-control" id="confirm" placeholder="Confirm New Password">
+              <input type="password" class="form-control" id="confirm" placeholder="Confirm New Password" required >
             </div>
             <div style="text-align:center;" >
               <button id="update" type="submit" onclick="g_sAction='update'" class="btn btn-primary" >Update Password</button>
               <button id="cancel" type="submit" onclick="g_sAction='cancel'" class="btn btn-default" >Cancel</button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <br/>
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div id="messages" class="alert alert-danger" style="display:none" role="alert">
+            <ul id="messageList">
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -46,9 +57,76 @@
 </html>
 
 <script>
-  function updatePassword( tEvent )
+  function handleClick( tEvent )
   {
-    alert( g_sAction );
+    switch ( g_sAction )
+    {
+      case 'update':
+        if ( validateInput() )
+        {
+          updatePassword();
+        }
+        break;
 
+      case 'cancel':
+      default:
+        cancelSignIn();
+        break;
+    }
   }
+
+  function validateInput()
+  {
+    clearMessages();
+    var aMessages = validatePassword();
+    showMessages( aMessages );
+    return ( aMessages.length == 0 );
+  }
+
+  function validatePassword()
+  {
+    var tPassword = $( '#password' );
+    var sPassword = tPassword.val();
+    var tConfirm = $( '#confirm' );
+    var sConfirm = tConfirm.val();
+
+    var aMessages = [];
+    if ( sPassword != sConfirm )
+    {
+      aMessages.push( 'Passwords do not match.' );
+      tConfirm.addClass( 'has-error' );
+    }
+
+    return aMessages;
+  }
+
+  function clearMessages()
+  {
+    $( ".has-error" ).removeClass( "has-error" );
+    $( "#messages" ).css( "display", "none" );
+    $( "#messageList" ).html( "" );
+  }
+
+  function showMessages( aMessages )
+  {
+    if ( aMessages.length > 0 )
+    {
+      for ( var index in aMessages )
+      {
+        $( "#messageList" ).append( '<li>' + aMessages[index] + '</li>' );
+      }
+      $( "#messages" ).css( "display", "block" );
+    }
+  }
+
+  function updatePassword()
+  {
+    alert( 'updatePassword' );
+  }
+
+  function cancelSignIn()
+  {
+    alert( 'cancelSignIn' );
+  }
+
 </script>
