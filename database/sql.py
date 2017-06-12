@@ -523,7 +523,7 @@ class signInUser:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT role_id, force_password_change FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
+        cur.execute('SELECT role_id, force_change_password FROM User WHERE username = ? AND password = ?', (username, dbCommon.hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
@@ -531,6 +531,20 @@ class signInUser:
             role_id = user_row[0]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.forcePasswordChange = user_row[1]
-            if not self.forcePasswordChange:
-                self.signInId = str( uuid.uuid1() )
+            self.forceChangePassword = user_row[1]
+            self.signInId = str( uuid.uuid1() )
+
+
+class changePassword:
+    def __init__(self, username, password):
+
+        # Set the password and clear the force-change flag
+        cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE username=?', ( dbCommon.hash(password), False, username ) );
+        conn.commit();
+
+        # Retrieve a new copy of the user
+        user = signInUser( username, password )
+        self.username = user.username
+        self.role = user.role
+        self.signInId = user.signInId
+        self.forceChangePassword = user.forceChangePassword

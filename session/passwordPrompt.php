@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <div class="page-header">
-        <h3>Update Password</h3>
+        <h3>Change Password</h3>
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -32,7 +32,7 @@
               <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" required >
             </div>
             <div style="text-align:center;" >
-              <button id="update" type="submit" onclick="g_sAction='update'" class="btn btn-primary" >Update Password</button>
+              <button id="change" type="submit" onclick="g_sAction='change'" class="btn btn-primary" >Change Password</button>
               <button id="cancel" type="submit" onclick="g_sAction='cancel'" class="btn btn-default" >Cancel</button>
             </div>
           </form>
@@ -52,7 +52,7 @@
     </div>
 
     <script>
-      document.title = "Update Password - Panel Spy";
+      document.title = "Change Password - Panel Spy";
     </script>
 
   </body>
@@ -64,10 +64,10 @@
   {
     switch ( g_sAction )
     {
-      case 'update':
+      case 'change':
         if ( validateInput() )
         {
-          updatePassword();
+          changePassword();
         }
         break;
 
@@ -102,12 +102,17 @@
 
     if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
     {
-      aMessages.push( 'Password length exceeds maximum of <?=MAX_PASSWORD_LENGTH?>.' );
+      aMessages.push( 'Password may contain at most <?=MAX_PASSWORD_LENGTH?> characters.' );
     }
 
     if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
     {
-      aMessages.push( 'Password length must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
+      aMessages.push( 'Password must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
+    }
+
+    if ( sPassword.indexOf( ' ' ) != -1 )
+    {
+      aMessages.push( 'Password may not contain spaces.' );
     }
 
     if ( aMessages.length )
@@ -137,9 +142,25 @@
     }
   }
 
-  function updatePassword()
+  function changePassword()
   {
-    alert( 'updatePassword' );
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "username", $( '#username' ).val() );
+    tPostData.append( "password", $( '#password' ).val() );
+
+    $.ajax(
+      "session/changePassword.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( showMain )
+    .fail( handleAjaxError );
   }
 
   function cancelSignIn()

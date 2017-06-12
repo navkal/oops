@@ -7,10 +7,10 @@
   $_SESSION['panelSpy']['reservedDelimiter'] = '-_-_-';
   $_SESSION['panelSpy']['session'] = [];
 
-  // Look up user in database
+  // Update password for specified user
   $sUsername = $_POST['username'];
   $sPassword = $_POST['password'];
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/changePassword.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );
