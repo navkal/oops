@@ -4,12 +4,30 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
 
-  $bAuth = isset( $_SESSION['panelSpy']['session']['signInId'] );
-  if ( $bAuth )
+  if ( isset( $_SESSION['panelSpy']['session']['changePassword'] ) && $_SESSION['panelSpy']['session']['changePassword'] )
+  {
+    // Force user to change password
+    include $_SERVER["DOCUMENT_ROOT"] . "/session/passwordPrompt.php";
+  }
+  else if ( isset( $_SESSION['panelSpy']['session']['signInId'] ) )
   {
     // Determine which menu the user will see
+    $sSuffix = '';
+    switch( $_SESSION['panelSpy']['session']['role'] )
+    {
+      case 'administrator':
+        $sSuffix = 'Admin';
+        break;
+      case 'technician':
+        $sSuffix = 'Tech';
+        break;
+      case 'user':
+      default:
+        $sSuffix = '';
+        break;
+    }
+
     global $g_sNavbarCsv;
-    $sSuffix = ( $_SESSION['panelSpy']['session']['role'] == 'administrator' ) ? 'Admin' : '';
     $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
 
     // Show application
@@ -20,14 +38,12 @@
       $( document ).ready( makeSignOutButton );
       function makeSignOutButton()
       {
+        var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
         var sSignOutHtml = '';
         sSignOutHtml += '<form class="navbar-form navbar-right">';
-        sSignOutHtml += '<button type="button" class="btn btn-default" onclick="signOut();" >Sign Out</button>';
+        sSignOutHtml += '<button type="button" class="btn btn-default" title="Signed in as: ' + sUsername + '" onclick="signOut();" >Sign Out</button>';
         sSignOutHtml += '</form>';
         $( '#navbar-collapse' ).append( sSignOutHtml );
-        
-        var bChangePassword = JSON.parse( localStorage.getItem( 'signedInUser' ) )['changePassword'];
-        if ( bChangePassword ) alert( 'YOU MUST CHANGE YOUR PASSWORD!!!' );
       }
     </script>
 

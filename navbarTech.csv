@@ -1,0 +1,13 @@
+Panel Spy,,
+&copy; 2017 Panel Spy. All rights reserved.,,
+panelSpy@gmail.com,,
+circuits,Circuits,circuits/circuits.php
+distribution,Distribution,distribution/distribution.php
+panels,Panels,panels/panels.php
+transformers,Transformers,transformers/transformers.php
+devices,Devices,devices/devices.php
+locations,Locations,locations/locations.php
+settings,Settings,settings/settings.php
+about,About,about/about.php
+contact,Contact,contact/contact.php
+#php,PHP Information,pi/pi.php
