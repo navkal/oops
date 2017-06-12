@@ -97,19 +97,21 @@
     if ( sPassword != sConfirm )
     {
       aMessages.push( 'Values do not match.' );
-      tPassword.parent().addClass( 'has-error' );
       tConfirm.parent().addClass( 'has-error' );
     }
 
     if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
     {
       aMessages.push( 'Password length exceeds maximum of <?=MAX_PASSWORD_LENGTH?>.' );
-      tPassword.parent().addClass( 'has-error' );
     }
 
     if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
     {
       aMessages.push( 'Password length must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
+    }
+
+    if ( aMessages.length )
+    {
       tPassword.parent().addClass( 'has-error' );
     }
 
