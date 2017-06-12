@@ -3,10 +3,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
-  // Initialize session storage
-  $_SESSION['panelSpy']['reservedDelimiter'] = '-_-_-';
-  $_SESSION['panelSpy']['session'] = [];
-
   // Update password for specified user
   $sUsername = $_POST['username'];
   $sPassword = $_POST['password'];
@@ -20,10 +16,14 @@
   $aUser = (array) json_decode( $sUser );
   error_log( '===> user=' . print_r( $aUser, true ) );
 
-  // If database assigned a signin id, load session state
+  // Update session
   if ( $aUser['signInId'] )
   {
     $_SESSION['panelSpy']['session'] = $aUser;
+  }
+  else
+  {
+    $_SESSION['panelSpy']['session'] = [];
   }
 
   echo $sUser;
