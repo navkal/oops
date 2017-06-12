@@ -18,11 +18,15 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <form onsubmit="updatePassword(event); return false;" >
             <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['session']['username']?>" readonly>
+            </div>
+            <div class="form-group">
               <label for="password">Password</label>
               <input type="password" class="form-control" id="password" placeholder="New Password">
             </div>
             <div class="form-group">
-              <label for="password">Confirm</label>
+              <label for="confirm" >Confirm</label>
               <input type="password" class="form-control" id="confirm" placeholder="Confirm New Password">
             </div>
             <div style="text-align:center;" >
