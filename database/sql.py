@@ -515,7 +515,7 @@ class saveNotes:
         self.status = 'success'
 
 
-class sign_in_user:
+class signInUser:
     def __init__(self, username, password):
 
         self.username = username
@@ -531,5 +531,6 @@ class sign_in_user:
             role_id = user_row[0]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.changePassword = user_row[1]
-            self.signInId = str( uuid.uuid1() )
+            self.forcePasswordChange = user_row[1]
+            if not self.forcePasswordChange:
+                self.signInId = str( uuid.uuid1() )

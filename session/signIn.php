@@ -21,7 +21,7 @@
   error_log( '===> user=' . print_r( $aUser, true ) );
 
   // If database assigned a signin id, load session state
-  if ( $aUser['signInId'] )
+  if ( $aUser['signInId'] || $aUser['forcePasswordChange'] )
   {
     $_SESSION['panelSpy']['session'] = $aUser;
   }

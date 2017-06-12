@@ -3,8 +3,8 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
-
-  if ( isset( $_SESSION['panelSpy']['session']['changePassword'] ) && $_SESSION['panelSpy']['session']['changePassword'] )
+  
+  if ( isset( $_SESSION['panelSpy']['session']['forcePasswordChange'] ) && $_SESSION['panelSpy']['session']['forcePasswordChange'] )
   {
     // Force user to change password
     include $_SERVER["DOCUMENT_ROOT"] . "/session/passwordPrompt.php";

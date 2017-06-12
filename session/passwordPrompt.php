@@ -1,7 +1,7 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  $_SESSION['panelSpy']['session']['changePassword'] = false; //////// fake fake fake
+  $_SESSION['panelSpy']['session']['forcePasswordChange'] = false; //////// fake fake fake
 ?>
 
 <!DOCTYPE html>
