@@ -6,6 +6,7 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
+    define( 'MAX_PASSWORD_LENGTH', 32 );
   ?>
 
   <!-- Body -->
@@ -23,11 +24,11 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="New Password" required >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" required >
             </div>
             <div class="form-group">
               <label for="confirm" >Confirm</label>
-              <input type="password" class="form-control" id="confirm" placeholder="Confirm New Password" required >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" required >
             </div>
             <div style="text-align:center;" >
               <button id="update" type="submit" onclick="g_sAction='update'" class="btn btn-primary" >Update Password</button>
@@ -55,6 +56,7 @@
 
   </body>
 </html>
+
 
 <script>
   function handleClick( tEvent )
@@ -94,7 +96,14 @@
     if ( sPassword != sConfirm )
     {
       aMessages.push( 'Values do not match.' );
+      tPassword.parent().addClass( 'has-error' );
       tConfirm.parent().addClass( 'has-error' );
+    }
+
+    if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
+    {
+      aMessages.push( 'Password length exceeds maximum of <?=MAX_PASSWORD_LENGTH?>.' );
+      tPassword.parent().addClass( 'has-error' );
     }
 
     return aMessages;
