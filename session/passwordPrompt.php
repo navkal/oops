@@ -165,7 +165,6 @@
 
   function cancelSignIn()
   {
-    alert( 'cancelSignIn' );
     signOut();
   }
 
