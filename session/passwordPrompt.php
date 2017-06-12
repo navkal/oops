@@ -25,11 +25,11 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" required >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" >
             </div>
             <div class="form-group">
               <label for="confirm" >Confirm</label>
-              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" required >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" >
             </div>
             <div style="text-align:center;" >
               <button id="change" type="submit" onclick="g_sAction='change'" class="btn btn-primary" >Change Password</button>
@@ -166,6 +166,7 @@
   function cancelSignIn()
   {
     alert( 'cancelSignIn' );
+    signOut();
   }
 
 </script>
