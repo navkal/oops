@@ -5,8 +5,9 @@
 </button>
 
 <?php
-  $sUsernameReadonly = 'readonly';
+  $sUsername = '';
+  $sUsernameReadonly = '';
   $sSubmitAction = 'add';
-  $sSubmitLabel = 'Add';
+  $sSubmitLabel = 'Add User';
   require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUserDialog.php";
 ?>
