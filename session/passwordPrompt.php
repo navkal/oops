@@ -6,8 +6,7 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
-    define( 'MAX_PASSWORD_LENGTH', 32 );
-    define( 'MIN_PASSWORD_LENGTH', 8 );
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/session/passwordRules.php";
   ?>
 
   <!-- Body -->
