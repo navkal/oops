@@ -3,7 +3,8 @@
 
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
-var g_bHideTopologyLink = null;
+var g_bShowTopologyLink = true;
+var g_bShowAddUserButton = false;
 
 // Retrieve sortable table from backend
 function getSortableTable()
@@ -12,9 +13,15 @@ function getSortableTable()
   $( window ).on( 'unload', closeChildWindows );
   
   // Optionally hide topology link
-  if ( g_bHideTopologyLink )
+  if ( g_bShowTopologyLink )
   {
-    $( '#topologyLink' ).hide();
+    $( '#topologyLink' ).show();
+  }
+
+  if ( g_bShowAddUserButton )
+  {
+    $( '#addUserButton' ).show();
+    $( '#tableTop' ).css( 'padding-bottom', '25px' );
   }
 
   // Set wait cursor
