@@ -15,7 +15,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form onsubmit="submitUser(event); return false;" >
+            <form onsubmit="handleClick(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" value="<?=$sUsername?>" <?=$sUsernameReadonly?>  placeholder="Username" >
@@ -64,6 +64,7 @@
   function onShow()
   {
     console.log( 'onShow' );
+    clearMessages();
   }
   function onShown()
   {
@@ -77,10 +78,114 @@
   {
     console.log( 'onHidden' );
   }
+  function handleClick()
+  {
+    console.log( 'submitUser: action=' + g_sAction );
+    if ( validateInput() )
+    {
+      submitUser();
+    }
+  }
+
+
+
+  function validateInput()
+  {
+    clearMessages();
+    var aMessages = validatePassword();
+    showMessages( aMessages );
+    return ( aMessages.length == 0 );
+  }
+
+
+  function validatePassword()
+  {
+    var tPassword = $( '#password' );
+    var sPassword = tPassword.val();
+    var tConfirm = $( '#confirm' );
+    var sConfirm = tConfirm.val();
+
+    var aMessages = [];
+    if ( sPassword != sConfirm )
+    {
+      aMessages.push( 'Values do not match.' );
+      tConfirm.parent().addClass( 'has-error' );
+    }
+
+    if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
+    {
+      aMessages.push( 'Password may contain at most <?=MAX_PASSWORD_LENGTH?> characters.' );
+    }
+
+    if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
+    {
+      aMessages.push( 'Password must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
+    }
+
+    if ( sPassword.indexOf( ' ' ) != -1 )
+    {
+      aMessages.push( 'Password may not contain spaces.' );
+    }
+
+    if ( aMessages.length )
+    {
+      tPassword.parent().addClass( 'has-error' );
+    }
+
+    return aMessages;
+  }
+
+
+  function clearMessages()
+  {
+    $( ".has-error" ).removeClass( "has-error" );
+    $( "#messages" ).css( "display", "none" );
+    $( "#messageList" ).html( "" );
+  }
+
+  function showMessages( aMessages )
+  {
+    if ( aMessages.length > 0 )
+    {
+      for ( var index in aMessages )
+      {
+        $( "#messageList" ).append( '<li>' + aMessages[index] + '</li>' );
+      }
+      $( "#messages" ).css( "display", "block" );
+    }
+  }
+
+
+
+
   function submitUser()
   {
-    var bSuccess = true;
-    console.log( 'submitUser: action=' + g_sAction );
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "username", $( '#username' ).val() );
+    tPostData.append( "password", $( '#password' ).val() );
+
+    $.ajax(
+      "users/" + g_sAction + "User.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( reloadPage )
+    .fail( handleAjaxError );
+  }
+
+
+
+
+
+  function reloadPage()
+  {
+    console.log('reloadPage');
     location.reload();
   }
 </script>
