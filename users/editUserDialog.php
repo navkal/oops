@@ -15,7 +15,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form onsubmit="return submitUser(event);" >
+            <form onsubmit="submitUser(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" value="<?=$sUsername?>" <?=$sUsernameReadonly?>  placeholder="Username" >
@@ -81,6 +81,6 @@
   {
     var bSuccess = true;
     console.log( 'submitUser: action=' + g_sAction );
-    return bSuccess;
+    location.reload();
   }
 </script>
