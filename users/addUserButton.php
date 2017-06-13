@@ -5,5 +5,8 @@
 </button>
 
 <?php
+  $sUsernameReadonly = 'readonly';
+  $sSubmitAction = 'add';
+  $sSubmitLabel = 'Add';
   require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUserDialog.php";
- ?>
+?>

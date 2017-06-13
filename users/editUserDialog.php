@@ -18,7 +18,7 @@
             <form onsubmit="submitUser(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" readonly>
+                <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" <?=$sUsernameReadonly?> >
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
@@ -29,7 +29,7 @@
                 <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" >
               </div>
               <div style="text-align:center;" >
-                <button id="submit" type="submit" onclick="g_sAction='submit'" class="btn btn-primary" >Submit</button>
+                <button id="submit" type="submit" onclick="g_sAction='<?=$sSubmitAction?>'" class="btn btn-primary" ><?=$sSubmitLabel?></button>
                 <button id="cancel" type="submit" onclick="g_sAction='cancel'" class="btn btn-default" >Cancel</button>
               </div>
             </form>
@@ -82,13 +82,17 @@
 
     switch ( g_sAction )
     {
-      case 'submit':
-        alsert( 'submit' )
+      case 'add':
+        alert( 'add' )
+        break;
+
+      case 'update':
+        alert( 'update' )
         break;
 
       case 'cancel':
       default:
-        cancelSignIn();
+        alert( 'cancel' )
         break;
     }
   }

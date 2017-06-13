@@ -6,14 +6,12 @@ $( document ).ready( live );
 
 function live()
 {
-  console.log( '============> LIVE!' );
   setTimeout( poll, 2000 );
 };
 
 function poll()
 {
   var tPostData = new FormData();
-  console.log( '===> id=' + g_sSignInId );
   tPostData.append( 'signInId', g_sSignInId );
 
   $.ajax(
@@ -44,8 +42,6 @@ function liveOrDie( tRsp, sStatus, tJqXhr )
 
 function die()
 {
-  console.log( '============> DIE!' );
-
   // Try to close the window
   window.close();
 
