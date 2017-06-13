@@ -15,7 +15,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form onsubmit="submitUser(event); return false;" >
+            <form onsubmit="return submitUser(event);" >
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" <?=$sUsernameReadonly?> >
@@ -29,8 +29,8 @@
                 <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" >
               </div>
               <div style="text-align:center;" >
-                <button id="submit" type="submit" onclick="g_sAction='<?=$sSubmitAction?>'" class="btn btn-primary" ><?=$sSubmitLabel?></button>
-                <button id="cancel" type="submit" onclick="g_sAction='cancel'" class="btn btn-default" >Cancel</button>
+                <button id="submit" type="submit" class="btn btn-primary" ><?=$sSubmitLabel?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </form>
           </div>
@@ -55,6 +55,7 @@
 </div>
 
 <script>
+  var g_sAction = '<?=$sSubmitAction?>';
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
   $( '#editUserDialog' ).on( 'hide.bs.modal', onHide );
@@ -78,22 +79,8 @@
   }
   function submitUser()
   {
+    var bSuccess = true;
     console.log( 'submitUser: action=' + g_sAction );
-
-    switch ( g_sAction )
-    {
-      case 'add':
-        alert( 'add' )
-        break;
-
-      case 'update':
-        alert( 'update' )
-        break;
-
-      case 'cancel':
-      default:
-        alert( 'cancel' )
-        break;
-    }
+    return bSuccess;
   }
 </script>
