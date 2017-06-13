@@ -8,6 +8,9 @@
   {
     // Force user to change password
     include $_SERVER["DOCUMENT_ROOT"] . "/session/passwordPrompt.php";
+?>
+    <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
+<?php
   }
   else if ( isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
