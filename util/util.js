@@ -301,7 +301,28 @@ function childWindowsClose( aWindows )
 
 // <- <- <- Manage child windows <- <- <-
 
+// -> -> -> Error messages -> -> ->
 
+  function clearMessages()
+  {
+    $( ".has-error" ).removeClass( "has-error" );
+    $( "#messages" ).css( "display", "none" );
+    $( "#messageList" ).html( "" );
+  }
+
+  function showMessages( aMessages )
+  {
+    if ( aMessages.length > 0 )
+    {
+      for ( var index in aMessages )
+      {
+        $( "#messageList" ).append( '<li>' + aMessages[index] + '</li>' );
+      }
+      $( "#messages" ).css( "display", "block" );
+    }
+  }
+  
+// <- <- <- Error messages <- <- <-
 
 
 
