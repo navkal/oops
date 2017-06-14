@@ -183,7 +183,7 @@
     }
     else
     {
-      var aMessages = [ "Username '" + tRsp.username + "' is already in use." ];
+      var aMessages = [ "Username '" + tRsp.username + "' is not available." ];
       showMessages( aMessages );
     }
   }
