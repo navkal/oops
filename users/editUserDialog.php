@@ -90,9 +90,32 @@
   function validateInput()
   {
     clearMessages();
-    var aMessages = validatePassword();
+
+    var aMessages = validateUsername();
+    aMessages = aMessages.concat( validatePassword() );
+
     showMessages( aMessages );
+
     return ( aMessages.length == 0 );
+  }
+
+  function validateUsername()
+  {
+    var tUsername = $( '#username' );
+    var sUsername = tUsername.val();
+    var aMessages = [];
+
+    if ( sUsername.indexOf( ' ' ) != -1 )
+    {
+      aMessages.push( 'Username may not contain spaces.' );
+    }
+
+    if ( aMessages.length )
+    {
+      tUsername.parent().addClass( 'has-error' );
+    }
+
+    return aMessages;
   }
 
   function submitUser()
@@ -116,13 +139,8 @@
     .fail( handleAjaxError );
   }
 
-
-
-
-
   function reloadPage()
   {
-    console.log('reloadPage');
     location.reload();
   }
 </script>
