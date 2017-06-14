@@ -28,6 +28,14 @@
                 <label for="confirm" >Confirm</label>
                 <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm Password" >
               </div>
+              <div class="form-group">
+                <label for="role" >Role</label>
+                <select id="role" class="form-control">
+                  <option value="visitor">Visitor</option>
+                  <option value="technician">Technician</option>
+                  <option value="administrator">Administrator</option>
+                </select>
+              </div>
               <div style="text-align:center;" >
                 <button id="submit" type="submit" class="btn btn-primary" ><?=$sSubmitLabel?></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
