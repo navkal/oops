@@ -538,7 +538,7 @@ class signInUser:
 class changePassword:
     def __init__(self, username, password):
 
-        # Set the password and clear the force-change flag
+        # Set the password and clear the force_change_password flag
         cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE username=?', ( dbCommon.hash(password), False, username ) );
         conn.commit();
 
@@ -548,3 +548,10 @@ class changePassword:
         self.role = user.role
         self.signInId = user.signInId
         self.forceChangePassword = user.forceChangePassword
+
+
+class addUser:
+    def __init__(self, username, password, role):
+        dbCommon.add_interactive_user( cur, conn, username, password, role, 'addUser test', True )
+        self.username = username
+

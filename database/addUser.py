@@ -4,19 +4,20 @@ import printctl
 import argparse
 import json
 
-printctl.off()
+#printctl.off()
 import sql
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser( description='change password' )
+    parser = argparse.ArgumentParser( description='add user' )
     parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser.add_argument( '-p', '--password', dest='password', help='password' )
+    parser.add_argument( '-r', '--role', dest='role', help='role' )
     args = parser.parse_args()
 
     try:
-        user = sql.changePassword( args.username, args.password )
+        user = sql.addUser( args.username, args.password, args.role )
     except:
-        dict = { 'Error': 'Failed to change password' }
+        dict = { 'Error': 'Failed to add user' }
     else:
         dict = user.__dict__
 

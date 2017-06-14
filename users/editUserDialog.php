@@ -88,6 +88,7 @@
   function onShown()
   {
     console.log( 'onShown' );
+    $( '#<?=$sAutofocusId?>' ).focus();
   }
   function onHide()
   {
@@ -161,6 +162,7 @@
     tPostData.append( "password", $( '#password' ).val() );
     tPostData.append( "role", $( '#role' ).val() );
 
+    alert( 'ajax = ' +  "users/" + g_sAction + "User.php" );
     $.ajax(
       "users/" + g_sAction + "User.php",
       {

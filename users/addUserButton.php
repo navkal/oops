@@ -9,5 +9,6 @@
   $sUsernameReadonly = '';
   $sSubmitAction = 'add';
   $sSubmitLabel = 'Add User';
+  $sAutofocusId = 'username';
   require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUserDialog.php";
 ?>
