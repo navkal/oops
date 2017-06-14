@@ -162,7 +162,6 @@
     tPostData.append( "password", $( '#password' ).val() );
     tPostData.append( "role", $( '#role' ).val() );
 
-    alert( 'ajax = ' +  "users/" + g_sAction + "User.php" );
     $.ajax(
       "users/" + g_sAction + "User.php",
       {
@@ -173,12 +172,15 @@
         data: tPostData
       }
     )
-    .done( reloadPage )
+    .done( handleAjaxCompletion )
     .fail( handleAjaxError );
   }
 
-  function reloadPage()
+  function handleAjaxCompletion( tRsp, sStatus, tJqXhr )
   {
+    alert( JSON.stringify( tRsp ) );
+    var bUnique = tRsp.unique;
+    alert( 'unique=' + bUnique );
     location.reload();
   }
 </script>
