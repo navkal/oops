@@ -132,6 +132,7 @@
     var tPostData = new FormData();
     tPostData.append( "username", $( '#username' ).val() );
     tPostData.append( "password", $( '#password' ).val() );
+    tPostData.append( "role", $( '#role' ).val() );
 
     $.ajax(
       "users/" + g_sAction + "User.php",
