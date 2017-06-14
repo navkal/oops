@@ -35,7 +35,6 @@
                 <select id="role" class="form-control">
                   <option value="visitor">Visitor</option>
                   <option value="technician">Technician</option>
-                  <option value="administrator">Administrator</option>
                 </select>
               </div>
               <div style="text-align:center;" >
