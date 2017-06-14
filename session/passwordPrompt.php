@@ -85,43 +85,6 @@
     return ( aMessages.length == 0 );
   }
 
-  function validatePassword()
-  {
-    var tPassword = $( '#password' );
-    var sPassword = tPassword.val();
-    var tConfirm = $( '#confirm' );
-    var sConfirm = tConfirm.val();
-
-    var aMessages = [];
-    if ( sPassword != sConfirm )
-    {
-      aMessages.push( 'Values do not match.' );
-      tConfirm.parent().addClass( 'has-error' );
-    }
-
-    if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
-    {
-      aMessages.push( 'Password may contain at most <?=MAX_PASSWORD_LENGTH?> characters.' );
-    }
-
-    if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
-    {
-      aMessages.push( 'Password must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
-    }
-
-    if ( sPassword.indexOf( ' ' ) != -1 )
-    {
-      aMessages.push( 'Password may not contain spaces.' );
-    }
-
-    if ( aMessages.length )
-    {
-      tPassword.parent().addClass( 'has-error' );
-    }
-
-    return aMessages;
-  }
-
   function clearMessages()
   {
     $( ".has-error" ).removeClass( "has-error" );
