@@ -172,15 +172,20 @@
         data: tPostData
       }
     )
-    .done( handleAjaxCompletion )
+    .done( eval( g_sAction + 'Done' ) )
     .fail( handleAjaxError );
   }
 
-  function handleAjaxCompletion( tRsp, sStatus, tJqXhr )
+  function addDone( tRsp, sStatus, tJqXhr )
   {
-    alert( JSON.stringify( tRsp ) );
-    var bUnique = tRsp.unique;
-    alert( 'unique=' + bUnique );
-    location.reload();
+    if ( tRsp.unique )
+    {
+      location.reload();
+    }
+    else
+    {
+      var aMessages = [ "Username '" + tRsp.username + "' is already in use." ];
+      showMessages( aMessages );
+    }
   }
 </script>
