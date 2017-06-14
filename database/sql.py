@@ -552,6 +552,5 @@ class changePassword:
 
 class addUser:
     def __init__(self, username, password, role):
-        dbCommon.add_interactive_user( cur, conn, username, password, role, 'addUser test', True )
-        self.username = username
+        self.unique = dbCommon.add_interactive_user( cur, conn, username, password, role, 'addUser test', True )
 
