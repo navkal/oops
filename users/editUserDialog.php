@@ -2,6 +2,8 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"] . "/session/passwordRules.php";
+  define( 'MAX_USERNAME_LENGTH', 20 );
+  define( 'MIN_USERNAME_LENGTH', 6 );
 ?>
 
 <!-- Edit User dialog -->
@@ -18,7 +20,7 @@
             <form onsubmit="handleClick(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" value="<?=$sUsername?>" <?=$sUsernameReadonly?>  placeholder="Username" >
+                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" <?=$sUsernameReadonly?>  placeholder="Username" >
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
@@ -72,8 +74,17 @@
   function onShow()
   {
     console.log( 'onShow' );
+
+    // Initialize input fields
+    $( '#username' ).val( '<?=$sUsername?>' );
+    $( '#password' ).val( '' );
+    $( '#confirm' ).val( '' );
+    $( '#role' ).val( 'visitor' );
+
+    // Clear messages
     clearMessages();
   }
+
   function onShown()
   {
     console.log( 'onShown' );
@@ -86,6 +97,7 @@
   {
     console.log( 'onHidden' );
   }
+
   function handleClick()
   {
     console.log( 'submitUser: action=' + g_sAction );
@@ -113,9 +125,24 @@
     var sUsername = tUsername.val();
     var aMessages = [];
 
+    if ( sUsername.length > <?=MAX_USERNAME_LENGTH?> )
+    {
+      aMessages.push( 'Username may contain at most <?=MAX_USERNAME_LENGTH?> characters.' );
+    }
+
+    if ( sUsername.length < <?=MIN_USERNAME_LENGTH?> )
+    {
+      aMessages.push( 'Username must contain at least <?=MIN_USERNAME_LENGTH?> characters.' );
+    }
+
     if ( sUsername.indexOf( ' ' ) != -1 )
     {
       aMessages.push( 'Username may not contain spaces.' );
+    }
+
+    if ( ( sUsername.length > 0 ) && ! sUsername.match( /^[a-zA-Z0-9\-_]+$/ ) )
+    {
+      aMessages.push( 'Username can contain only alphanumeric, hyphen, and underscore characters.' );
     }
 
     if ( aMessages.length )
