@@ -558,10 +558,10 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, username, password, role):
+    def __init__(self, username, password, role, force_change_password):
 
         if password != None:
-            cur.execute( 'UPDATE User SET password=? WHERE lower(username)=?', ( dbCommon.hash(password), username.lower() ) );
+            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), force_change_password, username.lower() ) );
 
         cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
         role_id = cur.fetchone()[0]
