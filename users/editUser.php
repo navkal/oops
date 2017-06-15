@@ -6,6 +6,11 @@
   define( 'MIN_USERNAME_LENGTH', 6 );
 ?>
 
+<!-- Add User button -->
+<button id="addUserButton" class="btn btn-default btn-sm pull-right" onclick="initAdd()" data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false style="display:none" >
+  <span class="glyphicon glyphicon-plus"></span> Add User
+</button>
+
 <!-- Edit User dialog -->
 <div class="modal fade" id="editUserDialog" tabindex="-1" role="dialog" aria-labelledby="editUserLabel">
   <div class="modal-dialog" role="document">
@@ -74,6 +79,25 @@
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
   $( '#editUserDialog' ).on( 'hide.bs.modal', onHide );
   $( '#editUserDialog' ).on( 'hidden.bs.modal', onHidden );
+
+
+  function initAdd()
+  {
+    g_sAction = 'add';
+    g_sSubmitLabel = 'Add User';
+    g_sUsername = '';
+    g_sUsernameReadonly = false;
+    g_sFocusId = 'username';
+  }
+
+  function initUpdate( sUsername )
+  {
+    g_sAction = 'update';
+    g_sSubmitLabel = 'Update User';
+    g_sUsername = sUsername;
+    g_sUsernameReadonly = true;
+    g_sFocusId = 'password';
+  }
 
   function onShow()
   {
