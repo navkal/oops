@@ -162,6 +162,15 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  update_user:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control', // Controls sortability
+    controlType: 'update',
+    displayIndex: displayIndex ++
+  },
   parent_path:
   {
     label: "Parent",

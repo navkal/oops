@@ -373,7 +373,7 @@ class sortableTable:
                 if role_id:
                     cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
                     role = cur.fetchone()[0]
-                    row = { 'username': obj[1], 'user_description': obj[4], 'role': role }
+                    row = { 'username': obj[1], 'user_description': obj[4], 'role': role, 'update_user': obj[1] }
                     self.rows.append( row )
 
         elif object_type == 'device':

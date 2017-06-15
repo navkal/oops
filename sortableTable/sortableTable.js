@@ -116,13 +116,21 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
           if ( tRule.columnType == 'control' )
           {
+            // Perform special rendering for UI controls
             switch ( tRule.controlType )
             {
               case 'image':
-                // Perform special rendering for images
                 sCell = '<a path="' + sCell + '">';
                 sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
                 sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+                sCell += '</button>';
+                sCell += '</a>';
+                break;
+
+              case 'update':
+                sCell = '<a path="' + sCell + '">';
+                sCell += '<button class="btn btn-link btn-xs" onclick="alert()" title="Update" >';
+                sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
                 break;
