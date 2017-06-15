@@ -66,7 +66,8 @@
 <script>
   var g_sUsername = null;
   var g_sUsernameReadonly = null;
-  var g_sAction = '<?=$sSubmitAction?>';
+  var g_sAction = null;
+
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
   $( '#editUserDialog' ).on( 'hide.bs.modal', onHide );

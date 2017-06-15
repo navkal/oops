@@ -5,7 +5,6 @@
 </button>
 
 <?php
-  $sUsernameReadonly = '';
   $sSubmitAction = 'add';
   $sSubmitLabel = 'Add User';
   $sAutofocusId = 'username';
@@ -16,12 +15,14 @@
 
   function initAdd()
   {
+    g_sAction = 'add';
     g_sUsername = '';
     g_sUsernameReadonly = false;
   }
 
   function initUpdate( sUsername )
   {
+    g_sAction = 'update';
     g_sUsername = sUsername;
     g_sUsernameReadonly = true;
   }
