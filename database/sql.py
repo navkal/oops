@@ -523,15 +523,16 @@ class signInUser:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT role_id, force_change_password FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
+        cur.execute('SELECT username, role_id, force_change_password FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
         if user_row:
-            role_id = user_row[0]
+            self.username = user_row[0]
+            role_id = user_row[1]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.forceChangePassword = user_row[1]
+            self.forceChangePassword = user_row[2]
             self.signInId = str( uuid.uuid1() )
 
 
