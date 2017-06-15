@@ -128,8 +128,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 break;
 
               case 'update':
-                sCell = '<a path="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="alert()" title="Update" >';
+                var sUsername = sCell;
+                sCell = '<a username="' + sCell + '">';
+                sCell += '<button class="btn btn-link btn-xs" onclick="alert()" title="Update '+"'"+sUsername+"'"+'" >';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
