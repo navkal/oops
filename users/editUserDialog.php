@@ -64,6 +64,7 @@
 </div>
 
 <script>
+  var g_sUsername = '';
   var g_sAction = '<?=$sSubmitAction?>';
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -75,7 +76,7 @@
     console.log( 'onShow' );
 
     // Initialize input fields
-    $( '#username' ).val( '<?=$sUsername?>' );
+    $( '#username' ).val( g_sUsername );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
     $( '#role' ).val( 'visitor' );

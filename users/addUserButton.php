@@ -5,7 +5,6 @@
 </button>
 
 <?php
-  $sUsername = '';
   $sUsernameReadonly = '';
   $sSubmitAction = 'add';
   $sSubmitLabel = 'Add User';
@@ -14,13 +13,14 @@
 ?>
 
 <script>
+
   function initAdd()
   {
-    alert( 'add' );
+    g_sUsername = '';
   }
 
   function initUpdate( sUsername )
   {
-    alert( 'update ' + sUsername );
+    g_sUsername = sUsername;
   }
 </script>
