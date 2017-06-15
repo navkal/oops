@@ -556,3 +556,17 @@ class addUser:
         self.username = username
         self.unique = dbCommon.add_interactive_user( cur, conn, username, password, role, 'addUser test', True )
 
+
+class updateUser:
+    def __init__(self, username, password, role):
+
+        if password != '':
+            cur.execute( 'UPDATE User SET password=? WHERE lower(username)=?', ( dbCommon.hash(password), username.lower() ) );
+
+        cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
+        role_id = cur.fetchone()[0]
+
+        cur.execute( 'UPDATE User SET role_id=? WHERE lower(username)=?', ( role_id, username.lower() ) )
+
+        conn.commit()
+

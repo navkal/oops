@@ -247,4 +247,9 @@
       showMessages( aMessages );
     }
   }
+
+  function updateDone( tRsp, sStatus, tJqXhr )
+  {
+    location.reload();
+  }
 </script>

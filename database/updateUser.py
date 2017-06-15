@@ -8,16 +8,16 @@ printctl.off()
 import sql
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser( description='add user' )
+    parser = argparse.ArgumentParser( description='update user' )
     parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser.add_argument( '-p', '--password', dest='password', help='password' )
     parser.add_argument( '-r', '--role', dest='role', help='role' )
     args = parser.parse_args()
 
     try:
-        status = sql.addUser( args.username, args.password, args.role )
+        status = sql.updateUser( args.username, args.password, args.role )
     except:
-        dict = { 'Error': 'Failed to add user' }
+        dict = { 'Error': 'Failed to update user' }
     else:
         dict = status.__dict__
 
