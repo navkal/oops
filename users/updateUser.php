@@ -10,10 +10,10 @@
 
   // Force change password if requestor is admin and target is another user
   $bForceChangePassword = ( $sPassword != '' ) && ( $_SESSION['panelSpy']['user']['username'] == 'admin' ) && ( $sUsername != 'admin' );
-  $sForceChangePassword = $bForceChangePassword ? 'True' : 'False';
+  $iForceChangePassword = $bForceChangePassword ? 1 : 0;
 
   // Update user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -u " . $sUsername . ( ( $sPassword == '' ) ? '' : ( ' -p ' . $sPassword ) ) . ' -r ' . $sRole . ' -f ' . $sForceChangePassword;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -u " . $sUsername . ( ( $sPassword == '' ) ? '' : ( ' -p ' . $sPassword ) ) . ' -r ' . $sRole . ' -f ' . $iForceChangePassword;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

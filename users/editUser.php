@@ -185,32 +185,36 @@
   function validateUsername()
   {
     var tUsername = $( '#username' );
-    var sUsername = tUsername.val();
     var aMessages = [];
 
-    if ( sUsername.length > <?=MAX_USERNAME_LENGTH?> )
+    if ( ! tUsername.prop( 'readonly' ) )
     {
-      aMessages.push( 'Username may contain at most <?=MAX_USERNAME_LENGTH?> characters.' );
-    }
+      var sUsername = tUsername.val();
 
-    if ( sUsername.length < <?=MIN_USERNAME_LENGTH?> )
-    {
-      aMessages.push( 'Username must contain at least <?=MIN_USERNAME_LENGTH?> characters.' );
-    }
+      if ( sUsername.length > <?=MAX_USERNAME_LENGTH?> )
+      {
+        aMessages.push( 'Username may contain at most <?=MAX_USERNAME_LENGTH?> characters.' );
+      }
 
-    if ( sUsername.indexOf( ' ' ) != -1 )
-    {
-      aMessages.push( 'Username may not contain spaces.' );
-    }
+      if ( sUsername.length < <?=MIN_USERNAME_LENGTH?> )
+      {
+        aMessages.push( 'Username must contain at least <?=MIN_USERNAME_LENGTH?> characters.' );
+      }
 
-    if ( ( sUsername.length > 0 ) && ! sUsername.match( /^[a-zA-Z0-9\-_]+$/ ) )
-    {
-      aMessages.push( 'Username can contain only alphanumeric, hyphen, and underscore characters.' );
-    }
+      if ( sUsername.indexOf( ' ' ) != -1 )
+      {
+        aMessages.push( 'Username may not contain spaces.' );
+      }
 
-    if ( aMessages.length )
-    {
-      tUsername.parent().addClass( 'has-error' );
+      if ( ( sUsername.length > 0 ) && ! sUsername.match( /^[a-zA-Z0-9\-_]+$/ ) )
+      {
+        aMessages.push( 'Username can contain only alphanumeric, hyphen, and underscore characters.' );
+      }
+
+      if ( aMessages.length )
+      {
+        tUsername.parent().addClass( 'has-error' );
+      }
     }
 
     return aMessages;
@@ -222,7 +226,8 @@
     var tPostData = new FormData();
     tPostData.append( "username", $( '#username' ).val() );
     tPostData.append( "password", $( '#password' ).val() );
-    tPostData.append( "role", $( '#role' ).val() );
+    var tRole = $( '#role' ).is( ':visible' ) ? $( '#role' ) : $( '#admin' );
+    tPostData.append( "role", tRole.val() );
 
     $.ajax(
       "users/" + g_sAction + "User.php",
