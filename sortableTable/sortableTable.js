@@ -11,7 +11,7 @@ function getSortableTable()
 {
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
-  
+
   // Optionally hide topology link
   if ( g_bShowTopologyLink )
   {
@@ -116,14 +116,16 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
           if ( tRule.columnType == 'control' )
           {
-            if ( tRule.controlType = 'image' )
+            switch ( tRule.controlType )
             {
-              // Perform special rendering for images
-              sCell = '<a path="' + sCell + '">';
-              sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
-              sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
-              sCell += '</button>';
-              sCell += '</a>';
+              case 'image':
+                // Perform special rendering for images
+                sCell = '<a path="' + sCell + '">';
+                sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
+                sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+                sCell += '</button>';
+                sCell += '</a>';
+                break;
             }
           }
         }
