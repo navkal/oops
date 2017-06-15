@@ -25,7 +25,7 @@
             <form onsubmit="handleClick(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" >
+                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" autocomplete="off" >
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
