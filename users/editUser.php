@@ -36,11 +36,12 @@
                 <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm Password" >
               </div>
               <div class="form-group">
-                <label for="role" >Role</label>
+                <label id="roleLabel" >Role</label>
                 <select id="role" class="form-control">
                   <option value="visitor">Visitor</option>
                   <option value="technician">Technician</option>
                 </select>
+                <input type="text" id="admin" class="form-control" readonly >
               </div>
               <div style="text-align:center;" >
                 <button id="submit" type="submit" class="btn btn-primary" ></button>
@@ -72,6 +73,7 @@
   var g_sAction = null;
   var g_sSubmitLabel = null;
   var g_sUsername = null;
+  var g_sRole = null;
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
 
@@ -86,6 +88,7 @@
     g_sAction = 'add';
     g_sSubmitLabel = 'Add User';
     g_sUsername = '';
+    g_sRole = 'visitor';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
   }
@@ -97,6 +100,17 @@
     g_sUsername = sUsername;
     g_sUsernameReadonly = true;
     g_sFocusId = 'password';
+
+    var iRow = 0;
+    var tRow = null;
+    do
+    {
+      tRow = g_aSortableTableRows[iRow];
+      iRow ++
+    }
+    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
+
+    g_sRole = tRow.role;
   }
 
   function onShow()
@@ -108,7 +122,22 @@
     $( '#username' ).prop( 'readonly', g_sUsernameReadonly );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
-    $( '#role' ).val( 'visitor' );
+
+    if ( g_sRole == 'administrator' )
+    {
+      $( '#role' ).hide();
+      $( '#admin' ).show();
+      $( '#admin' ).val( g_sRole );
+      $( '#roleLabel' ).attr( 'for', 'admin' );
+    }
+    else
+    {
+      $( '#admin' ).hide();
+      $( '#role' ).show();
+      $( '#role' ).val( g_sRole );
+      $( '#roleLabel' ).attr( 'for', 'role' );
+    }
+
     $( '#submit' ).text( g_sSubmitLabel );
 
     // Clear messages

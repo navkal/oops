@@ -1,6 +1,6 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-
+var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bShowTopologyLink = true;
@@ -48,14 +48,14 @@ function getSortableTable()
 // Load sortable table onto page
 function loadSortableTable( tRsp, sStatus, tJqXhr )
 {
-  var aRows = tRsp['rows'];
+  g_aSortableTableRows = tRsp['rows'];
 
   // Build map of columns from list of rows
   var tColumnMap = {};
-  for ( var iRow in aRows )
+  for ( var iRow in g_aSortableTableRows )
   {
     // Get next row
-    var tRow = aRows[iRow];
+    var tRow = g_aSortableTableRows[iRow];
 
     // Insert artificial index cell
     tRow['index'] = iRow;
