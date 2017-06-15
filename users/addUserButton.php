@@ -5,9 +5,6 @@
 </button>
 
 <?php
-  $sSubmitAction = 'add';
-  $sSubmitLabel = 'Add User';
-  $sAutofocusId = 'username';
   require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUserDialog.php";
 ?>
 
@@ -16,14 +13,18 @@
   function initAdd()
   {
     g_sAction = 'add';
+    g_sSubmitLabel = 'Add User';
     g_sUsername = '';
     g_sUsernameReadonly = false;
+    g_sFocusId = 'username';
   }
 
   function initUpdate( sUsername )
   {
     g_sAction = 'update';
+    g_sSubmitLabel = 'Update User';
     g_sUsername = sUsername;
     g_sUsernameReadonly = true;
+    g_sFocusId = 'password';
   }
 </script>

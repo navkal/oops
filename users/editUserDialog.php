@@ -38,7 +38,7 @@
                 </select>
               </div>
               <div style="text-align:center;" >
-                <button id="submit" type="submit" class="btn btn-primary" ><?=$sSubmitLabel?></button>
+                <button id="submit" type="submit" class="btn btn-primary" ></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </form>
@@ -64,9 +64,11 @@
 </div>
 
 <script>
+  var g_sAction = null;
+  var g_sSubmitLabel = null;
   var g_sUsername = null;
   var g_sUsernameReadonly = null;
-  var g_sAction = null;
+  var g_sFocusId = null;
 
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -83,6 +85,7 @@
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
     $( '#role' ).val( 'visitor' );
+    $( '#submit' ).text( g_sSubmitLabel );
 
     // Clear messages
     clearMessages();
@@ -91,7 +94,7 @@
   function onShown()
   {
     console.log( 'onShown' );
-    $( '#<?=$sAutofocusId?>' ).focus();
+    $( '#' + g_sFocusId ).focus();
   }
   function onHide()
   {
