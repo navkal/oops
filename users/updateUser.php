@@ -9,7 +9,7 @@
   $sRole = $_POST['role'];
 
   // Update user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword . ' -r ' . $sRole;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -u " . $sUsername . ( ( $sPassword == '' ) ? '' : ( ' -p ' . $sPassword ) ) . ' -r ' . $sRole;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

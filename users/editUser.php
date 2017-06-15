@@ -172,7 +172,10 @@
     clearMessages();
 
     var aMessages = validateUsername();
-    aMessages = aMessages.concat( validatePassword() );
+    if ( ( g_sAction == 'add' ) || ( $( '#password' ).val().length > 0 ) || ( $( '#confirm' ).val().length > 0 ) )
+    {
+      aMessages = aMessages.concat( validatePassword() );
+    }
 
     showMessages( aMessages );
 

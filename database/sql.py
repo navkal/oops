@@ -560,7 +560,7 @@ class addUser:
 class updateUser:
     def __init__(self, username, password, role):
 
-        if password != '':
+        if password != None:
             cur.execute( 'UPDATE User SET password=? WHERE lower(username)=?', ( dbCommon.hash(password), username.lower() ) );
 
         cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
