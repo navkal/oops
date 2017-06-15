@@ -151,7 +151,8 @@ var g_tPropertyRules =
     label: "Image",
     showInPropertiesWindow: false,
     showInSortableTable: true,
-    columnType: 'image', // Controls sortability
+    columnType: 'control', // Controls sortability
+    controlType: 'image',
     displayIndex: displayIndex ++
   },
   description:

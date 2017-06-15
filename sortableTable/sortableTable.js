@@ -77,7 +77,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
             key: sKey,
             label: sLabel,
             align: ( tRule.columnType == 'text' ) ? '' : 'right',
-            sortable: ! ( ( tRule.columnType == 'image' ) || ( tRule.columnType == 'index' ) ),
+            sortable: ! ( ( tRule.columnType == 'control' ) || ( tRule.columnType == 'index' ) ),
             empty: true,
             cells: [],
             minLength: Number.MAX_SAFE_INTEGER,
@@ -114,14 +114,17 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
             tColumnMap[sLabel].align = '';
           }
 
-          // Perform special rendering for images
-          if ( tRule.columnType == 'image' )
+          if ( tRule.columnType == 'control' )
           {
-            sCell = '<a path="' + sCell + '">';
-            sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
-            sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
-            sCell += '</button>';
-            sCell += '</a>';
+            if ( tRule.controlType = 'image' )
+            {
+              // Perform special rendering for images
+              sCell = '<a path="' + sCell + '">';
+              sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
+              sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+              sCell += '</button>';
+              sCell += '</a>';
+            }
           }
         }
 
