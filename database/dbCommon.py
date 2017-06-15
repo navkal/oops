@@ -13,7 +13,7 @@ dcEventTypes = {
 def add_interactive_user( cur, conn, username, password, role, description, force_change_password ):
 
     # Check whether username is unique
-    cur.execute( '''SELECT username FROM User WHERE username = ?''', (username,))
+    cur.execute( '''SELECT username FROM User WHERE lower(username) = ?''', (username.lower(),))
     bUnique = len( cur.fetchall() ) == 0
 
     # If username is unique, add to table
