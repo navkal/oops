@@ -17,10 +17,12 @@
   function initAdd()
   {
     g_sUsername = '';
+    g_sUsernameReadonly = false;
   }
 
   function initUpdate( sUsername )
   {
     g_sUsername = sUsername;
+    g_sUsernameReadonly = true;
   }
 </script>

@@ -20,7 +20,7 @@
             <form onsubmit="handleClick(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" <?=$sUsernameReadonly?>  placeholder="Username" >
+                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" >
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
@@ -64,7 +64,8 @@
 </div>
 
 <script>
-  var g_sUsername = '';
+  var g_sUsername = null;
+  var g_sUsernameReadonly = null;
   var g_sAction = '<?=$sSubmitAction?>';
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -77,6 +78,7 @@
 
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
+    $( '#username' ).prop( 'readonly', g_sUsernameReadonly );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
     $( '#role' ).val( 'visitor' );
