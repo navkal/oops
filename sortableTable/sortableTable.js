@@ -130,7 +130,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
               case 'update':
                 var sUsername = sCell;
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="alert()" title="Update '+"'"+sUsername+"'"+'" >';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initUpdate('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
