@@ -9,7 +9,8 @@ def hash( text ):
 dcEventTypes = {
     'database': 'database',
     'notes': 'notes',
-    'addUser': 'addUser'
+    'addUser': 'addUser',
+    'updateUser': 'updateUser'
 }
 
 def add_interactive_user( cur, conn, by, username, password, role, description ):

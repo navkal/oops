@@ -9,6 +9,7 @@ import sql
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='update user' )
+    parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
     parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser.add_argument( '-p', '--password', dest='password', help='password' )
     parser.add_argument( '-r', '--role', dest='role', help='role' )
@@ -16,7 +17,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.updateUser( args.username, args.password, args.role, args.force_change_password )
+        status = sql.updateUser( args.by, args.username, args.password, args.role, args.force_change_password )
     except:
         dict = { 'Error': 'Failed to update user' }
     else:

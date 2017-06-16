@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" autofocus >
             </div>
             <div class="form-group">
               <label for="confirm" >Confirm</label>
