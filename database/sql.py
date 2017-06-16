@@ -571,3 +571,9 @@ class updateUser:
 
         conn.commit()
 
+
+class removeUser:
+    def __init__(self, username):
+        self.username = username
+        cur.execute( 'DELETE FROM User WHERE lower(username)=?', ( username.lower(), ) )
+        conn.commit()

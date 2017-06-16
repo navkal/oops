@@ -28,17 +28,15 @@
 </div>
 
 <script>
-  $( '#removeUserDialog' ).on( 'shown.bs.modal', setFocus );
-
-  var g_sRemoveUsername = null;
-
+  var g_sUsername = null;
   function initConfirmRemove( sUsername )
   {
-    g_sRemoveUsername = sUsername;
+    g_sUsername = sUsername;
     $( '#removeUserLabel' ).html( "Remove User '" + sUsername + "'?</span>" );
   }
 
-  function setFocus()
+  $( '#removeUserDialog' ).on( 'shown.bs.modal', focusOnDummyInput );
+  function focusOnDummyInput()
   {
     // Set focus on dummy input field so that <Enter> will submit form
     $( '#dummyInput' ).focus();
@@ -46,6 +44,26 @@
 
   function removeUser()
   {
-    alert( 'Stub: Remove ' + g_sRemoveUsername );
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "username", g_sUsername );
+
+    $.ajax(
+      "users/removeUser.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( removeDone )
+    .fail( handleAjaxError );
+  }
+
+  function removeDone()
+  {
+    alert( 'remove done' );
   }
 </script>
