@@ -8,8 +8,8 @@
   $sPassword = $_POST['password'];
   $sRole = $_POST['role'];
 
-  // Force change password if requestor is admin and target is another user
-  $bForceChangePassword = ( $sPassword != '' ) && ( $_SESSION['panelSpy']['user']['username'] == 'admin' ) && ( $sUsername != 'admin' );
+  // Determine whether to force target user to change password on next signin
+  $bForceChangePassword = ( $sPassword != '' ) && ( $_SESSION['panelSpy']['user']['username'] != $sUsername );
   $iForceChangePassword = $bForceChangePassword ? 1 : 0;
 
   // Update user
