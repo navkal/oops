@@ -64,6 +64,6 @@
 
   function removeDone()
   {
-    alert( 'remove done' );
+    location.reload();
   }
 </script>
