@@ -6,15 +6,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></span></button>
-        <h4 class="modal-title" id="removeUserLabel"></h4>
+        <h4 class="modal-title" id="removeUserLabel">Remove User</h4>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form onsubmit="removeUser(event); return false;" >
-              <input type="text" id="dummyInput" style="width:0px;height:0px;opacity:0" >
+              <div class="form-group">
+                <label for="removeUsername">Username</label>
+                <input type="text" class="form-control" id="removeUsername" placeholder="Username" readonly >
+              </div>
               <div style="text-align:center;" >
-                <button id="submit" type="submit" class="btn btn-primary" >Remove User</button>
+                <button id="submit" type="submit" class="btn btn-danger" >Remove User</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </form>
@@ -32,14 +35,13 @@
   function initConfirmRemove( sUsername )
   {
     g_sUsername = sUsername;
-    $( '#removeUserLabel' ).html( "Remove User '" + sUsername + "'?</span>" );
+    $( '#removeUsername' ).val( g_sUsername );
   }
 
-  $( '#removeUserDialog' ).on( 'shown.bs.modal', focusOnDummyInput );
-  function focusOnDummyInput()
+  $( '#removeUserDialog' ).on( 'shown.bs.modal', initUsername );
+  function initUsername()
   {
-    // Set focus on dummy input field so that <Enter> will submit form
-    $( '#dummyInput' ).focus();
+    $( '#removeUsername' ).focus();
   }
 
   function removeUser()
