@@ -20,10 +20,10 @@ var g_tPropertyRules =
   },
   index:
   {
-    label: "",
+    label: "Index",
     showInPropertiesWindow: false,
     showInSortableTable: true,
-    columnType: 'index', // Controls sortability
+    columnType: 'index',
     displayIndex: displayIndex ++
   },
   username:
@@ -148,10 +148,10 @@ var g_tPropertyRules =
   },
   image_file:
   {
-    label: " ".repeat( displayIndex ),  // Unique empty column heading
+    label: "Image",
     showInPropertiesWindow: false,
     showInSortableTable: true,
-    columnType: 'control', // Controls sortability
+    columnType: 'control',
     controlType: 'image',
     displayIndex: displayIndex ++
   },
@@ -164,19 +164,19 @@ var g_tPropertyRules =
   },
   update_user:
   {
-    label: " ".repeat( displayIndex ),  // Unique empty column heading
+    label: "Update",
     showInPropertiesWindow: false,
     showInSortableTable: true,
-    columnType: 'control', // Controls sortability
+    columnType: 'control',
     controlType: 'update',
     displayIndex: displayIndex ++
   },
   remove_user:
   {
-    label: " ".repeat( displayIndex ),  // Unique empty column heading
+    label: "Remove",
     showInPropertiesWindow: false,
     showInSortableTable: true,
-    columnType: 'control', // Controls sortability
+    columnType: 'control',
     controlType: 'remove',
     displayIndex: displayIndex ++
   },
@@ -340,7 +340,7 @@ function childWindowsClose( aWindows )
       $( "#messages" ).css( "display", "block" );
     }
   }
-  
+
 // <- <- <- Error messages <- <- <-
 
 
