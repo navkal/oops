@@ -14,7 +14,7 @@ dcEventTypes = {
     'removeUser': 'removeUser'
 }
 
-def add_interactive_user( cur, conn, by, username, password, role, description ):
+def add_interactive_user( cur, conn, by, username, password, role, description, force_change_password=True ):
 
     # Check whether username is unique
     cur.execute( '''SELECT username FROM User WHERE lower(username) = ?''', (username.lower(),))
@@ -24,7 +24,7 @@ def add_interactive_user( cur, conn, by, username, password, role, description )
     if bUnique:
         cur.execute( '''SELECT id FROM Role WHERE role = ?''', (role,))
         role_id = cur.fetchone()[0]
-        cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description, force_change_password ) VALUES (?,?,?,?,? )''', (username, hash(password), role_id, description, True) )
+        cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description, force_change_password ) VALUES (?,?,?,?,? )''', (username, hash(password), role_id, description, force_change_password) )
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dcEventTypes['addUser'], 'User', 'username', username, "Add user '" + username + "'" ) )
