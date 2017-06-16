@@ -148,7 +148,7 @@ var g_tPropertyRules =
   },
   image_file:
   {
-    label: "Image",
+    label: " ".repeat( displayIndex ),  // Unique empty column heading
     showInPropertiesWindow: false,
     showInSortableTable: true,
     columnType: 'control', // Controls sortability
@@ -164,7 +164,7 @@ var g_tPropertyRules =
   },
   update_user:
   {
-    label: "Update",
+    label: " ".repeat( displayIndex ),  // Unique empty column heading
     showInPropertiesWindow: false,
     showInSortableTable: true,
     columnType: 'control', // Controls sortability
@@ -173,7 +173,7 @@ var g_tPropertyRules =
   },
   remove_user:
   {
-    label: "Remove",
+    label: " ".repeat( displayIndex ),  // Unique empty column heading
     showInPropertiesWindow: false,
     showInSortableTable: true,
     columnType: 'control', // Controls sortability
