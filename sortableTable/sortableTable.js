@@ -135,6 +135,15 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 sCell += '</button>';
                 sCell += '</a>';
                 break;
+
+              case 'remove':
+                var sUsername = sCell;
+                sCell = '<a username="' + sCell + '">';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initConfirmRemove('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#removeUserDialog" data-backdrop="static" data-keyboard=false>';
+                sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
+                sCell += '</button>';
+                sCell += '</a>';
+                break;
             }
           }
         }

@@ -171,6 +171,15 @@ var g_tPropertyRules =
     controlType: 'update',
     displayIndex: displayIndex ++
   },
+  remove_user:
+  {
+    label: "Remove",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control', // Controls sortability
+    controlType: 'remove',
+    displayIndex: displayIndex ++
+  },
   parent_path:
   {
     label: "Parent",

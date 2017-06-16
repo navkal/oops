@@ -29,6 +29,7 @@
     <?php
       require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
       require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUser.php";
+      require_once $_SERVER["DOCUMENT_ROOT"]."/users/confirmRemoveUser.php";
     ?>
   </div>
 

@@ -138,6 +138,7 @@
       $( '#roleLabel' ).attr( 'for', 'role' );
     }
 
+    $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
 
     // Clear messages
