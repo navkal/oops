@@ -169,22 +169,13 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
     if ( ! tColumn.empty )
     {
-      // Determine whether to show column label and filter
-      var sFilterFalse = '';
-      switch( g_tPropertyRules[tColumn.key].columnType )
-      {
-        case 'index':
-        case 'control':
-          // No label or filter for index and control columns
-          sLabel = '';
-          sFilterFalse = ' class="filter-false" '
-          break;
+      // Determine whether column header should be blank
+      var sColumnType = g_tPropertyRules[tColumn.key].columnType;
+      var bBlankHeader = ( sColumnType == 'index' || sColumnType == 'control' );
+      var sFilterFalse = bBlankHeader ? ' class="filter-false" ' : '';
+      var sLabel = bBlankHeader ? '' : sLabel;
 
-        default:
-          // Do nothing
-          break;
-      }
-
+      // Format the header HTML
       var nVals = Object.keys( tColumn.valMap ).length;
       sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : sFilterFalse ;
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sLabel + '</th>';
