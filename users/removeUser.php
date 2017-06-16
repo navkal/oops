@@ -7,7 +7,7 @@
   $sUsername = $_POST['username'];
 
   // Remove user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeUser.py 2>&1 -u " . $sUsername;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] . ' -u ' . $sUsername;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

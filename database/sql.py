@@ -582,7 +582,9 @@ class updateUser:
 
 
 class removeUser:
-    def __init__(self, username):
+    def __init__(self, by, username):
         self.username = username
         cur.execute( 'DELETE FROM User WHERE lower(username)=?', ( username.lower(), ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
+            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeUser'], 'User', 'username', username, "Remove user '" + username + "'" ) )
         conn.commit()

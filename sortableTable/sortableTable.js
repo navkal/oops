@@ -162,6 +162,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   var sHtml = '';
   var aHeaders = [];
   var iColumn = 0;
+
   for ( var iHeader in aSortedHeaders )
   {
     var sLabel = aSortedHeaders[iHeader];
@@ -169,19 +170,31 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
     if ( ! tColumn.empty )
     {
-      // Determine whether column header should be blank
+      // Configure column header attributes
       var sColumnType = g_tPropertyRules[tColumn.key].columnType;
       var bBlankHeader = ( sColumnType == 'index' || sColumnType == 'control' );
-      var sFilterFalse = bBlankHeader ? ' class="filter-false" ' : '';
-      var sLabel = bBlankHeader ? '' : sLabel;
+      var sFilter = '';
+      if ( bBlankHeader )
+      {
+        // Column should have a blank header
+        sFilter = ' class="filter-false" ';
+        sLabel = '';
+      }
+      else
+      {
+        // If column has few values, use dropdown for filtering
+        if ( Object.keys( tColumn.valMap ).length <= 2 )
+        {
+          sFilter = ' class="filter-select filter-exact" ';
+        }
+      }
 
       // Format the header HTML
-      var nVals = Object.keys( tColumn.valMap ).length;
-      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : sFilterFalse ;
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sLabel + '</th>';
       aHeaders[iColumn++] = tColumn.sortable ? {} : { sorter: false };
     }
   }
+
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
   // Format table body HTML
