@@ -169,7 +169,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     if ( ! tColumn.empty )
     {
       var nVals = Object.keys( tColumn.valMap ).length;
-      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : ( sHeader == '' ? ' class="filter-false" ' : '' );
+      sFilter = ( nVals <= 2 ) ? ' class="filter-select filter-exact" ' : ( ( ( sHeader == '' ) || ( g_tPropertyRules[tColumn.key].columnType == 'control' ) )? ' class="filter-false" ' : '' );
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sHeader + '</th>';
       aHeaders[iColumn++] = tColumn.sortable ? {} : { sorter: false };
     }
