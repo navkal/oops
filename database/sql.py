@@ -373,8 +373,14 @@ class sortableTable:
                 if role_id:
                     cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
                     role = cur.fetchone()[0]
+
                     username = obj[1]
-                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': username }
+                    if username == 'admin':
+                        remove_username = ''
+                    else:
+                        remove_username = username
+
+                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username }
                     self.rows.append( row )
 
         elif object_type == 'device':
