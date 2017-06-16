@@ -515,7 +515,7 @@ class saveNotes:
     def __init__(self, args):
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), 'bigBird', dbCommon.dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
+            VALUES (?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
 
         conn.commit()
 

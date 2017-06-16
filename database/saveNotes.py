@@ -9,6 +9,7 @@ import sql
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='save notes applicable to target table, column, and value' )
+    parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser.add_argument( '-t', '--table', dest='targetTable', help='target table' )
     parser.add_argument( '-c', '--column', dest='targetColumn',  help='target column' )
     parser.add_argument( '-v', '--value', dest='targetValue',  help='target value' )
