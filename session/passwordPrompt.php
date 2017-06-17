@@ -55,16 +55,16 @@
     </div>
 
     <div class="modal fade" id="passwordErrorDialog" tabindex="-1" role="dialog" aria-labelledby="passwordErrorLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="passwordErrorLabel">Password not Changed</h4>
+            <h4 class="modal-title text-danger" id="passwordErrorLabel">Password not Changed</h4>
           </div>
-          <div class="modal-body bg-info">
+          <div class="modal-body bg-danger">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <p>Old Password not valid.</p>
-                <p>Please sign in again.</p>
+                <p class="text-danger" ><b>Old Password not valid.</b></p>
+                <p class="text-danger">Please sign in again.</p>
               </div>
             </div>
           </div>
