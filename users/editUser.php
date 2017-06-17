@@ -78,9 +78,6 @@
 
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
-  $( '#editUserDialog' ).on( 'hide.bs.modal', onHide );
-  $( '#editUserDialog' ).on( 'hidden.bs.modal', onHidden );
-
 
   function initAdd()
   {
@@ -114,8 +111,6 @@
 
   function onShow()
   {
-    console.log( 'onShow' );
-
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
     $( '#username' ).prop( 'readonly', g_sUsernameReadonly );
@@ -146,21 +141,11 @@
 
   function onShown()
   {
-    console.log( 'onShown' );
     $( '#' + g_sFocusId ).focus();
-  }
-  function onHide()
-  {
-    console.log( 'onHide' );
-  }
-  function onHidden()
-  {
-    console.log( 'onHidden' );
   }
 
   function handleClick()
   {
-    console.log( 'submitUser: action=' + g_sAction );
     if ( validateInput() )
     {
       submitUser();
