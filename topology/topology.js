@@ -24,7 +24,6 @@ function makeHyperlink( i, tEl )
 
   // Get original hyperlink
   var sLink = tAnchor.attr( 'xlink:href' );
-  console.log( 'link=' + sLink );
 
   // Reconfigure hyperlink
   if ( sLink )
@@ -69,28 +68,22 @@ function makeHyperlink( i, tEl )
 
 function openMainWindow( tEvent )
 {
-  console.log( 'Trying to get main window' );
   var tMain = window.opener;
 
   try
   {
     // Determine whether original main window is available
     var sTestTitle = tMain.document.title;
-
-    // No exception: Original main window available
-    console.log( 'Original opener available, title=' + sTestTitle );
   }
   catch( e )
   {
     // Exception: Original main window not available
-    console.log( 'Original opener NOT available' );
 
     // Determine whether reopened main window is available
     if ( g_tMainWindow )
     {
       if ( g_tMainWindow.closed )
       {
-        console.log( 'Reopened main window CLOSED' );
         g_tMainWindow = null;
       }
       else
@@ -98,13 +91,11 @@ function openMainWindow( tEvent )
         try
         {
           sTestTitle = g_tMainWindow.document.title;
-          console.log( 'Reopened main window available, title=' + sTestTitle );
         }
         catch( e )
         {
           // Reopened main window not available
           g_tMainWindow = null;
-          console.log( 'Reopened main window NOT available' );
         }
       }
     }
@@ -120,15 +111,12 @@ function openMainWindow( tEvent )
     if ( tMain.document.title.indexOf( 'Circuits' ) != 0 )
     {
       // Main window is not currently on Circuits page
-      console.log( 'Returning to Circuits page' );
       tMain.location.assign( '/' );
     }
   }
   else
   {
     // Main window is not available: Open a new one
-    console.log( 'Reopening main window using goto' );
-
     try
     {
       g_tMainWindow = window.open( '/', 'Main' );
