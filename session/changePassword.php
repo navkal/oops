@@ -17,7 +17,6 @@
   // Extract user from database output
   $sUser = $output[ count( $output ) - 1 ];
   $aUser = (array) json_decode( $sUser );
-  error_log( '===> user=' . print_r( $aUser, true ) );
 
   // Update user
   if ( $aUser['signInId'] )

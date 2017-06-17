@@ -18,7 +18,6 @@
   // Extract user from database output
   $sUser = $output[ count( $output ) - 1 ];
   $aUser = (array) json_decode( $sUser );
-  error_log( '===> user=' . print_r( $aUser, true ) );
 
   // If database assigned a signin id, load user information
   if ( $aUser['signInId'] )
