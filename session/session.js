@@ -33,8 +33,6 @@ function submitCredentials()
 
 function submitCredentialsFailed()
 {
-  console.log( 'submitCredentials FAILED' );
-  alert( 'submitCredentials FAILED' );
   signOut();
 }
 
