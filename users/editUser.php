@@ -22,7 +22,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form onsubmit="handleClick(event); return false;" >
+            <form id="editUserForm" onsubmit="handleClick(event); return false;" >
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" autocomplete="off" >
@@ -43,27 +43,26 @@
                 </select>
                 <input type="text" id="admin" class="form-control" readonly >
               </div>
-              <div style="text-align:center;" >
-                <button id="submit" type="submit" class="btn btn-primary" ></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              </div>
             </form>
           </div>
         </div>
 
-        <br/>
-
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div id="messages" class="alert alert-danger" style="display:none" role="alert">
-              <ul id="messageList">
-              </ul>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="modal-footer">
+
+        <div style="text-align:center;" >
+          <button id="submit" type="submit" class="btn btn-primary" form="editUserForm" ></button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+        <br/>
+
+        <div id="messages" class="alert alert-danger" style="text-align:left; display:none" role="alert">
+          <ul id="messageList">
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>
