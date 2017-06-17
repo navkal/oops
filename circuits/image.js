@@ -38,10 +38,8 @@ function goBack( tEvent, sPath )
   if ( sTitle.indexOf( 'Topology' ) == 0 )
   {
     // Opener is Topology page.  Find main window.
-    console.log( 'Opener is Topology page' );
     try
     {
-      console.log( 'Trying to get second-level opener' );
       var tOpenerOpener = tOpener.opener;
 
       try
@@ -50,20 +48,17 @@ function goBack( tEvent, sPath )
         var sTestTitle = tOpenerOpener.document.title;
 
         // No exception: Original main window available
-        console.log( 'Second-level opener available, title=' + sTestTitle );
         tMain = tOpenerOpener;
       }
       catch( e )
       {
         // Exception: Original main window not available
-        console.log( 'Second-level opener NOT available' );
 
         // Determine whether reopened main window is available
         if ( tOpener.g_tMainWindow )
         {
           if ( tOpener.g_tMainWindow.closed )
           {
-            console.log( 'Reopened main window CLOSED' );
             tOpener.g_tMainWindow = null;
           }
           else
@@ -71,13 +66,11 @@ function goBack( tEvent, sPath )
             try
             {
               sTestTitle = tOpener.g_tMainWindow.document.title;
-              console.log( 'Reopened main window available, title=' + sTestTitle );
             }
             catch( e )
             {
               // Reopened main window not available
               tOpener.g_tMainWindow = null;
-              console.log( 'Reopened main window NOT available' );
             }
           }
         }
@@ -88,7 +81,6 @@ function goBack( tEvent, sPath )
     catch( e )
     {
       // Exception: Could not get second-level opener
-      console.log( 'Could not get second-level opener' );
     }
   }
   else
@@ -107,21 +99,18 @@ function goBack( tEvent, sPath )
     if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
     {
       // Main window is currently on Circuits page
-      console.log( 'Navigating on Circuits page' );
       tMain.g_sSearchTargetPath = sPath;
       tMain.navigateToSearchTarget();
     }
     else
     {
       // Main window is not currently on Circuits page
-      console.log( 'Returning to Circuits page using goto' );
       tMain.location.assign( sGotoUrl );
     }
   }
   else
   {
     // Main window is not available: Open a new one
-    console.log( 'Reopening main window using goto' );
     try
     {
       tOpener.g_tMainWindow = window.open( sGotoUrl, 'Main' );
