@@ -59,7 +59,7 @@
   else
   {
     // Show sign-in prompt
-    include $_SERVER["DOCUMENT_ROOT"] . "/session/challenge.php";
+    include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
   }
 ?>
 
