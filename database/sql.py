@@ -544,18 +544,23 @@ class signInUser:
 
 
 class changePassword:
-    def __init__(self, username, password):
+    def __init__(self, username, oldPassword, password):
 
-        # Set the password and clear the force_change_password flag
-        cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), False, username.lower() ) );
-        conn.commit();
+        # Sign in with old password
+        oldUser = signInUser( username, oldPassword )
 
-        # Retrieve a new copy of the user
-        user = signInUser( username, password )
-        self.username = user.username
-        self.role = user.role
-        self.signInId = user.signInId
-        self.forceChangePassword = user.forceChangePassword
+        if oldUser.signInId:
+
+            # Set the password and clear the force_change_password flag
+            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), False, username.lower() ) );
+            conn.commit();
+
+            # Retrieve a new copy of the user
+            user = signInUser( username, password )
+            self.username = user.username
+            self.role = user.role
+            self.signInId = user.signInId
+            self.forceChangePassword = user.forceChangePassword
 
 
 class addUser:

@@ -23,11 +23,15 @@
               <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" readonly>
             </div>
             <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" autofocus >
+              <label for="oldPassword">Old Password</label>
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="oldPassword" placeholder="Old Password" autofocus >
             </div>
             <div class="form-group">
-              <label for="confirm" >Confirm</label>
+              <label for="password">New Password</label>
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="New Password" >
+            </div>
+            <div class="form-group">
+              <label for="confirm" >Confirm New Password</label>
               <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm New Password" >
             </div>
             <div style="text-align:center;" >
@@ -90,6 +94,7 @@
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( "username", $( '#username' ).val() );
+    tPostData.append( "oldPassword", $( '#oldPassword' ).val() );
     tPostData.append( "password", $( '#password' ).val() );
 
     $.ajax(

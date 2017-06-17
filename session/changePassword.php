@@ -3,10 +3,13 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
-  // Update password for specified user
+  // Get parameters
   $sUsername = $_POST['username'];
+  $sOldPassword = $_POST['oldPassword'];
   $sPassword = $_POST['password'];
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/changePassword.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
+
+  // Execute command
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/changePassword.py 2>&1 -u " . $sUsername . ' -o ' . $sOldPassword . ' -p ' . $sPassword;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );
