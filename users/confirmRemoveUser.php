@@ -11,20 +11,20 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form onsubmit="removeUser(event); return false;" >
+            <form id="removeUserForm" onsubmit="removeUser(event); return false;" >
               <div class="form-group">
                 <label for="removeUsername">Username</label>
                 <input type="text" class="form-control" id="removeUsername" placeholder="Username" readonly >
-              </div>
-              <div style="text-align:center;" >
-                <button id="submit" type="submit" class="btn btn-danger" >Remove User</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </form>
           </div>
         </div>
       </div>
       <div class="modal-footer">
+        <div style="text-align:center;" >
+          <button type="submit" class="btn btn-danger" form="removeUserForm" >Remove User</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
