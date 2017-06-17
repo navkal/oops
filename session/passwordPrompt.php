@@ -63,8 +63,7 @@
           <div class="modal-body bg-info">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <p>Old Password is not valid.</p>
-                <p>Password has not been changed.</p>
+                <p>Old Password not valid.</p>
                 <p>Please sign in again.</p>
               </div>
             </div>
@@ -88,8 +87,8 @@
 
 
 <script>
-  $( '#passwordErrorDialog' ).on( 'shown.bs.modal', onShowErrorDialog );
-  $( '#passwordErrorDialog' ).on( 'hide.bs.modal', onPasswordErrorOk );
+  $( '#passwordErrorDialog' ).on( 'shown.bs.modal', onShownPasswordErrorDialog );
+  $( '#passwordErrorDialog' ).on( 'hide.bs.modal', onOkPasswordErrorDialog );
 
   function handleClick( tEvent )
   {
@@ -135,11 +134,11 @@
         data: tPostData
       }
     )
-    .done( handleChangeResponse )
+    .done( handleChangePasswordRsp )
     .fail( handleAjaxError );
   }
 
-  function handleChangeResponse( tRsp, sStatus, tJqXhr )
+  function handleChangePasswordRsp( tRsp, sStatus, tJqXhr )
   {
     if ( tRsp.signInId )
     {
@@ -153,12 +152,12 @@
     }
   }
 
-  function onShowErrorDialog()
+  function onShownPasswordErrorDialog()
   {
     $( '#dummyInput' ).focus();
   }
 
-  function onPasswordErrorOk()
+  function onOkPasswordErrorDialog()
   {
     signOut();
   }
