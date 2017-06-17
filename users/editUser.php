@@ -1,7 +1,7 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/session/passwordRules.php";
+  require_once $_SERVER["DOCUMENT_ROOT"] . "/users/passwordRules.php";
   define( 'MAX_USERNAME_LENGTH', 20 );
   define( 'MIN_USERNAME_LENGTH', 6 );
 ?>

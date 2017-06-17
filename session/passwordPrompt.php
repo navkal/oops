@@ -6,7 +6,7 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/session/passwordRules.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/users/passwordRules.php";
   ?>
 
   <!-- Body -->
