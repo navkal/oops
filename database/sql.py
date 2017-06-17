@@ -550,6 +550,7 @@ class changePassword:
         oldUser = signInUser( username, oldPassword )
 
         if oldUser.signInId:
+            # Sign-in succeeded
 
             # Set the password and clear the force_change_password flag
             cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), False, username.lower() ) );
@@ -561,6 +562,13 @@ class changePassword:
             self.role = user.role
             self.signInId = user.signInId
             self.forceChangePassword = user.forceChangePassword
+
+        else:
+
+            # Sign-in failed
+            self.username = username
+            self.role = ''
+            self.signInId = ''
 
 
 class addUser:
