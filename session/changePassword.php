@@ -24,10 +24,6 @@
   {
     $_SESSION['panelSpy']['user'] = $aUser;
   }
-  else
-  {
-    $_SESSION['panelSpy']['user'] = [];
-  }
 
   echo $sUser;
 ?>

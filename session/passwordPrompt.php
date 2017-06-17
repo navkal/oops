@@ -54,6 +54,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="passwordErrorDialog" tabindex="-1" role="dialog" aria-labelledby="passwordErrorLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="passwordErrorLabel">Password not Changed</h4>
+          </div>
+          <div class="modal-body bg-info">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <p>Old Password is not valid.</p>
+                <p>Password has not been changed.</p>
+                <p>Please sign in again.</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <form submit="return false;">
+              <input type="text" id="dummyInput" style="width:0px; height:0px; opacity:0%; border:none">
+              <button id="okButton" type="submit" class="btn btn-primary" data-dismiss="modal" >OK</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
       document.title = "Change Password - Panel Spy";
     </script>
@@ -63,6 +88,9 @@
 
 
 <script>
+  $( '#passwordErrorDialog' ).on( 'shown.bs.modal', onShowErrorDialog );
+  $( '#passwordErrorDialog' ).on( 'hide.bs.modal', onPasswordErrorOk );
+
   function handleClick( tEvent )
   {
     switch ( g_sAction )
@@ -107,8 +135,31 @@
         data: tPostData
       }
     )
-    .done( showMain )
+    .done( handleChangeResponse )
     .fail( handleAjaxError );
   }
 
+  function handleChangeResponse( tRsp, sStatus, tJqXhr )
+  {
+    if ( tRsp.signInId )
+    {
+      // Success: Show main page under new sign-in
+      showMain( tRsp, sStatus, tJqXhr );
+    }
+    else
+    {
+      // Failure: Report error and sign out
+      $( '#passwordErrorDialog' ).modal( { backdrop:'static' } )
+    }
+  }
+
+  function onShowErrorDialog()
+  {
+    $( '#dummyInput' ).focus();
+  }
+
+  function onPasswordErrorOk()
+  {
+    signOut();
+  }
 </script>
