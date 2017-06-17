@@ -145,13 +145,13 @@
 
   function handleClick()
   {
-    if ( validateInput() )
+    if ( validateUser() )
     {
       submitUser();
     }
   }
 
-  function validateInput()
+  function validateUser()
   {
     clearMessages();
 
