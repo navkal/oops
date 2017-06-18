@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
               <label for="oldPassword">Old Password</label>
-              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="oldPassword" placeholder="Old Password" autofocus >
+              <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="oldPassword" placeholder="Old Password" autofocus required >
             </div>
             <div class="form-group">
               <label for="password">New Password</label>
