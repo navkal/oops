@@ -20,49 +20,21 @@
         <h4 class="modal-title" id="editUserLabel"></h4>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form id="editUserForm" onsubmit="handleClick(event); return false;" >
-              <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" autocomplete="off" >
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="password" placeholder="Password" >
-              </div>
-              <div class="form-group">
-                <label for="confirm" >Confirm</label>
-                <input type="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" class="form-control" id="confirm" placeholder="Confirm Password" >
-              </div>
-              <div class="form-group">
-                <label id="roleLabel" >Role</label>
-                <select id="role" class="form-control">
-                  <option value="visitor">Visitor</option>
-                  <option value="technician">Technician</option>
-                </select>
-                <input type="text" id="admin" class="form-control" readonly >
-              </div>
-            </form>
-          </div>
-        </div>
-
+        <?php
+          include $_SERVER["DOCUMENT_ROOT"] . "/users/editUserForm.php";
+        ?>
       </div>
 
       <div class="modal-footer">
-
         <div style="text-align:center;" >
           <button id="submit" type="submit" class="btn btn-primary" form="editUserForm" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
-
         <br/>
-
         <div id="messages" class="alert alert-danger" style="text-align:left; display:none" role="alert">
           <ul id="messageList">
           </ul>
         </div>
-
       </div>
     </div>
   </div>
@@ -120,13 +92,13 @@
     if ( g_sRole == 'administrator' )
     {
       $( '#role' ).hide();
-      $( '#admin' ).show();
-      $( '#admin' ).val( g_sRole );
-      $( '#roleLabel' ).attr( 'for', 'admin' );
+      $( '#readonlyRole' ).show();
+      $( '#readonlyRole' ).val( g_sRole );
+      $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
     }
     else
     {
-      $( '#admin' ).hide();
+      $( '#readonlyRole' ).hide();
       $( '#role' ).show();
       $( '#role' ).val( g_sRole );
       $( '#roleLabel' ).attr( 'for', 'role' );

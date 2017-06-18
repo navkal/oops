@@ -21,7 +21,7 @@ function submitUser()
   var tPostData = new FormData();
   tPostData.append( "username", $( '#username' ).val() );
   tPostData.append( "password", $( '#password' ).val() );
-  var tRole = $( '#role' ).is( ':visible' ) ? $( '#role' ) : $( '#admin' );
+  var tRole = $( '#role' ).is( ':visible' ) ? $( '#role' ) : $( '#readonlyRole' );
   tPostData.append( "role", tRole.val() );
 
   $.ajax(
