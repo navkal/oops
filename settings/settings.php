@@ -62,7 +62,7 @@
 
 <script>
   var g_sAction = null;
-  var g_fnEditUserDone = null;
+  var g_fnSubmitUserDone = null;
 
   $( document ).ready( initSettings );
   $( '#settingsSuccessDialog' ).on( 'shown.bs.modal', onShownSuccessDialog );
@@ -72,7 +72,7 @@
   function initSettings()
   {
     g_sAction = 'update';
-    g_fnEditUserDone = settingsDone;
+    g_fnSubmitUserDone = settingsDone;
 
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
 

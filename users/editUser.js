@@ -41,6 +41,6 @@ function submitUser()
       data: tPostData
     }
   )
-  .done( g_fnEditUserDone )
+  .done( g_fnSubmitUserDone )
   .fail( handleAjaxError );
 }

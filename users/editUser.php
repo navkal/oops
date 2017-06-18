@@ -46,7 +46,7 @@
   var g_sRole = null;
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
-  var g_fnEditUserDone = null;
+  var g_fnSubmitUserDone = null;
 
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -59,7 +59,7 @@
     g_sRole = 'Visitor';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
-    g_fnEditUserDone = addDone;
+    g_fnSubmitUserDone = addDone;
   }
 
   function initUpdate( sUsername )
@@ -80,7 +80,7 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
     g_sRole = tRow.role;
-    g_fnEditUserDone = updateDone;
+    g_fnSubmitUserDone = updateDone;
   }
 
   function onShow()
