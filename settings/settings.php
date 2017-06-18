@@ -8,7 +8,7 @@
 
 <div class="container">
   <p>
-    <span class="h4">Edit User</span>
+    <span class="h4">Settings</span>
   </p>
   <br/>
 
