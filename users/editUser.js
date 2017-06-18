@@ -4,8 +4,13 @@
 function formatPasswordLabels()
 {
   var sNew = ( g_sAction == 'update' ) ? 'New ' : '';
-  $( '#password' ).attr( 'placeholder', sNew + 'Password' );
-  $( '#confirm' ).attr( 'placeholder', 'Confirm ' + sNew + 'Password' );
+  var sPassword = sNew + 'Password';
+  var sConfirm = 'Confirm ' + sPassword;
+
+  $( 'label[for=password]' ).text( sPassword );
+  $( '#password' ).attr( 'placeholder', sPassword );
+  $( 'label[for=confirm]' ).text( sConfirm );
+  $( '#confirm' ).attr( 'placeholder', sConfirm );
 }
 
 // Detect change of input controls
