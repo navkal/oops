@@ -530,16 +530,17 @@ class signInUser:
         self.signInId = ''
 
         # Retrieve the user
-        cur.execute('SELECT username, role_id, force_change_password FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
+        cur.execute('SELECT * FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
         if user_row:
-            self.username = user_row[0]
-            role_id = user_row[1]
+            self.username = user_row[1]
+            role_id = user_row[3]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.forceChangePassword = user_row[2]
+            self.description = user_row[4]
+            self.forceChangePassword = user_row[5]
             self.signInId = str( uuid.uuid1() )
 
 
@@ -560,6 +561,7 @@ class changePassword:
             user = signInUser( username, password )
             self.username = user.username
             self.role = user.role
+            self.description = user.description
             self.signInId = user.signInId
             self.forceChangePassword = user.forceChangePassword
 
@@ -578,15 +580,14 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, by, username, password, role, force_change_password):
-
+    def __init__(self, by, username, password, role, description, force_change_password):
         if password != None:
             cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), force_change_password, username.lower() ) );
 
         cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
         role_id = cur.fetchone()[0]
 
-        cur.execute( 'UPDATE User SET role_id=? WHERE lower(username)=?', ( role_id, username.lower() ) )
+        cur.execute( 'UPDATE User SET role_id=?, description=? WHERE lower(username)=?', ( role_id, description, username.lower() ) )
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )

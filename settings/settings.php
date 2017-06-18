@@ -85,14 +85,23 @@
 
     $( '#role,#readonlyRole' ).val( tUser.role );
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
-
     $( '#role' ).hide();
+
+    $( '#description' ).val( tUser.description );
 
     formatPasswordLabels();
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
+    // Update persistent copy of signed-in user
+    var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
+    for ( var sKey in tRsp )
+    {
+      tUser[sKey] = tRsp[sKey];
+    }
+    localStorage.setItem( 'signedInUser', JSON.stringify( tUser ) );
+
     $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
   }
 

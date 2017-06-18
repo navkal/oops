@@ -14,7 +14,7 @@ function formatPasswordLabels()
 }
 
 // Detect change of input controls
-$( 'input,select' ).on( 'change', onChangeControl );
+$( 'input,select,textarea' ).on( 'change', onChangeControl );
 function onChangeControl()
 {
   g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );
@@ -51,6 +51,7 @@ function submitUser()
   tPostData.append( "username", $( '#username' ).val() );
   tPostData.append( "password", $( '#password' ).val() );
   tPostData.append( "role", $( '#role' ).val() );
+  tPostData.append( "description", $( '#description' ).val() );
 
   $.ajax(
     "users/" + g_sAction + "User.php",

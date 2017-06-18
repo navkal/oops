@@ -44,6 +44,7 @@
   var g_sSubmitLabel = null;
   var g_sUsername = null;
   var g_sRole = null;
+  var g_sDescription = null;
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
   var g_fnSubmitUserDone = null;
@@ -58,6 +59,7 @@
     g_sSubmitLabel = 'Add User';
     g_sUsername = '';
     g_sRole = 'Visitor';
+    g_sDescription = '';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
     g_bDoValidation = true;
@@ -83,7 +85,10 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
+    // Load fields from the row
     g_sRole = tRow.role;
+    g_sDescription = tRow.user_description;
+
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
     formatPasswordLabels();
@@ -110,6 +115,9 @@
       $( '#role' ).show();
       $( '#roleLabel' ).attr( 'for', 'role' );
     }
+
+    $( '#description' ).val( g_sDescription );
+
 
     $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
