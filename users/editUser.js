@@ -1,5 +1,13 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+function onSubmitUser()
+{
+  if ( validateUser() )
+  {
+    submitUser();
+  }
+}
+
 function validateUser()
 {
   clearMessages();

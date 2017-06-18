@@ -115,12 +115,4 @@
   {
     $( '#' + g_sFocusId ).focus();
   }
-
-  function handleClick()
-  {
-    if ( validateUser() )
-    {
-      submitUser();
-    }
-  }
 </script>

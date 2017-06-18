@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <form id="editUserForm" onsubmit="handleClick(event); return false;" >
+    <form id="editUserForm" onsubmit="onSubmitUser(event); return false;" >
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" placeholder="Username" autocomplete="off" >
