@@ -4,7 +4,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/users/usernameRules.php";
   require_once $_SERVER["DOCUMENT_ROOT"] . "/users/passwordRules.php";
 ?>
-<script src="../users/editUser.js?version=<?=time()?>"></script>
 
 <div class="container">
   <p>
@@ -62,13 +61,18 @@
 </div>
 
 <script>
+  var g_sAction = null;
+  var g_fnEditUserDone = null;
+
   $( document ).ready( initSettings );
   $( '#settingsSuccessDialog' ).on( 'shown.bs.modal', onShownSuccessDialog );
   $( '#settingsSuccessDialog' ).on( 'hide.bs.modal', onOkSuccessDialog );
 
+
   function initSettings()
   {
     g_sAction = 'update';
+    g_fnEditUserDone = settingsDone;
 
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
 
@@ -80,13 +84,13 @@
     // Note: Remove this when there are more fields to set?
     $( '#password' ).prop( 'required', true );
 
-    $( '#readonlyRole' ).val( tUser.role );
+    $( '#role,#readonlyRole' ).val( tUser.role );
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
 
     $( '#role' ).hide();
   }
 
-  function updateDone( tRsp, sStatus, tJqXhr )
+  function settingsDone( tRsp, sStatus, tJqXhr )
   {
     $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
   }
@@ -101,3 +105,5 @@
     location.reload();
   }
 </script>
+
+<script src="../users/editUser.js?version=<?=time()?>"></script>

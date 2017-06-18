@@ -4,7 +4,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/users/usernameRules.php";
   require_once $_SERVER["DOCUMENT_ROOT"] . "/users/passwordRules.php";
 ?>
-<script src="../users/editUser.js?version=<?=time()?>"></script>
 
 <!-- Add User button -->
 <button id="addUserButton" class="btn btn-default btn-sm pull-right" onclick="initAdd()" data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false style="display:none" >
@@ -47,6 +46,7 @@
   var g_sRole = null;
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
+  var g_fnEditUserDone = null;
 
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -59,6 +59,7 @@
     g_sRole = 'Visitor';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
+    g_fnEditUserDone = addDone;
   }
 
   function initUpdate( sUsername )
@@ -79,6 +80,7 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
     g_sRole = tRow.role;
+    g_fnEditUserDone = updateDone;
   }
 
   function onShow()
@@ -89,18 +91,17 @@
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
 
+    $( '#role,#readonlyRole' ).val( g_sRole );
     if ( g_sRole == 'Administrator' )
     {
       $( '#role' ).hide();
       $( '#readonlyRole' ).show();
-      $( '#readonlyRole' ).val( g_sRole );
       $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
     }
     else
     {
       $( '#readonlyRole' ).hide();
       $( '#role' ).show();
-      $( '#role' ).val( g_sRole );
       $( '#roleLabel' ).attr( 'for', 'role' );
     }
 
@@ -115,4 +116,24 @@
   {
     $( '#' + g_sFocusId ).focus();
   }
+
+  function addDone( tRsp, sStatus, tJqXhr )
+  {
+    if ( tRsp.unique )
+    {
+      location.reload();
+    }
+    else
+    {
+      var aMessages = [ "Username '" + tRsp.username + "' is not available." ];
+      showMessages( aMessages );
+    }
+  }
+
+  function updateDone( tRsp, sStatus, tJqXhr )
+  {
+    location.reload();
+  }
 </script>
+
+<script src="../users/editUser.js?version=<?=time()?>"></script>

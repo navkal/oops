@@ -29,8 +29,7 @@ function submitUser()
   var tPostData = new FormData();
   tPostData.append( "username", $( '#username' ).val() );
   tPostData.append( "password", $( '#password' ).val() );
-  var tRole = $( '#role' ).is( ':visible' ) ? $( '#role' ) : $( '#readonlyRole' );
-  tPostData.append( "role", tRole.val() );
+  tPostData.append( "role", $( '#role' ).val() );
 
   $.ajax(
     "users/" + g_sAction + "User.php",
@@ -42,24 +41,6 @@ function submitUser()
       data: tPostData
     }
   )
-  .done( eval( g_sAction + 'Done' ) )
+  .done( g_fnEditUserDone )
   .fail( handleAjaxError );
-}
-
-function addDone( tRsp, sStatus, tJqXhr )
-{
-  if ( tRsp.unique )
-  {
-    location.reload();
-  }
-  else
-  {
-    var aMessages = [ "Username '" + tRsp.username + "' is not available." ];
-    showMessages( aMessages );
-  }
-}
-
-function updateDone( tRsp, sStatus, tJqXhr )
-{
-  location.reload();
 }
