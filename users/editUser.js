@@ -9,11 +9,9 @@ function onChangeControl()
 
 function onSubmitUser()
 {
-  console.log( '===> change=' + g_bDoValidation );
   // If a control has been changed and input is valid, submit changes
   if ( g_bDoValidation && validateUser() )
   {
-    console.log( '===> submit' );
     submitUser();
   }
 }
