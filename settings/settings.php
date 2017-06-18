@@ -63,6 +63,7 @@
 <script>
   var g_sAction = null;
   var g_fnSubmitUserDone = null;
+  var g_bDoValidation = null;
 
   $( document ).ready( initSettings );
   $( '#settingsSuccessDialog' ).on( 'shown.bs.modal', onShownSuccessDialog );
@@ -72,6 +73,7 @@
   function initSettings()
   {
     g_sAction = 'update';
+    g_bDoValidation = false;
     g_fnSubmitUserDone = settingsDone;
 
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
@@ -80,9 +82,6 @@
     $( '#username' ).prop( 'readonly', true );
 
     $( '#password' ).focus();
-
-    // Note: Remove this when there are more fields to set?
-    $( '#password' ).prop( 'required', true );
 
     $( '#role,#readonlyRole' ).val( tUser.role );
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );

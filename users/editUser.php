@@ -47,6 +47,7 @@
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
   var g_fnSubmitUserDone = null;
+  var g_bDoValidation = null;
 
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
@@ -59,6 +60,7 @@
     g_sRole = 'Visitor';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
+    g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
   }
 
@@ -80,6 +82,7 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
     g_sRole = tRow.role;
+    g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
   }
 

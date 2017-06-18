@@ -1,9 +1,19 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+// Detect change of input controls
+$( 'input,select' ).on( 'change', onChangeControl );
+function onChangeControl()
+{
+  g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );
+}
+
 function onSubmitUser()
 {
-  if ( validateUser() )
+  console.log( '===> change=' + g_bDoValidation );
+  // If a control has been changed and input is valid, submit changes
+  if ( g_bDoValidation && validateUser() )
   {
+    console.log( '===> submit' );
     submitUser();
   }
 }
