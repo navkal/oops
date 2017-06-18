@@ -62,6 +62,8 @@
     g_sFocusId = 'username';
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
+
+    formatPasswordLabels();
   }
 
   function initUpdate( sUsername )
@@ -84,6 +86,7 @@
     g_sRole = tRow.role;
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
+    formatPasswordLabels();
   }
 
   function onShow()

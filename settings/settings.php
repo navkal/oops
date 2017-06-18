@@ -87,6 +87,8 @@
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
 
     $( '#role' ).hide();
+
+    formatPasswordLabels();
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )

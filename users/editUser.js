@@ -1,5 +1,13 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+// Format password-related labeling
+function formatPasswordLabels()
+{
+  var sNew = ( g_sAction == 'update' ) ? 'New ' : '';
+  $( '#password' ).attr( 'placeholder', sNew + 'Password' );
+  $( '#confirm' ).attr( 'placeholder', 'Confirm ' + sNew + 'Password' );
+}
+
 // Detect change of input controls
 $( 'input,select' ).on( 'change', onChangeControl );
 function onChangeControl()
