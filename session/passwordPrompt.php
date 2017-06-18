@@ -71,7 +71,7 @@
           <div class="modal-footer">
             <form submit="return false;">
               <input type="text" id="dummyInput" style="width:0px; height:0px; opacity:0%; border:none">
-              <button id="okButton" type="submit" class="btn btn-primary" data-dismiss="modal" >OK</button>
+              <button type="submit" class="btn btn-primary" data-dismiss="modal" >OK</button>
             </form>
           </div>
         </div>

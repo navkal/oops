@@ -38,8 +38,33 @@
 
 </div>
 
+<div class="modal fade" id="settingsSuccessDialog" tabindex="-1" role="dialog" aria-labelledby="settingsSuccessLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-success" id="settingsSuccessLabel">Success</h4>
+      </div>
+      <div class="modal-body bg-success">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="text-success" ><b>Your settings have been saved.</b></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form submit="return false;">
+          <input type="text" id="dummyInput" style="width:0px; height:0px; opacity:0%; border:none">
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" >OK</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   $( document ).ready( initSettings );
+  $( '#settingsSuccessDialog' ).on( 'shown.bs.modal', onShownSuccessDialog );
+  $( '#settingsSuccessDialog' ).on( 'hide.bs.modal', onOkSuccessDialog );
 
   function initSettings()
   {
@@ -50,9 +75,29 @@
     $( '#username' ).val( tUser.username );
     $( '#username' ).prop( 'readonly', true );
 
+    $( '#password' ).focus();
+
+    // Note: Remove this when there are more fields to set?
+    $( '#password' ).prop( 'required', true );
+
     $( '#readonlyRole' ).val( tUser.role );
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
 
     $( '#role' ).hide();
+  }
+
+  function updateDone( tRsp, sStatus, tJqXhr )
+  {
+    $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
+  }
+
+  function onShownSuccessDialog()
+  {
+    $( '#dummyInput' ).focus();
+  }
+
+  function onOkSuccessDialog()
+  {
+    location.reload();
   }
 </script>
