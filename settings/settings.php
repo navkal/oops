@@ -16,6 +16,26 @@
     include $_SERVER["DOCUMENT_ROOT"] . "/users/editUserForm.php";
   ?>
 
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div style="text-align:center;" >
+        <button type="submit" class="btn btn-primary" form="editUserForm" >Submit</button>
+        <button type="button" class="btn btn-default" onclick="location.reload();" >Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div id="messages" class="alert alert-danger" style="display:none" role="alert">
+        <ul id="messageList">
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -23,6 +43,8 @@
 
   function initSettings()
   {
+    g_sAction = 'update';
+
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
 
     $( '#username' ).val( tUser.username );
