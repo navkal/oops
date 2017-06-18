@@ -18,8 +18,8 @@
       <div class="form-group">
         <label id="roleLabel" >Role</label>
         <select id="role" class="form-control">
-          <option value="visitor">Visitor</option>
-          <option value="technician">Technician</option>
+          <option value="Visitor">Visitor</option>
+          <option value="Technician">Technician</option>
         </select>
         <input type="text" id="readonlyRole" class="form-control" readonly >
       </div>

@@ -24,11 +24,13 @@
   function initSettings()
   {
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
-    $( '#username' ).val( tUser.username );
-    $( '#role' ).val( tUser.role );
 
+    $( '#username' ).val( tUser.username );
     $( '#username' ).prop( 'readonly', true );
-    $( '#role' ).prop( 'readonly', true );
-    $( '#readonlyRole' ).css( 'display', 'none' );
+
+    $( '#readonlyRole' ).val( tUser.role );
+    $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
+
+    $( '#role' ).hide();
   }
 </script>

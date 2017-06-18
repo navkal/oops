@@ -56,7 +56,7 @@
     g_sAction = 'add';
     g_sSubmitLabel = 'Add User';
     g_sUsername = '';
-    g_sRole = 'visitor';
+    g_sRole = 'Visitor';
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
   }
@@ -89,7 +89,7 @@
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
 
-    if ( g_sRole == 'administrator' )
+    if ( g_sRole == 'Administrator' )
     {
       $( '#role' ).hide();
       $( '#readonlyRole' ).show();

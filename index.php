@@ -18,13 +18,13 @@
     $sSuffix = '';
     switch( $_SESSION['panelSpy']['user']['role'] )
     {
-      case 'administrator':
+      case 'Administrator':
         $sSuffix = 'Admin';
         break;
-      case 'technician':
+      case 'Technician':
         $sSuffix = 'Tech';
         break;
-      case 'user':
+      case 'Visitor':
       default:
         $sSuffix = '';
         break;
