@@ -25,6 +25,13 @@
       </div>
       <div id="adminOnlyFields" >
         <div class="form-group">
+          <label for="status" >Status</label>
+          <select id="status" class="form-control">
+            <option value=true>Enabled</option>
+            <option value=false>Disabled</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="description" >Description</label>
           <textarea class="form-control" id="description" ></textarea>
         </div>

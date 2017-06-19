@@ -375,12 +375,18 @@ class sortableTable:
                     role = cur.fetchone()[0]
 
                     username = obj[1]
-                    if username == 'admin':
+                    if role == 'Administrator':
                         remove_username = ''
                     else:
                         remove_username = username
 
-                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username }
+                    sEnabled = ''
+                    if obj[6]:
+                        sEnabled = 'Enabled'
+                    else:
+                        sEnabled = 'Disabled'
+
+                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username, 'enabled': sEnabled, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10] }
                     self.rows.append( row )
 
         elif object_type == 'device':

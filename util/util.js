@@ -47,6 +47,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  enabled:
+  {
+    label: "Status",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   path:
   {
     label: "Path",

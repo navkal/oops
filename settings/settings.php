@@ -90,7 +90,7 @@
     $( '#description' ).val( tUser.description );
 
 
-    $( '#adminOnlyFields' ).hide();
+    ////////////$( '#adminOnlyFields' ).hide();
 
     formatPasswordLabels();
   }
