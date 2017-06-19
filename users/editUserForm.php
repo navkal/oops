@@ -23,10 +23,12 @@
         </select>
         <input type="text" id="readonlyRole" class="form-control" readonly >
       </div>
-      <div class="form-group">
-        <label for="description" >Description</label>
-        <textarea class="form-control" id="description" ></textarea>
-      </div>
+      <fieldset id="adminOnlyFields" >
+        <div class="form-group">
+          <label for="description" >Description</label>
+          <textarea class="form-control" id="description" ></textarea>
+        </div>
+      </fieldset>
     </form>
   </div>
 </div>

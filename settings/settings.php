@@ -88,7 +88,9 @@
     $( '#role' ).hide();
 
     $( '#description' ).val( tUser.description );
-    $( '#description' ).parent().hide();
+
+
+    $( '#adminOnlyFields' ).hide();
 
     formatPasswordLabels();
   }
