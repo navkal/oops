@@ -10,7 +10,7 @@ function loadProperties()
   $( ".collapse" ).on( "shown.bs.collapse hidden.bs.collapse", collapseToggle );
 
   // Show/hide Notes Editor
-  var bEdit = ( g_sRole == 'technician' );
+  var bEdit = ( g_sRole == 'Technician' );
   $( '#notesEditor,#historyArea' ).css( 'display', bEdit ? 'initial' : 'none' );
   if ( bEdit )
   {
