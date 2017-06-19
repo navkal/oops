@@ -88,6 +88,7 @@
     $( '#role' ).hide();
 
     $( '#description' ).val( tUser.description );
+    $( '#description' ).parent().hide();
 
     formatPasswordLabels();
   }
