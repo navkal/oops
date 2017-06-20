@@ -51,7 +51,7 @@
   var g_sOrganization = null;
   var g_sDescription = null;
 
-  var g_sUsernameReadonly = null;
+  var g_bUsernameDisabled = null;
   var g_sFocusId = null;
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
@@ -74,7 +74,7 @@
     g_sOrganization = '';
     g_sDescription = '';
 
-    g_sUsernameReadonly = false;
+    g_bUsernameDisabled = false;
     g_sFocusId = 'username';
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
@@ -87,7 +87,7 @@
 
     g_sSubmitLabel = 'Update User';
     g_sUsername = sUsername;
-    g_sUsernameReadonly = true;
+    g_bUsernameDisabled = true;
     g_sFocusId = 'password';
 
     var iRow = 0;
@@ -116,7 +116,7 @@
   {
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
-    $( '#username' ).prop( 'readonly', g_sUsernameReadonly );
+    $( '#username' ).prop( 'disabled', g_bUsernameDisabled );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
     $( '#role' ).val( g_sRole );

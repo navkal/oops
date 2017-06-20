@@ -81,7 +81,7 @@
     var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
 
     $( '#username' ).val( tUser.username );
-    $( '#username' ).prop( 'readonly', true );
+    $( '#username' ).prop( 'disabled', true );
 
     $( '#password' ).focus();
 
@@ -98,8 +98,8 @@
     // Hide designated fields
     $( '.settingsHide' ).hide();
 
-    // Show designated fields as readonly
-    $( '.settingsReadonly *' ).prop( 'readonly', true );
+    // Show designated fields as disabled
+    $( '.settingsDisabled *' ).prop( 'disabled', true );
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )

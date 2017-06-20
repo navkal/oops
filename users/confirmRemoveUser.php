@@ -14,7 +14,7 @@
             <form id="removeUserForm" onsubmit="removeUser(event); return false;" >
               <div class="form-group">
                 <label for="removeUsername">Username</label>
-                <input type="text" class="form-control" id="removeUsername" placeholder="Username" readonly >
+                <input type="text" class="form-control" id="removeUsername" placeholder="Username" disabled >
               </div>
             </form>
           </div>

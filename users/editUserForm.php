@@ -32,7 +32,7 @@
           </select>
         </div>
       </div>
-      <div class="settingsReadonly" >
+      <div class="settingsDisabled" >
         <div class="form-group">
           <label for="first_name" ></label>
           <input type="text" class="form-control" id="first_name" maxlength="40" >

@@ -9,7 +9,7 @@
     var tUsername = $( '#username' );
     var aMessages = [];
 
-    if ( ! tUsername.prop( 'readonly' ) )
+    if ( ! tUsername.prop( 'disabled' ) )
     {
       var sUsername = tUsername.val();
 

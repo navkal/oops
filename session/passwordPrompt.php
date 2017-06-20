@@ -20,7 +20,7 @@
           <form onsubmit="handleClick(event); return false;" >
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" readonly>
+              <input type="text" class="form-control" id="username" value="<?=$_SESSION['panelSpy']['user']['username']?>" disabled >
             </div>
             <div class="form-group">
               <label for="oldPassword">Old Password</label>
