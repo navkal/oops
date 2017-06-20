@@ -29,18 +29,16 @@
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );
+  $sUser = $output[ count( $output ) - 1 ];
+  $aUser = (array) json_decode( $sUser );
 
-  // If signed-in user is same as updated user, update specific fields in session storage
+  // If signed-in user is same as updated user, update fields returned by update operation
   if ( $sUsername == $_SESSION['panelSpy']['user']['username'] )
   {
-    $_SESSION['panelSpy']['user']['user_description'] = $sDescription;
-    $_SESSION['panelSpy']['user']['role'] = $sRole;
-    $_SESSION['panelSpy']['user']['status'] = $sStatus;
-    $_SESSION['panelSpy']['user']['first_name'] = $sFirstName;
-    $_SESSION['panelSpy']['user']['last_name'] = $sLastName;
-    $_SESSION['panelSpy']['user']['email_address'] = $sEmailAddress;
-    $_SESSION['panelSpy']['user']['organization'] = $sOrganization;
-    $_SESSION['panelSpy']['user']['user_description'] = $sDescription;
+    foreach( $aUser as $sKey => $sVal )
+    {
+      $_SESSION['panelSpy']['user'][$sKey] = $sVal;
+    }
   }
 
   // Echo user

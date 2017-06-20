@@ -613,6 +613,26 @@ class updateUser:
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
 
         conn.commit()
+        
+        # Retrieve the user
+        cur.execute('SELECT * FROM User WHERE lower(username) = ?', (username.lower(),))
+        user_row = cur.fetchone()
+
+        # If we got a user row, load remaining user fields
+        if user_row:
+            self.username = user_row[1]
+            role_id = user_row[3]
+            cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+            self.role = cur.fetchone()[0]
+            self.user_description = user_row[4]
+            if user_row[6]:
+                self.status = 'Enabled'
+            else:
+                self.status = 'Disabled'
+            self.first_name = user_row[7]
+            self.last_name = user_row[8]
+            self.email_address = user_row[9]
+            self.organization = user_row[10]
 
 
 class removeUser:
