@@ -1,8 +1,29 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-// Format password-related labeling
-function formatPasswordLabels()
+// Initialize field labels (etc.)
+function formatLabels()
 {
+  var aFields = $( 'input,select,textarea', '#editUserForm' );
+
+  for ( var iField = 0; iField < aFields.length; iField ++ )
+  {
+    var tField = aFields[iField];
+    var sKey = tField.id;
+    var tRule = g_tPropertyRules[sKey];
+
+    // If there is a rule for this element,
+    if ( tRule )
+    {
+      var sLabel = tRule.label;
+      $( 'label[for=' + sKey + ']' ).text( sLabel );
+      if ( tField.tagName.toLowerCase() == 'input' )
+      {
+        $( tField ).attr( 'placeholder', sLabel );
+      }
+    }
+  }
+
+  // Initialize labeling for password/confirm fields
   var sNew = ( g_sAction == 'update' ) ? 'New ' : '';
   var sPassword = sNew + 'Password';
   var sConfirm = 'Confirm ' + sPassword;
@@ -11,6 +32,9 @@ function formatPasswordLabels()
   $( '#password' ).attr( 'placeholder', sPassword );
   $( 'label[for=confirm]' ).text( sConfirm );
   $( '#confirm' ).attr( 'placeholder', sConfirm );
+
+  // Turn off autocomplete
+  $( 'input', '#editUserForm' ).attr( 'autocomplete', 'off' );
 }
 
 // Detect change of input controls

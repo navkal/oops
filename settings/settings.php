@@ -73,6 +73,8 @@
   function initSettings()
   {
     g_sAction = 'update';
+    formatLabels();
+
     g_bDoValidation = false;
     g_fnSubmitUserDone = settingsDone;
 
@@ -100,7 +102,6 @@
     // Show designated fields as readonly
     $( '.settingsReadonly *' ).prop( 'readonly', true );
 
-    formatPasswordLabels();
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )

@@ -62,6 +62,8 @@
   function initAdd()
   {
     g_sAction = 'add';
+    formatLabels();
+
     g_sSubmitLabel = 'Add User';
     g_sUsername = '';
     g_sRole = 'Visitor';
@@ -76,13 +78,13 @@
     g_sFocusId = 'username';
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
-
-    formatPasswordLabels();
   }
 
   function initUpdate( sUsername )
   {
     g_sAction = 'update';
+    formatLabels();
+
     g_sSubmitLabel = 'Update User';
     g_sUsername = sUsername;
     g_sUsernameReadonly = true;
@@ -108,7 +110,6 @@
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
-    formatPasswordLabels();
   }
 
   function onShow()
