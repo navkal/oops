@@ -23,7 +23,7 @@
         </select>
         <input type="text" id="readonlyRole" class="form-control" readonly >
       </div>
-      <div id="adminOnlyFields" >
+      <div class="settingsHide" >
         <div class="form-group">
           <label for="status" >Status</label>
           <select id="status" class="form-control">
@@ -31,6 +31,8 @@
             <option value="Disabled">Disabled</option>
           </select>
         </div>
+      </div>
+      <div class="settingsReadonly" >
         <div class="form-group">
           <label for="first_name" >First Name</label>
           <input type="text" class="form-control" id="first_name" maxlength="40" placeholder="First Name" autocomplete="off" >
@@ -47,6 +49,8 @@
           <label for="organization" >Organization</label>
           <input type="text" class="form-control" id="organization" maxlength="100" placeholder="Organization" autocomplete="off" >
         </div>
+      </div>
+      <div class="settingsHide" >
         <div class="form-group">
           <label for="user_description" >Description</label>
           <textarea class="form-control" id="user_description" ></textarea>

@@ -94,8 +94,11 @@
     $( '#organization' ).val( tUser.organization );
     $( '#user_description' ).val( tUser.user_description );
 
+    // Hide designated fields
+    $( '.settingsHide' ).hide();
 
-    ////////////$( '#adminOnlyFields' ).hide();
+    // Show designated fields as readonly
+    $( '.settingsReadonly *' ).prop( 'readonly', true );
 
     formatPasswordLabels();
   }
