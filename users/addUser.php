@@ -15,16 +15,16 @@
   $sDescription = quote( $_POST['user_description'] );
 
   // Add user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/addUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] .
-    ' -u ' . $sUsername .
-    ' -p ' . $sPassword .
-    ' -r ' . $sRole .
-    ' -s ' . $sStatus .
-    ' -f ' . $sFirstName .
-    ' -l ' . $sLastName .
-    ' -e ' . $sEmailAddress .
-    ' -o ' . $sOrganization .
-    ' -d ' . $sDescription;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/addUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
+    . ' -u ' . $sUsername
+    . ' -p ' . $sPassword
+    . ' -r ' . $sRole
+    . ' -s ' . $sStatus
+    . ' -f ' . $sFirstName
+    . ' -l ' . $sLastName
+    . ' -e ' . $sEmailAddress
+    . ' -o ' . $sOrganization
+    . ' -d ' . $sDescription;
 
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
