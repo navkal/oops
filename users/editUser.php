@@ -44,7 +44,13 @@
   var g_sSubmitLabel = null;
   var g_sUsername = null;
   var g_sRole = null;
+  var g_sStatus = null;
+  var g_sFirstName = null;
+  var g_sLastName = null;
+  var g_sEmailAddress = null;
+  var g_sOrganization = null;
   var g_sDescription = null;
+
   var g_sUsernameReadonly = null;
   var g_sFocusId = null;
   var g_fnSubmitUserDone = null;
@@ -59,7 +65,13 @@
     g_sSubmitLabel = 'Add User';
     g_sUsername = '';
     g_sRole = 'Visitor';
+    g_sStatus = 'Enabled';
+    g_sFirstName = '';
+    g_sLastName = '';
+    g_sEmailAddress = '';
+    g_sOrganization = '';
     g_sDescription = '';
+
     g_sUsernameReadonly = false;
     g_sFocusId = 'username';
     g_bDoValidation = true;
@@ -87,6 +99,11 @@
 
     // Load fields from the row
     g_sRole = tRow.role;
+    g_sStatus = tRow.status;
+    g_sFirstName = tRow.first_name;
+    g_sLastName = tRow.last_name;
+    g_sEmailAddress = tRow.email_address;
+    g_sOrganization = tRow.organization;
     g_sDescription = tRow.user_description;
 
     g_bDoValidation = false;
@@ -116,8 +133,12 @@
       $( '#roleLabel' ).attr( 'for', 'role' );
     }
 
+    $( '#status' ).val( g_sStatus );
+    $( '#firstName' ).val( g_sFirstName );
+    $( '#lastName' ).val( g_sLastName );
+    $( '#emailAddress' ).val( g_sEmailAddress );
+    $( '#organization' ).val( g_sOrganization );
     $( '#description' ).val( g_sDescription );
-
 
     $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );

@@ -27,9 +27,25 @@
         <div class="form-group">
           <label for="status" >Status</label>
           <select id="status" class="form-control">
-            <option value=true>Enabled</option>
-            <option value=false>Disabled</option>
+            <option value="Enabled">Enabled</option>
+            <option value="Disabled">Disabled</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label for="firstName" >First Name</label>
+          <input type="text" class="form-control" id="firstName" maxlength="40" placeholder="First Name" autocomplete="off" >
+        </div>
+        <div class="form-group">
+          <label for="lastName" >Last Name</label>
+          <input type="text" class="form-control" id="lastName" maxlength="40" placeholder="Last Name" autocomplete="off" >
+        </div>
+        <div class="form-group">
+          <label for="emailAddress" >Email Address</label>
+          <input type="text" class="form-control" id="emailAddress" maxlength="100" placeholder="Email Address" autocomplete="off" >
+        </div>
+        <div class="form-group">
+          <label for="organization" >Organization</label>
+          <input type="text" class="form-control" id="organization" maxlength="100" placeholder="Organization" autocomplete="off" >
         </div>
         <div class="form-group">
           <label for="description" >Description</label>

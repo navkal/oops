@@ -47,7 +47,7 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  enabled:
+  status:
   {
     label: "Status",
     showInPropertiesWindow: false,

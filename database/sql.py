@@ -380,13 +380,13 @@ class sortableTable:
                     else:
                         remove_username = username
 
-                    sEnabled = ''
+                    sStatus = ''
                     if obj[6]:
-                        sEnabled = 'Enabled'
+                        sStatus = 'Enabled'
                     else:
-                        sEnabled = 'Disabled'
+                        sStatus = 'Disabled'
 
-                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username, 'enabled': sEnabled, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10] }
+                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10] }
                     self.rows.append( row )
 
         elif object_type == 'device':
@@ -545,9 +545,19 @@ class signInUser:
             role_id = user_row[3]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
             self.role = cur.fetchone()[0]
-            self.description = user_row[4]
+            self.user_description = user_row[4]
             self.forceChangePassword = user_row[5]
             self.signInId = str( uuid.uuid1() )
+
+            if user_row[6]:
+                self.status = 'Enabled'
+            else:
+                self.status = 'Disabled'
+
+            self.first_name = user_row[7]
+            self.last_name = user_row[8]
+            self.email_address = user_row[9]
+            self.organization = user_row[10]
 
 
 class changePassword:
@@ -565,17 +575,12 @@ class changePassword:
 
             # Retrieve a new copy of the user
             user = signInUser( username, password )
-            self.username = user.username
-            self.role = user.role
-            self.description = user.description
-            self.signInId = user.signInId
-            self.forceChangePassword = user.forceChangePassword
+            self = user
 
         else:
 
             # Sign-in failed
             self.username = username
-            self.role = ''
             self.signInId = ''
 
 

@@ -87,7 +87,12 @@
     $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
     $( '#role' ).hide();
 
-    $( '#description' ).val( tUser.description );
+    $( '#status' ).val( tUser.status );
+    $( '#firstName' ).val( tUser.first_name );
+    $( '#lastName' ).val( tUser.last_name );
+    $( '#emailAddress' ).val( tUser.email_address );
+    $( '#organization' ).val( tUser.organization );
+    $( '#description' ).val( tUser.user_description );
 
 
     ////////////$( '#adminOnlyFields' ).hide();
