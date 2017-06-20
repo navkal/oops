@@ -14,7 +14,7 @@ dcEventTypes = {
     'removeUser': 'removeUser'
 }
 
-def add_interactive_user( cur, conn, by, username, password, role, description, force_change_password=True, enabled=True, first_name='', last_name='', email_address='', organization='' ):
+def add_interactive_user( cur, conn, by, username, password, role, force_change_password=True, enabled=True, first_name='', last_name='', email_address='', organization='', description='' ):
 
     # Check whether username is unique
     cur.execute( '''SELECT username FROM User WHERE lower(username) = ?''', (username.lower(),))

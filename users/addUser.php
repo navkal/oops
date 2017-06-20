@@ -7,10 +7,25 @@
   $sUsername = $_POST['username'];
   $sPassword = $_POST['password'];
   $sRole = $_POST['role'];
-  $sDescription = $_POST['user_description'];
+  $sStatus = $_POST['status'];
+  $sFirstName = quote( $_POST['first_name'] );
+  $sLastName = quote( $_POST['last_name'] );
+  $sEmailAddress = quote( $_POST['email_address'] );
+  $sOrganization = quote( $_POST['organization'] );
+  $sDescription = quote( $_POST['user_description'] );
 
   // Add user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/addUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] . ' -u ' . $sUsername . ' -p ' . $sPassword . ' -r ' . $sRole . ' -d ' . quote( $sDescription );
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/addUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] .
+    ' -u ' . $sUsername .
+    ' -p ' . $sPassword .
+    ' -r ' . $sRole .
+    ' -s ' . $sStatus .
+    ' -f ' . $sFirstName .
+    ' -l ' . $sLastName .
+    ' -e ' . $sEmailAddress .
+    ' -o ' . $sOrganization .
+    ' -d ' . $sDescription;
+
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

@@ -380,13 +380,12 @@ class sortableTable:
                     else:
                         remove_username = username
 
-                    sStatus = ''
                     if obj[6]:
                         sStatus = 'Enabled'
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'username': username, 'user_description': obj[4], 'role': role, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10] }
+                    row = { 'username': username, 'role': role, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
         elif object_type == 'device':
@@ -594,9 +593,9 @@ class changePassword:
 
 
 class addUser:
-    def __init__(self, by, username, password, role, description):
+    def __init__(self, by, username, password, role, status, first_name, last_name, email_address, organization, description):
         self.username = username
-        self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, description )
+        self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description )
 
 
 class updateUser:

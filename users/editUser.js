@@ -51,7 +51,12 @@ function submitUser()
   tPostData.append( "username", $( '#username' ).val() );
   tPostData.append( "password", $( '#password' ).val() );
   tPostData.append( "role", $( '#role' ).val() );
-  tPostData.append( "user_description", $( '#description' ).val() );
+  tPostData.append( "status", $( '#status' ).val() );
+  tPostData.append( "first_name", $( '#first_name' ).val() );
+  tPostData.append( "last_name", $( '#last_name' ).val() );
+  tPostData.append( "email_address", $( '#email_address' ).val() );
+  tPostData.append( "organization", $( '#organization' ).val() );
+  tPostData.append( "user_description", $( '#user_description' ).val() );
 
   $.ajax(
     "users/" + g_sAction + "User.php",
