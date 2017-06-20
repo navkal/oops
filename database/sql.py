@@ -599,14 +599,15 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, by, username, password, role, description, force_change_password):
+    def __init__(self, by, username, password, role, status, first_name, last_name, email_address, organization, description):
         if password != None:
-            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), force_change_password, username.lower() ) );
+            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
 
         cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
         role_id = cur.fetchone()[0]
 
-        cur.execute( 'UPDATE User SET role_id=?, description=? WHERE lower(username)=?', ( role_id, description, username.lower() ) )
+        cur.execute( '''UPDATE User SET role_id=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
+            ( role_id, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
