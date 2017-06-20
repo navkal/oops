@@ -539,7 +539,8 @@ class signInUser:
         user_row = cur.fetchone()
 
         # If we got a user row, load remaining user fields
-        if user_row:
+        if user_row and user_row[6]:
+        
             self.username = user_row[1]
             role_id = user_row[3]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
@@ -547,20 +548,19 @@ class signInUser:
             self.user_description = user_row[4]
             self.forceChangePassword = user_row[5]
             self.signInId = str( uuid.uuid1() )
-
-            if user_row[6]:
-                self.status = 'Enabled'
-            else:
-                self.status = 'Disabled'
-
+            self.status = 'Enabled'
             self.first_name = user_row[7]
             self.last_name = user_row[8]
             self.email_address = user_row[9]
             self.organization = user_row[10]
 
 
+
 class changePassword:
     def __init__(self, username, oldPassword, password):
+
+        self.username = username
+        self.signInId = ''
 
         # Sign in with old password
         oldUser = signInUser( username, oldPassword )
@@ -572,24 +572,21 @@ class changePassword:
             cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), False, username.lower() ) );
             conn.commit();
 
-            # Retrieve a new copy of the user
+            # Sign in again with new password
             user = signInUser( username, password )
-            self.username = user.username
-            self.role = user.role
-            self.user_description = user.user_description
-            self.forceChangePassword = user.forceChangePassword
-            self.signInId = user.signInId
-            self.status = user.status
-            self.first_name = user.first_name
-            self.last_name = user.last_name
-            self.email_address = user.email_address
-            self.organization = user.organization
 
-        else:
-
-            # Sign-in failed
-            self.username = username
-            self.signInId = ''
+            if user.signInId:
+                # Sign-in with new password succeeded
+                self.username = user.username
+                self.role = user.role
+                self.user_description = user.user_description
+                self.forceChangePassword = user.forceChangePassword
+                self.signInId = user.signInId
+                self.status = user.status
+                self.first_name = user.first_name
+                self.last_name = user.last_name
+                self.email_address = user.email_address
+                self.organization = user.organization
 
 
 class addUser:
@@ -613,7 +610,7 @@ class updateUser:
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
 
         conn.commit()
-        
+
         # Retrieve the user
         cur.execute('SELECT * FROM User WHERE lower(username) = ?', (username.lower(),))
         user_row = cur.fetchone()
