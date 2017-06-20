@@ -32,24 +32,24 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="firstName" >First Name</label>
-          <input type="text" class="form-control" id="firstName" maxlength="40" placeholder="First Name" autocomplete="off" >
+          <label for="first_name" >First Name</label>
+          <input type="text" class="form-control" id="first_name" maxlength="40" placeholder="First Name" autocomplete="off" >
         </div>
         <div class="form-group">
-          <label for="lastName" >Last Name</label>
-          <input type="text" class="form-control" id="lastName" maxlength="40" placeholder="Last Name" autocomplete="off" >
+          <label for="last_name" >Last Name</label>
+          <input type="text" class="form-control" id="last_name" maxlength="40" placeholder="Last Name" autocomplete="off" >
         </div>
         <div class="form-group">
-          <label for="emailAddress" >Email Address</label>
-          <input type="text" class="form-control" id="emailAddress" maxlength="100" placeholder="Email Address" autocomplete="off" >
+          <label for="email_address" >Email Address</label>
+          <input type="text" class="form-control" id="email_address" maxlength="100" placeholder="Email Address" autocomplete="off" >
         </div>
         <div class="form-group">
           <label for="organization" >Organization</label>
           <input type="text" class="form-control" id="organization" maxlength="100" placeholder="Organization" autocomplete="off" >
         </div>
         <div class="form-group">
-          <label for="description" >Description</label>
-          <textarea class="form-control" id="description" ></textarea>
+          <label for="user_description" >Description</label>
+          <textarea class="form-control" id="user_description" ></textarea>
         </div>
       </div>
     </form>

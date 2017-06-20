@@ -88,11 +88,11 @@
     $( '#role' ).hide();
 
     $( '#status' ).val( tUser.status );
-    $( '#firstName' ).val( tUser.first_name );
-    $( '#lastName' ).val( tUser.last_name );
-    $( '#emailAddress' ).val( tUser.email_address );
+    $( '#first_name' ).val( tUser.first_name );
+    $( '#last_name' ).val( tUser.last_name );
+    $( '#email_address' ).val( tUser.email_address );
     $( '#organization' ).val( tUser.organization );
-    $( '#description' ).val( tUser.user_description );
+    $( '#user_description' ).val( tUser.user_description );
 
 
     ////////////$( '#adminOnlyFields' ).hide();

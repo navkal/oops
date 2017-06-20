@@ -134,11 +134,11 @@
     }
 
     $( '#status' ).val( g_sStatus );
-    $( '#firstName' ).val( g_sFirstName );
-    $( '#lastName' ).val( g_sLastName );
-    $( '#emailAddress' ).val( g_sEmailAddress );
+    $( '#first_name' ).val( g_sFirstName );
+    $( '#last_name' ).val( g_sLastName );
+    $( '#email_address' ).val( g_sEmailAddress );
     $( '#organization' ).val( g_sOrganization );
-    $( '#description' ).val( g_sDescription );
+    $( '#user_description' ).val( g_sDescription );
 
     $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
