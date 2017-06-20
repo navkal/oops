@@ -575,7 +575,16 @@ class changePassword:
 
             # Retrieve a new copy of the user
             user = signInUser( username, password )
-            self = user
+            self.username = user.username
+            self.role = user.role
+            self.user_description = user.user_description
+            self.forceChangePassword = user.forceChangePassword
+            self.signInId = user.signInId
+            self.status = user.status
+            self.first_name = user.first_name
+            self.last_name = user.last_name
+            self.email_address = user.email_address
+            self.organization = user.organization
 
         else:
 

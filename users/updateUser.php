@@ -7,7 +7,7 @@
   $sUsername = $_POST['username'];
   $sPassword = $_POST['password'];
   $sRole = $_POST['role'];
-  $sDescription = $_POST['description'];
+  $sDescription = $_POST['user_description'];
 
   // Determine whether to force target user to change password on next signin
   $bForceChangePassword = ( $sPassword != '' ) && ( $_SESSION['panelSpy']['user']['username'] != $sUsername );
@@ -22,7 +22,7 @@
   // If signed-in user is same as updated user, update specific fields in session storage
   if ( $sUsername == $_SESSION['panelSpy']['user']['username'] )
   {
-    $_SESSION['panelSpy']['user']['description'] = $sDescription;
+    $_SESSION['panelSpy']['user']['user_description'] = $sDescription;
   }
 
   // Echo user
