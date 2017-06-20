@@ -119,21 +119,7 @@
     $( '#username' ).prop( 'readonly', g_sUsernameReadonly );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
-
-    $( '#role,#readonlyRole' ).val( g_sRole );
-    if ( g_sRole == 'Administrator' )
-    {
-      $( '#role' ).hide();
-      $( '#readonlyRole' ).show();
-      $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
-    }
-    else
-    {
-      $( '#readonlyRole' ).hide();
-      $( '#role' ).show();
-      $( '#roleLabel' ).attr( 'for', 'role' );
-    }
-
+    $( '#role' ).val( g_sRole );
     $( '#status' ).val( g_sStatus );
     $( '#first_name' ).val( g_sFirstName );
     $( '#last_name' ).val( g_sLastName );
@@ -141,6 +127,17 @@
     $( '#organization' ).val( g_sOrganization );
     $( '#user_description' ).val( g_sDescription );
 
+    if ( g_sRole == 'Administrator' )
+    {
+      $( '#role,#status' ).prop( 'disabled', true );
+      $( '#role option[value=Administrator]' ).show();
+    }
+    else
+    {
+      $( '#role,#status' ).prop( 'disabled', false );
+      $( '#role option[value=Administrator]' ).hide();
+    }
+    
     $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
 

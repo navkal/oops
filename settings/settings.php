@@ -85,9 +85,8 @@
 
     $( '#password' ).focus();
 
-    $( '#role,#readonlyRole' ).val( tUser.role );
-    $( '#roleLabel' ).attr( 'for', 'readonlyRole' );
-    $( '#role' ).hide();
+    $( '#role' ).val( tUser.role );
+    $( '#role' ).prop( 'disabled', true );
 
     $( '#status' ).val( tUser.status );
     $( '#first_name' ).val( tUser.first_name );
@@ -101,7 +100,6 @@
 
     // Show designated fields as readonly
     $( '.settingsReadonly *' ).prop( 'readonly', true );
-
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )

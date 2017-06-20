@@ -16,12 +16,12 @@
         <input type="password" class="form-control" id="confirm" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" >
       </div>
       <div class="form-group">
-        <label id="roleLabel" for="role" ></label>
+        <label for="role" ></label>
         <select id="role" class="form-control">
           <option value="Visitor">Visitor</option>
           <option value="Technician">Technician</option>
+          <option value="Administrator">Administrator</option>
         </select>
-        <input type="text" id="readonlyRole" class="form-control" readonly >
       </div>
       <div class="settingsHide" >
         <div class="form-group">
