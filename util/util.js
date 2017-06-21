@@ -26,6 +26,14 @@ var g_tPropertyRules =
     columnType: 'index',
     displayIndex: displayIndex ++
   },
+  timestamp:
+  {
+    label: "Timestamp",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'timestamp',
+    displayIndex: displayIndex ++
+  },
   username:
   {
     label: "Username",

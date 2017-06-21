@@ -146,6 +146,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 break;
             }
           }
+          else if ( tRule.columnType == 'timestamp' )
+          {
+            sCell = new Date( Math.floor( sCell * 1000 ) ).toLocaleString();
+          }
         }
 
         // Append current cell to the column

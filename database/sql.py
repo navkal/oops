@@ -361,7 +361,18 @@ class search:
 class sortableTable:
     def __init__(self, object_type):
 
-        if object_type == 'user':
+        if object_type == 'activity':
+            # Retrieve all objects of requested type
+            cur.execute('SELECT * FROM Activity')
+            objects = cur.fetchall()
+
+            # Make table rows
+            self.rows = []
+            for obj in objects:
+                row = { 'timestamp': obj[1], 'username': obj[2], 'event_type': obj[3], 'description': obj[7] }
+                self.rows.append( row )
+
+        elif object_type == 'user':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM User')
             objects = cur.fetchall()
@@ -540,7 +551,7 @@ class signInUser:
 
         # If we got a user row, load remaining user fields
         if user_row and user_row[6]:
-        
+
             self.username = user_row[1]
             role_id = user_row[3]
             cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
