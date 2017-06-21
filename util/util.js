@@ -36,7 +36,21 @@ var g_tPropertyRules =
   },
   event_type:
   {
-    label: "Event Type",
+    label: "Event",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  event_trigger:
+  {
+    label: "Triggered By",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  event_target:
+  {
+    label: "Target",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++

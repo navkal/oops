@@ -369,7 +369,20 @@ class sortableTable:
             # Make table rows
             self.rows = []
             for obj in objects:
-                row = { 'timestamp': obj[1], 'username': obj[2], 'event_type': obj[3], 'event_description': obj[7] }
+                target_table = obj[4]
+                target_column = obj[5]
+                target_value = obj[6]
+
+                if ( target_table == 'Device' ) and ( target_column == 'id' ):
+                    # Target is in Device table.  Enhance text representing event target.
+                    cur.execute('SELECT parent_id, name FROM Device WHERE id = ?', (target_value,))
+                    device_row = cur.fetchone()
+                    parent_id = device_row[0]
+                    name = device_row[1]
+                    cur.execute('SELECT path FROM CircuitObject WHERE id = ?', (parent_id,))
+                    target_value = cur.fetchone()[0] + " '" + name + "'"
+
+                row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'event_target': target_value, 'event_description': obj[7] }
                 self.rows.append( row )
 
         elif object_type == 'user':
