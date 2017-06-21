@@ -7,11 +7,11 @@ def hash( text ):
     return h.hexdigest()
 
 dcEventTypes = {
-    'database': 'database',
-    'notes': 'notes',
-    'addUser': 'addUser',
-    'updateUser': 'updateUser',
-    'removeUser': 'removeUser'
+    'database': 'Database',
+    'notes': 'Notes',
+    'addUser': 'Add User',
+    'updateUser': 'Update User',
+    'removeUser': 'Remove User'
 }
 
 def add_interactive_user( cur, conn, by, username, password, role, force_change_password=True, enabled=True, first_name='', last_name='', email_address='', organization='', description='' ):
