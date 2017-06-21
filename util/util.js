@@ -34,6 +34,20 @@ var g_tPropertyRules =
     columnType: 'timestamp',
     displayIndex: displayIndex ++
   },
+  event_type:
+  {
+    label: "Event Type",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  event_description:
+  {
+    label: "Description",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   username:
   {
     label: "Username",

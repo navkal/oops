@@ -369,7 +369,7 @@ class sortableTable:
             # Make table rows
             self.rows = []
             for obj in objects:
-                row = { 'timestamp': obj[1], 'username': obj[2], 'event_type': obj[3], 'description': obj[7] }
+                row = { 'timestamp': obj[1], 'username': obj[2], 'event_type': obj[3], 'event_description': obj[7] }
                 self.rows.append( row )
 
         elif object_type == 'user':
