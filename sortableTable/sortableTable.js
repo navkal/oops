@@ -3,6 +3,7 @@
 var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
+var g_bSortDescending = false;
 var g_bShowTopologyLink = true;
 var g_bShowAddUserButton = false;
 
@@ -308,6 +309,10 @@ function onSortableTableReady( tEvent )
 
   // Trigger initial column sort
   $( $( '#sortableTableHead th' )[1] ).click();
+  if ( g_bSortDescending )
+  {
+    $( $( '#sortableTableHead th' )[1] ).click();
+  }
 
   // Clear the wait cursor
   clearWaitCursor();
