@@ -3,6 +3,7 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
+  $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
 
   if ( isset( $_SESSION['panelSpy']['user']['forceChangePassword'] ) && $_SESSION['panelSpy']['user']['forceChangePassword'] )
   {
@@ -56,9 +57,10 @@
     <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
 <?php
   }
-  else if ( file_exists( $_SERVER["DOCUMENT_ROOT"] . "/session/recoverAdmin.php" ) )
+  else if ( file_exists( $sRecoverAdminTrigger ) )
   {
-    include $_SERVER["DOCUMENT_ROOT"] . "/session/recoverAdmin.php";
+    unlink( $sRecoverAdminTrigger );
+    include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
   }
   else
   {

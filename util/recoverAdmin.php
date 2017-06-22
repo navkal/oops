@@ -9,7 +9,6 @@
 
   $_SESSION['panelSpy']['user'] = [];
 
-  // Delete single-use script and redirect
-  unlink(__FILE__);
+  // Redirect
   header( "Location: /" );
 ?>
