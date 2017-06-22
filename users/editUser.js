@@ -27,13 +27,11 @@ function formatLabels()
   if ( g_sUsername == JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'] )
   {
     $( '#oldPassword' ).parent().show();
-    $( '#oldPassword' ).prop( 'required', true );
     g_sFocusId = 'oldPassword';
   }
   else
   {
     $( '#oldPassword' ).parent().hide();
-    $( '#oldPassword' ).prop( 'required', false );
 
     if ( g_sAction == 'update' )
     {

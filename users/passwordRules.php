@@ -6,12 +6,19 @@
 <script>
   function validatePassword()
   {
+    var tOldPassword = $( '#oldPassword' );
+    var sOldPassword = tOldPassword.val();
     var tPassword = $( '#password' );
     var sPassword = tPassword.val();
     var tConfirm = $( '#confirm' );
     var sConfirm = tConfirm.val();
 
     var aMessages = [];
+
+    if ( tOldPassword.is( ':visible' ) && ( sOldPassword == '' ) )
+    {
+      aMessages.push( 'Old Password is required.' );
+    }
 
     if ( sPassword != sConfirm )
     {
@@ -21,7 +28,7 @@
 
     if ( ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> ) || ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> ) || ( sPassword.indexOf( '"' ) != -1 ) )
     {
-      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> printable characters other than quote (").' );
+      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> characters other than quote (").' );
     }
 
     if ( aMessages.length )
