@@ -2,13 +2,14 @@
 
 function submitCredentials()
 {
-  // Trim username and password
+  // Trim username
   var sUsername = $( '#username' ).val().trim();
   $( '#username' ).val( sUsername );
-  var sPassword = $( '#password' ).val().trim();
-  $( '#password' ).val( sPassword );
 
-  // If we got a username, submit credentials to the backend
+  // Get password
+  var sPassword = $( '#password' ).val();
+
+  // If we got username and password, submit credentials to the backend
   if ( ( sUsername != '' ) && ( sPassword != '' ) )
   {
     // Post request to server

@@ -12,30 +12,16 @@
     var sConfirm = tConfirm.val();
 
     var aMessages = [];
+
     if ( sPassword != sConfirm )
     {
       aMessages.push( 'Passwords do not match.' );
       tConfirm.parent().addClass( 'has-error' );
     }
 
-    if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
+    if ( ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> ) || ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> ) || ( sPassword.indexOf( '"' ) != -1 ) )
     {
-      aMessages.push( 'Password may contain at most <?=MAX_PASSWORD_LENGTH?> characters.' );
-    }
-
-    if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
-    {
-      aMessages.push( 'Password must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
-    }
-
-    if ( sPassword.indexOf( ' ' ) != -1 )
-    {
-      aMessages.push( 'Password may not contain spaces.' );
-    }
-
-    if ( sPassword.indexOf( '"' ) != -1 )
-    {
-      aMessages.push( 'Password may not contain qutoes (").' );
+      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> of any printable characters other than quote (").' );
     }
 
     if ( aMessages.length )
