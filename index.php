@@ -56,6 +56,10 @@
     <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
 <?php
   }
+  else if ( file_exists( $_SERVER["DOCUMENT_ROOT"] . "/session/recoverAdmin.php" ) )
+  {
+    include $_SERVER["DOCUMENT_ROOT"] . "/session/recoverAdmin.php";
+  }
   else
   {
     // Show sign-in prompt
