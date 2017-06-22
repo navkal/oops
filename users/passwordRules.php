@@ -33,6 +33,11 @@
       aMessages.push( 'Password may not contain spaces.' );
     }
 
+    if ( sPassword.indexOf( '"' ) != -1 )
+    {
+      aMessages.push( 'Password may not contain qutoes (").' );
+    }
+
     if ( aMessages.length )
     {
       tPassword.parent().addClass( 'has-error' );

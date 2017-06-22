@@ -5,8 +5,8 @@
 
   // Get parameters
   $sUsername = $_POST['username'];
-  $sOldPassword = $_POST['oldPassword'];
-  $sPassword = $_POST['password'];
+  $sOldPassword = quote( $_POST['oldPassword'] );
+  $sPassword = quote( $_POST['password'] );
 
   // Execute command
   $command = quote( getenv( "PYTHON" ) ) . " ../database/changePassword.py 2>&1 -u " . $sUsername . ' -o ' . $sOldPassword . ' -p ' . $sPassword;
