@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument( '-f', '--first_name', dest='first_name', help='role' )
     parser.add_argument( '-l', '--last_name', dest='last_name', help='role' )
     parser.add_argument( '-e', '--email_address', dest='email_address', help='role' )
-    parser.add_argument( '-o', '--organization', dest='organization', help='role' )
+    parser.add_argument( '-g', '--organization', dest='organization', help='role' )
     parser.add_argument( '-d', '--description', dest='description', help='description' )
     args = parser.parse_args()
 

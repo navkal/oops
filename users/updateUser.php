@@ -5,6 +5,7 @@
 
   // Get user attributes
   $sUsername = $_POST['username'];
+  $sOldPassword = quote( $_POST['oldPassword'] );
   $sPassword = quote( $_POST['password'] );
   $sRole = $_POST['role'];
   $sStatus = $_POST['status'];
@@ -17,13 +18,14 @@
   // Update user
   $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -u ' . $sUsername
+    . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . $sOldPassword ) )
     . ( ( $sPassword == '' ) ? '' : ( ' -p ' . $sPassword ) )
     . ' -r ' . $sRole
     . ' -s ' . $sStatus
     . ' -f ' . $sFirstName
     . ' -l ' . $sLastName
     . ' -e ' . $sEmailAddress
-    . ' -o ' . $sOrganization
+    . ' -g ' . $sOrganization
     . ' -d ' . $sDescription;
 
   error_log( "===> command=" . $command );

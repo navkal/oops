@@ -23,7 +23,7 @@
     . ' -f ' . $sFirstName
     . ' -l ' . $sLastName
     . ' -e ' . $sEmailAddress
-    . ' -o ' . $sOrganization
+    . ' -g ' . $sOrganization
     . ' -d ' . $sDescription;
 
   error_log( "===> command=" . $command );

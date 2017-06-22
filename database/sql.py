@@ -620,7 +620,7 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, by, username, password, role, status, first_name, last_name, email_address, organization, description):
+    def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description):
         if password != None:
             cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
 
