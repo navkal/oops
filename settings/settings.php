@@ -62,6 +62,7 @@
 
 <script>
   var g_sAction = null;
+  var g_sUsername = null;
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
@@ -72,18 +73,20 @@
 
   function initSettings()
   {
+    var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
+
     g_sAction = 'update';
+    g_sUsername = tUser.username;
     formatLabels();
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = settingsDone;
 
-    var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
 
-    $( '#username' ).val( tUser.username );
+    $( '#username' ).val( g_sUsername );
     $( '#username' ).prop( 'disabled', true );
 
-    $( '#password' ).focus();
+    $( '#oldPassword' ).focus();
 
     $( '#role' ).val( tUser.role );
     $( '#role' ).prop( 'disabled', true );

@@ -23,7 +23,26 @@ function formatLabels()
     }
   }
 
-  // Initialize labeling for password/confirm fields
+  // Set up display of password/confirm fields
+  if ( g_sUsername == JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'] )
+  {
+    $( '#oldPassword' ).parent().show();
+    g_sFocusId = 'oldPassword';
+  }
+  else
+  {
+    $( '#oldPassword' ).parent().hide();
+
+    if ( g_sAction == 'update' )
+    {
+      g_sFocusId = 'password';
+    }
+    else
+    {
+      g_sFocusId = 'username';
+    }
+  }
+
   var sNew = ( g_sAction == 'update' ) ? 'New ' : '';
   var sPassword = sNew + 'Password';
   var sConfirm = 'Confirm ' + sPassword;
@@ -73,6 +92,7 @@ function submitUser()
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "username", $( '#username' ).val() );
+  tPostData.append( "oldPassword", $( '#oldPassword' ).val() );
   tPostData.append( "password", $( '#password' ).val() );
   tPostData.append( "role", $( '#role' ).val() );
   tPostData.append( "status", $( '#status' ).val() );

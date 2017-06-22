@@ -8,6 +8,10 @@
         <input type="text" class="form-control" id="username" maxlength="<?=MAX_USERNAME_LENGTH+1?>" >
       </div>
       <div class="form-group">
+        <label for="oldPassword">Old Password</label>
+        <input type="password" class="form-control" id="oldPassword" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" placeholder="Old Password" >
+      </div>
+      <div class="form-group">
         <label for="password"></label>
         <input type="password" class="form-control" id="password" maxlength="<?=MAX_PASSWORD_LENGTH+1?>" >
       </div>

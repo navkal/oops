@@ -62,10 +62,10 @@
   function initAdd()
   {
     g_sAction = 'add';
+    g_sUsername = '';
     formatLabels();
 
     g_sSubmitLabel = 'Add User';
-    g_sUsername = '';
     g_sRole = 'Visitor';
     g_sStatus = 'Enabled';
     g_sFirstName = '';
@@ -75,7 +75,6 @@
     g_sDescription = '';
 
     g_bUsernameDisabled = false;
-    g_sFocusId = 'username';
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
   }
@@ -83,12 +82,11 @@
   function initUpdate( sUsername )
   {
     g_sAction = 'update';
+    g_sUsername = sUsername;
     formatLabels();
 
     g_sSubmitLabel = 'Update User';
-    g_sUsername = sUsername;
     g_bUsernameDisabled = true;
-    g_sFocusId = 'password';
 
     var iRow = 0;
     var tRow = null;
@@ -117,6 +115,7 @@
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
     $( '#username' ).prop( 'disabled', g_bUsernameDisabled );
+    $( '#oldPassword' ).val( '' );
     $( '#password' ).val( '' );
     $( '#confirm' ).val( '' );
     $( '#role' ).val( g_sRole );
