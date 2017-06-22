@@ -21,7 +21,7 @@
 
     if ( ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> ) || ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> ) || ( sPassword.indexOf( '"' ) != -1 ) )
     {
-      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> of any printable characters other than quote (").' );
+      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> printable characters other than quote (").' );
     }
 
     if ( aMessages.length )
