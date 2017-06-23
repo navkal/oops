@@ -136,7 +136,7 @@
       $( '#role,#status' ).prop( 'disabled', false );
       $( '#role option[value=Administrator]' ).hide();
     }
-    
+
     $( '#editUserLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
 
@@ -164,7 +164,14 @@
 
   function updateDone( tRsp, sStatus, tJqXhr )
   {
-    location.reload();
+    if ( tRsp.success )
+    {
+      location.reload();
+    }
+    else
+    {
+      alert( 'update bad' );
+    }
   }
 </script>
 

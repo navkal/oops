@@ -5,8 +5,8 @@
 
   // Get user attributes
   $sUsername = $_POST['username'];
-  $sOldPassword = quote( $_POST['oldPassword'] );
-  $sPassword = quote( $_POST['password'] );
+  $sOldPassword = $_POST['oldPassword'];
+  $sPassword = $_POST['password'];
   $sRole = $_POST['role'];
   $sStatus = $_POST['status'];
   $sFirstName = quote( $_POST['first_name'] );
@@ -18,8 +18,8 @@
   // Update user
   $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -u ' . $sUsername
-    . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . $sOldPassword ) )
-    . ( ( $sPassword == '' ) ? '' : ( ' -p ' . $sPassword ) )
+    . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . quote( $sOldPassword ) ) )
+    . ( ( $sPassword == '' ) ? '' : ( ' -p ' . quote( $sPassword ) ) )
     . ' -r ' . $sRole
     . ' -s ' . $sStatus
     . ' -f ' . $sFirstName
@@ -41,6 +41,11 @@
     {
       $_SESSION['panelSpy']['user'][$sKey] = $sVal;
     }
+  }
+  else
+  {
+    // Signed-in user is not same as updated user.  Report status without changing other user fields.
+    $_SESSION['panelSpy']['user']['success'] = $aUser['success'];
   }
 
   // Echo user

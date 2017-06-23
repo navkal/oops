@@ -15,7 +15,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        user = sql.changePassword( args.username, args.oldPassword, args.password )
+        user = sql.changePassword( args.username, args.username, args.oldPassword, args.password )
     except:
         dict = { 'Error': 'Failed to change password' }
     else:

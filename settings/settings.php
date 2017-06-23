@@ -107,15 +107,24 @@
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
-    // Update persistent copy of signed-in user
-    var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
-    for ( var sKey in tRsp )
+    if ( tRsp.success )
     {
-      tUser[sKey] = tRsp[sKey];
-    }
-    localStorage.setItem( 'signedInUser', JSON.stringify( tUser ) );
+      delete tRsp.success;
 
-    $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
+      // Update persistent copy of signed-in user
+      var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
+      for ( var sKey in tRsp )
+      {
+        tUser[sKey] = tRsp[sKey];
+      }
+
+      localStorage.setItem( 'signedInUser', JSON.stringify( tUser ) );
+      $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
+    }
+    else
+    {
+      alert( 'settings bad' );
+    }
   }
 
   function onShownSuccessDialog()

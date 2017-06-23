@@ -77,7 +77,7 @@ function validateUser()
   clearMessages();
 
   var aMessages = validateUsername();
-  if ( ( g_sAction == 'add' ) || ( $( '#password' ).val().length > 0 ) || ( $( '#confirm' ).val().length > 0 ) )
+  if ( ( g_sAction == 'add' ) || ( $( '#oldPassword' ).val().length > 0 ) || ( $( '#password' ).val().length > 0 ) || ( $( '#confirm' ).val().length > 0 ) )
   {
     aMessages = aMessages.concat( validatePassword() );
   }

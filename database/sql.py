@@ -581,7 +581,7 @@ class signInUser:
 
 
 class changePassword:
-    def __init__(self, username, oldPassword, password):
+    def __init__(self, by, username, oldPassword, password):
 
         self.username = username
         self.signInId = ''
@@ -593,7 +593,7 @@ class changePassword:
             # Sign-in succeeded
 
             # Set the password and clear the force_change_password flag
-            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), False, username.lower() ) );
+            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
             conn.commit();
 
             # Sign in again with new password
@@ -621,39 +621,51 @@ class addUser:
 
 class updateUser:
     def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description):
+
+        self.success = True
+
         if password != None:
-            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
-
-        cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
-        role_id = cur.fetchone()[0]
-
-        cur.execute( '''UPDATE User SET role_id=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
-            ( role_id, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
-
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
-
-        conn.commit()
-
-        # Retrieve the user
-        cur.execute('SELECT * FROM User WHERE lower(username) = ?', (username.lower(),))
-        user_row = cur.fetchone()
-
-        # If we got a user row, load remaining user fields
-        if user_row:
-            self.username = user_row[1]
-            role_id = user_row[3]
-            cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
-            self.role = cur.fetchone()[0]
-            self.user_description = user_row[4]
-            if user_row[6]:
-                self.status = 'Enabled'
+            if oldPassword != None:
+                # Authenticate credentials to change password
+                user = changePassword( by, username, oldPassword, password )
+                self.success = user.signInId != ''
             else:
-                self.status = 'Disabled'
-            self.first_name = user_row[7]
-            self.last_name = user_row[8]
-            self.email_address = user_row[9]
-            self.organization = user_row[10]
+                # Change password without authentication
+                cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
+                conn.commit()
+
+
+        if self.success:
+            cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
+            role_id = cur.fetchone()[0]
+
+            cur.execute( '''UPDATE User SET role_id=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
+                ( role_id, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
+
+            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
+                VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
+
+            conn.commit()
+
+            # Retrieve the user
+            cur.execute('SELECT * FROM User WHERE lower(username) = ?', (username.lower(),))
+            user_row = cur.fetchone()
+
+            # If we got a user row, load remaining user fields
+            if user_row:
+                self.username = user_row[1]
+                role_id = user_row[3]
+                cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+                self.role = cur.fetchone()[0]
+                self.user_description = user_row[4]
+                if user_row[6]:
+                    self.status = 'Enabled'
+                else:
+                    self.status = 'Disabled'
+                self.first_name = user_row[7]
+                self.last_name = user_row[8]
+                self.email_address = user_row[9]
+                self.organization = user_row[10]
 
 
 class removeUser:
