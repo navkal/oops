@@ -63,7 +63,7 @@
   {
     g_sAction = 'add';
     g_sUsername = '';
-    formatLabels();
+    formatLabels( 3 );
 
     g_sSubmitLabel = 'Add User';
     g_sRole = 'Visitor';
@@ -83,7 +83,7 @@
   {
     g_sAction = 'update';
     g_sUsername = sUsername;
-    formatLabels();
+    formatLabels( 4 );
 
     g_sSubmitLabel = 'Update User';
     g_bUsernameDisabled = true;

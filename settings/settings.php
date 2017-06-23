@@ -77,7 +77,7 @@
 
     g_sAction = 'update';
     g_sUsername = tUser.username;
-    formatLabels();
+    formatLabels( 2 );
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = settingsDone;

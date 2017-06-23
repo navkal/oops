@@ -1,7 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
 // Initialize field labels (etc.)
-function formatLabels()
+function formatLabels( nLabelColumnWidth )
 {
   var aFields = $( 'input,select,textarea', '#editUserForm' );
 
@@ -54,6 +54,10 @@ function formatLabels()
 
   // Turn off autocomplete
   $( 'input', '#editUserForm' ).attr( 'autocomplete', 'off' );
+  
+  // Customize responsive layout
+  $( '#editUserForm label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
+  $( 'input,select,textarea', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
 // Detect change of input controls
