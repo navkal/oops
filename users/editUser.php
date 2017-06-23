@@ -174,7 +174,7 @@
       showMessages( tRsp.messages );
 
       // Highlight Old Password, since (for now) that's the only thing that can produce an error in this operation
-      $( '#oldPassword' ).parent().addClass( 'has-error' );
+      $( '#oldPassword' ).closest( '.form-group' ).addClass( 'has-error' );
     }
   }
 </script>

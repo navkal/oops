@@ -26,12 +26,12 @@ function formatLabels()
   // Set up display of password/confirm fields
   if ( g_sUsername == JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'] )
   {
-    $( '#oldPassword' ).parent().show();
+    $( '#oldPassword' ).closest( '.form-group' ).show();
     g_sFocusId = 'oldPassword';
   }
   else
   {
-    $( '#oldPassword' ).parent().hide();
+    $( '#oldPassword' ).closest( '.form-group' ).hide();
 
     if ( g_sAction == 'update' )
     {

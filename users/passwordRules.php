@@ -18,20 +18,20 @@
     if ( tOldPassword.is( ':visible' ) && ( sOldPassword == '' ) )
     {
       aMessages.push( 'Old Password is required.' );
-      tOldPassword.parent().addClass( 'has-error' );
+      tOldPassword.closest( '.form-group' ).addClass( 'has-error' );
     }
 
     if ( sPassword != sConfirm )
     {
       aMessages.push( 'Passwords do not match.' );
-      tConfirm.parent().addClass( 'has-error' );
-      tPassword.parent().addClass( 'has-error' );
+      tConfirm.closest( '.form-group' ).addClass( 'has-error' );
+      tPassword.closest( '.form-group' ).addClass( 'has-error' );
     }
 
     if ( ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> ) || ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> ) || ( sPassword.indexOf( '"' ) != -1 ) )
     {
       aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> characters other than quote (").' );
-      tPassword.parent().addClass( 'has-error' );
+      tPassword.closest( '.form-group' ).addClass( 'has-error' );
     }
 
     return aMessages;
