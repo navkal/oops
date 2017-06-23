@@ -107,9 +107,9 @@
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp.success )
+    if ( tRsp.messages.length == 0 )
     {
-      delete tRsp.success;
+      delete tRsp.messages;
 
       // Update persistent copy of signed-in user
       var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
@@ -123,7 +123,11 @@
     }
     else
     {
-      alert( 'settings bad' );
+      // Show error messages
+      showMessages( tRsp.messages );
+
+      // Highlight Old Password, since (for now) that's the only thing that can produce an error in this operation
+      $( '#oldPassword' ).parent().addClass( 'has-error' );
     }
   }
 

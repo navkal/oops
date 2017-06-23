@@ -622,20 +622,21 @@ class addUser:
 class updateUser:
     def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description):
 
-        self.success = True
+        self.messages = []
 
         if password != None:
             if oldPassword != None:
                 # Authenticate credentials to change password
                 user = changePassword( by, username, oldPassword, password )
-                self.success = user.signInId != ''
+                if user.signInId == '':
+                    self.messages.append( 'Old Password not valid.' )
             else:
                 # Change password without authentication
                 cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
                 conn.commit()
 
 
-        if self.success:
+        if len( self.messages ) == 0:
             cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
             role_id = cur.fetchone()[0]
 

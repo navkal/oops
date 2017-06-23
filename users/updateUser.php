@@ -45,7 +45,7 @@
   else
   {
     // Signed-in user is not same as updated user.  Report status without changing other user fields.
-    $_SESSION['panelSpy']['user']['success'] = $aUser['success'];
+    $_SESSION['panelSpy']['user']['messages'] = $aUser['messages'];
   }
 
   // Echo user
