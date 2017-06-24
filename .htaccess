@@ -1,0 +1,9 @@
+AddType application/x-httpd-php .htm .html
+Options -Indexes
+
+ErrorDocument 403 /session/403.php
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)$ index.php?enterprise=$1 [L]

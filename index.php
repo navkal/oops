@@ -1,6 +1,8 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
+  error_log( '====> index.php rq=' . print_r( $_REQUEST, true ) );
+
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
   $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
