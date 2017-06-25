@@ -66,6 +66,13 @@
   }
   else
   {
+    // Initialize context
+    $sEnterprise = isset( $_REQUEST['e'] ) ? $_REQUEST['e'] : 'default';
+    $sFacility = isset( $_REQUEST['f'] ) ? $_REQUEST['f'] : 'default';
+    $_SESSION['panelSpy']['context'] = [];
+    $_SESSION['panelSpy']['context']['enterprise'] = $sEnterprise;
+    $_SESSION['panelSpy']['context']['facility'] = $sFacility;
+
     // Show sign-in prompt
     include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
   }
