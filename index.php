@@ -7,6 +7,39 @@
   $iVersion = time();
   $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
 
+  //
+  // Determine context.
+  //
+  // For now, require URL to indicate both Enterprise and Facility.
+  // In future, if we allow the user to select Facility after signing in,
+  // we can change this code to require only Enterprise.
+  //
+  $aUrlContext = [];
+  if ( isset( $_REQUEST['e'] ) && isset( $_REQUEST['f'] ) )
+  {
+    $aUrlContext['enterprise'] = $_REQUEST['e'];
+    $aUrlContext['facility'] = $_REQUEST['f'];
+  }
+
+  // Set context if it doesn't already exist or if it changed
+  error_log( '===> before unset decision, aUrlContext=' . print_r( $aUrlContext, true ) );
+  if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
+  {
+    $_SESSION['panelSpy']['user'] = [];
+    unset( $_SESSION['panelSpy']['context'] );
+
+    // If user has explicitly requested the demo, clear the context
+    if ( $aUrlContext['enterprise'] == 'demo' )
+    {
+      $aUrlContext = [];
+    }
+  }
+
+
+  ///////////////////////////////////
+  // Decide how to render the view //
+  ///////////////////////////////////
+
   if ( isset( $_SESSION['panelSpy']['user']['forceChangePassword'] ) && $_SESSION['panelSpy']['user']['forceChangePassword'] )
   {
     // Force user to change password
@@ -67,21 +100,10 @@
     $bRecoverAdminTrigger = file_exists( $sRecoverAdminTrigger );
     @unlink( $sRecoverAdminTrigger );
 
-    // Determine context.
-    // For now, require URL to indicate both Enterprise and Facility.
-    // In future, if we allow the user to select Facility after signing in,
-    // we can change this code to require only Enterprise.
-    $aContext = [];
-    if ( isset( $_REQUEST['e'] ) && isset( $_REQUEST['f'] ) )
-    {
-      $aContext['enterprise'] = $_REQUEST['e'];
-      $aContext['facility'] = $_REQUEST['f'];
-    }
-
     // Recover admin password if we found the trigger and we have an Enterprise
-    if ( $bRecoverAdminTrigger && isset( $aContext['enterprise'] ) )
+    if ( $bRecoverAdminTrigger && isset( $aUrlContext['enterprise'] ) )
     {
-      $_SESSION['panelSpy']['recoverAdminContext'] = $aContext;
+      $_SESSION['panelSpy']['recoverAdminContext'] = $aUrlContext;
 
       error_log( '---------> about to recover, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
       include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
@@ -99,11 +121,11 @@
       }
       else
       {
-        // Set context if it doesn't already exist
+        // If context doesn't already exist, set it using URL
         if ( ! isset( $_SESSION['panelSpy']['context'] ) )
         {
           // Use new data context from URL
-          $_SESSION['panelSpy']['context'] = $aContext;
+          $_SESSION['panelSpy']['context'] = $aUrlContext;
         }
       }
 
