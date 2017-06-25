@@ -52,18 +52,25 @@
   {
     // Determine which menu the user will see
     $sSuffix = '';
-    switch( $_SESSION['panelSpy']['user']['role'] )
+    if ( $_SESSION['panelSpy']['context']['enterprise'] == 'demo' )
     {
-      case 'Administrator':
-        $sSuffix = 'Admin';
-        break;
-      case 'Technician':
-        $sSuffix = 'Tech';
-        break;
-      case 'Visitor':
-      default:
-        $sSuffix = '';
-        break;
+      $sSuffix = 'Demo';
+    }
+    else
+    {
+      switch( $_SESSION['panelSpy']['user']['role'] )
+      {
+        case 'Administrator':
+          $sSuffix = 'Admin';
+          break;
+        case 'Technician':
+          $sSuffix = 'Tech';
+          break;
+        case 'Visitor':
+        default:
+          $sSuffix = '';
+          break;
+      }
     }
 
     global $g_sNavbarCsv;
