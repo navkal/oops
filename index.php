@@ -75,6 +75,7 @@
 
     global $g_sNavbarCsv;
     $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
+    $sEnterprise = $_SESSION['panelSpy']['context']['enterprise'];
 
     error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
 
@@ -87,10 +88,10 @@
       function makeSignOutButton()
       {
         var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
-        var sSignedInAs = "Signed in as '" + sUsername + "'";
+        var sSignedInAs = "Signed in as '<?=$sEnterprise?>: " + sUsername + "'";
         $( '.navbar-brand' ).attr( 'title', sSignedInAs );
 <?php
-    if ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' )
+    if ( $sEnterprise != 'demo' )
     {
 ?>
         var sSignOutHtml = '';
