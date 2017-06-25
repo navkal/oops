@@ -25,7 +25,7 @@
     $_SESSION['panelSpy']['user'] = $aUser;
   }
   
-  error_log( '======> signed in with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
+  error_log( '========> signed in with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
 
   echo $sUser;
 ?>

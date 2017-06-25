@@ -36,6 +36,8 @@
     global $g_sNavbarCsv;
     $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
 
+    error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
+
     // Show application
     include "../common/main.php";
 ?>
@@ -61,20 +63,49 @@
   }
   else if ( file_exists( $sRecoverAdminTrigger ) )
   {
+    $_SESSION['panelSpy']['recoverAdminContext'] = makeContext();
+    error_log( '---------> about to recover, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
+
     unlink( $sRecoverAdminTrigger );
     include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
   }
   else
   {
-    // Initialize context
-    $sEnterprise = isset( $_REQUEST['e'] ) ? $_REQUEST['e'] : 'default';
-    $sFacility = isset( $_REQUEST['f'] ) ? $_REQUEST['f'] : 'default';
-    $_SESSION['panelSpy']['context'] = [];
-    $_SESSION['panelSpy']['context']['enterprise'] = $sEnterprise;
-    $_SESSION['panelSpy']['context']['facility'] = $sFacility;
+    error_log( '---------> about to sign in, recovery context set? ' . isset( $_SESSION['panelSpy']['recoverAdminContext'] ) );
+    if ( isset( $_SESSION['panelSpy']['recoverAdminContext'] ) )
+    {
+      error_log( '---------> about to sign in, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
+      // Adopt data context from admin recovery operation
+      $_SESSION['panelSpy']['context'] = $_SESSION['panelSpy']['recoverAdminContext'];
+      unset( $_SESSION['panelSpy']['recoverAdminContext'] );
+    }
+    else
+    {
+      // Make new data context
+      $_SESSION['panelSpy']['context'] = makeContext();
+    }
 
     // Show sign-in prompt
     include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
+  }
+
+  // Initialize data context
+  function makeContext()
+  {
+    $aContext = [];
+
+    if ( isset( $_REQUEST['e'] ) && isset( $_REQUEST['f'] ) )
+    {
+      $aContext['enterprise'] = $_REQUEST['e'];
+      $aContext['facility'] = $_REQUEST['f'];
+    }
+    else
+    {
+      $aContext['enterprise'] = 'default';
+      $aContext['facility'] = 'default';
+    }
+
+    return $aContext;
   }
 ?>
 
