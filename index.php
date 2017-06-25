@@ -81,12 +81,19 @@
       {
         var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
         var sSignedInAs = "Signed in as '" + sUsername + "'";
+        $( '.navbar-brand' ).attr( 'title', sSignedInAs );
+<?php
+    if ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' )
+    {
+?>
         var sSignOutHtml = '';
         sSignOutHtml += '<form class="navbar-form navbar-right">';
         sSignOutHtml += '<button type="button" class="btn btn-default" title="' + sSignedInAs + '" onclick="signOut();" >Sign Out</button>';
         sSignOutHtml += '</form>';
         $( '#navbar-collapse' ).append( sSignOutHtml );
-        $( '.navbar-brand' ).attr( 'title', sSignedInAs );
+<?php
+    }
+?>
       }
     </script>
 
