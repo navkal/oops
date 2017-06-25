@@ -10,15 +10,18 @@
   //
   // Determine context.
   //
-  // For now, require URL to indicate both Enterprise and Facility.
+  // For now, require non-demo URL to indicate both Enterprise and Facility.
   // In future, if we allow the user to select Facility after signing in,
   // we can change this code to require only Enterprise.
   //
+  $bE = isset( $_REQUEST['e'] );
+  $bF = isset( $_REQUEST['f'] );
+  $bDemo = $bE && ( $_REQUEST['e'] == 'demo' );
   $aUrlContext = [];
-  if ( isset( $_REQUEST['e'] ) && isset( $_REQUEST['f'] ) )
+  if ( $bE && ( $bDemo || $bF ) )
   {
     $aUrlContext['enterprise'] = $_REQUEST['e'];
-    $aUrlContext['facility'] = $_REQUEST['f'];
+    $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
   }
 
   // Set context if it doesn't already exist or if it changed
