@@ -61,51 +61,63 @@
     <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
 <?php
   }
-  else if ( file_exists( $sRecoverAdminTrigger ) )
-  {
-    $_SESSION['panelSpy']['recoverAdminContext'] = makeContext();
-    error_log( '---------> about to recover, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
-
-    unlink( $sRecoverAdminTrigger );
-    include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
-  }
   else
   {
-    error_log( '---------> about to sign in, recovery context set? ' . isset( $_SESSION['panelSpy']['recoverAdminContext'] ) );
-    if ( isset( $_SESSION['panelSpy']['recoverAdminContext'] ) )
-    {
-      error_log( '---------> about to sign in, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
-      // Adopt data context from admin recovery operation
-      $_SESSION['panelSpy']['context'] = $_SESSION['panelSpy']['recoverAdminContext'];
-      unset( $_SESSION['panelSpy']['recoverAdminContext'] );
-    }
-    else
-    {
-      // Make new data context
-      $_SESSION['panelSpy']['context'] = makeContext();
-    }
+    // Determine whether admin recovery trigger is present
+    $bRecoverAdminTrigger = file_exists( $sRecoverAdminTrigger );
+    @unlink( $sRecoverAdminTrigger );
 
-    // Show sign-in prompt
-    include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
-  }
-
-  // Initialize data context
-  function makeContext()
-  {
+    // Determine context.
+    // For now, require URL to indicate both Enterprise and Facility.
+    // In future, if we allow the user to select Facility after signing in,
+    // we can change this code to require only Enterprise.
     $aContext = [];
-
     if ( isset( $_REQUEST['e'] ) && isset( $_REQUEST['f'] ) )
     {
       $aContext['enterprise'] = $_REQUEST['e'];
       $aContext['facility'] = $_REQUEST['f'];
     }
+
+    // Recover admin password if we found the trigger and we have an Enterprise
+    if ( $bRecoverAdminTrigger && isset( $aContext['enterprise'] ) )
+    {
+      $_SESSION['panelSpy']['recoverAdminContext'] = $aContext;
+
+      error_log( '---------> about to recover, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
+      include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
+    }
     else
     {
-      $aContext['enterprise'] = 'default';
-      $aContext['facility'] = 'default';
-    }
+      error_log( '---------> about to sign in, recovery context set? ' . isset( $_SESSION['panelSpy']['recoverAdminContext'] ) );
+      // Determine context
+      if ( isset( $_SESSION['panelSpy']['recoverAdminContext'] ) )
+      {
+        error_log( '---------> about to sign in, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
+        // Adopt data context from admin recovery operation
+        $_SESSION['panelSpy']['context'] = $_SESSION['panelSpy']['recoverAdminContext'];
+        unset( $_SESSION['panelSpy']['recoverAdminContext'] );
+      }
+      else
+      {
+        // Set context if it doesn't already exist
+        if ( ! isset( $_SESSION['panelSpy']['context'] ) )
+        {
+          // Use new data context from URL
+          $_SESSION['panelSpy']['context'] = $aContext;
+        }
+      }
 
-    return $aContext;
+      if ( $_SESSION['panelSpy']['context'] != [] )
+      {
+        // We have a context.  Show sign-in prompt
+        include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
+      }
+      else
+      {
+        // We have no context.  Load demo.
+        include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
+      }
+    }
   }
 ?>
 
