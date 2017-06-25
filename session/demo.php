@@ -18,8 +18,8 @@
       function signInDemo()
       {
         console.log( 'about to sign in' );
-        var sUsername = 'test';
-        var sPassword = 'test';
+        var sUsername = 'demo';
+        var sPassword = 'demo';
 
         // Post request to server
         var tPostData = new FormData();
