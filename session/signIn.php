@@ -4,7 +4,6 @@
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Initialize session storage
-  $_SESSION['panelSpy']['reservedDelimiter'] = '-_-_-';
   $_SESSION['panelSpy']['user'] = [];
 
   // Look up user in database

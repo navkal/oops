@@ -1,12 +1,13 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/define.php";
   $iVersion = time();
   $sGoto = isset( $_REQUEST['goto'] ) ? $_REQUEST['goto'] : '';
 ?>
 
 <script>
-  var g_sReservedDelimiter = "<?=$_SESSION['panelSpy']['reservedDelimiter']?>";
+  var g_sReservedDelimiter = "<?=RESERVED_DELIMITER?>";
 </script>
 
 <!-- Circuit Navigator scripts -->

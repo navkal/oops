@@ -55,6 +55,9 @@
   }
 </style>
 
-<script src="../util/util.js?version=<?=time()?>"></script>
-<script src="../topology/topology.js?version=<?=time()?>"></script>
+<?php
+  $iVersion = time();
+?>
+<script src="../util/util.js?version=<?=$iVersion?>"></script>
+<script src="../topology/topology.js?version=<?=$iVersion?>"></script>
 <script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>

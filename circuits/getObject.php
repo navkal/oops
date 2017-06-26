@@ -1,6 +1,7 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/define.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Get posted values
@@ -49,9 +50,9 @@
   {
     $sPath = $tResult->path;
 
-    if ( strpos( $sPath, $_SESSION['panelSpy']['reservedDelimiter'] ) !== false )
+    if ( strpos( $sPath, RESERVED_DELIMITER ) !== false )
     {
-      $tResult->error = "Path contains reserved substring '" . $_SESSION['panelSpy']['reservedDelimiter'] . "'";
+      $tResult->error = "Path contains reserved substring '" . RESERVED_DELIMITER . "'";
       $sResult = json_encode( $tResult );
     }
   }
