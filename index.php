@@ -22,17 +22,24 @@
   {
     $aUrlContext['enterprise'] = $_REQUEST['e'];
     $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
+    $aUrlContext['eLower'] = strtolower( $aUrlContext['enterprise'] );
+    $aUrlContext['fLower'] = strtolower( $aUrlContext['facility'] );
+  }
+
+  if ( isset( $_SESSION['panelSpy']['context']['enterprise'] ) )
+  {
+    $_SESSION['panelSpy']['context']['eLower'] = strtolower( $_SESSION['panelSpy']['context']['enterprise'] );
   }
 
   // Set context if it doesn't already exist or if it changed
   error_log( '===> before unset decision, aUrlContext=' . print_r( $aUrlContext, true ) );
-  if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
+  if ( isset( $aUrlContext['eLower'] ) && isset( $_SESSION['panelSpy']['context']['eLower'] ) && ( $aUrlContext['eLower'] != $_SESSION['panelSpy']['context']['eLower'] ) )
   {
     $_SESSION['panelSpy']['user'] = [];
     unset( $_SESSION['panelSpy']['context'] );
 
     // If user has explicitly requested the demo, clear the context
-    if ( $aUrlContext['enterprise'] == 'demo' )
+    if ( $aUrlContext['eLower'] == 'demo' )
     {
       $aUrlContext = [];
     }
@@ -55,7 +62,7 @@
   {
     // Determine which menu the user will see
     $sSuffix = '';
-    if ( $_SESSION['panelSpy']['context']['enterprise'] == 'demo' )
+    if ( $_SESSION['panelSpy']['context']['eLower'] == 'demo' )
     {
       $sSuffix = 'Demo';
     }
