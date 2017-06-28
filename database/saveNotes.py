@@ -3,6 +3,7 @@
 import printctl
 import argparse
 import json
+import context
 
 printctl.off()
 import sql
@@ -14,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument( '-c', '--column', dest='targetColumn',  help='target column' )
     parser.add_argument( '-v', '--value', dest='targetValue',  help='target value' )
     parser.add_argument( '-n', '--notes', dest='notes',  help='notes' )
+    parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
