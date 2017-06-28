@@ -162,6 +162,7 @@
       else
       {
         // We have no context.  Load demo.
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facility' => 'demo', 'eLower' => 'demo', 'fLower' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }

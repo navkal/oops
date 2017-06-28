@@ -6,8 +6,6 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
-    $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facility' => 'demo' ];
-    error_log( "===========> In demo.php" );
   ?>
 
   <!-- Body -->

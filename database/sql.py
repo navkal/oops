@@ -87,7 +87,9 @@ def make_cirobj_label( o ):
 
 
 class device:
-    def __init__(self,id=None,row=None):
+    def __init__(self,id=None,row=None,enterprise='demo'):
+        conn,cur = open_database( enterprise )
+
         if not row:
             cur.execute(
               '''SELECT *
@@ -154,7 +156,8 @@ class device:
 
 class cirobj:
 
-    def __init__(self,id=None,path=None,getkids=True):
+    def __init__(self,id=None,path=None,getkids=True,enterprise='demo'):
+        conn,cur = open_database( enterprise )
 
         if id:
             cur.execute('SELECT * FROM CircuitObject WHERE id = ?', (id,))
