@@ -23,7 +23,8 @@ if __name__ == '__main__':
     else:
       sArgs = ''
 
-    sArgs += 'enterprise="' + args.enterprise + '"'
+    sArgs += 'enterprise="' + args.enterprise + '", '
+    sArgs += 'facility="' + args.facility + '"'
 
     try:
       object = eval( 'sql.' + args.table + '( ' + sArgs + ' )' )

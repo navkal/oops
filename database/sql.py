@@ -87,7 +87,7 @@ def make_cirobj_label( o ):
 
 
 class device:
-    def __init__(self,id=None,row=None,enterprise='demo'):
+    def __init__(self,id=None,row=None,enterprise='demo',facility='demo'):
         conn,cur = open_database( enterprise )
 
         if not row:
@@ -156,7 +156,7 @@ class device:
 
 class cirobj:
 
-    def __init__(self,id=None,path=None,getkids=True,enterprise='demo'):
+    def __init__(self,id=None,path=None,getkids=True,enterprise='demo',facility='demo'):
         conn,cur = open_database( enterprise )
 
         if id:
@@ -263,7 +263,8 @@ class cirobj:
 
 
 class search:
-    def __init__(self, searchText, searchTargets=None):
+    def __init__(self, searchText, searchTargets=None, enterprise='demo', facility='demo'):
+        conn,cur = open_database( enterprise )
 
         if searchTargets:
             aTargets = searchTargets.split( ',' )

@@ -3,6 +3,7 @@
 import printctl
 import argparse
 import json
+import context
 
 printctl.off()
 import sql
@@ -11,10 +12,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='search' )
     parser.add_argument( '-s', '--searchText', dest='searchText',  help='search text' )
     parser.add_argument( '-t', '--searchTargets', dest='searchTargets',  help='comma-separated list of search targets' )
+    parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
-      searchResults = sql.search( args.searchText, args.searchTargets );
+      searchResults = sql.search( args.searchText, args.searchTargets, args.enterprise, args.facility );
     except:
       dict = { 'Error': 'Failed to search for [' + args.searchText + '] in targets [' + args.searchTargets + ']' }
     else:
