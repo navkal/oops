@@ -11,6 +11,12 @@ conn = sqlite3.connect('../database/database.sqlite')
 cur = conn.cursor()
 
 
+def open_database( enterprise ):
+    conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
+    cur = conn.cursor()
+    return conn,cur
+
+
 def make_device_label( name, room_id ):
 
     # Get location details
@@ -542,6 +548,8 @@ class sortableTableRow:
 
 class saveNotes:
     def __init__(self, args):
+
+        conn,cur = open_database( args.enterprise )
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
