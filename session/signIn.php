@@ -20,12 +20,15 @@
   $aUser = (array) json_decode( $sUser );
 
   // If database assigned a signin id, load user information
-  if ( $aUser['signInId'] )
+  if ( isset( $aUser['signInId'] ) && $aUser['signInId'] )
   {
     $_SESSION['panelSpy']['user'] = $aUser;
+    error_log( '==> Signed in. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
   }
-  
-  error_log( '========> signed in with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
+  else
+  {
+    error_log( '==> Sign-in failed. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
+  }
 
   echo $sUser;
 ?>
