@@ -599,7 +599,7 @@ class signInUser:
 
 
 class changePassword:
-    def __init__(self, by, username, oldPassword, password, enterprise):
+    def __init__(self, by, username, oldPassword, password, enterprise=None):
         open_database( enterprise )
 
         self.username = username
@@ -640,7 +640,8 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description):
+    def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description, enterprise):
+        open_database( enterprise )
 
         self.messages = []
 
