@@ -691,7 +691,8 @@ class updateUser:
 
 
 class removeUser:
-    def __init__(self, by, username):
+    def __init__(self, by, username, enterprise):
+        open_database( enterprise )
         self.username = username
         cur.execute( 'DELETE FROM User WHERE lower(username)=?', ( username.lower(), ) )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
