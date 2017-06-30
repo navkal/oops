@@ -3,6 +3,7 @@
 import printctl
 import argparse
 import json
+import context
 
 printctl.off()
 import sql
@@ -19,10 +20,11 @@ if __name__ == '__main__':
     parser.add_argument( '-e', '--email_address', dest='email_address', help='role' )
     parser.add_argument( '-g', '--organization', dest='organization', help='role' )
     parser.add_argument( '-d', '--description', dest='description', help='description' )
+    parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
-        status = sql.addUser( args.by, args.username, args.password, args.role, args.status, args.first_name, args.last_name, args.email_address, args.organization, args.description )
+        status = sql.addUser( args.by, args.username, args.password, args.role, args.status, args.first_name, args.last_name, args.email_address, args.organization, args.description, args.enterprise )
     except:
         dict = { 'Error': 'Failed to add user' }
     else:

@@ -1,6 +1,7 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Get user attributes
@@ -24,7 +25,8 @@
     . ' -l ' . $sLastName
     . ' -e ' . $sEmailAddress
     . ' -g ' . $sOrganization
-    . ' -d ' . $sDescription;
+    . ' -d ' . $sDescription
+    . $g_sContext;
 
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
