@@ -1,6 +1,7 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Initialize session storage
@@ -9,7 +10,7 @@
   // Look up user in database
   $sUsername = $_POST['username'];
   $sPassword = quote( $_POST['password'] );
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword . $g_sContext;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );

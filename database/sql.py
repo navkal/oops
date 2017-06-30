@@ -7,14 +7,17 @@ import uuid
 import dbCommon
 
 
-conn = sqlite3.connect('../database/database.sqlite')
-cur = conn.cursor()
+conn = None
+cur = None
 
 
 def open_database( enterprise ):
-    conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
-    cur = conn.cursor()
-    return conn,cur
+    global conn
+    global cur
+    if conn == None:
+        conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
+    if cur == None:
+        cur = conn.cursor()
 
 
 def make_device_label( name, room_id ):
@@ -88,7 +91,7 @@ def make_cirobj_label( o ):
 
 class device:
     def __init__(self,id=None,row=None,enterprise='demo',facility='demo'):
-        conn,cur = open_database( enterprise )
+        open_database( enterprise )
 
         if not row:
             cur.execute(
@@ -157,7 +160,7 @@ class device:
 class cirobj:
 
     def __init__(self,id=None,path=None,getkids=True,enterprise='demo',facility='demo'):
-        conn,cur = open_database( enterprise )
+        open_database( enterprise )
 
         if id:
             cur.execute('SELECT * FROM CircuitObject WHERE id = ?', (id,))
@@ -264,7 +267,7 @@ class cirobj:
 
 class search:
     def __init__(self, searchText, searchTargets=None, enterprise='demo', facility='demo'):
-        conn,cur = open_database( enterprise )
+        open_database( enterprise )
 
         if searchTargets:
             aTargets = searchTargets.split( ',' )
@@ -370,7 +373,7 @@ class search:
 
 class sortableTable:
     def __init__(self, object_type, enterprise, facility):
-        conn,cur = open_database( enterprise )
+        open_database( enterprise )
 
         if object_type == 'activity':
             # Retrieve all objects of requested type
@@ -554,7 +557,7 @@ class sortableTableRow:
 class saveNotes:
     def __init__(self, args):
 
-        conn,cur = open_database( args.enterprise )
+        open_database( args.enterprise )
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
@@ -565,7 +568,8 @@ class saveNotes:
 
 
 class signInUser:
-    def __init__(self, username, password):
+    def __init__(self, username, password, enterprise):
+        open_database( enterprise )
 
         self.username = username
         self.role = ''
