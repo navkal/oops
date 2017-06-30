@@ -369,7 +369,8 @@ class search:
 
 
 class sortableTable:
-    def __init__(self, object_type):
+    def __init__(self, object_type, enterprise, facility):
+        conn,cur = open_database( enterprise )
 
         if object_type == 'activity':
             # Retrieve all objects of requested type
