@@ -12,12 +12,13 @@ cur = None
 
 
 def open_database( enterprise ):
-    global conn
-    global cur
-    if conn == None:
-        conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
-    if cur == None:
-        cur = conn.cursor()
+    if enterprise != None:
+        global conn
+        global cur
+        if conn == None:
+            conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
+        if cur == None:
+            cur = conn.cursor()
 
 
 def make_device_label( name, room_id ):
@@ -90,7 +91,7 @@ def make_cirobj_label( o ):
 
 
 class device:
-    def __init__(self,id=None,row=None,enterprise='demo',facility='demo'):
+    def __init__(self,id=None,row=None,enterprise=None,facility=None):
         open_database( enterprise )
 
         if not row:
@@ -159,7 +160,7 @@ class device:
 
 class cirobj:
 
-    def __init__(self,id=None,path=None,getkids=True,enterprise='demo',facility='demo'):
+    def __init__(self,id=None,path=None,getkids=True,enterprise=None,facility=None):
         open_database( enterprise )
 
         if id:
@@ -266,7 +267,7 @@ class cirobj:
 
 
 class search:
-    def __init__(self, searchText, searchTargets=None, enterprise='demo', facility='demo'):
+    def __init__(self, searchText, searchTargets=None, enterprise=None, facility=None):
         open_database( enterprise )
 
         if searchTargets:
@@ -568,7 +569,7 @@ class saveNotes:
 
 
 class signInUser:
-    def __init__(self, username, password, enterprise):
+    def __init__(self, username, password, enterprise=None):
         open_database( enterprise )
 
         self.username = username
@@ -598,7 +599,8 @@ class signInUser:
 
 
 class changePassword:
-    def __init__(self, by, username, oldPassword, password):
+    def __init__(self, by, username, oldPassword, password, enterprise):
+        open_database( enterprise )
 
         self.username = username
         self.signInId = ''
