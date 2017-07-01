@@ -204,7 +204,7 @@ class cirobj:
         self.label = make_cirobj_label( self )
 
         # Add image filename
-        filename = '../database/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = filename
         else:
@@ -220,8 +220,8 @@ class cirobj:
 
             for i in range( len( child_paths ) ):
                 child_path = child_paths[i][0]
-                child = cirobj( path=child_path, getkids=False )
-                filename = '../database/images/' + child_path + '.jpg'
+                child = cirobj( path=child_path, getkids=False, enterprise=enterprise )
+                filename = '../database/' + enterprise + '/images/' + child_path + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
                 else:
@@ -472,7 +472,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = sortableTableRow( obj )
+                row = sortableTableRow( obj, enterprise )
                 self.rows.append( row.__dict__ )
 
         print('found ' + str(len(self.rows)) + ' rows' )
@@ -505,7 +505,7 @@ class location:
 
 class sortableTableRow:
 
-    def __init__(self,row):
+    def __init__(self,row, enterprise ):
 
         self.id = row[0]
         self.room_id = row[1]
@@ -531,7 +531,7 @@ class sortableTableRow:
         self.loc_descr = room[4]
 
         # Add image filename
-        filename = '../database/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = self.path
         else:

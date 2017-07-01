@@ -4,8 +4,9 @@
 <html lang="en">
 
   <?php
+    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
     $sPath = $_REQUEST['path'];
-    $sImg = '../database/images/' . $sPath . '.jpg';
+    $sImg = '../database/' . $_SESSION['panelSpy']['context']['eLower'] . '/images/' . $sPath . '.jpg';
   ?>
 
   <!-- Head -->
