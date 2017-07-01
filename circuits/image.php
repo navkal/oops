@@ -6,7 +6,7 @@
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
     $sPath = $_REQUEST['path'];
-    $sImg = '../database/' . $_SESSION['panelSpy']['context']['eLower'] . '/images/' . $sPath . '.jpg';
+    $sImg = '../database/' . $_SESSION['panelSpy']['context']['eLower'] . '/' . $_SESSION['panelSpy']['context']['fLower'] . '/images/' . $sPath . '.jpg';
   ?>
 
   <!-- Head -->

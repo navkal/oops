@@ -204,7 +204,7 @@ class cirobj:
         self.label = make_cirobj_label( self )
 
         # Add image filename
-        filename = '../database/' + enterprise + '/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = filename
         else:
@@ -220,8 +220,8 @@ class cirobj:
 
             for i in range( len( child_paths ) ):
                 child_path = child_paths[i][0]
-                child = cirobj( path=child_path, getkids=False, enterprise=enterprise )
-                filename = '../database/' + enterprise + '/images/' + child_path + '.jpg'
+                child = cirobj( path=child_path, getkids=False, enterprise=enterprise, facility=facility )
+                filename = '../database/' + enterprise + '/' + facility + '/images/' + child_path + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
                 else:
@@ -531,7 +531,7 @@ class sortableTableRow:
         self.loc_descr = room[4]
 
         # Add image filename
-        filename = '../database/' + enterprise + '/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.path + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = self.path
         else:

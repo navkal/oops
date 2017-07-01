@@ -24,7 +24,7 @@
       </div>
       <div class="clearfix" >
         <?php
-          require_once $_SERVER["DOCUMENT_ROOT"]."/database/" . $_SESSION['panelSpy']['context']['eLower'] . "/topology.svg";
+          require_once $_SERVER["DOCUMENT_ROOT"]."/database/" . $_SESSION['panelSpy']['context']['eLower'] . '/' . $_SESSION['panelSpy']['context']['fLower'] . "/topology.svg";
         ?>
       </div>
     </div>
