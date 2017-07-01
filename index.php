@@ -8,7 +8,7 @@
   $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
 
   //
-  // Determine context.
+  // Determine context
   //
   // For now, require non-demo URL to indicate both Enterprise and Facility.
   // In future, if we allow the user to select Facility after signing in,
@@ -24,11 +24,6 @@
     $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
     $aUrlContext['eLower'] = strtolower( $aUrlContext['enterprise'] );
     $aUrlContext['fLower'] = strtolower( $aUrlContext['facility'] );
-  }
-
-  if ( isset( $_SESSION['panelSpy']['context']['enterprise'] ) )
-  {
-    $_SESSION['panelSpy']['context']['eLower'] = strtolower( $_SESSION['panelSpy']['context']['enterprise'] );
   }
 
   // Set context if it doesn't already exist or if it changed
