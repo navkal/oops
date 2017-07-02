@@ -472,7 +472,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = sortableTableRow( obj, enterprise )
+                row = sortableTableRow( obj, enterprise, facility )
                 self.rows.append( row.__dict__ )
 
         print('found ' + str(len(self.rows)) + ' rows' )
@@ -505,7 +505,7 @@ class location:
 
 class sortableTableRow:
 
-    def __init__(self,row, enterprise ):
+    def __init__(self,row, enterprise, facility ):
 
         self.id = row[0]
         self.room_id = row[1]
