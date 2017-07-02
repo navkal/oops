@@ -343,7 +343,7 @@ class search:
 
 
         # Search devices
-        if ( 'All' in aTargets ) or ( facility + 'Device' in aTargets ):
+        if ( 'All' in aTargets ) or ( 'Device' in aTargets ):
             cur.execute(
               '''SELECT path, description
                   FROM
