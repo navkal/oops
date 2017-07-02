@@ -245,7 +245,7 @@ class cirobj:
             self.devices = []
             for i in range( len (dev_ids) ):
                 dev_id = dev_ids[i][0]
-                dev = device( dev_id )
+                dev = device( id=dev_id, enterprise=enterprise, facility=facility )
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
