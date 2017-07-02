@@ -10,20 +10,20 @@
   //
   // Determine context
   //
-  // For now, require non-demo URL to indicate both Enterprise and Facility.
-  // In future, if we allow the user to select Facility after signing in,
-  // we can change this code to require only Enterprise.
-  //
   $bE = isset( $_REQUEST['e'] );
   $bF = isset( $_REQUEST['f'] );
   $bDemo = $bE && ( $_REQUEST['e'] == 'demo' );
   $aUrlContext = [];
-  if ( $bE && ( $bDemo || $bF ) )
+  if ( $bE )
   {
     $aUrlContext['enterprise'] = $_REQUEST['e'];
-    $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
     $aUrlContext['eLower'] = strtolower( $aUrlContext['enterprise'] );
-    $aUrlContext['fLower'] = strtolower( $aUrlContext['facility'] );
+
+    if ( $bF || $bDemo )
+    {
+      $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
+      $aUrlContext['fLower'] = strtolower( $aUrlContext['facility'] );
+    }
   }
 
   // Set context if it doesn't already exist or if it changed
@@ -55,63 +55,71 @@
   }
   else if ( isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
-    // Determine which menu the user will see
-    $sSuffix = '';
-    if ( $_SESSION['panelSpy']['context']['eLower'] == 'demo' )
+
+    if ( ! isset( $_SESSION['panelSpy']['context']['fLower'] ) )
     {
-      $sSuffix = 'Demo';
+      include $_SERVER["DOCUMENT_ROOT"] . "/session/facilityPrompt.php";
     }
     else
     {
-      switch( $_SESSION['panelSpy']['user']['role'] )
+      // Determine which menu the user will see
+      $sSuffix = '';
+      if ( $_SESSION['panelSpy']['context']['eLower'] == 'demo' )
       {
-        case 'Administrator':
-          $sSuffix = 'Admin';
-          break;
-        case 'Technician':
-          $sSuffix = 'Tech';
-          break;
-        case 'Visitor':
-        default:
-          $sSuffix = '';
-          break;
+        $sSuffix = 'Demo';
       }
-    }
-
-    global $g_sNavbarCsv;
-    $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
-
-    error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
-
-    // Show application
-    include "../common/main.php";
-?>
-    <script>
-      // Append signout button to navbar
-      $( document ).ready( makeSignOutButton );
-      function makeSignOutButton()
+      else
       {
-        var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
-        var sSignedInAs = "Signed in as '<?=$_SESSION['panelSpy']['context']['enterprise']?>: " + sUsername + "'";
-        $( '.navbar-brand' ).attr( 'title', sSignedInAs );
-<?php
-    if ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' )
-    {
+        switch( $_SESSION['panelSpy']['user']['role'] )
+        {
+          case 'Administrator':
+            $sSuffix = 'Admin';
+            break;
+          case 'Technician':
+            $sSuffix = 'Tech';
+            break;
+          case 'Visitor':
+          default:
+            $sSuffix = '';
+            break;
+        }
+      }
+
+      global $g_sNavbarCsv;
+      $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
+
+      error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
+
+      // Show application
+      include "../common/main.php";
 ?>
-        var sSignOutHtml = '';
-        sSignOutHtml += '<form class="navbar-form navbar-right">';
-        sSignOutHtml += '<button type="button" class="btn btn-default" title="' + sSignedInAs + '" onclick="signOut();" >Sign Out</button>';
-        sSignOutHtml += '</form>';
-        $( '#navbar-collapse' ).append( sSignOutHtml );
+      <script>
+        // Append signout button to navbar
+        $( document ).ready( makeSignOutButton );
+        function makeSignOutButton()
+        {
+          var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
+          var sSignedInAs = "Signed in as '<?=$_SESSION['panelSpy']['context']['enterprise']?>: " + sUsername + "'";
+          $( '.navbar-brand' ).attr( 'title', sSignedInAs );
+<?php
+      if ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' )
+      {
+?>
+          var sSignOutHtml = '';
+          sSignOutHtml += '<form class="navbar-form navbar-right">';
+          sSignOutHtml += '<button type="button" class="btn btn-default" title="' + sSignedInAs + '" onclick="signOut();" >Sign Out</button>';
+          sSignOutHtml += '</form>';
+          $( '#navbar-collapse' ).append( sSignOutHtml );
+<?php
+      }
+?>
+        }
+      </script>
+
+      <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
+      <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
 <?php
     }
-?>
-      }
-    </script>
-
-    <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
-    <link rel="stylesheet" href="util/navbar<?=$sSuffix?>.css?version=<?=$iVersion?>">
-<?php
   }
   else
   {
