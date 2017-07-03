@@ -99,7 +99,7 @@
         function makeSignOutButton()
         {
           var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
-          var sSignedInAs = "Signed in as '<?=$_SESSION['panelSpy']['context']['enterprise']?>: " + sUsername + "'";
+          var sSignedInAs = "Signed in as '<?=$_SESSION['panelSpy']['context']['enterprise']?>/<?=$_SESSION['panelSpy']['context']['facility']?>/" + sUsername + "'";
           $( '.navbar-brand' ).attr( 'title', sSignedInAs );
 <?php
       if ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' )
