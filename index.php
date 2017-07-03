@@ -55,8 +55,7 @@
   }
   else if ( isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
-
-    if ( ! isset( $_SESSION['panelSpy']['context']['fLower'] ) )
+    if ( ! isset( $_SESSION['panelSpy']['context']['fLower'] ) && ( $_SESSION['panelSpy']['user']['role'] != 'Administrator' ) )
     {
       include $_SERVER["DOCUMENT_ROOT"] . "/session/facilityPrompt.php";
     }
