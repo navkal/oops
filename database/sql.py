@@ -560,8 +560,12 @@ class saveNotes:
 
         open_database( args.enterprise )
 
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + args.targetTable, args.targetColumn, args.targetValue, args.notes ) )
+        # Map facility name to facility ID
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( args.facility,) )
+        facility_id = cur.fetchone()[0]
+
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + args.targetTable, args.targetColumn, args.targetValue, args.notes, facility_id ) )
 
         conn.commit()
 
