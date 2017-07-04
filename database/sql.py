@@ -397,7 +397,13 @@ class sortableTable:
                     cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE id = ?', (parent_id,))
                     target_value = cur.fetchone()[0] + " '" + name + "'"
 
-                row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'event_target': target_value, 'event_description': obj[7] }
+                facility_name = ''
+                facility_id = obj[8]
+                if facility_id:
+                    cur.execute('SELECT facility_name FROM Facility WHERE id = ?', (facility_id,))
+                    facility_name = cur.fetchone()[0]
+
+                row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'facility_name': facility_name, 'event_target': target_value, 'event_description': obj[7] }
                 self.rows.append( row )
 
         elif object_type == 'user':

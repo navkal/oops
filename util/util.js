@@ -48,6 +48,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  facility_name:
+  {
+    label: "Facility",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   event_target:
   {
     label: "Target",
