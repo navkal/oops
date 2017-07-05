@@ -80,6 +80,14 @@
 
       error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
 
+      // Format signed-in-as display string
+      $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['enterprise'];
+      if ( isset( $_SESSION['panelSpy']['context']['facility'] ) )
+      {
+        $sSignedInAs .= '/' . $_SESSION['panelSpy']['context']['facility'];
+      }
+      $sSignedInAs .= '/' . $_SESSION['panelSpy']['user']['username'];
+
       // Show application
       include "../common/main.php";
 ?>
@@ -88,16 +96,14 @@
         $( document ).ready( makeSignOutButton );
         function makeSignOutButton()
         {
-          var sUsername = JSON.parse( localStorage.getItem( 'signedInUser' ) )['username'];
-          var sSignedInAs = "Signed in as '<?=$_SESSION['panelSpy']['context']['enterprise']?>/<?=$_SESSION['panelSpy']['context']['facility']?>/" + sUsername + "'";
-          $( '.navbar-brand' ).attr( 'title', sSignedInAs );
+          $( '.navbar-brand' ).attr( 'title', '<?=$sSignedInAs?>' );
 <?php
       if ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' )
       {
 ?>
           var sSignOutHtml = '';
           sSignOutHtml += '<form class="navbar-form navbar-right">';
-          sSignOutHtml += '<button type="button" class="btn btn-default" title="' + sSignedInAs + '" onclick="signOut();" >Sign Out</button>';
+          sSignOutHtml += '<button type="button" class="btn btn-default" title="<?=$sSignedInAs?>" onclick="signOut();" >Sign Out</button>';
           sSignOutHtml += '</form>';
           $( '#navbar-collapse' ).append( sSignOutHtml );
 <?php
