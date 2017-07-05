@@ -45,7 +45,7 @@
   }
   else if ( isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
-    if ( ! isset( $_SESSION['panelSpy']['context']['fLower'] ) && ( $_SESSION['panelSpy']['user']['role'] != 'Administrator' ) )
+    if ( ! isset( $_SESSION['panelSpy']['context']['facility'] ) && ( $_SESSION['panelSpy']['user']['role'] != 'Administrator' ) )
     {
       include $_SERVER["DOCUMENT_ROOT"] . "/session/facilityPrompt.php";
     }
@@ -54,7 +54,7 @@
       if ( $_SESSION['panelSpy']['user']['role'] == 'Administrator' )
       {
         unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
-        unset( $_SESSION['panelSpy']['context']['fLower'] );
+        unset( $_SESSION['panelSpy']['context']['facility'] );
       }
 
       // Determine which menu the user will see
@@ -165,7 +165,7 @@
       else
       {
         // We have no context.  Load demo.
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'demo', 'fLower' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'demo', 'facility' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }

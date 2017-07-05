@@ -4,7 +4,7 @@
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   $_SESSION['panelSpy']['context']['facilityDescr'] = $_POST['facilityDescr'];
-  $_SESSION['panelSpy']['context']['fLower'] = $_POST['fLower'];
+  $_SESSION['panelSpy']['context']['facility'] = $_POST['facility'];
 
   echo json_encode( $_SESSION['panelSpy']['user'] );
 ?>
