@@ -52,6 +52,12 @@
     }
     else
     {
+      if ( $_SESSION['panelSpy']['user']['role'] == 'Administrator' )
+      {
+        unset( $_SESSION['panelSpy']['context']['facility'] );
+        unset( $_SESSION['panelSpy']['context']['fLower'] );
+      }
+
       // Determine which menu the user will see
       $sSuffix = '';
       if ( $_SESSION['panelSpy']['context']['eLower'] == 'demo' )
