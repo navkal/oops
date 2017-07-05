@@ -89,8 +89,8 @@
     // Post request to server
     var tPostData = new FormData();
 
-    tPostData.append( "fLower", $( '#facilityChooser' ).val() );
-    tPostData.append( "facility", $( '#facilityChooser option:selected' ).text() );
+    tPostData.append( 'fLower', $( '#facilityChooser' ).val() );
+    tPostData.append( 'facilityDescr', $( '#facilityChooser option:selected' ).text() );
 
     $.ajax(
       "session/setFacility.php",

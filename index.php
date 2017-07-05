@@ -53,7 +53,7 @@
     {
       if ( $_SESSION['panelSpy']['user']['role'] == 'Administrator' )
       {
-        unset( $_SESSION['panelSpy']['context']['facility'] );
+        unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
         unset( $_SESSION['panelSpy']['context']['fLower'] );
       }
 
@@ -87,9 +87,9 @@
 
       // Format signed-in-as display string
       $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['enterprise'];
-      if ( isset( $_SESSION['panelSpy']['context']['facility'] ) )
+      if ( isset( $_SESSION['panelSpy']['context']['facilityDescr'] ) )
       {
-        $sSignedInAs .= '/' . $_SESSION['panelSpy']['context']['facility'];
+        $sSignedInAs .= '/' . $_SESSION['panelSpy']['context']['facilityDescr'];
       }
       $sSignedInAs .= '/' . $_SESSION['panelSpy']['user']['username'];
 
@@ -165,7 +165,7 @@
       else
       {
         // We have no context.  Load demo.
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facility' => 'demo', 'fLower' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'demo', 'fLower' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
