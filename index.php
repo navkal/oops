@@ -10,20 +10,11 @@
   //
   // Determine context
   //
-  $bE = isset( $_REQUEST['e'] );
-  $bF = isset( $_REQUEST['f'] );
-  $bDemo = $bE && ( $_REQUEST['e'] == 'demo' );
   $aUrlContext = [];
-  if ( $bE )
+  if ( isset( $_REQUEST['e'] ) )
   {
     $aUrlContext['enterprise'] = $_REQUEST['e'];
     $aUrlContext['eLower'] = strtolower( $aUrlContext['enterprise'] );
-
-    if ( $bF || $bDemo )
-    {
-      $aUrlContext['facility'] = $bDemo ? 'demo' : $_REQUEST['f'];
-      $aUrlContext['fLower'] = strtolower( $aUrlContext['facility'] );
-    }
   }
 
   // Set context if it doesn't already exist or if it changed
