@@ -17,9 +17,10 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <form onsubmit="alert('form'); return false;" >
+            <select id="facilityChooser" class="form-control" >
+            </select>
+            <br/>
             <div style="text-align:center;" >
-              <select id="facilityChooser" class="form-control" >
-              </select>
               <button type="submit" onclick="alert('submit');" class="btn btn-primary" >Continue</button>
               <button type="button" onclick="alert('quit');" class="btn btn-default" >Quit</button>
             </div>
