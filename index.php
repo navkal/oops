@@ -13,18 +13,18 @@
   $aUrlContext = [];
   if ( isset( $_REQUEST['e'] ) )
   {
-    $aUrlContext['eLower'] = strtolower( $_REQUEST['e'] );
+    $aUrlContext['enterprise'] = strtolower( $_REQUEST['e'] );
   }
 
   // Set context if it doesn't already exist or if it changed
   error_log( '===> before unset decision, aUrlContext=' . print_r( $aUrlContext, true ) );
-  if ( isset( $aUrlContext['eLower'] ) && isset( $_SESSION['panelSpy']['context']['eLower'] ) && ( $aUrlContext['eLower'] != $_SESSION['panelSpy']['context']['eLower'] ) )
+  if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
   {
     $_SESSION['panelSpy']['user'] = [];
     unset( $_SESSION['panelSpy']['context'] );
 
     // If user has explicitly requested the demo, clear the context
-    if ( $aUrlContext['eLower'] == 'demo' )
+    if ( $aUrlContext['enterprise'] == 'demo' )
     {
       $aUrlContext = [];
     }
@@ -59,7 +59,7 @@
 
       // Determine which menu the user will see
       $sSuffix = '';
-      if ( $_SESSION['panelSpy']['context']['eLower'] == 'demo' )
+      if ( $_SESSION['panelSpy']['context']['enterprise'] == 'demo' )
       {
         $sSuffix = 'Demo';
       }
@@ -86,7 +86,7 @@
       error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
 
       // Format signed-in-as display string
-      $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['eLower'];
+      $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['enterprise'];
       if ( isset( $_SESSION['panelSpy']['context']['facility'] ) )
       {
         $sSignedInAs .= '/' . $_SESSION['panelSpy']['context']['facility'];
@@ -103,7 +103,7 @@
         {
           $( '.navbar-brand' ).attr( 'title', '<?=$sSignedInAs?>' );
 <?php
-      if ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' )
+      if ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' )
       {
 ?>
           var sSignOutHtml = '';
@@ -129,7 +129,7 @@
     @unlink( $sRecoverAdminTrigger );
 
     // Recover admin password if we found the trigger and we have an Enterprise
-    if ( $bRecoverAdminTrigger && isset( $aUrlContext['eLower'] ) )
+    if ( $bRecoverAdminTrigger && isset( $aUrlContext['enterprise'] ) )
     {
       $_SESSION['panelSpy']['recoverAdminContext'] = $aUrlContext;
 
@@ -157,7 +157,7 @@
         }
       }
 
-      if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['eLower'] != 'demo' ) )
+      if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) )
       {
         // We have a context.  Show sign-in prompt
         include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
@@ -165,7 +165,7 @@
       else
       {
         // We have no context.  Load demo.
-        $_SESSION['panelSpy']['context'] = [ 'eLower' => 'demo', 'facility' => 'demo', 'fLower' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facility' => 'demo', 'fLower' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
