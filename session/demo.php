@@ -15,7 +15,6 @@
 
       function signInDemo()
       {
-        console.log( 'about to sign in' );
         var sUsername = 'demo';
         var sPassword = 'demo';
 
