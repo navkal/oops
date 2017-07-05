@@ -13,8 +13,7 @@
   $aUrlContext = [];
   if ( isset( $_REQUEST['e'] ) )
   {
-    $aUrlContext['enterprise'] = $_REQUEST['e'];
-    $aUrlContext['eLower'] = strtolower( $aUrlContext['enterprise'] );
+    $aUrlContext['eLower'] = strtolower( $_REQUEST['e'] );
   }
 
   // Set context if it doesn't already exist or if it changed
@@ -87,7 +86,7 @@
       error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
 
       // Format signed-in-as display string
-      $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['enterprise'];
+      $sSignedInAs = 'Signed in as ' . $_SESSION['panelSpy']['context']['eLower'];
       if ( isset( $_SESSION['panelSpy']['context']['facility'] ) )
       {
         $sSignedInAs .= '/' . $_SESSION['panelSpy']['context']['facility'];
@@ -130,7 +129,7 @@
     @unlink( $sRecoverAdminTrigger );
 
     // Recover admin password if we found the trigger and we have an Enterprise
-    if ( $bRecoverAdminTrigger && isset( $aUrlContext['enterprise'] ) )
+    if ( $bRecoverAdminTrigger && isset( $aUrlContext['eLower'] ) )
     {
       $_SESSION['panelSpy']['recoverAdminContext'] = $aUrlContext;
 
@@ -166,7 +165,7 @@
       else
       {
         // We have no context.  Load demo.
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facility' => 'demo', 'eLower' => 'demo', 'fLower' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'eLower' => 'demo', 'facility' => 'demo', 'fLower' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
