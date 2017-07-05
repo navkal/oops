@@ -21,8 +21,8 @@
             </select>
             <br/>
             <div style="text-align:center;" >
-              <button type="submit" onclick="alert('submit');" class="btn btn-primary" >Continue</button>
-              <button type="button" onclick="alert('quit');" class="btn btn-default" >Quit</button>
+              <button type="submit" onclick="handleFacilityPick();" class="btn btn-primary" >Continue</button>
+              <button type="button" onclick="handleFacilityQuit();" class="btn btn-default" >Quit</button>
             </div>
           </form>
         </div>
@@ -82,6 +82,16 @@
 
     // Load options into chooser
     $( '#facilityChooser' ).html( sHtml );
+  }
+
+  function handleFacilityPick()
+  {
+    console.log( 'you picked ' + $( '#facilityChooser' ).val() );
+  }
+
+  function handleFacilityQuit()
+  {
+    signOut();
   }
 
 </script>
