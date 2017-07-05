@@ -19,8 +19,6 @@
           <form onsubmit="alert('form'); return false;" >
             <div style="text-align:center;" >
               <select id="facilityChooser" >
-                <option value="ahs">Andover High School</option>
-                <option value="bancroft">Bancroft Elementary School</option>
               </select>
               <button type="submit" onclick="alert('submit');" class="btn btn-primary" >Continue</button>
               <button type="button" onclick="alert('quit');" class="btn btn-default" >Quit</button>
@@ -61,7 +59,17 @@
 
   function handleFacilitiesRsp( tRsp, sStatus, tJqXhr )
   {
-    alert( JSON.stringify( tRsp ) );
+    var tFacilityMap = tRsp.facility_map;
+
+    var sHtml = '';
+
+    for ( var sName in tFacilityMap )
+    {
+      var sDescr = tFacilityMap[sName];
+      sHtml += '<option value="' + sName + '">' + sDescr + '</option>';
+    }
+
+    $( '#facilityChooser' ).html( sHtml );
   }
 
 </script>
