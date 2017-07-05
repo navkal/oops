@@ -16,7 +16,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <form onsubmit="alert('form'); return false;" >
+          <form onsubmit="return false;" >
             <select id="facilityChooser" class="form-control" >
             </select>
             <br/>
@@ -87,6 +87,22 @@
   function handleFacilityPick()
   {
     console.log( 'you picked ' + $( '#facilityChooser' ).val() );
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "facility", $( '#facilityChooser' ).val()  );
+
+    $.ajax(
+      "session/setFacility.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( showMain )
+    .fail( handleAjaxError );
   }
 
   function handleFacilityQuit()
