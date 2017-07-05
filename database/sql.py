@@ -708,3 +708,20 @@ class removeUser:
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeUser'], 'User', 'username', username, "Remove user '" + username + "'" ) )
         conn.commit()
+
+class userFacilities:
+    def __init__(self, username, enterprise):
+
+        open_database( enterprise )
+
+        cur.execute('SELECT facility_ids FROM User WHERE username = ?', (username,))
+        id_csv = cur.fetchone()[0]
+        id_list = id_csv.split( ',' )
+
+        facility_map = {}
+        for id in id_list:
+            cur.execute('SELECT facility_name, description FROM Facility WHERE id = ?', (id,))
+            row = cur.fetchone()
+            facility_map[ row[0] ] = row[1]
+
+        self.facility_map = facility_map

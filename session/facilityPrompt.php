@@ -18,7 +18,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <form onsubmit="alert('form'); return false;" >
             <div style="text-align:center;" >
-              <select>
+              <select id="facilityChooser" >
                 <option value="ahs">Andover High School</option>
                 <option value="bancroft">Bancroft Elementary School</option>
               </select>
@@ -36,3 +36,32 @@
 
   </body>
 </html>
+
+<script>
+  $( document ).ready( initFacilityPrompt );
+
+  function initFacilityPrompt()
+  {
+    // Post request to server
+    var tPostData = new FormData();
+
+    $.ajax(
+      "session/getFacilities.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( handleFacilitiesRsp )
+    .fail( handleAjaxError );
+  }
+
+  function handleFacilitiesRsp( tRsp, sStatus, tJqXhr )
+  {
+    alert( JSON.stringify( tRsp ) );
+  }
+
+</script>
