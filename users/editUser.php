@@ -97,6 +97,8 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
+    alert( JSON.stringify( tRow.facility_map ) );
+    
     // Load fields from the row
     g_sRole = tRow.role;
     g_sStatus = tRow.status;
