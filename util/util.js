@@ -48,7 +48,7 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  facility_name:
+  facility_fullname:
   {
     label: "Facility",
     showInPropertiesWindow: false,
