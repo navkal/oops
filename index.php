@@ -16,7 +16,7 @@
     $aUrlContext['enterprise'] = strtolower( $_REQUEST['e'] );
   }
 
-  // Set context if it doesn't already exist or if it changed
+  // If URL explicitly changes enterprise, clear user and context
   error_log( '===> before unset decision, aUrlContext=' . print_r( $aUrlContext, true ) );
   if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
   {
