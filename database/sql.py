@@ -726,7 +726,7 @@ class userFacilities:
         fullnames = []
         map = {}
         for id in id_list:
-            cur.execute('SELECT facility_name, description FROM Facility WHERE id = ?', (id,))
+            cur.execute('SELECT facility_name, facility_fullname FROM Facility WHERE id = ?', (id,))
             row = cur.fetchone()
             names.append( row[0] )
             fullnames.append( row[1] )
