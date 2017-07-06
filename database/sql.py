@@ -420,7 +420,7 @@ class sortableTable:
                     role = cur.fetchone()[0]
 
                     username = obj[1]
-                    
+
                     if role == 'Administrator':
                         remove_username = ''
                         facility_fullnames = ''
@@ -733,5 +733,5 @@ class userFacilities:
             map[ row[0] ] = row[1]
 
         self.facility_map = map
-        self.facility_names = names
-        self.facility_fullnames = fullnames
+        self.facility_names = sorted( names )
+        self.facility_fullnames = sorted( fullnames )
