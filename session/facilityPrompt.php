@@ -17,9 +17,11 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <form onsubmit="return false;" >
-            <select id="facilityChooser" class="form-control" autofocus >
-            </select>
-            <br/>
+            <div class="form-group">
+              <label for="facilityChooser">Facility</label>
+              <select id="facilityChooser" class="form-control" autofocus >
+              </select>
+            </div>
             <div style="text-align:center;" >
               <button type="submit" onclick="handleFacilityPick();" class="btn btn-primary" >Continue</button>
               <button type="button" onclick="handleFacilityQuit();" class="btn btn-default" >Quit</button>
