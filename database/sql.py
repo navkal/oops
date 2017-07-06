@@ -427,7 +427,7 @@ class sortableTable:
                     else:
                         remove_username = username
                         facilities = userFacilities( username, enterprise )
-                        facility_fullnames = ', '.join( facilities.facility_fullnames )
+                        facility_fullnames = '<br/>'.join( facilities.facility_fullnames )
 
                     if obj[6]:
                         sStatus = 'Enabled'
