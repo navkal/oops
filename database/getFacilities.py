@@ -15,11 +15,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.userFacilities( args.username, args.enterprise )
+        facilities = sql.userFacilities( args.username, args.enterprise )
     except:
         dict = { 'Error': 'Failed to get facilities for user ' + args.username + ', enterprise ' + args.enterprise }
     else:
-        dict = status.__dict__
+        dict = facilities.__dict__
 
     printctl.on()
     print( json.dumps( dict ) )

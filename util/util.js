@@ -90,6 +90,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  facility_fullnames:
+  {
+    label: "Facilities",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   status:
   {
     label: "Status",

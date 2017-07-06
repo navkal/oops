@@ -420,17 +420,21 @@ class sortableTable:
                     role = cur.fetchone()[0]
 
                     username = obj[1]
+                    
                     if role == 'Administrator':
                         remove_username = ''
+                        facility_fullnames = ''
                     else:
                         remove_username = username
+                        facilities = userFacilities( username, enterprise )
+                        facility_fullnames = ', '.join( facilities.facility_fullnames )
 
                     if obj[6]:
                         sStatus = 'Enabled'
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'username': username, 'role': role, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
+                    row = { 'username': username, 'role': role, 'facility_fullnames': facility_fullnames, 'update_user': username, 'remove_user': remove_username, 'user_status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
         elif object_type == 'device':
@@ -718,10 +722,16 @@ class userFacilities:
         id_csv = cur.fetchone()[0]
         id_list = id_csv.split( ',' )
 
-        facility_map = {}
+        names = []
+        fullnames = []
+        map = {}
         for id in id_list:
             cur.execute('SELECT facility_name, description FROM Facility WHERE id = ?', (id,))
             row = cur.fetchone()
-            facility_map[ row[0] ] = row[1]
+            names.append( row[0] )
+            fullnames.append( row[1] )
+            map[ row[0] ] = row[1]
 
-        self.facility_map = facility_map
+        self.facility_map = map
+        self.facility_names = names
+        self.facility_fullnames = fullnames
