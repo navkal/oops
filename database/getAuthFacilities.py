@@ -9,13 +9,13 @@ printctl.off()
 import sql
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser( description='get facilities' )
+    parser = argparse.ArgumentParser( description='get facilities authorized for specified user' )
     parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
-        facilities = sql.userFacilities( args.username, args.enterprise )
+        facilities = sql.authFacilities( args.username, args.enterprise )
     except:
         dict = { 'Error': 'Failed to get facilities for user ' + args.username + ', enterprise ' + args.enterprise }
     else:

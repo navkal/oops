@@ -42,7 +42,7 @@
     var tPostData = new FormData();
 
     $.ajax(
-      "session/getFacilities.php",
+      "session/getAuthFacilities.php",
       {
         type: 'POST',
         processData: false,

@@ -51,6 +51,9 @@
   var g_sOrganization = null;
   var g_sDescription = null;
 
+  var g_tAuthFacilities = null;
+  var g_tAllFacilities = null;
+
   var g_bUsernameDisabled = null;
   var g_sFocusId = null;
   var g_fnSubmitUserDone = null;
@@ -73,10 +76,13 @@
     g_sEmailAddress = '';
     g_sOrganization = '';
     g_sDescription = '';
+    g_tAuthFacilities = {};
 
     g_bUsernameDisabled = false;
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
+
+    getAllFacilities();
   }
 
   function initUpdate( sUsername )
@@ -97,8 +103,6 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
 
-    alert( JSON.stringify( tRow.facility_map ) );
-    
     // Load fields from the row
     g_sRole = tRow.role;
     g_sStatus = tRow.status;
@@ -107,9 +111,38 @@
     g_sEmailAddress = tRow.email_address;
     g_sOrganization = tRow.organization;
     g_sDescription = tRow.user_description;
+    g_tAuthFacilities = tRow.facility_map;
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
+
+    getAllFacilities();
+  }
+
+  function getAllFacilities()
+  {
+    // Post request to server
+    var tPostData = new FormData();
+
+    $.ajax(
+      "users/getAllFacilities.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( saveFacilities )
+    .fail( handleAjaxError );
+  }
+
+  function saveFacilities( tRsp, sStatus, tJqXhr )
+  {
+    g_tAllFacilities = tRsp.facility_map;
+    alert( 'AUTH=' + JSON.stringify( g_tAuthFacilities ) );
+    alert( 'ALL=' + JSON.stringify( g_tAllFacilities ) );
   }
 
   function onShow()

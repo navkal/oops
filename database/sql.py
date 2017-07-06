@@ -427,7 +427,7 @@ class sortableTable:
                         facility_map = {}
                     else:
                         remove_username = username
-                        facilities = userFacilities( username, enterprise )
+                        facilities = authFacilities( username, enterprise )
                         facility_fullnames = '<br/>'.join( facilities.facility_fullnames )
                         facility_map = facilities.facility_map
 
@@ -715,7 +715,7 @@ class removeUser:
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeUser'], 'User', 'username', username, "Remove user '" + username + "'" ) )
         conn.commit()
 
-class userFacilities:
+class authFacilities:
     def __init__(self, username, enterprise):
 
         open_database( enterprise )
@@ -737,3 +737,16 @@ class userFacilities:
         self.facility_map = map
         self.facility_names = sorted( names )
         self.facility_fullnames = sorted( fullnames )
+
+class allFacilities:
+    def __init__(self, enterprise):
+
+        open_database( enterprise )
+        cur.execute('SELECT facility_name, facility_fullname FROM Facility')
+        rows = cur.fetchall()
+
+        map = {}
+        for row in rows:
+            map[ row[0] ] = row[1]
+        
+        self.facility_map = map

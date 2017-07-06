@@ -5,7 +5,7 @@
   error_log( "====> post=" . print_r( $_POST, true ) );
 
   // Execute command
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/getFacilities.py 2>&1 -u " . $_SESSION['panelSpy']['user']['username'] . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/getAuthFacilities.py 2>&1 -u " . $_SESSION['panelSpy']['user']['username'] . $g_sContext;
   error_log( "===> command=" . $command );
   exec( $command, $output, $status );
   error_log( "===> output=" . print_r( $output, true ) );
