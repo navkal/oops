@@ -10,7 +10,7 @@
 
   <!-- Body -->
   <body>
-    <div class="container">
+    <div class="container" id="facilityContainer" style="display:none" >
       <div class="page-header">
         <img src="brand.ico" class="img-responsive" alt="Panel Spy" style="width:50%; max-width:250px; margin:auto">
       </div>
@@ -28,11 +28,6 @@
         </div>
       </div>
     </div>
-
-    <script>
-      document.title = "Choose Facility - Panel Spy";
-    </script>
-
   </body>
 </html>
 
@@ -60,28 +55,37 @@
 
   function handleFacilitiesRsp( tRsp, sStatus, tJqXhr )
   {
-    // Extract list of facilities accessible to signed-in user
-    var tFacilityMap = tRsp.facility_map;
-
-    // Format HTML options and save in a map
-    var tHtmlMap = {};
-    for ( var sName in tFacilityMap )
+    if ( tRsp.facility_map )
     {
-      var sDescr = tFacilityMap[sName];
-      tHtmlMap[sDescr] = '<option value="' + sName + '">' + sDescr + '</option>';
-    }
+      // Extract list of facilities accessible to signed-in user
+      var tFacilityMap = tRsp.facility_map;
 
-    // Sort and concatenate options
-    var aKeys = Object.keys( tHtmlMap ).sort();
-    var sHtml = '';
-    for ( var iKey in aKeys )
+      // Format HTML options and save in a map
+      var tHtmlMap = {};
+      for ( var sName in tFacilityMap )
+      {
+        var sDescr = tFacilityMap[sName];
+        tHtmlMap[sDescr] = '<option value="' + sName + '">' + sDescr + '</option>';
+      }
+
+      // Sort and concatenate options
+      var aKeys = Object.keys( tHtmlMap ).sort();
+      var sHtml = '';
+      for ( var iKey in aKeys )
+      {
+        var sKey = aKeys[iKey];
+        sHtml += tHtmlMap[sKey];
+      }
+
+      // Load options into chooser and show page
+      $( '#facilityChooser' ).html( sHtml );
+      $( '#facilityContainer' ).css( 'display', 'block' );
+      document.title = "Choose Facility - Panel Spy";
+    }
+    else
     {
-      var sKey = aKeys[iKey];
-      sHtml += tHtmlMap[sKey];
+      showMain();
     }
-
-    // Load options into chooser
-    $( '#facilityChooser' ).html( sHtml );
   }
 
   function handleFacilityPick()

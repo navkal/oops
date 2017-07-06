@@ -12,6 +12,22 @@
 
   // Extract results from database output
   $sFacilities = $output[ count( $output ) - 1 ];
+  $tFacilities = json_decode( $sFacilities );
+  $aMap = (array) $tFacilities->facility_map;
 
-  echo $sFacilities;
+  if ( count( $aMap ) == 1 )
+  {
+    $sKey = array_keys( $aMap )[0];
+    $sVal = $aMap[$sKey];
+
+    $_SESSION['panelSpy']['context']['facility'] = $sKey;
+    $_SESSION['panelSpy']['context']['facilityDescr'] = $sVal;
+    $sResult = json_encode( '' );
+  }
+  else
+  {
+    $sResult = $sFacilities;
+  }
+
+  echo $sResult;
 ?>
