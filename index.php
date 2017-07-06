@@ -155,7 +155,7 @@
 
       if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) )
       {
-        // Show sign-in prompt
+        // Clear facility and show sign-in prompt
         unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
         unset( $_SESSION['panelSpy']['context']['facility'] );
         include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
