@@ -51,12 +51,6 @@
     }
     else
     {
-      if ( $_SESSION['panelSpy']['user']['role'] == 'Administrator' )
-      {
-        unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
-        unset( $_SESSION['panelSpy']['context']['facility'] );
-      }
-
       // Determine which menu the user will see
       $sSuffix = '';
       if ( $_SESSION['panelSpy']['context']['enterprise'] == 'demo' )
@@ -161,13 +155,15 @@
 
       if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) )
       {
-        // We have a context.  Show sign-in prompt
+        // Show sign-in prompt
+        unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
+        unset( $_SESSION['panelSpy']['context']['facility'] );
         include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
       }
       else
       {
-        // We have no context.  Load demo.
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'demo', 'facility' => 'demo' ];
+        // Load demo
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'Panel Spy Demo', 'facility' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
