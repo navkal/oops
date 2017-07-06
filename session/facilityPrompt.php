@@ -96,7 +96,7 @@
     var tPostData = new FormData();
 
     tPostData.append( 'facility', $( '#facilityChooser' ).val() );
-    tPostData.append( 'facilityDescr', $( '#facilityChooser option:selected' ).text() );
+    tPostData.append( 'facilityFullname', $( '#facilityChooser option:selected' ).text() );
 
     $.ajax(
       "session/setFacility.php",

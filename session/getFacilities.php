@@ -21,7 +21,7 @@
     $sVal = $aMap[$sKey];
 
     $_SESSION['panelSpy']['context']['facility'] = $sKey;
-    $_SESSION['panelSpy']['context']['facilityDescr'] = $sVal;
+    $_SESSION['panelSpy']['context']['facilityFullname'] = $sVal;
     $sResult = json_encode( '' );
   }
   else

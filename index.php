@@ -81,9 +81,9 @@
 
       // Format informational tooltips
       $sBrandTitle =
-        isset( $_SESSION['panelSpy']['context']['facilityDescr'] )
+        isset( $_SESSION['panelSpy']['context']['facilityFullname'] )
         ?
-          ( 'Facility: ' . $_SESSION['panelSpy']['context']['facilityDescr'] )
+          ( 'Facility: ' . $_SESSION['panelSpy']['context']['facilityFullname'] )
         :
           ( 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterprise'] );
 
@@ -156,14 +156,14 @@
       if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) )
       {
         // Clear facility and show sign-in prompt
-        unset( $_SESSION['panelSpy']['context']['facilityDescr'] );
+        unset( $_SESSION['panelSpy']['context']['facilityFullname'] );
         unset( $_SESSION['panelSpy']['context']['facility'] );
         include $_SERVER["DOCUMENT_ROOT"] . "/session/signInPrompt.php";
       }
       else
       {
         // Load demo
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityDescr' => 'Panel Spy Demo', 'facility' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityFullname' => 'Panel Spy Demo', 'facility' => 'demo' ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
