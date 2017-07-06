@@ -436,7 +436,7 @@ class sortableTable:
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'username': username, 'role': role, 'facility_fullnames': facility_fullnames, 'facility_map': facility_map, 'update_user': username, 'remove_user': remove_username, 'user_status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
+                    row = { 'username': username, 'role': role, 'facility_fullnames': facility_fullnames, 'facility_map': facility_map, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
         elif object_type == 'device':
