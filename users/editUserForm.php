@@ -51,23 +51,6 @@
           <label for="auth_facilities" ></label>
           <div style="padding: 6px 22px;" >
             <ul name="auth_facilities" id="auth_facilities" class="fakeFormControl list-unstyled checkboxList" >
-
-
-
-      <li>
-        <label class="checkbox checkbox-inline" title="one" >
-          <input type="checkbox" checked="checked" name="one" id="one" >
-          Moo
-        </label>
-      </li>
-
-
-
-
-
-
-
-
             </ul>
           </div>
         </div>

@@ -75,7 +75,7 @@
     g_sEmailAddress = '';
     g_sOrganization = '';
     g_sDescription = '';
-    g_tAuthFacilities = {};
+    g_tAuthFacilities = null;
 
     $( '.adminHide' ).show();
 
@@ -148,17 +148,20 @@
     var tMap = tRsp.fullname_map;
 
     var sHtml = '';
+
     for ( var iFullname in aFullnames )
     {
       var sFullname = aFullnames[iFullname];
       var sName = tMap[sFullname];
-      console.log( sFullname );
+      var sId = 'facility_' + sName;
+      var sChecked = ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ? 'checked ' : ''
+
       sHtml +=
         '<li>'
         +
-          '<label class="checkbox checkbox-inline" title="' + sName + '" >'
+          '<label class="checkbox checkbox-inline" >'
         +
-            '<input type="checkbox" checked="checked" name="' + sName + '" id="' + sName + '" >'
+            '<input type="checkbox" ' + sChecked + 'name="' + sId + '" id="' + sId + '" >'
         +
               sFullname
         +
@@ -166,29 +169,8 @@
         +
         '</li>';
     }
+
     $("#auth_facilities").html( sHtml );
-
-
-    alert( 'AUTH=' + JSON.stringify( g_tAuthFacilities ) );
-
-    var sName = 'sName';
-    var sId = 'sId';
-    var sLabel = "another checkbox";
-
-    var sChooser =
-      '<li>'
-      +
-        '<label class="checkbox checkbox-inline" title="' + sName + '" >'
-      +
-          '<input type="checkbox" checked="checked" name="' + sId + '" id="' + sId + '" >'
-      +
-            sLabel
-      +
-        '</label>'
-      +
-      '</li>';
-
-    $("#auth_facilities").append( sChooser );
   }
 
   function onShow()
