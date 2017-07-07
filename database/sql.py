@@ -90,6 +90,21 @@ def make_cirobj_label( o ):
     return label
 
 
+def facility_names_to_ids( name_csv ):
+
+    name_list = name_csv.split( ',' )
+
+    facility_ids = []
+    for i in range( len ( name_list ) ):
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( name_list[i],) )
+        id = cur.fetchone()[0]
+        facility_ids.append( str( id ) )
+
+    facility_id_csv = ','.join( facility_ids )
+
+    return facility_id_csv
+
+    
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None):
         open_database( enterprise )
@@ -651,7 +666,7 @@ class changePassword:
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
-        facility_id_csv = ''
+        facility_id_csv = facility_names_to_ids( auth_facilities )
         self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, facility_id_csv )
         self.username = username
 
