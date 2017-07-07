@@ -92,19 +92,25 @@ def make_cirobj_label( o ):
 
 def facility_names_to_ids( name_csv ):
 
-    name_list = name_csv.split( ',' )
+    if name_csv != '':
 
-    facility_ids = []
-    for i in range( len ( name_list ) ):
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( name_list[i],) )
-        id = cur.fetchone()[0]
-        facility_ids.append( str( id ) )
+        name_list = name_csv.split( ',' )
 
-    facility_id_csv = ','.join( facility_ids )
+        facility_ids = []
+        for i in range( len ( name_list ) ):
+            cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( name_list[i],) )
+            id = cur.fetchone()[0]
+            facility_ids.append( str( id ) )
+
+        facility_id_csv = ','.join( facility_ids )
+
+    else:
+
+        facility_id_csv = ''
 
     return facility_id_csv
 
-    
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None):
         open_database( enterprise )
