@@ -1,5 +1,14 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
+<style>
+  .checkboxList
+  {
+    -webkit-column-width: 270px; /* Chrome, Safari, Opera */
+    -moz-column-width: 270px; /* Firefox */
+    column-width: 270px;
+  }
+</style>
+
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <form id="editUserForm" class="form-horizontal" onsubmit="onSubmitUser(event); return false;" >
@@ -35,6 +44,14 @@
             <option value="Technician">Technician</option>
             <option value="Administrator">Administrator</option>
           </select>
+        </div>
+      </div>
+      <div class="settingsHide adminHide" >
+        <div class="form-group">
+          <label for="facility_fullnames" ></label>
+          <div>
+            <ul name="facility_fullnames" id="facility_fullnames" class="list-unstyled checkboxList" ></ul>
+          </div>
         </div>
       </div>
       <div class="settingsHide" >

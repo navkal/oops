@@ -3,7 +3,7 @@
 // Initialize field labels (etc.)
 function formatLabels( nLabelColumnWidth )
 {
-  var aFields = $( 'input,select,textarea', '#editUserForm' );
+  var aFields = $( '.form-control,.list-unstyled', '#editUserForm' );
 
   for ( var iField = 0; iField < aFields.length; iField ++ )
   {
@@ -54,14 +54,14 @@ function formatLabels( nLabelColumnWidth )
 
   // Turn off autocomplete
   $( 'input', '#editUserForm' ).attr( 'autocomplete', 'off' );
-  
+
   // Customize responsive layout
   $( '#editUserForm label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
-  $( 'input,select,textarea', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+  $( '.form-control', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-// Detect change of input controls
-$( 'input,select,textarea' ).on( 'change', onChangeControl );
+// Detect change of form controls
+$( '.form-control' ).on( 'change', onChangeControl );
 function onChangeControl()
 {
   g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );

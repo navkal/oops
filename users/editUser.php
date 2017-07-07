@@ -78,6 +78,8 @@
     g_sDescription = '';
     g_tAuthFacilities = {};
 
+    $( '.adminHide' ).show();
+
     g_bUsernameDisabled = false;
     g_bDoValidation = true;
     g_fnSubmitUserDone = addDone;
@@ -112,6 +114,15 @@
     g_sOrganization = tRow.organization;
     g_sDescription = tRow.user_description;
     g_tAuthFacilities = tRow.facility_map;
+
+    if ( g_sRole == 'Administrator' )
+    {
+      $( '.adminHide' ).hide();
+    }
+    else
+    {
+      $( '.adminHide' ).show();
+    }
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
