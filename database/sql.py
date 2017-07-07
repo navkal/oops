@@ -649,7 +649,7 @@ class changePassword:
 
 
 class addUser:
-    def __init__(self, by, username, password, role, status, first_name, last_name, email_address, organization, description, enterprise):
+    def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
         facility_id_csv = ''
         self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, facility_id_csv )
@@ -657,7 +657,7 @@ class addUser:
 
 
 class updateUser:
-    def __init__(self, by, username, oldPassword, password, role, status, first_name, last_name, email_address, organization, description, enterprise):
+    def __init__(self, by, username, oldPassword, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
 
         self.messages = []

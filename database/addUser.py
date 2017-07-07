@@ -13,6 +13,7 @@ if __name__ == '__main__':
     parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
     parser.add_argument( '-u', '--username', dest='username', help='username' )
     parser.add_argument( '-p', '--password', dest='password', help='password' )
+    parser.add_argument( '-a', '--auth_facilities', dest='auth_facilities', help='authorized facilities' )
     parser.add_argument( '-r', '--role', dest='role', help='role' )
     parser.add_argument( '-s', '--status', dest='status', help='role' )
     parser.add_argument( '-f', '--first_name', dest='first_name', help='role' )
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.addUser( args.by, args.username, args.password, args.role, args.status, args.first_name, args.last_name, args.email_address, args.organization, args.description, args.enterprise )
+        status = sql.addUser( args.by, args.username, args.password, args.role, args.auth_facilities, args.status, args.first_name, args.last_name, args.email_address, args.organization, args.description, args.enterprise )
     except:
         dict = { 'Error': 'Failed to add user' }
     else:

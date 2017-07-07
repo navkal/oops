@@ -9,7 +9,7 @@
   $sOldPassword = $_POST['oldPassword'];
   $sPassword = $_POST['password'];
   $sRole = $_POST['role'];
-  $sAuthFacilities = $_POST['auth_facilities'];
+  $sAuthFacilities = quote( $_POST['auth_facilities'] );
   $sStatus = $_POST['status'];
   $sFirstName = quote( $_POST['first_name'] );
   $sLastName = quote( $_POST['last_name'] );
@@ -17,14 +17,13 @@
   $sOrganization = quote( $_POST['organization'] );
   $sDescription = quote( $_POST['user_description'] );
 
-  error_log( '=====> auth facilities=<' . $sAuthFacilities . '>' );
-
   // Update user
   $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -u ' . $sUsername
     . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . quote( $sOldPassword ) ) )
     . ( ( $sPassword == '' ) ? '' : ( ' -p ' . quote( $sPassword ) ) )
     . ' -r ' . $sRole
+    . ' -a ' . $sAuthFacilities
     . ' -s ' . $sStatus
     . ' -f ' . $sFirstName
     . ' -l ' . $sLastName

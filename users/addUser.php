@@ -8,6 +8,7 @@
   $sUsername = $_POST['username'];
   $sPassword = quote( $_POST['password'] );
   $sRole = $_POST['role'];
+  $sAuthFacilities = quote( $_POST['auth_facilities'] );
   $sStatus = $_POST['status'];
   $sFirstName = quote( $_POST['first_name'] );
   $sLastName = quote( $_POST['last_name'] );
@@ -20,6 +21,7 @@
     . ' -u ' . $sUsername
     . ' -p ' . $sPassword
     . ' -r ' . $sRole
+    . ' -a ' . $sAuthFacilities
     . ' -s ' . $sStatus
     . ' -f ' . $sFirstName
     . ' -l ' . $sLastName
