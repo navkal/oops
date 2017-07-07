@@ -115,6 +115,9 @@
     g_sDescription = tRow.user_description;
     g_tAuthFacilities = tRow.facility_map;
 
+    g_bDoValidation = false;
+    g_fnSubmitUserDone = updateDone;
+
     if ( g_sRole == 'Administrator' )
     {
       $( '.adminHide' ).hide();
@@ -122,12 +125,8 @@
     else
     {
       $( '.adminHide' ).show();
+      getAllFacilities();
     }
-
-    g_bDoValidation = false;
-    g_fnSubmitUserDone = updateDone;
-
-    getAllFacilities();
   }
 
   function getAllFacilities()
