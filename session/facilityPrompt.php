@@ -57,26 +57,17 @@
 
   function handleFacilitiesRsp( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp.facility_map )
+    if ( tRsp.sorted_fullnames && tRsp.fullname_map )
     {
-      // Extract list of facilities accessible to signed-in user
-      var tFacilityMap = tRsp.facility_map;
+      var aFullnames = tRsp.sorted_fullnames;
+      var tMap = tRsp.fullname_map;
 
-      // Format HTML options and save in a map
-      var tHtmlMap = {};
-      for ( var sName in tFacilityMap )
-      {
-        var sDescr = tFacilityMap[sName];
-        tHtmlMap[sDescr] = '<option value="' + sName + '">' + sDescr + '</option>';
-      }
-
-      // Sort and concatenate options
-      var aKeys = Object.keys( tHtmlMap ).sort();
       var sHtml = '';
-      for ( var iKey in aKeys )
+      for ( var iFullname in aFullnames )
       {
-        var sKey = aKeys[iKey];
-        sHtml += tHtmlMap[sKey];
+        var sFullname = aFullnames[iFullname];
+        var sName = tMap[sFullname];
+        sHtml += '<option value="' + sName + '">' + sFullname + '</option>';
       }
 
       // Load options into chooser and show page

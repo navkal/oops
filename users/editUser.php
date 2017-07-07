@@ -52,7 +52,6 @@
   var g_sDescription = null;
 
   var g_tAuthFacilities = null;
-  var g_tAllFacilities = null;
 
   var g_bUsernameDisabled = null;
   var g_sFocusId = null;
@@ -113,7 +112,7 @@
     g_sEmailAddress = tRow.email_address;
     g_sOrganization = tRow.organization;
     g_sDescription = tRow.user_description;
-    g_tAuthFacilities = tRow.facility_map;
+    g_tAuthFacilities = tRow.facilities_maps;
 
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
@@ -139,15 +138,58 @@
         data: tPostData
       }
     )
-    .done( saveFacilities )
+    .done( makeFacilityCheckboxes )
     .fail( handleAjaxError );
   }
 
-  function saveFacilities( tRsp, sStatus, tJqXhr )
+  function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
   {
-    g_tAllFacilities = tRsp.facility_map;
+    var aFullnames = tRsp.sorted_fullnames;
+    var tMap = tRsp.fullname_map;
+
+    var sHtml = '';
+    for ( var iFullname in aFullnames )
+    {
+      var sFullname = aFullnames[iFullname];
+      var sName = tMap[sFullname];
+      sHtml += '<option value="' + sName + '">' + sFullname + '</option>';
+      console.log( sFullname );
+      sHtml +=
+        '<li>'
+        +
+          '<label class="checkbox checkbox-inline" title="' + sName + '" >'
+        +
+            '<input type="checkbox" checked="checked" name="' + sName + '" id="' + sName + '" >'
+        +
+              sFullname
+        +
+          '</label>'
+        +
+        '</li>';
+    }
+    $("#auth_facilities").html( sHtml );
+
+
     alert( 'AUTH=' + JSON.stringify( g_tAuthFacilities ) );
-    alert( 'ALL=' + JSON.stringify( g_tAllFacilities ) );
+
+    var sName = 'sName';
+    var sId = 'sId';
+    var sLabel = "another checkbox";
+
+    var sChooser =
+      '<li>'
+      +
+        '<label class="checkbox checkbox-inline" title="' + sName + '" >'
+      +
+          '<input type="checkbox" checked="checked" name="' + sId + '" id="' + sId + '" >'
+      +
+            sLabel
+      +
+        '</label>'
+      +
+      '</li>';
+
+    $("#auth_facilities").append( sChooser );
   }
 
   function onShow()

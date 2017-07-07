@@ -90,7 +90,7 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  facility_fullnames:
+  auth_facilities:
   {
     label: "Facilities",
     showInPropertiesWindow: false,

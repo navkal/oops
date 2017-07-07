@@ -423,20 +423,20 @@ class sortableTable:
 
                     if role == 'Administrator':
                         remove_username = ''
-                        facility_fullnames = ''
-                        facility_map = {}
+                        auth_facilities = ''
+                        facilities_maps = {}
                     else:
                         remove_username = username
                         facilities = authFacilities( username, enterprise )
-                        facility_fullnames = '<br/>'.join( facilities.facility_fullnames )
-                        facility_map = facilities.facility_map
+                        auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
+                        facilities_maps = facilities.__dict__
 
                     if obj[6]:
                         sStatus = 'Enabled'
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'username': username, 'role': role, 'facility_fullnames': facility_fullnames, 'facility_map': facility_map, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
+                    row = { 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
         elif object_type == 'device':
@@ -726,17 +726,20 @@ class authFacilities:
 
         names = []
         fullnames = []
-        map = {}
+        name_map = {}
+        fullname_map = {}
         for id in id_list:
             cur.execute('SELECT facility_name, facility_fullname FROM Facility WHERE id = ?', (id,))
             row = cur.fetchone()
             names.append( row[0] )
             fullnames.append( row[1] )
-            map[ row[0] ] = row[1]
+            name_map[ row[0] ] = row[1]
+            fullname_map[ row[1] ] = row[0]
 
-        self.facility_map = map
-        self.facility_names = sorted( names )
-        self.facility_fullnames = sorted( fullnames )
+        self.name_map = name_map
+        self.fullname_map = fullname_map
+        self.sorted_names = sorted( names )
+        self.sorted_fullnames = sorted( fullnames )
 
 class allFacilities:
     def __init__(self, enterprise):
@@ -745,8 +748,18 @@ class allFacilities:
         cur.execute('SELECT facility_name, facility_fullname FROM Facility')
         rows = cur.fetchall()
 
-        map = {}
+
+        names = []
+        fullnames = []
+        name_map = {}
+        fullname_map = {}
         for row in rows:
-            map[ row[0] ] = row[1]
-        
-        self.facility_map = map
+            names.append( row[0] )
+            fullnames.append( row[1] )
+            name_map[ row[0] ] = row[1]
+            fullname_map[ row[1] ] = row[0]
+
+        self.name_map = name_map
+        self.fullname_map = fullname_map
+        self.sorted_names = sorted( names )
+        self.sorted_fullnames = sorted( fullnames )

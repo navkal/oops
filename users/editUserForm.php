@@ -48,15 +48,15 @@
       </div>
       <div class="settingsHide adminHide" >
         <div class="form-group">
-          <label for="facility_fullnames" ></label>
+          <label for="auth_facilities" ></label>
           <div style="padding: 6px 22px;" >
-            <ul name="facility_fullnames" id="facility_fullnames" class="fakeFormControl list-unstyled checkboxList" >
+            <ul name="auth_facilities" id="auth_facilities" class="fakeFormControl list-unstyled checkboxList" >
 
 
 
       <li>
         <label class="checkbox checkbox-inline" title="one" >
-          <input type="checkbox" checked="checked" name="facility_fullnames" id="one" >
+          <input type="checkbox" checked="checked" name="one" id="one" >
           Moo
         </label>
       </li>

@@ -13,7 +13,7 @@
   // Extract results from database output
   $sFacilities = $output[ count( $output ) - 1 ];
   $tFacilities = json_decode( $sFacilities );
-  $aMap = (array) $tFacilities->facility_map;
+  $aMap = (array) $tFacilities->name_map;
 
   if ( count( $aMap ) == 1 )
   {
