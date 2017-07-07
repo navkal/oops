@@ -171,6 +171,9 @@
     }
 
     $("#auth_facilities").html( sHtml );
+    
+    // Reset the change handler
+    resetChangeHandler()
   }
 
   function onShow()

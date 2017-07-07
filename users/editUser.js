@@ -60,8 +60,15 @@ function formatLabels( nLabelColumnWidth )
   $( '.form-control,.fakeFormControl', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-// Detect change of form controls
-$( '.form-control' ).on( 'change', onChangeControl );
+// Detect change of input controls
+resetChangeHandler();
+
+function resetChangeHandler()
+{
+  $( 'input,select,textarea' ).off( 'change' );
+  $( 'input,select,textarea' ).on( 'change', onChangeControl );
+}
+
 function onChangeControl()
 {
   g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );
