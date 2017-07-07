@@ -152,7 +152,6 @@
     {
       var sFullname = aFullnames[iFullname];
       var sName = tMap[sFullname];
-      sHtml += '<option value="' + sName + '">' + sFullname + '</option>';
       console.log( sFullname );
       sHtml +=
         '<li>'
