@@ -56,8 +56,8 @@ function formatLabels( nLabelColumnWidth )
   $( 'input', '#editUserForm' ).attr( 'autocomplete', 'off' );
 
   // Customize responsive layout
-  $( '#editUserForm label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
-  $( '.form-control', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+  $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
+  $( '.form-control,.fakeFormControl', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
 // Detect change of form controls

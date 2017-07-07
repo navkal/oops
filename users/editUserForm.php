@@ -50,7 +50,25 @@
         <div class="form-group">
           <label for="facility_fullnames" ></label>
           <div>
-            <ul name="facility_fullnames" id="facility_fullnames" class="list-unstyled checkboxList" ></ul>
+            <ul name="facility_fullnames" id="facility_fullnames" class="fakeFormControl list-unstyled checkboxList" >
+
+
+
+      <li>
+        <label class="checkbox checkbox-inline" title="one" >
+          <input type="checkbox" checked="checked" name="facility_fullnames" id="one" >
+          The Label
+        </label>
+      </li>
+
+
+
+
+
+
+
+
+            </ul>
           </div>
         </div>
       </div>
