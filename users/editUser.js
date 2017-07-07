@@ -118,8 +118,7 @@ function submitUser()
   for ( var iChk = 0; iChk < aCheckboxes.length; iChk ++ )
   {
     var tChk = $( aCheckboxes[iChk] );
-    var sName = tChk.attr( 'facility_name' );
-    aAuth.push( sName );
+    aAuth.push( tChk.attr( 'facility_name' ) );
   }
   tPostData.append( "auth_facilities", aAuth.join() );
 
