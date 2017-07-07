@@ -51,11 +51,11 @@
         data: tPostData
       }
     )
-    .done( handleFacilitiesRsp )
+    .done( makeFacilityChooser )
     .fail( handleAjaxError );
   }
 
-  function handleFacilitiesRsp( tRsp, sStatus, tJqXhr )
+  function makeFacilityChooser( tRsp, sStatus, tJqXhr )
   {
     if ( tRsp.sorted_fullnames && tRsp.fullname_map )
     {
