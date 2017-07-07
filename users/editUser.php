@@ -118,13 +118,8 @@
     g_bDoValidation = false;
     g_fnSubmitUserDone = updateDone;
 
-    if ( g_sRole == 'Administrator' )
+    if ( g_sRole != 'Administrator' )
     {
-      $( '.adminHide' ).hide();
-    }
-    else
-    {
-      $( '.adminHide' ).show();
       getAllFacilities();
     }
   }
@@ -173,13 +168,21 @@
 
     if ( g_sRole == 'Administrator' )
     {
+      // Show role, but user can't edit it
       $( '#role,#status' ).prop( 'disabled', true );
       $( '#role option[value=Administrator]' ).show();
+
+      // Hide fields that don't apply to admin
+      $( '.adminHide' ).hide();
     }
     else
     {
+      // Allow editing of role, but user can't choose 'Administrator'
       $( '#role,#status' ).prop( 'disabled', false );
       $( '#role option[value=Administrator]' ).hide();
+
+      // Show fields that don't apply to admin
+      $( '.adminHide' ).show();
     }
 
     $( '#editUserLabel' ).text( g_sSubmitLabel );
