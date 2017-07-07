@@ -100,7 +100,6 @@ function validateUser()
 
 function submitUser()
 {
-  // Post request to server
   var tPostData = new FormData();
   tPostData.append( "username", $( '#username' ).val() );
   tPostData.append( "oldPassword", $( '#oldPassword' ).val() );
@@ -113,6 +112,19 @@ function submitUser()
   tPostData.append( "organization", $( '#organization' ).val() );
   tPostData.append( "user_description", $( '#user_description' ).val() );
 
+  // Retrieve list of authorized facilities from checkboxes
+  var aCheckboxes = $( ':checkbox:checked', '#auth_facilities' );
+  var aAuth = [];
+  for ( var iChk = 0; iChk < aCheckboxes.length; iChk ++ )
+  {
+    var tChk = $( aCheckboxes[iChk] );
+    var sName = tChk.attr( 'facility_name' );
+    aAuth.push( sName );
+  }
+  tPostData.append( "auth_facilities", aAuth.join() );
+
+
+  // Post request to server
   $.ajax(
     "users/" + g_sAction + "User.php",
     {

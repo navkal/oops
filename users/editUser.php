@@ -153,7 +153,6 @@
     {
       var sFullname = aFullnames[iFullname];
       var sName = tMap[sFullname];
-      var sId = 'facility_' + sName;
       var sChecked = ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ? 'checked ' : ''
 
       sHtml +=
@@ -161,7 +160,7 @@
         +
           '<label class="checkbox checkbox-inline" >'
         +
-            '<input type="checkbox" ' + sChecked + 'name="' + sId + '" id="' + sId + '" >'
+            '<input type="checkbox" ' + sChecked + 'facility_name="' + sName + '" >'
         +
               sFullname
         +
@@ -171,7 +170,7 @@
     }
 
     $("#auth_facilities").html( sHtml );
-    
+
     // Reset the change handler
     resetChangeHandler()
   }
