@@ -651,8 +651,9 @@ class changePassword:
 class addUser:
     def __init__(self, by, username, password, role, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
+        facility_id_csv = ''
+        self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, facility_id_csv )
         self.username = username
-        self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description )
 
 
 class updateUser:
@@ -720,26 +721,29 @@ class authFacilities:
 
         open_database( enterprise )
 
-        cur.execute('SELECT facility_ids FROM User WHERE username = ?', (username,))
-        id_csv = cur.fetchone()[0]
-        id_list = id_csv.split( ',' )
-
         names = []
         fullnames = []
         name_map = {}
         fullname_map = {}
-        for id in id_list:
-            cur.execute('SELECT facility_name, facility_fullname FROM Facility WHERE id = ?', (id,))
-            row = cur.fetchone()
-            names.append( row[0] )
-            fullnames.append( row[1] )
-            name_map[ row[0] ] = row[1]
-            fullname_map[ row[1] ] = row[0]
 
-        self.name_map = name_map
-        self.fullname_map = fullname_map
+        cur.execute('SELECT facility_ids FROM User WHERE username = ?', (username,))
+        id_csv = cur.fetchone()[0]
+
+        if id_csv != '':
+            id_list = id_csv.split( ',' )
+
+            for id in id_list:
+                cur.execute('SELECT facility_name, facility_fullname FROM Facility WHERE id = ?', (id,))
+                row = cur.fetchone()
+                names.append( row[0] )
+                fullnames.append( row[1] )
+                name_map[ row[0] ] = row[1]
+                fullname_map[ row[1] ] = row[0]
+
         self.sorted_names = sorted( names )
         self.sorted_fullnames = sorted( fullnames )
+        self.name_map = name_map
+        self.fullname_map = fullname_map
 
 class allFacilities:
     def __init__(self, enterprise):
@@ -759,7 +763,7 @@ class allFacilities:
             name_map[ row[0] ] = row[1]
             fullname_map[ row[1] ] = row[0]
 
-        self.name_map = name_map
-        self.fullname_map = fullname_map
         self.sorted_names = sorted( names )
         self.sorted_fullnames = sorted( fullnames )
+        self.name_map = name_map
+        self.fullname_map = fullname_map
