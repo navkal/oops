@@ -3,9 +3,9 @@
 <style>
   .checkboxList
   {
-    -webkit-column-width: 270px; /* Chrome, Safari, Opera */
-    -moz-column-width: 270px; /* Firefox */
-    column-width: 270px;
+    -webkit-column-width: 200px; /* Chrome, Safari, Opera */
+    -moz-column-width: 200px; /* Firefox */
+    column-width: 200px;
   }
 </style>
 

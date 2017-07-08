@@ -109,6 +109,10 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
       '</li>';
   }
 
+  /*********** --> Additional fake checkboxes, to test layout of many facilities --> *********** /
+  for ( i = 0; i < 20; i ++ ) { sHtml += '<li><label class="checkbox checkbox-inline" ><input type="checkbox" facility_name="test'+i+'" >test'+i+'</label></li>'; }
+  /*********** <-- Additional fake checkboxes, to test layout of many facilities <-- ***********/
+
   $( '#auth_facilities' ).html( sHtml );
 
   // Reset the change handler
