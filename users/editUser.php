@@ -121,6 +121,10 @@
     {
       getAllFacilities();
     }
+    else
+    {
+      clearAllFacilities()
+    }
   }
 
   function onShow()

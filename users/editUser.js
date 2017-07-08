@@ -109,9 +109,15 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
       '</li>';
   }
 
-  $("#auth_facilities").html( sHtml );
+  $( '#auth_facilities' ).html( sHtml );
 
   // Reset the change handler
+  resetChangeHandler()
+}
+
+function clearAllFacilities()
+{
+  $( '#auth_facilities' ).html( '' );
   resetChangeHandler()
 }
 
