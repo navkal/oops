@@ -123,58 +123,6 @@
     }
   }
 
-  function getAllFacilities()
-  {
-    // Post request to server
-    var tPostData = new FormData();
-
-    $.ajax(
-      "users/getAllFacilities.php",
-      {
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        dataType : 'json',
-        data: tPostData
-      }
-    )
-    .done( makeFacilityCheckboxes )
-    .fail( handleAjaxError );
-  }
-
-  function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
-  {
-    var aFullnames = tRsp.sorted_fullnames;
-    var tMap = tRsp.fullname_map;
-
-    var sHtml = '';
-
-    for ( var iFullname in aFullnames )
-    {
-      var sFullname = aFullnames[iFullname];
-      var sName = tMap[sFullname];
-      var sChecked = ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ? 'checked ' : ''
-
-      sHtml +=
-        '<li>'
-        +
-          '<label class="checkbox checkbox-inline" >'
-        +
-            '<input type="checkbox" ' + sChecked + 'facility_name="' + sName + '" >'
-        +
-              sFullname
-        +
-          '</label>'
-        +
-        '</li>';
-    }
-
-    $("#auth_facilities").html( sHtml );
-
-    // Reset the change handler
-    resetChangeHandler()
-  }
-
   function onShow()
   {
     // Initialize input fields

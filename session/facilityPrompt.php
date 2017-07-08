@@ -77,7 +77,7 @@
     }
     else
     {
-      showMain();
+      location.assign( '/' );
     }
   }
 

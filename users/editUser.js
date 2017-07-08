@@ -1,5 +1,8 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+// Detect change of input controls
+resetChangeHandler();
+
 // Initialize field labels (etc.)
 function formatLabels( nLabelColumnWidth )
 {
@@ -60,8 +63,57 @@ function formatLabels( nLabelColumnWidth )
   $( '.form-control,.fakeFormControl', '#editUserForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-// Detect change of input controls
-resetChangeHandler();
+function getAllFacilities()
+{
+  // Post request to server
+  var tPostData = new FormData();
+
+  $.ajax(
+    "users/getAllFacilities.php",
+    {
+      type: 'POST',
+      processData: false,
+      contentType: false,
+      dataType : 'json',
+      data: tPostData
+    }
+  )
+  .done( makeFacilityCheckboxes )
+  .fail( handleAjaxError );
+}
+
+function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
+{
+  var aFullnames = tRsp.sorted_fullnames;
+  var tMap = tRsp.fullname_map;
+
+  var sHtml = '';
+
+  for ( var iFullname in aFullnames )
+  {
+    var sFullname = aFullnames[iFullname];
+    var sName = tMap[sFullname];
+    var sChecked = ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ? 'checked ' : ''
+
+    sHtml +=
+      '<li>'
+      +
+        '<label class="checkbox checkbox-inline" >'
+      +
+          '<input type="checkbox" ' + sChecked + 'facility_name="' + sName + '" >'
+      +
+            sFullname
+      +
+        '</label>'
+      +
+      '</li>';
+  }
+
+  $("#auth_facilities").html( sHtml );
+
+  // Reset the change handler
+  resetChangeHandler()
+}
 
 function resetChangeHandler()
 {
@@ -93,6 +145,15 @@ function validateUser()
     aMessages = aMessages.concat( validatePassword() );
   }
 
+  // If there are facilities checkboxes, but none are checked, report error
+  var aCheckboxes = $( ':checkbox', '#auth_facilities' );
+  var aChecked = $( ':checkbox:checked', '#auth_facilities' );
+  if ( ( aCheckboxes.length > 0 ) && ( aChecked.length == 0 ) )
+  {
+    aMessages.push( 'You must select at least one Facility.' );
+    aCheckboxes.closest( '.form-group' ).addClass( 'has-error' );
+  }
+
   showMessages( aMessages );
 
   return ( aMessages.length == 0 );
@@ -113,11 +174,11 @@ function submitUser()
   tPostData.append( "user_description", $( '#user_description' ).val() );
 
   // Retrieve list of authorized facilities from checkboxes
-  var aCheckboxes = $( ':checkbox:checked', '#auth_facilities' );
+  var aChecked = $( ':checkbox:checked', '#auth_facilities' );
   var aAuth = [];
-  for ( var iChk = 0; iChk < aCheckboxes.length; iChk ++ )
+  for ( var iChk = 0; iChk < aChecked.length; iChk ++ )
   {
-    var tChk = $( aCheckboxes[iChk] );
+    var tChk = $( aChecked[iChk] );
     aAuth.push( tChk.attr( 'facility_name' ) );
   }
   tPostData.append( "auth_facilities", aAuth.join() );

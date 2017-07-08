@@ -4,6 +4,8 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
   error_log( "====> post=" . print_r( $_POST, true ) );
 
+  $bSettings = isset( $_POST['settings'] );
+
   // Execute command
   $command = quote( getenv( "PYTHON" ) ) . " ../database/getAuthFacilities.py 2>&1 -u " . $_SESSION['panelSpy']['user']['username'] . $g_sContext;
   error_log( "===> command=" . $command );
@@ -15,7 +17,7 @@
   $tFacilities = json_decode( $sFacilities );
   $aMap = (array) $tFacilities->name_map;
 
-  if ( count( $aMap ) == 1 )
+  if ( ! $bSettings && ( count( $aMap ) == 1 ) )
   {
     $sKey = array_keys( $aMap )[0];
     $sVal = $aMap[$sKey];

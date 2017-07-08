@@ -444,13 +444,12 @@ class sortableTable:
 
                     if role == 'Administrator':
                         remove_username = ''
-                        auth_facilities = ''
-                        facilities_maps = {}
                     else:
                         remove_username = username
-                        facilities = authFacilities( username, enterprise )
-                        auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
-                        facilities_maps = facilities.__dict__
+
+                    facilities = authFacilities( username, enterprise )
+                    auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
+                    facilities_maps = facilities.__dict__
 
                     if obj[6]:
                         sStatus = 'Enabled'
@@ -698,9 +697,10 @@ class updateUser:
         if len( self.messages ) == 0:
             cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
             role_id = cur.fetchone()[0]
+            facility_id_csv = facility_names_to_ids( auth_facilities )
 
-            cur.execute( '''UPDATE User SET role_id=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
-                ( role_id, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
+            cur.execute( '''UPDATE User SET role_id=?, facility_ids=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
+                ( role_id, facility_id_csv, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
 
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
                 VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )

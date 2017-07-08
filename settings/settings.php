@@ -103,6 +103,34 @@
 
     // Show designated fields as disabled
     $( '.settingsDisabled *' ).prop( 'disabled', true );
+
+    getAuthFacilities();
+  }
+
+  function getAuthFacilities()
+  {
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "settings", true );
+
+    $.ajax(
+      "session/getAuthFacilities.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( saveAuthFacilities )
+    .fail( handleAjaxError );
+  }
+
+  function saveAuthFacilities( tRsp, sStatus, tJqXhr )
+  {
+    g_tAuthFacilities = tRsp;
+    getAllFacilities();
   }
 
   function settingsDone( tRsp, sStatus, tJqXhr )
