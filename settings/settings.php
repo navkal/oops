@@ -73,7 +73,7 @@
 
   function initSettings()
   {
-    var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
+    var tUser = JSON.parse( localStorage.getItem( 'panelSpy.signedInUser' ) );
 
     g_sAction = 'update';
     g_sUsername = tUser.username;
@@ -140,13 +140,13 @@
       delete tRsp.messages;
 
       // Update persistent copy of signed-in user
-      var tUser = JSON.parse( localStorage.getItem( 'signedInUser' ) );
+      var tUser = JSON.parse( localStorage.getItem( 'panelSpy.signedInUser' ) );
       for ( var sKey in tRsp )
       {
         tUser[sKey] = tRsp[sKey];
       }
 
-      localStorage.setItem( 'signedInUser', JSON.stringify( tUser ) );
+      localStorage.setItem( 'panelSpy.signedInUser', JSON.stringify( tUser ) );
       $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
     }
     else

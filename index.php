@@ -48,6 +48,9 @@
     if ( ! isset( $_SESSION['panelSpy']['context']['facility'] ) && ( $_SESSION['panelSpy']['user']['role'] != 'Administrator' ) )
     {
       include $_SERVER["DOCUMENT_ROOT"] . "/session/facilityPrompt.php";
+?>
+      <script src="session/keepAlive.js?version=<?=$iVersion?>"></script>
+<?php
     }
     else
     {
