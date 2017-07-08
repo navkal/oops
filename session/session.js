@@ -74,6 +74,6 @@ function signOut()
 function showMain( tRsp, sStatus, tJqXhr )
 {
   var sUser = JSON.stringify( tRsp );
-  localStorage.setItem( 'panelSpy.signedInUser', sUser );
+  localStorage.setItem( 'panelSpy.session', sUser );
   location.assign( '/' );
 }
