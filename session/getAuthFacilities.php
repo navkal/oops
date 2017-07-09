@@ -24,7 +24,7 @@
 
     $_SESSION['panelSpy']['context']['facility'] = $sKey;
     $_SESSION['panelSpy']['context']['facilityFullname'] = $sVal;
-    $sResult = json_encode( '' );
+    $sResult = json_encode( $_SESSION['panelSpy'] );
   }
   else
   {

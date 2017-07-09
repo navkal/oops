@@ -77,7 +77,7 @@
     }
     else
     {
-      location.assign( '/' );
+      showMain( tRsp, sStatus, tJqXhr );
     }
   }
 
