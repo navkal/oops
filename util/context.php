@@ -6,6 +6,4 @@
   {
     $g_sContext .= ' -z ' . quote( $_SESSION['panelSpy']['context']['facility'] );
   }
-  
-  error_log( '=======> context.php, context=' . $g_sContext );
 ?>

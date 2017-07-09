@@ -1,8 +1,6 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  error_log( '====> index.php rq=' . print_r( $_REQUEST, true ) );
-
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   $iVersion = time();
   $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
@@ -17,7 +15,6 @@
   }
 
   // If URL explicitly changes enterprise, clear user and context
-  error_log( '===> before unset decision, aUrlContext=' . print_r( $aUrlContext, true ) );
   if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
   {
     $_SESSION['panelSpy']['user'] = [];
@@ -80,8 +77,6 @@
       global $g_sNavbarCsv;
       $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
 
-      error_log( '========> Showing main with context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
-
       // Format informational tooltips
       $sBrandTitle =
         isset( $_SESSION['panelSpy']['context']['facilityFullname'] )
@@ -131,17 +126,13 @@
     if ( $bRecoverAdminTrigger && isset( $aUrlContext['enterprise'] ) )
     {
       $_SESSION['panelSpy']['recoverAdminContext'] = $aUrlContext;
-
-      error_log( '---------> about to recover, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
       include $_SERVER["DOCUMENT_ROOT"] . "/util/recoverAdmin.php";
     }
     else
     {
-      error_log( '---------> about to sign in, recovery context set? ' . isset( $_SESSION['panelSpy']['recoverAdminContext'] ) );
       // Determine context
       if ( isset( $_SESSION['panelSpy']['recoverAdminContext'] ) )
       {
-        error_log( '---------> about to sign in, recovery context=' . print_r( $_SESSION['panelSpy']['recoverAdminContext'], true ) );
         // Adopt data context from admin recovery operation
         $_SESSION['panelSpy']['context'] = $_SESSION['panelSpy']['recoverAdminContext'];
         unset( $_SESSION['panelSpy']['recoverAdminContext'] );
