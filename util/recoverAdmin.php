@@ -3,9 +3,9 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
 
   $command = quote( getenv( "PYTHON" ) ) . " database/recoverAdmin.py 2>&1 -y " . quote( $_SESSION['panelSpy']['recoverAdminContext']['enterprise'] );
-  error_log( "===> command=" . $command );
+  error_log( "==> command=" . $command );
   exec( $command, $output, $status );
-  error_log( "===> output=" . print_r( $output, true ) );
+  error_log( "==> output=" . print_r( $output, true ) );
 
   $_SESSION['panelSpy']['user'] = [];
 

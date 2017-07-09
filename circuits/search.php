@@ -9,9 +9,9 @@
   $iRequestTime = $_POST['requestTime'];
 
   $command = quote( getenv( "PYTHON" ) ) . " ../database/search.py 2>&1 -s " . quote( $sSearchText, false ) . " -t " . $sSearchTargets . $g_sContext;
-  error_log( "===> command=" . $command );
+  error_log( "==> command=" . $command );
   exec( $command, $output, $status );
-  error_log( "===> output=" . print_r( $output, true ) );
+  error_log( "==> output=" . print_r( $output, true ) );
 
   $sSearchResults = $output[ count( $output ) - 1 ];
   $tSearchResults = json_decode( $sSearchResults );
