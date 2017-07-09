@@ -70,13 +70,13 @@
         <div class="form-group">
           <label for="first_name" ></label>
           <div>
-            <input type="text" class="form-control" id="first_name" maxlength="40" >
+            <input type="text" class="form-control" id="first_name" maxlength="50" >
           </div>
         </div>
         <div class="form-group">
           <label for="last_name" ></label>
           <div>
-            <input type="text" class="form-control" id="last_name" maxlength="40" >
+            <input type="text" class="form-control" id="last_name" maxlength="50" >
           </div>
         </div>
         <div class="form-group">
@@ -88,7 +88,7 @@
         <div class="form-group">
           <label for="organization" ></label>
           <div>
-            <input type="text" class="form-control" id="organization" maxlength="100" >
+            <input type="text" class="form-control" id="organization" maxlength="256" >
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
         <div class="form-group">
           <label for="user_description" ></label>
           <div>
-            <textarea class="form-control" id="user_description" maxlength="1000" ></textarea>
+            <textarea class="form-control" id="user_description" maxlength="512" ></textarea>
           </div>
         </div>
       </div>

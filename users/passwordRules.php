@@ -1,7 +1,7 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
   define( 'MIN_PASSWORD_LENGTH', 6 );
-  define( 'MAX_PASSWORD_LENGTH', 32 );
+  define( 'MAX_PASSWORD_LENGTH', 128 );
 ?>
 <script>
   function validatePassword()

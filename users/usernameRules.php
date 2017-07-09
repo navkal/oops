@@ -1,7 +1,7 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
   define( 'MIN_USERNAME_LENGTH', 4 );
-  define( 'MAX_USERNAME_LENGTH', 32 );
+  define( 'MAX_USERNAME_LENGTH', 256 );
 ?>
 <script>
   function validateUsername()
