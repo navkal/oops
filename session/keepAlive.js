@@ -1,13 +1,17 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+// Initialize session state at load time
 var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
 var g_sSignInId = tSession.user.signInId;
 var g_sEnterprise = tSession.context.enterprise;
-var g_sFacility = tSession.context.facility;
+var g_sFacility = tSession.context.facility ? tSession.context.facility : '';
+
 console.log( '==> g_sSignInId=' + g_sSignInId );
 console.log( '==> g_sEnterprise=' + g_sEnterprise );
 console.log( '==> g_sFacility=' + g_sFacility );
 
+
+// Start polling
 $( document ).ready( live );
 
 function live()
@@ -19,9 +23,11 @@ function poll()
 {
   var tPostData = new FormData();
   tPostData.append( 'signInId', g_sSignInId );
+  tPostData.append( 'enterprise', g_sEnterprise );
+  tPostData.append( 'facility', g_sFacility );
 
   $.ajax(
-    "../session/signedIn.php",
+    "../session/validateSession.php",
     {
       type: 'POST',
       processData: false,
