@@ -2,7 +2,7 @@
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER['DOCUMENT_ROOT'].'/../common/util.php';
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
-  error_log( '====> post=' . print_r( $_POST, true ) );
+  error_log( "==> post=" . print_r( $_POST, true ) );
 
   $sSearchText = $_POST['searchText'];
   $sSearchTargets = $_POST['searchTargets'];
