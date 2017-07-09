@@ -189,14 +189,14 @@
 
   function updateDone( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp.messages.length == 0 )
+    if ( tRsp.user.messages.length == 0 )
     {
       location.reload();
     }
     else
     {
       // Show error messages
-      showMessages( tRsp.messages );
+      showMessages( tRsp.user.messages );
 
       // Highlight Old Password, since (for now) that's the only thing that can produce an error in this operation
       $( '#oldPassword' ).closest( '.form-group' ).addClass( 'has-error' );

@@ -6,5 +6,5 @@
   $_SESSION['panelSpy']['context']['facilityFullname'] = $_POST['facilityFullname'];
   $_SESSION['panelSpy']['context']['facility'] = $_POST['facility'];
 
-  echo json_encode( $_SESSION['panelSpy']['user'] );
+  echo json_encode( $_SESSION['panelSpy'] );
 ?>

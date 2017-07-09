@@ -4,6 +4,5 @@
 
   $_SESSION['panelSpy']['user'] = [];
 
-  $tRsp = [ 'signInId' => '' ];
-  echo json_encode( $tRsp );
+  echo json_encode( $_SESSION['panelSpy'] );
 ?>

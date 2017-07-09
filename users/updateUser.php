@@ -52,6 +52,6 @@
     $_SESSION['panelSpy']['user']['messages'] = $aUser['messages'];
   }
 
-  // Echo user
-  echo json_encode( $_SESSION['panelSpy']['user'] );
+  // Echo session data
+  echo json_encode( $_SESSION['panelSpy'] );
 ?>

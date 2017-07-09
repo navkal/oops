@@ -27,7 +27,7 @@ function formatLabels( nLabelColumnWidth )
   }
 
   // Set up display of password/confirm fields
-  if ( g_sUsername == JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['username'] )
+  if ( g_sUsername == JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user']['username'] )
   {
     $( '#oldPassword' ).closest( '.form-group' ).show();
     g_sFocusId = 'oldPassword';

@@ -30,5 +30,5 @@
     error_log( '==> Sign-in failed. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
   }
 
-  echo $sUser;
+  echo json_encode( $_SESSION['panelSpy'] );
 ?>

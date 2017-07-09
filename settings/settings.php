@@ -73,7 +73,7 @@
 
   function initSettings()
   {
-    var tUser = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+    var tUser = JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user'];
 
     g_sAction = 'update';
     g_sUsername = tUser.username;
@@ -135,24 +135,25 @@
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp.messages.length == 0 )
+    var tUser = tRsp.user;
+    if ( tUser.messages.length == 0 )
     {
-      delete tRsp.messages;
+      delete tUser.messages;
 
       // Update persistent copy of signed-in user
-      var tUser = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
-      for ( var sKey in tRsp )
+      var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+      for ( var sKey in tUser )
       {
-        tUser[sKey] = tRsp[sKey];
+        tSession['user'][sKey] = tUser[sKey];
       }
 
-      localStorage.setItem( 'panelSpy.session', JSON.stringify( tUser ) );
+      localStorage.setItem( 'panelSpy.session', JSON.stringify( tSession ) );
       $( '#settingsSuccessDialog' ).modal( { backdrop:'static' } )
     }
     else
     {
       // Show error messages
-      showMessages( tRsp.messages );
+      showMessages( tUser.messages );
 
       // Highlight Old Password, since (for now) that's the only thing that can produce an error in this operation
       $( '#oldPassword' ).closest( '.form-group' ).addClass( 'has-error' );

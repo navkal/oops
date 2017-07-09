@@ -143,7 +143,9 @@
     if ( tRsp.signInId )
     {
       // Success: Show main page under new sign-in
-      showMain( tRsp, sStatus, tJqXhr );
+      var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+      tSession.user = tRsp;
+      showMain( tSession, sStatus, tJqXhr );
     }
     else
     {
