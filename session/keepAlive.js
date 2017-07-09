@@ -1,6 +1,12 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_sSignInId = JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user']['signInId'];
+var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+var g_sSignInId = tSession.user.signInId;
+var g_sEnterprise = tSession.context.enterprise;
+var g_sFacility = tSession.context.facility;
+console.log( '==> g_sSignInId=' + g_sSignInId );
+console.log( '==> g_sEnterprise=' + g_sEnterprise );
+console.log( '==> g_sFacility=' + g_sFacility );
 
 $( document ).ready( live );
 
