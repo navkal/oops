@@ -82,7 +82,7 @@
         <div class="form-group">
           <label for="email_address" ></label>
           <div>
-            <input type="text" class="form-control" id="email_address" maxlength="100" >
+            <input type="text" class="form-control" id="email_address" maxlength="256" >
           </div>
         </div>
         <div class="form-group">
@@ -96,7 +96,7 @@
         <div class="form-group">
           <label for="user_description" ></label>
           <div>
-            <textarea class="form-control" id="user_description" ></textarea>
+            <textarea class="form-control" id="user_description" maxlength="1000" ></textarea>
           </div>
         </div>
       </div>
