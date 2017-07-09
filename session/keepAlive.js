@@ -6,10 +6,6 @@ var g_sSignInId = tSession.user.signInId;
 var g_sEnterprise = tSession.context.enterprise;
 var g_sFacility = tSession.context.facility ? tSession.context.facility : '';
 
-console.log( '==> g_sSignInId=' + g_sSignInId );
-console.log( '==> g_sEnterprise=' + g_sEnterprise );
-console.log( '==> g_sFacility=' + g_sFacility );
-
 
 // Start polling
 $( document ).ready( live );
