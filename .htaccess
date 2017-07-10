@@ -1,0 +1,7 @@
+AddType application/x-httpd-php .htm .html
+Options -Indexes
+
+RewriteEngine on
+#RewriteRule "^andover$" "/?e=andover"
+#RewriteRule "^demo$" "/?e=demo"
+RewriteRule "^(\w+)$" "/?e=$1"
