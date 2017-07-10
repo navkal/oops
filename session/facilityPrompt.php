@@ -70,8 +70,11 @@
         sHtml += '<option value="' + sName + '">' + sFullname + '</option>';
       }
 
-      // Load options into chooser and show page
+      // Load options into chooser and preset previous selection
       $( '#facilityChooser' ).html( sHtml );
+      presetSelectedFacility();
+
+      // Show the chooser
       $( '#facilityContainer' ).css( 'display', 'block' );
       document.title = "Choose Facility - Panel Spy";
     }
@@ -83,9 +86,10 @@
 
   function handleFacilityPick()
   {
+    saveSelectedFacility();
+
     // Post request to server
     var tPostData = new FormData();
-
     tPostData.append( 'facility', $( '#facilityChooser' ).val() );
     tPostData.append( 'facilityFullname', $( '#facilityChooser option:selected' ).text() );
 
@@ -106,6 +110,52 @@
   function handleFacilityQuit()
   {
     signOut();
+  }
+
+  function presetSelectedFacility()
+  {
+    // Get selected facility data structure
+    var tSelFacility = JSON.parse( localStorage.getItem( 'panelSpy.selectedFacility' ) );
+
+    // Get enterprise and username
+    var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+    var sEnterprise = tSession['context']['enterprise'];
+    var sUsername = tSession['user']['username'];
+
+    // If previous selection exists, preset it
+    if ( tSelFacility && tSelFacility[sEnterprise] && tSelFacility[sEnterprise][sUsername] )
+    {
+      console.log( '===> presetting facility=' + tSelFacility[sEnterprise][sUsername] );
+      $( '#facilityChooser' ).val( tSelFacility[sEnterprise][sUsername] );
+    }
+  }
+
+  function saveSelectedFacility()
+  {
+    // Get enterprise and username
+    var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+    var sEnterprise = tSession['context']['enterprise'];
+    var sUsername = tSession['user']['username'];
+
+    // Get selected facility data structure
+    var tSelFacility = JSON.parse( localStorage.getItem( 'panelSpy.selectedFacility' ) );
+
+    // Load current selection into data structure
+    if ( ! tSelFacility )
+    {
+      tSelFacility = {};
+    }
+
+    if ( ! tSelFacility[sEnterprise] )
+    {
+      tSelFacility[sEnterprise] = {};
+    }
+
+    tSelFacility[sEnterprise][sUsername] = $( '#facilityChooser' ).val();
+
+    // Save
+    console.log( '===> saving facility=' + $( '#facilityChooser' ).val() );
+    localStorage.setItem( 'panelSpy.selectedFacility', JSON.stringify( tSelFacility ) );
   }
 
 </script>
