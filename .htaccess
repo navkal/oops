@@ -1,38 +1,12 @@
 AddType application/x-httpd-php .htm .html
 Options -Indexes
 
-<Files ~ "\.py$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-<Files ~ "\.sqlite$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-<Files ~ "\.csv$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-<Files ~ "\.cdr$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-<Files ~ "\.json$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-<Files ~ "\.svg$">
-  Order allow,deny
-  Deny from all
-</Files>
-
-
 RewriteEngine on
+
+# Convert folder-like expression to enterprise parameter
 #RewriteRule "^andover$" "/?e=andover"
 #RewriteRule "^demo$" "/?e=demo"
 RewriteRule "^(\w+)$" "/?e=$1"
+
+# Deny access to specific file types
+RewriteRule "^(.+)\.(txt|csv|cdr|json|svg|py|sqlite)$" "-" [F]
