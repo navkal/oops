@@ -125,7 +125,6 @@
     // If previous selection exists, preset it
     if ( tSelFacility && tSelFacility[sEnterprise] && tSelFacility[sEnterprise][sUsername] )
     {
-      console.log( '===> presetting facility=' + tSelFacility[sEnterprise][sUsername] );
       $( '#facilityChooser' ).val( tSelFacility[sEnterprise][sUsername] );
     }
   }
@@ -154,7 +153,6 @@
     tSelFacility[sEnterprise][sUsername] = $( '#facilityChooser' ).val();
 
     // Save
-    console.log( '===> saving facility=' + $( '#facilityChooser' ).val() );
     localStorage.setItem( 'panelSpy.selectedFacility', JSON.stringify( tSelFacility ) );
   }
 
