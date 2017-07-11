@@ -1,9 +1,6 @@
 <?php
-  function abort()
-  {
-    exit( '<h2>Access denied</h2>' );
-  }
-  
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
+
   if ( ! isset( $_SESSION['panelSpy']['user']['signInId'] ) )
   {
     abort();
