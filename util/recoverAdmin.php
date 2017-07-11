@@ -1,6 +1,11 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
+  if ( ! isset( $_SESSION['panelSpy']['recoverAdminContext'] ) )
+  {
+    abort();
+  }
 
   $command = quote( getenv( "PYTHON" ) ) . " database/recoverAdmin.py 2>&1 -y " . quote( $_SESSION['panelSpy']['recoverAdminContext']['enterprise'] );
   error_log( "==> command=" . $command );
