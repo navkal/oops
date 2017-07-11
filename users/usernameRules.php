@@ -1,5 +1,8 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
+
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+
   define( 'MIN_USERNAME_LENGTH', 4 );
   define( 'MAX_USERNAME_LENGTH', 256 );
 ?>
