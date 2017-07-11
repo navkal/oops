@@ -6,6 +6,11 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
+    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'] ) )
+    {
+      abort();
+    }
   ?>
 
   <!-- Body -->
