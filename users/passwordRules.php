@@ -1,5 +1,8 @@
 <?php
   // Copyright 2017 Panel Spy.  All rights reserved.
+
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+
   define( 'MIN_PASSWORD_LENGTH', 6 );
   define( 'MAX_PASSWORD_LENGTH', 128 );
 ?>
