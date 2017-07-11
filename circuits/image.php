@@ -5,6 +5,11 @@
 
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+    if ( ! isset( $_REQUEST["path"] ) )
+    {
+      exit( 'Access denied' );
+    }
     $sPath = $_REQUEST['path'];
     $sImg = '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $sPath . '.jpg';
   ?>

@@ -6,6 +6,11 @@
   <!-- Head -->
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/head.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+    if ( ! isset( $_REQUEST["path"], $_REQUEST["type"], $_REQUEST["oid"] ) )
+    {
+      exit( 'Access denied' );
+    }
   ?>
 
   <!-- Body -->
