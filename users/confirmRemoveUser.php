@@ -1,5 +1,9 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
+<?php
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+?>
+
 <!-- Confirm Remove User dialog -->
 <div class="modal fade" id="removeUserDialog" tabindex="-1" role="dialog" aria-labelledby="removeUserLabel">
   <div class="modal-dialog" role="document">
