@@ -31,7 +31,7 @@
       tPostData.append( "username", sUsername );
       tPostData.append( "password", sPassword );
 
-      if ( typeof showMain === 'function' )
+      if ( ( typeof showMain === 'function' ) && ( typeof submitCredentialsFailed === 'function' ) )
       {
         $.ajax(
           "session/signIn.php",
@@ -45,10 +45,6 @@
         )
         .done( showMain )
         .fail( submitCredentialsFailed );
-      }
-      else
-      {
-        $( 'body' ).html( '<h2>Access denied</h2>' );
       }
     }
   </script>
