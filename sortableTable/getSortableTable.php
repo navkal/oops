@@ -2,6 +2,7 @@
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER['DOCUMENT_ROOT'].'/../common/util.php';
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   $command = quote( getenv( "PYTHON" ) ) . " ../database/getSortableTable.py 2>&1 -o " . $_POST['object_type'] . $g_sContext;;
