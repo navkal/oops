@@ -41,6 +41,7 @@
   {
     // Post request to server
     var tPostData = new FormData();
+    tPostData.append( "postSecurity", "" );
 
     $.ajax(
       "session/getAuthFacilities.php",
