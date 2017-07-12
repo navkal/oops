@@ -39,22 +39,25 @@
 
   function initFacilityPrompt()
   {
-    // Post request to server
-    var tPostData = new FormData();
-    tPostData.append( "postSecurity", "" );
+    if ( typeof handleAjaxError === 'function' )
+    {
+      // Post request to server
+      var tPostData = new FormData();
+      tPostData.append( "postSecurity", "" );
 
-    $.ajax(
-      "session/getAuthFacilities.php",
-      {
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        dataType : 'json',
-        data: tPostData
-      }
-    )
-    .done( makeFacilityDropdown )
-    .fail( handleAjaxError );
+      $.ajax(
+        "session/getAuthFacilities.php",
+        {
+          type: 'POST',
+          processData: false,
+          contentType: false,
+          dataType : 'json',
+          data: tPostData
+        }
+      )
+      .done( makeFacilityDropdown )
+      .fail( handleAjaxError );
+    }
   }
 
   function makeFacilityDropdown( tRsp, sStatus, tJqXhr )
