@@ -16,19 +16,23 @@
 
   <!-- Body -->
   <body>
-    <script>
-      $( document ).ready( signInDemo );
+  </body>
 
-      function signInDemo()
+  <script>
+    $( document ).ready( signInDemo );
+
+    function signInDemo()
+    {
+      var sUsername = 'demo';
+      var sPassword = 'demo';
+
+      // Post request to server
+      var tPostData = new FormData();
+      tPostData.append( "username", sUsername );
+      tPostData.append( "password", sPassword );
+
+      if ( typeof showMain === 'function' )
       {
-        var sUsername = 'demo';
-        var sPassword = 'demo';
-
-        // Post request to server
-        var tPostData = new FormData();
-        tPostData.append( "username", sUsername );
-        tPostData.append( "password", sPassword );
-
         $.ajax(
           "session/signIn.php",
           {
@@ -42,6 +46,10 @@
         .done( showMain )
         .fail( submitCredentialsFailed );
       }
-    </script>
-  </body>
+      else
+      {
+        $( 'body' ).html( '<h2>Access denied</h2>' );
+      }
+    }
+  </script>
 </html>
