@@ -1,6 +1,7 @@
 AddType application/x-httpd-php .htm .html
 Options -Indexes
 
+ErrorDocument 403 /util/403.php
 ErrorDocument 404 /util/404.php
 
 RewriteEngine on
