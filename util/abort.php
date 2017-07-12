@@ -1,6 +1,9 @@
 <?php
   function abort()
   {
-    exit( '<h2>Access denied</h2>' );
+    ob_clean();
+    include $_SERVER["DOCUMENT_ROOT"]."/util/404.php";
+    http_response_code( 404 );
+    exit( 1 );
   }
 ?>

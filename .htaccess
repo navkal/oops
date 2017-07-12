@@ -1,6 +1,8 @@
 AddType application/x-httpd-php .htm .html
 Options -Indexes
 
+ErrorDocument 404 /util/404.php
+
 RewriteEngine on
 
 # Convert folder-like expression to enterprise parameter
