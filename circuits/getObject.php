@@ -3,6 +3,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/define.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
 
   error_log( "==> post=" . print_r( $_POST, true ) );
 
