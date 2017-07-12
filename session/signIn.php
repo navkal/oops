@@ -2,6 +2,12 @@
   // Copyright 2017 Panel Spy.  All rights reserved.
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
+  if ( count( $_POST ) == 0 )
+  {
+    abort();
+  }
+
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   // Initialize session storage
