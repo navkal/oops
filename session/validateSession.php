@@ -2,6 +2,7 @@
   // Copyright 2017 Panel Spy.  All rights reserved.
 
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
 
   $sSignInId = $_POST['signInId'];
   $sEnterprise = $_POST['enterprise'];
