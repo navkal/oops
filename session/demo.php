@@ -9,7 +9,7 @@
     require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
     require_once $_SERVER["DOCUMENT_ROOT"] . "/util/defineDemo.php";
 
-    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'], $_SESSION['panelSpy']['context']['facility'] ) || (  $_SESSION['panelSpy']['context']['enterprise'] != PANEL_SPY_DEMO ) || (  $_SESSION['panelSpy']['context']['facility'] != PANEL_SPY_DEMO ) )
+    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'], $_SESSION['panelSpy']['context']['facility'] ) || ( $_SESSION['panelSpy']['context']['enterprise'] != PANEL_SPY_DEMO ) || ( $_SESSION['panelSpy']['context']['facility'] != PANEL_SPY_DEMO ) )
     {
       abort();
     }

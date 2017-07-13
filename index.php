@@ -152,7 +152,7 @@
       else
       {
         // Load demo
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => PANEL_SPY_DEMO, 'facilityFullname' => 'Panel Spy Demo', 'facility' => PANEL_SPY_DEMO ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => PANEL_SPY_DEMO, 'facilityFullname' => 'Demo Facility', 'facility' => PANEL_SPY_DEMO ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }
