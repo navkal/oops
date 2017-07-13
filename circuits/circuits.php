@@ -29,6 +29,8 @@
     <?php
       require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
     ?>
+    <br/>
+    <small><?=$_SESSION['panelSpy']['context']['facilityFullname']?></small>
   </p>
 
   <!-- Search -->

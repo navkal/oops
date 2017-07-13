@@ -32,6 +32,8 @@
       require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUser.php";
       require_once $_SERVER["DOCUMENT_ROOT"]."/users/confirmRemoveUser.php";
     ?>
+    <br/>
+    <small id="sortableTableSubtitle"></small>
   </div>
 
   <div id="spinner" class="spinner" >

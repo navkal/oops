@@ -161,6 +161,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Set title
   $( '#sortableTableTitle' ).text( g_sSortableTableTitle );
+  var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
+  var sSubtitle = tSession['context']['facilityFullname'] ? tSession['context']['facilityFullname'] : tSession['context']['enterpriseFullname'];
+  $( '#sortableTableSubtitle' ).text( sSubtitle );
 
   // Format table head/foot HTML, and construct sorter array
   var aSortedHeaders = Object.keys( tColumnMap ).sort( comparePropertyIndex );
