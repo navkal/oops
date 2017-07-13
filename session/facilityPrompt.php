@@ -13,7 +13,7 @@
   <body>
     <div class="container" id="facilityContainer" style="display:none" >
       <div class="page-header">
-        <img src="/database/<?=$_SESSION['panelSpy']['context']['enterprise']?>/enterprise.ico" class="img-responsive" alt="Panel Spy" style="width:50%; max-width:200px; margin:auto">
+        <img src="/database/<?=$_SESSION['panelSpy']['context']['enterprise']?>/enterprise.ico" class="img-responsive" alt="Panel Spy" style="width:50%; max-width:250px; margin:auto">
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
