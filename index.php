@@ -77,18 +77,12 @@
       global $g_sNavbarCsv;
       $g_sNavbarCsv = $_SERVER['DOCUMENT_ROOT'] . '/navbar' . $sSuffix . '.csv';
 
-      // Format informational tooltips
-      $sBrandTitle =
-        isset( $_SESSION['panelSpy']['context']['facilityFullname'] )
-        ?
-          ( 'Facility: ' . $_SESSION['panelSpy']['context']['facilityFullname'] )
-        :
-          ( 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterpriseFullname'] );
-
-      $sSignoutTitle = 'Username: ' . $_SESSION['panelSpy']['user']['username'];
-
       // Show application
       include "../common/main.php";
+
+      // Format informational tooltips
+      $sBrandTitle = 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterpriseFullname'];
+      $sSignoutTitle = 'Username: ' . $_SESSION['panelSpy']['user']['username'];
 ?>
       <script>
         // Append signout button to navbar
