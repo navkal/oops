@@ -83,7 +83,7 @@
         ?
           ( 'Facility: ' . $_SESSION['panelSpy']['context']['facilityFullname'] )
         :
-          ( 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterprise'] );
+          ( 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterpriseFullname'] );
 
       $sSignoutTitle = 'Username: ' . $_SESSION['panelSpy']['user']['username'];
 
