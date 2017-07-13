@@ -2,6 +2,7 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
+  require_once $_SERVER["DOCUMENT_ROOT"] . "/util/defineDemo.php";
   $iVersion = time();
   $sRecoverAdminTrigger = $_SERVER["DOCUMENT_ROOT"] . "/recoverAdmin.trg";
 
@@ -21,7 +22,7 @@
     unset( $_SESSION['panelSpy']['context'] );
 
     // If user has explicitly requested the demo, clear the context
-    if ( $aUrlContext['enterprise'] == 'demo' )
+    if ( $aUrlContext['enterprise'] == PANEL_SPY_DEMO )
     {
       $aUrlContext = [];
     }
@@ -53,7 +54,7 @@
     {
       // Determine which menu the user will see
       $sSuffix = '';
-      if ( $_SESSION['panelSpy']['context']['enterprise'] == 'demo' )
+      if ( $_SESSION['panelSpy']['context']['enterprise'] == PANEL_SPY_DEMO )
       {
         $sSuffix = 'Demo';
       }
@@ -91,7 +92,7 @@
         {
           $( '.navbar-brand' ).attr( 'title', '<?=$sBrandTitle?>' );
 <?php
-      if ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' )
+      if ( $_SESSION['panelSpy']['context']['enterprise'] != PANEL_SPY_DEMO )
       {
 ?>
           var sSignOutHtml = '';
@@ -141,7 +142,7 @@
         }
       }
 
-      if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) )
+      if ( ( $_SESSION['panelSpy']['context'] != [] ) && ( $_SESSION['panelSpy']['context']['enterprise'] != PANEL_SPY_DEMO ) )
       {
         // Clear facility and show sign-in prompt
         unset( $_SESSION['panelSpy']['context']['facilityFullname'] );
@@ -151,7 +152,7 @@
       else
       {
         // Load demo
-        $_SESSION['panelSpy']['context'] = [ 'enterprise' => 'demo', 'facilityFullname' => 'Panel Spy Demo', 'facility' => 'demo' ];
+        $_SESSION['panelSpy']['context'] = [ 'enterprise' => PANEL_SPY_DEMO, 'facilityFullname' => 'Panel Spy Demo', 'facility' => PANEL_SPY_DEMO ];
         include $_SERVER["DOCUMENT_ROOT"] . "/session/demo.php";
       }
     }

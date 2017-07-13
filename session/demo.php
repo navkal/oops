@@ -7,8 +7,9 @@
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/head.php";
     require_once $_SERVER["DOCUMENT_ROOT"]."/util/abort.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/util/defineDemo.php";
 
-    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'], $_SESSION['panelSpy']['context']['facility'] ) || (  $_SESSION['panelSpy']['context']['enterprise'] != 'demo' ) || (  $_SESSION['panelSpy']['context']['facility'] != 'demo' ) )
+    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'], $_SESSION['panelSpy']['context']['facility'] ) || (  $_SESSION['panelSpy']['context']['enterprise'] != PANEL_SPY_DEMO ) || (  $_SESSION['panelSpy']['context']['facility'] != PANEL_SPY_DEMO ) )
     {
       abort();
     }
@@ -25,8 +26,8 @@
     {
       if ( ( typeof showMain === 'function' ) && ( typeof submitCredentialsFailed === 'function' ) )
       {
-        var sUsername = 'demo';
-        var sPassword = 'demo';
+        var sUsername = '<?=PANEL_SPY_DEMO?>';
+        var sPassword = '<?=PANEL_SPY_DEMO?>';
 
         // Post request to server
         var tPostData = new FormData();
