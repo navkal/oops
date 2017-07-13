@@ -632,6 +632,9 @@ class signInUser:
             self.email_address = user_row[9]
             self.organization = user_row[10]
 
+            # Include enterprise fullname; PHP caller will move it to session context
+            cur.execute( 'SELECT enterprise_fullname FROM Enterprise WHERE enterprise_name = ?', (enterprise,))
+            self.enterprise_fullname = cur.fetchone()[0]
 
 
 class changePassword:

@@ -28,6 +28,11 @@
   // If database assigned a signin id, load user information
   if ( isset( $aUser['signInId'] ) && $aUser['signInId'] )
   {
+    // Move enterprise fullname from user structure to to context structure
+    $_SESSION['panelSpy']['context']['enterpriseFullname'] = $aUser['enterprise_fullname'];
+    unset( $aUser['enterprise_fullname'] );
+
+    // Save user structure
     $_SESSION['panelSpy']['user'] = $aUser;
     error_log( '==> Signed in. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
   }
