@@ -82,7 +82,7 @@
       include "../common/main.php";
 
       // Format informational tooltips
-      $sBrandTitle = 'Enterprise: ' . $_SESSION['panelSpy']['context']['enterpriseFullname'];
+      $sBrandTitle = $_SESSION['panelSpy']['context']['enterpriseFullname'];
       $sSignoutTitle = 'Username: ' . $_SESSION['panelSpy']['user']['username'];
 ?>
       <script>
