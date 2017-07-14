@@ -6,10 +6,10 @@ ErrorDocument 404 /util/404.php
 
 RewriteEngine on
 
+# Deny access to specific file types
+RewriteRule "^(.+)\.(txt|csv|cdr|json|svg|py|sqlite)$" "-" [F]
+
 # Convert folder-like expression to enterprise parameter
 #RewriteRule "^andover$" "/?e=andover"
 #RewriteRule "^demo$" "/?e=demo"
 RewriteRule "^(\w+)$" "/?e=$1"
-
-# Deny access to specific file types
-RewriteRule "^(.+)\.(txt|csv|cdr|json|svg|py|sqlite)$" "-" [F]
