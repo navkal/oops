@@ -168,7 +168,6 @@ var g_iPanY = null;
 
 function startPan( tEvent )
 {
-  tEvent.preventDefault();
   g_bPan = true;
   g_iPanX = tEvent.clientX;
   g_iPanY = tEvent.clientY;
