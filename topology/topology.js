@@ -10,6 +10,7 @@ function init()
 
     // Set handlers
   $( window ).on( 'unload', closeChildWindows );
+  $( 'body>div' ).on( 'wheel', zoomByWheel );
 
   // Generate hyperlinks to open image window
   $( 'a' ).each( makeHyperlink );
@@ -126,6 +127,23 @@ function openMainWindow( tEvent )
       alert( 'Error: Could not reopen main window.' );
       window.close();
     }
+  }
+}
+
+function zoomByWheel( tEvent )
+{
+  var tOriginalEvent = tEvent.originalEvent;
+  var bAlt = tOriginalEvent.altKey
+
+  // If user pressed Alt key while turning wheel, zoom the diagram
+  if ( bAlt )
+  {
+    // Suppress vertical scrolling
+    tEvent.preventDefault();
+
+    // Determine direction of zoom
+    var iDelta = tOriginalEvent.wheelDelta /* most browsers */ || ( - tOriginalEvent.deltaY )/* Firefox */;
+    zoomDiagram( iDelta > 0 );
   }
 }
 
