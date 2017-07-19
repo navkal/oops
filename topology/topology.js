@@ -10,7 +10,13 @@ function init()
 
     // Set handlers
   $( window ).on( 'unload', closeChildWindows );
-  $( 'body>div' ).on( 'wheel', zoomByWheel );
+  $( window ).on( 'resize', setCursors );
+  tContainer = $( 'body>div' );
+  tContainer.on( 'wheel', zoomByWheel );
+  tContainer.on( 'mousedown', startPan );
+  tContainer.on( 'mousemove', panDiagram );
+  tContainer.on( 'mouseup', endPan );
+  tContainer.on( 'mouseleave', endPan );
 
   // Generate hyperlinks to open image window
   $( 'a' ).each( makeHyperlink );
@@ -145,6 +151,10 @@ function zoomByWheel( tEvent )
     var iDelta = tOriginalEvent.wheelDelta /* most browsers */ || ( - tOriginalEvent.deltaY )/* Firefox */;
     zoomDiagram( iDelta > 0 );
   }
+  else
+  {
+    setCursors();
+  }
 }
 
 function zoomDiagram( bIn )
@@ -153,7 +163,62 @@ function zoomDiagram( bIn )
   var nPercent = bIn ? 7/6 : 6/7;
   tDiagram.width( tDiagram.width() * nPercent );
   tDiagram.height( tDiagram.height() * nPercent );
+  setCursors();
 }
+
+
+// --> --> --> Pan image --> --> -->
+var g_bPan = null;
+var g_iPanX = null;
+var g_iPanY = null;
+
+function startPan( tEvent )
+{
+  tEvent.preventDefault();
+  g_bPan = true;
+  g_iPanX = tEvent.clientX;
+  g_iPanY = tEvent.clientY;
+}
+
+function panDiagram( tEvent )
+{
+  if ( g_bPan )
+  {
+    tEvent.preventDefault();
+
+    $( window ).scrollTop( $( window ).scrollTop() - ( tEvent.clientY - g_iPanY ) );
+    $( window ).scrollLeft( $( window ).scrollLeft() - ( tEvent.clientX - g_iPanX ) );
+
+    g_iPanX = tEvent.clientX;
+    g_iPanY = tEvent.clientY;
+  }
+}
+
+function endPan( tEvent )
+{
+  g_bPan = null;
+  g_iPanX = null;
+  g_iPanY = null;
+}
+
+function setCursors()
+{
+  // Determine whether scrollbar is present
+  var iScrollWidth = document.body.scrollWidth;
+  var iClientWidth = document.documentElement.clientWidth;
+  var bScrollX = iScrollWidth > iClientWidth;
+  var iScrollHeight = document.body.scrollHeight;
+  var iClientHeight = document.documentElement.clientHeight;
+  var bScrollY = iScrollHeight > iClientHeight;
+
+  // Show 'move' cursor if appropriate
+  $( 'svg' ).css( 'cursor', ( bScrollX || bScrollY ) ? 'move' : 'default' );
+
+  // Show 'pointer' cursor on anchors
+  $( 'a' ).css( 'cursor', 'pointer' );
+}
+// <-- <-- <-- Pan image <-- <-- <--
+
 
 function closeChildWindows()
 {
