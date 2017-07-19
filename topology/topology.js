@@ -10,7 +10,6 @@ function init()
 
     // Set handlers
   $( window ).on( 'unload', closeChildWindows );
-  $( window ).on( 'resize', setCursors );
   tContainer = $( 'body>div' );
   tContainer.on( 'wheel', zoomByWheel );
   tContainer.on( 'mousedown', startPan );
@@ -151,10 +150,6 @@ function zoomByWheel( tEvent )
     var iDelta = tOriginalEvent.wheelDelta /* most browsers */ || ( - tOriginalEvent.deltaY )/* Firefox */;
     zoomDiagram( iDelta > 0 );
   }
-  else
-  {
-    setCursors();
-  }
 }
 
 function zoomDiagram( bIn )
@@ -163,7 +158,6 @@ function zoomDiagram( bIn )
   var nPercent = bIn ? 7/6 : 6/7;
   tDiagram.width( tDiagram.width() * nPercent );
   tDiagram.height( tDiagram.height() * nPercent );
-  setCursors();
 }
 
 
@@ -186,9 +180,14 @@ function panDiagram( tEvent )
   {
     tEvent.preventDefault();
 
+    // Set cursor for moving
+    $( 'body>div' ).css( 'cursor', 'move' );
+
+    // Pan the display
     $( window ).scrollTop( $( window ).scrollTop() - ( tEvent.clientY - g_iPanY ) );
     $( window ).scrollLeft( $( window ).scrollLeft() - ( tEvent.clientX - g_iPanX ) );
 
+    // Save current mouse position
     g_iPanX = tEvent.clientX;
     g_iPanY = tEvent.clientY;
   }
@@ -196,27 +195,16 @@ function panDiagram( tEvent )
 
 function endPan( tEvent )
 {
+  // Restore normal cursors
+  $( 'body>div' ).css( 'cursor', 'default' );
+  $( 'a' ).css( 'cursor', 'pointer' );
+
+  // Clear pan data
   g_bPan = null;
   g_iPanX = null;
   g_iPanY = null;
 }
 
-function setCursors()
-{
-  // Determine whether scrollbar is present
-  var iScrollWidth = document.body.scrollWidth;
-  var iClientWidth = document.documentElement.clientWidth;
-  var bScrollX = iScrollWidth > iClientWidth;
-  var iScrollHeight = document.body.scrollHeight;
-  var iClientHeight = document.documentElement.clientHeight;
-  var bScrollY = iScrollHeight > iClientHeight;
-
-  // Show 'move' cursor if appropriate
-  $( 'svg' ).css( 'cursor', ( bScrollX || bScrollY ) ? 'move' : 'default' );
-
-  // Show 'pointer' cursor on anchors
-  $( 'a' ).css( 'cursor', 'pointer' );
-}
 // <-- <-- <-- Pan image <-- <-- <--
 
 
