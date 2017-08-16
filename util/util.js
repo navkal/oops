@@ -334,13 +334,6 @@ function openImageWindow( tEvent )
   return childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
 }
 
-var g_aTopologyWindows = [];
-
-function openTopologyWindow( tEvent )
-{
-  return childWindowOpen( tEvent, g_aTopologyWindows, 'topology/topologyWindow.php', "Topology", "notUsed", 1000, 500, false );
-}
-
 
 // -> -> -> Manage child windows -> -> ->
 
