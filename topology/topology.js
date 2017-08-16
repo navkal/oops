@@ -6,12 +6,6 @@ $( document ).ready( init );
 
 function init()
 {
-  if ( ! document.title )
-  {
-    document.isTopologyWindow = true;
-    document.title = "Topology - Panel Spy";
-  }
-
   // Set handlers
   $( window ).on( 'unload', closeChildWindows );
   tContainer = $( 'body>div' );
