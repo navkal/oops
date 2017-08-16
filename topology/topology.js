@@ -42,8 +42,8 @@ function makeHyperlink( i, tEl )
 
       if ( sLink == 'PANELSPY' )
       {
-        // Link is to main window
-        tAnchor.click( openMainWindow );
+        // Link is to home (Circuits) view
+        tAnchor.click( goHome );
       }
       else
       {
@@ -66,68 +66,9 @@ function makeHyperlink( i, tEl )
   }
 }
 
-
-function openMainWindow( tEvent )
+function goHome()
 {
-  var tMain = window.opener;
-
-  try
-  {
-    // Determine whether original main window is available
-    var sTestTitle = tMain.document.title;
-  }
-  catch( e )
-  {
-    // Exception: Original main window not available
-
-    // Determine whether reopened main window is available
-    if ( g_tMainWindow )
-    {
-      if ( g_tMainWindow.closed )
-      {
-        g_tMainWindow = null;
-      }
-      else
-      {
-        try
-        {
-          sTestTitle = g_tMainWindow.document.title;
-        }
-        catch( e )
-        {
-          // Reopened main window not available
-          g_tMainWindow = null;
-        }
-      }
-    }
-
-    tMain = g_tMainWindow;
-  }
-
-  // Open main window
-  if ( tMain )
-  {
-    // Main window is available: use it
-
-    if ( tMain.document.title.indexOf( 'Circuits' ) != 0 )
-    {
-      // Main window is not currently on Circuits page
-      tMain.location.assign( '/' );
-    }
-  }
-  else
-  {
-    // Main window is not available: Open a new one
-    try
-    {
-      g_tMainWindow = window.open( '/', 'Main' );
-    }
-    catch( e )
-    {
-      alert( 'Error: Could not reopen main window.' );
-      window.close();
-    }
-  }
+  location.assign( '/' );
 }
 
 function zoomByWheel( tEvent )
