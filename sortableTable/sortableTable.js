@@ -13,12 +13,6 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
-  // Optionally hide topology link
-  if ( g_bShowTopologyLink )
-  {
-    $( '#topologyLink' ).show();
-  }
-
   if ( g_bShowAddUserButton )
   {
     $( '#addUserButton' ).show();

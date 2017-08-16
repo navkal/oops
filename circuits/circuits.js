@@ -14,9 +14,6 @@ function initView()
 {
   $( window ).on( 'unload', closeChildWindows );
   $( window ).resize( resizeTree );
-  
-  // Show the topology link
-  $( '#topologyLink' ).show();
 
   // Capture goto parameter, if any
   g_sSearchTargetPath = $( '#goto' ).val();
