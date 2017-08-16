@@ -4,7 +4,6 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bSortDescending = false;
-var g_bShowTopologyLink = true;
 var g_bShowAddUserButton = false;
 
 // Retrieve sortable table from backend

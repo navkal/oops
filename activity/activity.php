@@ -8,7 +8,6 @@
   g_sSortableTableTitle = 'Activity';
   g_sSortableTableType = 'activity';
   g_bSortDescending = true;
-  g_bShowTopologyLink = false;
   g_bShowAddUserButton = false;
   $( document ).ready( getSortableTable );
 </script>
