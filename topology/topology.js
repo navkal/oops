@@ -6,9 +6,13 @@ $( document ).ready( init );
 
 function init()
 {
-  document.title = "Topology - Panel Spy";
+  if ( ! document.title )
+  {
+    document.isTopologyWindow = true;
+    document.title = "Topology - Panel Spy";
+  }
 
-    // Set handlers
+  // Set handlers
   $( window ).on( 'unload', closeChildWindows );
   tContainer = $( 'body>div' );
   tContainer.on( 'wheel', zoomByWheel );
@@ -19,9 +23,6 @@ function init()
 
   // Generate hyperlinks to open image window
   $( 'a' ).each( makeHyperlink );
-
-  // Ensure that initial display has no scroll bars
-  zoomDiagram( false );
 }
 
 function makeHyperlink( i, tEl )

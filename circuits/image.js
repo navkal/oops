@@ -31,11 +31,10 @@ function resizeWindow()
 function goBack( tEvent, sPath )
 {
   var tOpener = window.opener;
-  var sTitle = tOpener.document.title;
 
   // Establish pointer to main window
   var tMain = null;
-  if ( sTitle.indexOf( 'Topology' ) == 0 )
+  if ( tOpener.document.isTopologyWindow )
   {
     // Opener is Topology page.  Find main window.
     try

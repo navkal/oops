@@ -1,47 +1,35 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
-<!DOCTYPE html>
-<html lang="en">
+<?php
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+?>
 
-  <!-- Head -->
-  <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/../common/head.php";
-    require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
-    if ( ! isset( $_SESSION['panelSpy']['context']['enterprise'], $_SESSION['panelSpy']['context']['facility'] ) )
-    {
-      abort();
-    }
-  ?>
+<div class="container-fluid">
+  <div id="zoomButtons" >
+    <span class="btn-group btn-group-xs" >
+      <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
+        <span class="glyphicon glyphicon-plus" ></span>
+      </button>
+      <br/>
+      <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
+        <span class="glyphicon glyphicon-minus" ></span>
+      </button>
+    </span>
+  </div>
+  <div class="clearfix" >
+    <?php
+      require_once $_SERVER["DOCUMENT_ROOT"]."/database/" . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . "/topology.svg";
+    ?>
+  </div>
+</div>
 
-  <!-- Body -->
-	<body>
-    <div class="container-fluid" >
-      <div id="zoomButtons" >
-        <span class="btn-group btn-group-xs" >
-          <button class="btn btn-link btn-xs" onclick="zoomDiagram(true)" title="Zoom in">
-            <span class="glyphicon glyphicon-plus" ></span>
-          </button>
-          <br/>
-          <button class="btn btn-link btn-xs" onclick="zoomDiagram(false)" title="Zoom out">
-            <span class="glyphicon glyphicon-minus" ></span>
-          </button>
-        </span>
-      </div>
-      <div class="clearfix" >
-        <?php
-          require_once $_SERVER["DOCUMENT_ROOT"]."/database/" . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . "/topology.svg";
-        ?>
-      </div>
-    </div>
-  </body>
-</html>
 
 <style>
   svg
   {
     position: absolute;
-    width: 115%;
-    height: 115%;
+    width: 88%;
+    height: 88%;
   }
 
   #zoomButtons
