@@ -52,4 +52,3 @@
   $iVersion = time();
 ?>
 <script src="../topology/topology.js?version=<?=$iVersion?>"></script>
-<script src="../session/keepAlive.js?version=<?=$iVersion?>"></script>
