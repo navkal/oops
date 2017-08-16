@@ -28,7 +28,6 @@
   <div id="tableTop" style="padding-bottom:15px" >
     <span id="sortableTableTitle" class="h4"></span>
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
       require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUser.php";
       require_once $_SERVER["DOCUMENT_ROOT"]."/users/confirmRemoveUser.php";
     ?>

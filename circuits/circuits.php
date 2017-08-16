@@ -27,7 +27,7 @@
   <p>
     <span class="h4">Circuits</span>
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/topology/topologyLink.php";
+      // 'Add <object>' button goes here
     ?>
     <br/>
     <small><?=$_SESSION['panelSpy']['context']['facilityFullname']?></small>
