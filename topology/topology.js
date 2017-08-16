@@ -1,7 +1,5 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_tMainWindow = null;
-
 $( document ).ready( init );
 
 function init()
