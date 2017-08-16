@@ -11,8 +11,8 @@
   svg
   {
     position: absolute;
-    width: 88%;
-    height: 88%;
+    width: 98%;
+    height: 75%;
   }
 
   #zoomButtons
