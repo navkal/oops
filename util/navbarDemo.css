@@ -1,7 +1,7 @@
 /* Copyright 2017 Panel Spy.  All rights reserved. */
 
 /* Customize width at which full navbar reverts to hamburger */
-@media( max-width: 830px )
+@media( max-width: 870px )
 {
   .navbar-header
   {
