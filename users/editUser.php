@@ -7,7 +7,7 @@
 ?>
 
 <!-- Add User button -->
-<button id="addUserButton" class="btn btn-default btn-sm pull-right" onclick="initAdd()" data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false style="display:none" >
+<button id="addUserButton" class="btn btn-default btn-sm pull-right" onclick="initAddUserDialog()" data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false style="display:none" >
   <span class="glyphicon glyphicon-plus"></span> Add User
 </button>
 
@@ -62,7 +62,7 @@
   $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
   $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
 
-  function initAdd()
+  function initAddUserDialog()
   {
     g_sAction = 'add';
     g_sUsername = '';
@@ -87,7 +87,7 @@
     getAllFacilities();
   }
 
-  function initUpdate( sUsername )
+  function initUpdateUserDialog( sUsername )
   {
     g_sAction = 'update';
     g_sUsername = sUsername;

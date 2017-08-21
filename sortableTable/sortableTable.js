@@ -124,7 +124,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
               case 'update':
                 var sUsername = sCell;
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="initUpdate('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initUpdateUserDialog('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
@@ -133,7 +133,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
               case 'remove':
                 var sUsername = sCell;
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="initConfirmRemove('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#removeUserDialog" data-backdrop="static" >';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initConfirmRemoveUserDialog('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'"  data-toggle="modal" data-target="#removeUserDialog" data-backdrop="static" >';
                 sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';

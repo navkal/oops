@@ -36,7 +36,7 @@
 
 <script>
   var g_sUsername = null;
-  function initConfirmRemove( sUsername )
+  function initConfirmRemoveUserDialog( sUsername )
   {
     g_sUsername = sUsername;
     $( '#removeUsername' ).val( g_sUsername );
