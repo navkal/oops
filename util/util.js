@@ -247,6 +247,20 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  update_location:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'update',
+    formatButtonAttributes:
+      function( sLocationId )
+      {
+        return ' onclick="alert('+"'"+sLocationId+"'"+')" title="Update Location" data-target="#editLocationDialog" ';
+      },
+    displayIndex: displayIndex ++
+  },
   update_user:
   {
     label: "Update",

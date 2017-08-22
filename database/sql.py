@@ -394,7 +394,7 @@ class search:
 
 
 class sortableTable:
-    def __init__(self, object_type, enterprise, facility):
+    def __init__(self, object_type, user_role, enterprise, facility):
         open_database( enterprise )
 
         if object_type == 'activity':
@@ -493,7 +493,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = location( row=obj, facility=facility )
+                row = location( row=obj, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
 
         else:
@@ -511,7 +511,7 @@ class sortableTable:
 
 
 class location:
-    def __init__(self,id=None,row=None, facility=None):
+    def __init__(self, id=None, row=None, facility=None, user_role=None):
         if not row:
             cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (id,))
             row = cur.fetchone()
@@ -533,6 +533,9 @@ class location:
 
         cur.execute('SELECT COUNT(*) FROM ' + facility + 'CircuitObject WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
         self.circuits = cur.fetchone()[0]
+
+        if user_role == 'Technician':
+            self.update_location = self.id
 
 
 class sortableTableRow:
