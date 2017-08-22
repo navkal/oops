@@ -7,5 +7,6 @@
 <script>
   g_sSortableTableTitle = 'Locations';
   g_sSortableTableType = 'location';
+  g_bShowAddLocationButton = '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>';
   $( document ).ready( getSortableTable );
 </script>

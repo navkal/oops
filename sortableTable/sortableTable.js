@@ -4,6 +4,7 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bSortDescending = false;
+var g_bShowAddLocationButton = false;
 var g_bShowAddUserButton = false;
 
 // Retrieve sortable table from backend
@@ -12,10 +13,14 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
+  if ( g_bShowAddLocationButton )
+  {
+    $( '#addLocationButton' ).show();
+  }
+
   if ( g_bShowAddUserButton )
   {
     $( '#addUserButton' ).show();
-    $( '#tableTop' ).css( 'padding-bottom', '25px' );
   }
 
   // Set wait cursor
