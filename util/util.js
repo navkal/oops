@@ -254,6 +254,11 @@ var g_tPropertyRules =
     showInSortableTable: true,
     columnType: 'control',
     controlType: 'update',
+    formatButtonAttributes:
+      function( sUsername )
+      {
+        return ' onclick="initUpdateUserDialog('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'" data-target="#editUserDialog" ';
+      },
     displayIndex: displayIndex ++
   },
   remove_user:
@@ -263,6 +268,11 @@ var g_tPropertyRules =
     showInSortableTable: true,
     columnType: 'control',
     controlType: 'remove',
+    formatButtonAttributes:
+      function( sUsername )
+      {
+        return ' onclick="initConfirmRemoveUserDialog('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'" data-target="#removeUserDialog" ';
+      },
     displayIndex: displayIndex ++
   },
   parent_path:
