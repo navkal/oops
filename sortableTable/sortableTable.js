@@ -110,7 +110,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
           if ( tRule.columnType == 'control' )
           {
-            // Perform special rendering for UI controls
+            // Save the original cell value
+            var sCellValue = sCell;
+
+            // Perform special cell rendering for UI controls
             switch ( tRule.controlType )
             {
               case 'image':
@@ -122,18 +125,16 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 break;
 
               case 'update':
-                var sUsername = sCell;
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs"' + tRule.formatButtonAttributes( sUsername ) + ' data-toggle="modal" data-backdrop="static" data-keyboard=false>';
+                sCell += '<button class="btn btn-link btn-xs"' + tRule.formatButtonAttributes( sCellValue ) + ' data-toggle="modal" data-backdrop="static" data-keyboard=false>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
                 break;
 
               case 'remove':
-                var sUsername = sCell;
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" ' + tRule.formatButtonAttributes( sUsername ) + ' data-toggle="modal" data-backdrop="static" >';
+                sCell += '<button class="btn btn-link btn-xs" ' + tRule.formatButtonAttributes( sCellValue ) + ' data-toggle="modal" data-backdrop="static" >';
                 sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
