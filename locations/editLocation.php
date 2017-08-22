@@ -5,7 +5,7 @@
 ?>
 
 <!-- Add Location button -->
-<button id="addLocationButton" class="btn btn-default btn-sm pull-right" onclick="alert('add location')" data-toggle="modal" data-target="#editLocationDialog" data-backdrop="static" data-keyboard=false style="display:none" >
+<button id="addLocationButton" class="btn btn-default btn-sm pull-right" onclick="initAddLocationDialog()" data-toggle="modal" data-target="#editLocationDialog" data-backdrop="static" data-keyboard=false style="display:none" >
   <span class="glyphicon glyphicon-plus"></span> Add Location
 </button>
 
@@ -47,3 +47,82 @@
   </div>
 </div>
 
+
+<script>
+  var g_sAction = null;
+  var g_sSubmitLabel = null;
+
+
+  var g_fnSubmitLocationDone = null;
+  var g_bDoValidation = null;
+
+  $( '#editLocationDialog' ).on( 'show.bs.modal', onShow );
+  $( '#editLocationDialog' ).on( 'shown.bs.modal', onShown );
+
+  function initAddLocationDialog()
+  {
+    g_sAction = 'add';
+    g_sSubmitLabel = 'Add Location';
+  }
+
+  function initUpdateLocationDialog( sLocationId )
+  {
+    g_sAction = 'update';
+    g_sSubmitLabel = 'Update Location';
+
+    var iRow = 0;
+    var tRow = null;
+    do
+    {
+      tRow = g_aSortableTableRows[iRow];
+      iRow ++
+    }
+    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sLocationId ) );
+    
+    console.log( tRow );
+  }
+
+  function onShow()
+  {
+    // Initialize input fields
+
+
+
+    $( '#editLocationLabel' ).text( g_sSubmitLabel );
+    $( '#submit' ).text( g_sSubmitLabel );
+
+    // Clear messages
+    clearMessages();
+  }
+
+  function onShown()
+  {
+    $( '#' + g_sFocusId ).focus();
+  }
+
+  function addDone( tRsp, sStatus, tJqXhr )
+  {
+    if ( tRsp.unique )
+    {
+      location.reload();
+    }
+    else
+    {
+      var aMessages = [ "Location '" + tRsp.id + "' is not available." ];
+      showMessages( aMessages );
+    }
+  }
+
+  function updateDone( tRsp, sStatus, tJqXhr )
+  {
+    if ( tRsp.location.messages.length == 0 )
+    {
+      location.reload();
+    }
+    else
+    {
+      // Show error messages
+      showMessages( tRsp.location.messages );
+    }
+  }
+</script>

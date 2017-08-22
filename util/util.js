@@ -257,7 +257,7 @@ var g_tPropertyRules =
     formatButtonAttributes:
       function( sLocationId )
       {
-        return ' onclick="alert('+"'"+sLocationId+"'"+')" title="Update Location" data-target="#editLocationDialog" ';
+        return ' onclick="initUpdateLocationDialog('+"'"+sLocationId+"'"+')" title="Update Location" data-target="#editLocationDialog" ';
       },
     displayIndex: displayIndex ++
   },
