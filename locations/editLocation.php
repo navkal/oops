@@ -22,9 +22,9 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editLocationForm" class="form-horizontal" onsubmit="onSubmitLocation(event); return false;" >
               <div class="form-group">
-                <label for="moooooooooooo"></label>
+                <label for="location">Location</label>
                 <div>
-                  <input type="text" class="form-control" id="moooooooooooo" maxlength="000000001" value="THIS IS A STUB">
+                  <input type="text" class="form-control" id="location" maxlength="10">
                 </div>
               </div>
             </form>
@@ -52,9 +52,7 @@
   var g_sAction = null;
   var g_sSubmitLabel = null;
 
-
-  var g_fnSubmitLocationDone = null;
-  var g_bDoValidation = null;
+  var g_sLocation = null;
 
   $( '#editLocationDialog' ).on( 'show.bs.modal', onShow );
   $( '#editLocationDialog' ).on( 'shown.bs.modal', onShown );
@@ -78,16 +76,20 @@
       iRow ++
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sLocationId ) );
-    
+
+    g_sLocation = tRow.loc_new;
+
     console.log( tRow );
   }
 
   function onShow()
   {
     // Initialize input fields
+    $( '#location' ).val( g_sLocation );
 
 
 
+    // Label dialog and submit button
     $( '#editLocationLabel' ).text( g_sSubmitLabel );
     $( '#submit' ).text( g_sSubmitLabel );
 
@@ -97,7 +99,7 @@
 
   function onShown()
   {
-    $( '#' + g_sFocusId ).focus();
+    $( '#editLocationDialog input:first-of-type' ).focus();
   }
 
   function addDone( tRsp, sStatus, tJqXhr )
