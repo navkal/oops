@@ -343,6 +343,28 @@ function comparePropertyIndex( sLabel1, sLabel2 )
 };
 
 
+// Make labels for Add and Update input forms
+function makeFormLabels( aFields )
+{
+  for ( var iField = 0; iField < aFields.length; iField ++ )
+  {
+    var tField = aFields[iField];
+    var sKey = tField.id;
+    var tRule = g_tPropertyRules[sKey];
+
+    // If there is a rule for this element,
+    if ( tRule )
+    {
+      var sLabel = tRule.label;
+      $( 'label[for=' + sKey + ']' ).text( sLabel );
+      if ( tField.tagName.toLowerCase() == 'input' )
+      {
+        $( tField ).attr( 'placeholder', sLabel );
+      }
+    }
+  }
+}
+
 var g_aImageWindows = [];
 
 function openImageWindow( tEvent )

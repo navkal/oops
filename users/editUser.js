@@ -6,25 +6,7 @@ resetChangeHandler();
 // Initialize field labels (etc.)
 function formatLabels( nLabelColumnWidth )
 {
-  var aFields = $( '.form-control,.list-unstyled', '#editUserForm' );
-
-  for ( var iField = 0; iField < aFields.length; iField ++ )
-  {
-    var tField = aFields[iField];
-    var sKey = tField.id;
-    var tRule = g_tPropertyRules[sKey];
-
-    // If there is a rule for this element,
-    if ( tRule )
-    {
-      var sLabel = tRule.label;
-      $( 'label[for=' + sKey + ']' ).text( sLabel );
-      if ( tField.tagName.toLowerCase() == 'input' )
-      {
-        $( tField ).attr( 'placeholder', sLabel );
-      }
-    }
-  }
+  makeFormLabels( $( '.form-control,.list-unstyled', '#editUserForm' ) );
 
   // Set up display of password/confirm fields
   if ( g_sUsername == JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user']['username'] )

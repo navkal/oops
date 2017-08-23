@@ -22,15 +22,21 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editLocationForm" class="form-horizontal" onsubmit="onSubmitLocation(event); return false;" >
               <div class="form-group">
-                <label for="location">Location</label>
+                <label for="loc_new"></label>
                 <div>
-                  <input type="text" class="form-control" id="location" maxlength="10">
+                  <input type="text" class="form-control" id="loc_new" maxlength="10">
                 </div>
               </div>
               <div class="form-group">
-                <label for="oldLocation">Old Location</label>
+                <label for="loc_old"></label>
                 <div>
-                  <input type="text" class="form-control" id="oldLocation" maxlength="10">
+                  <input type="text" class="form-control" id="loc_old" maxlength="10">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="loc_descr" ></label>
+                <div>
+                  <textarea class="form-control" id="loc_descr" maxlength="512" ></textarea>
                 </div>
               </div>
             </form>
@@ -60,18 +66,40 @@
 
   var g_sLocation = null;
   var g_sOldLocation = null;
+  var g_sDescription = null;
 
   $( '#editLocationDialog' ).on( 'show.bs.modal', onShow );
   $( '#editLocationDialog' ).on( 'shown.bs.modal', onShown );
 
+  function initLocationDialog()
+  {
+    makeFormLabels( $( '.form-control', '#editLocationForm' ) );
+
+    // Turn off autocomplete
+    $( 'input', '#editLocationForm' ).attr( 'autocomplete', 'off' );
+
+    // Customize responsive layout
+    var nLabelColumnWidth = 3;
+    $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
+    $( '.form-control', '#editLocationForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+  }
+
   function initAddLocationDialog()
   {
+    initLocationDialog();
+
     g_sAction = 'add';
     g_sSubmitLabel = 'Add Location';
+
+    g_sLocation = '';
+    g_sOldLocation = '';
+    g_sDescription = '';
   }
 
   function initUpdateLocationDialog( sLocationId )
   {
+    initLocationDialog();
+
     g_sAction = 'update';
     g_sSubmitLabel = 'Update Location';
 
@@ -86,17 +114,15 @@
 
     g_sLocation = tRow.loc_new;
     g_sOldLocation = tRow.loc_old;
-
-    console.log( tRow );
+    g_sDescription = tRow.loc_descr;
   }
 
   function onShow()
   {
     // Initialize input fields
-    $( '#location' ).val( g_sLocation );
-    $( '#oldLocation' ).val( g_sOldLocation );
-
-
+    $( '#loc_new' ).val( g_sLocation );
+    $( '#loc_old' ).val( g_sOldLocation );
+    $( '#loc_descr' ).val( g_sDescription );
 
     // Label dialog and submit button
     $( '#editLocationLabel' ).text( g_sSubmitLabel );
