@@ -4,8 +4,7 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bSortDescending = false;
-var g_bShowAddLocationButton = false;
-var g_bShowAddUserButton = false;
+var g_sAddButtonName = null;
 
 // Retrieve sortable table from backend
 function getSortableTable()
@@ -13,14 +12,13 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
-  if ( g_bShowAddLocationButton )
+  if ( g_sAddButtonName )
   {
-    $( '#addLocationButton' ).show();
-  }
-
-  if ( g_bShowAddUserButton )
-  {
-    $( '#addUserButton' ).show();
+    var tAddButton = $( '#addSortableTableRowButton' );
+    tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sAddButtonName );
+    tAddButton.click( eval( 'initAdd' + g_sAddButtonName + 'Dialog' ) );
+    tAddButton.attr( 'data-target', '#edit' + g_sAddButtonName + 'Dialog' );
+    tAddButton.show();
   }
 
   // Set wait cursor
