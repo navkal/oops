@@ -6,11 +6,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/users/passwordRules.php";
 ?>
 
-<!-- Add User button -->
-<button id="addUserButton" class="btn btn-default btn-sm pull-right" onclick="initAddUserDialog()" data-toggle="modal" data-target="#editUserDialog" data-backdrop="static" data-keyboard=false style="display:none" >
-  <span class="glyphicon glyphicon-plus"></span> Add User
-</button>
-
 <!-- Edit User dialog -->
 <div class="modal fade" id="editUserDialog" tabindex="-1" role="dialog" aria-labelledby="editUserLabel">
   <div class="modal-dialog modal-lg" role="document">

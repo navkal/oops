@@ -4,11 +4,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
 ?>
 
-<!-- Add Location button -->
-<button id="addLocationButton" class="btn btn-default btn-sm pull-right" onclick="initAddLocationDialog()" data-toggle="modal" data-target="#editLocationDialog" data-backdrop="static" data-keyboard=false style="display:none" >
-  <span class="glyphicon glyphicon-plus"></span> Add Location
-</button>
-
 <!-- Edit Location dialog -->
 <div class="modal fade" id="editLocationDialog" tabindex="-1" role="dialog" aria-labelledby="editLocationLabel">
   <div class="modal-dialog modal-lg" role="document">
