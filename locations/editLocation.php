@@ -27,6 +27,12 @@
                   <input type="text" class="form-control" id="location" maxlength="10">
                 </div>
               </div>
+              <div class="form-group">
+                <label for="oldLocation">Old Location</label>
+                <div>
+                  <input type="text" class="form-control" id="oldLocation" maxlength="10">
+                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -53,6 +59,7 @@
   var g_sSubmitLabel = null;
 
   var g_sLocation = null;
+  var g_sOldLocation = null;
 
   $( '#editLocationDialog' ).on( 'show.bs.modal', onShow );
   $( '#editLocationDialog' ).on( 'shown.bs.modal', onShown );
@@ -78,6 +85,7 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sLocationId ) );
 
     g_sLocation = tRow.loc_new;
+    g_sOldLocation = tRow.loc_old;
 
     console.log( tRow );
   }
@@ -86,6 +94,7 @@
   {
     // Initialize input fields
     $( '#location' ).val( g_sLocation );
+    $( '#oldLocation' ).val( g_sOldLocation );
 
 
 
