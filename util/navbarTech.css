@@ -32,12 +32,15 @@
 
   .navbar-collapse.collapse
   {
-    display: none!important;
+    display: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    max-height: 300px !important;
   }
 
   .navbar-nav
   {
-    float: none!important;
+    float: none !important;
     margin-top: 7.5px;
   }
 
