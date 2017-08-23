@@ -59,8 +59,8 @@
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
-  $( '#editUserDialog' ).on( 'show.bs.modal', onShow );
-  $( '#editUserDialog' ).on( 'shown.bs.modal', onShown );
+  $( '#editUserDialog' ).on( 'show.bs.modal', onShowUserDialog );
+  $( '#editUserDialog' ).on( 'shown.bs.modal', onShownUserDialog );
 
   function initAddUserDialog()
   {
@@ -82,7 +82,7 @@
 
     g_bUsernameDisabled = false;
     g_bDoValidation = true;
-    g_fnSubmitUserDone = addDone;
+    g_fnSubmitUserDone = addUserDone;
 
     getAllFacilities();
   }
@@ -116,7 +116,7 @@
     g_tAuthFacilities = tRow.facilities_maps;
 
     g_bDoValidation = false;
-    g_fnSubmitUserDone = updateDone;
+    g_fnSubmitUserDone = updateUserDone;
 
     if ( g_sRole != 'Administrator' )
     {
@@ -128,7 +128,7 @@
     }
   }
 
-  function onShow()
+  function onShowUserDialog()
   {
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
@@ -170,12 +170,12 @@
     clearMessages();
   }
 
-  function onShown()
+  function onShownUserDialog()
   {
     $( '#' + g_sFocusId ).focus();
   }
 
-  function addDone( tRsp, sStatus, tJqXhr )
+  function addUserDone( tRsp, sStatus, tJqXhr )
   {
     if ( tRsp.unique )
     {
@@ -188,7 +188,7 @@
     }
   }
 
-  function updateDone( tRsp, sStatus, tJqXhr )
+  function updateUserDone( tRsp, sStatus, tJqXhr )
   {
     if ( tRsp.user.messages.length == 0 )
     {

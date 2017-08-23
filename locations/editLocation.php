@@ -68,8 +68,8 @@
   var g_sOldLocation = null;
   var g_sDescription = null;
 
-  $( '#editLocationDialog' ).on( 'show.bs.modal', onShow );
-  $( '#editLocationDialog' ).on( 'shown.bs.modal', onShown );
+  $( '#editLocationDialog' ).on( 'show.bs.modal', onShowLocationDialog );
+  $( '#editLocationDialog' ).on( 'shown.bs.modal', onShownLocationDialog );
 
   function initLocationDialog()
   {
@@ -117,7 +117,7 @@
     g_sDescription = tRow.loc_descr;
   }
 
-  function onShow()
+  function onShowLocationDialog()
   {
     // Initialize input fields
     $( '#loc_new' ).val( g_sLocation );
@@ -132,34 +132,8 @@
     clearMessages();
   }
 
-  function onShown()
+  function onShownLocationDialog()
   {
-    $( '#editLocationDialog input:first-of-type' ).focus();
-  }
-
-  function addDone( tRsp, sStatus, tJqXhr )
-  {
-    if ( tRsp.unique )
-    {
-      location.reload();
-    }
-    else
-    {
-      var aMessages = [ "Location '" + tRsp.id + "' is not available." ];
-      showMessages( aMessages );
-    }
-  }
-
-  function updateDone( tRsp, sStatus, tJqXhr )
-  {
-    if ( tRsp.location.messages.length == 0 )
-    {
-      location.reload();
-    }
-    else
-    {
-      // Show error messages
-      showMessages( tRsp.location.messages );
-    }
+    $( '#loc_new' ).focus();
   }
 </script>
