@@ -54,9 +54,6 @@
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
-  $( '#editUserDialog' ).on( 'show.bs.modal', onShowUserDialog );
-  $( '#editUserDialog' ).on( 'shown.bs.modal', onShownUserDialog );
-
   function initAddUserDialog()
   {
     g_sAction = 'add';

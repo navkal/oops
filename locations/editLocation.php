@@ -63,9 +63,6 @@
   var g_sOldLocation = null;
   var g_sDescription = null;
 
-  $( '#editLocationDialog' ).on( 'show.bs.modal', onShowLocationDialog );
-  $( '#editLocationDialog' ).on( 'shown.bs.modal', onShownLocationDialog );
-
   function initLocationDialog()
   {
     makeFormLabels( $( '.form-control', '#editLocationForm' ) );
