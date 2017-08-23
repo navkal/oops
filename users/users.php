@@ -7,6 +7,6 @@
 <script>
   g_sSortableTableTitle = 'Users';
   g_sSortableTableType = 'user';
-  g_sAddButtonName = "User";
+  g_sSortableTableObjectName = "User";
   $( document ).ready( getSortableTable );
 </script>

@@ -4,7 +4,7 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bSortDescending = false;
-var g_sAddButtonName = null;
+var g_sSortableTableObjectName = null;
 
 // Retrieve sortable table from backend
 function getSortableTable()
@@ -12,17 +12,17 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
-  if ( g_sAddButtonName )
+  if ( g_sSortableTableObjectName )
   {
     // Set modal event handlers
-    var sSelector = '#edit' + g_sAddButtonName + 'Dialog'
-    $( sSelector ).on( 'show.bs.modal', eval( 'onShow' + g_sAddButtonName + 'Dialog' ) );
-    $( sSelector ).on( 'shown.bs.modal', eval( 'onShown' + g_sAddButtonName + 'Dialog' ) );
+    var sSelector = '#edit' + g_sSortableTableObjectName + 'Dialog'
+    $( sSelector ).on( 'show.bs.modal', eval( 'onShow' + g_sSortableTableObjectName + 'Dialog' ) );
+    $( sSelector ).on( 'shown.bs.modal', eval( 'onShown' + g_sSortableTableObjectName + 'Dialog' ) );
 
     // Customize the button
     var tAddButton = $( '#addSortableTableRowButton' );
-    tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sAddButtonName );
-    tAddButton.click( eval( 'initAdd' + g_sAddButtonName + 'Dialog' ) );
+    tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sSortableTableObjectName );
+    tAddButton.click( eval( 'initAdd' + g_sSortableTableObjectName + 'Dialog' ) );
     tAddButton.attr( 'data-target', sSelector );
     tAddButton.show();
   }
