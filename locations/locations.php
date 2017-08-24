@@ -10,7 +10,7 @@
   g_sSortableTableType = 'location';
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
-    g_sSortableTableObjectName = "Location";
+    g_sSortableTableEditWhat = "Location";
   }
 
   $( document ).ready( getSortableTable );

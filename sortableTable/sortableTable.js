@@ -4,7 +4,7 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_bSortDescending = false;
-var g_sSortableTableObjectName = null;
+var g_sSortableTableEditWhat = null;
 
 // Retrieve sortable table from backend
 function getSortableTable()
@@ -12,16 +12,17 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
-  if ( g_sSortableTableObjectName )
+  // Initialize optional editing
+  if ( g_sSortableTableEditWhat )
   {
     // Set modal event handlers
-    var sSelector = '#editDialog'
-    $( sSelector ).on( 'show.bs.modal', onShowEditDialog );
-    $( sSelector ).on( 'shown.bs.modal', onShownEditDialog );
+    var tEditDialog = $( '#editDialog ' );
+    tEditDialog.on( 'show.bs.modal', onShowEditDialog );
+    tEditDialog.on( 'shown.bs.modal', onShownEditDialog );
 
-    // Customize the button
+    // Customize and show the Add button
     var tAddButton = $( '#sortableTableAddButton' );
-    tAddButton.append( g_sSortableTableObjectName );
+    tAddButton.append( g_sSortableTableEditWhat );
     tAddButton.show();
   }
 

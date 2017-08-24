@@ -9,6 +9,6 @@
 <script>
   g_sSortableTableTitle = 'Users';
   g_sSortableTableType = 'user';
-  g_sSortableTableObjectName = "User";
+  g_sSortableTableEditWhat = "User";
   $( document ).ready( getSortableTable );
 </script>
