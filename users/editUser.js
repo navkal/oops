@@ -99,13 +99,13 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
   $( '#auth_facilities' ).html( sHtml );
 
   // Reset the change handler
-  resetChangeHandler()
+  resetChangeHandler();
 }
 
 function clearAllFacilities()
 {
   $( '#auth_facilities' ).html( '' );
-  resetChangeHandler()
+  resetChangeHandler();
 }
 
 function resetChangeHandler()
