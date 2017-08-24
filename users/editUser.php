@@ -54,7 +54,7 @@
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
-  function initAddUserDialog()
+  function initAdd()
   {
     g_sAction = 'add';
     g_sUsername = '';

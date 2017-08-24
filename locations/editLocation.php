@@ -76,7 +76,7 @@
     $( '.form-control', '#editLocationForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
   }
 
-  function initAddLocationDialog()
+  function initAdd()
   {
     initLocationDialog();
 
