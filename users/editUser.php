@@ -54,7 +54,7 @@
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
-  function initAdd()
+  function initAddDialog()
   {
     g_sAction = 'add';
     g_sUsername = '';
@@ -79,7 +79,7 @@
     getAllFacilities();
   }
 
-  function initUpdate( sUsername )
+  function initUpdateDialog( sUsername )
   {
     g_sAction = 'update';
     g_sUsername = sUsername;
@@ -120,7 +120,7 @@
     }
   }
 
-  function onShowUserDialog()
+  function onShowEditDialog()
   {
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
@@ -162,7 +162,7 @@
     clearMessages();
   }
 
-  function onShownUserDialog()
+  function onShownEditDialog()
   {
     $( '#' + g_sFocusId ).focus();
   }

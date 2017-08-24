@@ -16,13 +16,13 @@ function getSortableTable()
   {
     // Set modal event handlers
     var sSelector = '#edit' + g_sSortableTableObjectName + 'Dialog'
-    $( sSelector ).on( 'show.bs.modal', eval( 'onShow' + g_sSortableTableObjectName + 'Dialog' ) );
-    $( sSelector ).on( 'shown.bs.modal', eval( 'onShown' + g_sSortableTableObjectName + 'Dialog' ) );
+    $( sSelector ).on( 'show.bs.modal', onShowEditDialog );
+    $( sSelector ).on( 'shown.bs.modal', onShownEditDialog );
 
     // Customize the button
     var tAddButton = $( '#sortableTableAddButton' );
     tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sSortableTableObjectName );
-    tAddButton.click( initAdd );
+    tAddButton.click( initAddDialog );
     tAddButton.attr( 'data-target', sSelector );
     tAddButton.show();
   }

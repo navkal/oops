@@ -76,7 +76,7 @@
     $( '.form-control', '#editLocationForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
   }
 
-  function initAdd()
+  function initAddDialog()
   {
     initLocationDialog();
 
@@ -88,7 +88,7 @@
     g_sDescription = '';
   }
 
-  function initUpdate( sLocationId )
+  function initUpdateDialog( sLocationId )
   {
     initLocationDialog();
 
@@ -109,7 +109,7 @@
     g_sDescription = tRow.loc_descr;
   }
 
-  function onShowLocationDialog()
+  function onShowEditDialog()
   {
     // Initialize input fields
     $( '#loc_new' ).val( g_sLocation );
@@ -124,7 +124,7 @@
     clearMessages();
   }
 
-  function onShownLocationDialog()
+  function onShownEditDialog()
   {
     $( '#loc_new' ).focus();
   }
