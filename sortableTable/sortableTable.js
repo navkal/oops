@@ -20,7 +20,7 @@ function getSortableTable()
     $( sSelector ).on( 'shown.bs.modal', eval( 'onShown' + g_sSortableTableObjectName + 'Dialog' ) );
 
     // Customize the button
-    var tAddButton = $( '#addSortableTableRowButton' );
+    var tAddButton = $( '#sortableTableAddButton' );
     tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sSortableTableObjectName );
     tAddButton.click( eval( 'initAdd' + g_sSortableTableObjectName + 'Dialog' ) );
     tAddButton.attr( 'data-target', sSelector );

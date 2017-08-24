@@ -31,7 +31,7 @@
     <span id="sortableTableTitle" class="h4"></span>
 
     <!-- Add button -->
-    <button id="addSortableTableRowButton" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-backdrop="static" data-keyboard=false style="display:none" >
+    <button id="sortableTableAddButton" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-backdrop="static" data-keyboard=false style="display:none" >
     </button>
     <br/>
 
