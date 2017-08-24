@@ -23,7 +23,6 @@ function getSortableTable()
     var tAddButton = $( '#sortableTableAddButton' );
     tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sSortableTableObjectName );
     tAddButton.click( initAddDialog );
-    tAddButton.attr( 'data-target', sSelector );
     tAddButton.show();
   }
 
