@@ -41,7 +41,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button id="submitLocation" type="submit" class="btn btn-primary" form="editLocationForm" ></button>
+          <button id="editDialogSubmit" type="submit" class="btn btn-primary" form="editLocationForm" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
@@ -118,7 +118,7 @@
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#submitLocation' ).text( g_sSubmitLabel );
+    $( '#editDialogSubmit' ).text( g_sSubmitLabel );
 
     // Clear messages
     clearMessages();
