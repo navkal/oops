@@ -257,7 +257,7 @@ var g_tPropertyRules =
     formatButtonAttributes:
       function( sLocationId )
       {
-        return ' onclick="initUpdateDialog('+"'"+sLocationId+"'"+')" title="Update Location" data-target="#editDialog" ';
+        return ' onclick="initUpdateDialog('+"'"+sLocationId+"'"+')" title="Update Location" ';
       },
     displayIndex: displayIndex ++
   },
@@ -271,7 +271,7 @@ var g_tPropertyRules =
     formatButtonAttributes:
       function( sUsername )
       {
-        return ' onclick="initUpdateDialog('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'" data-target="#editDialog" ';
+        return ' onclick="initUpdateDialog('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'" ';
       },
     displayIndex: displayIndex ++
   },
