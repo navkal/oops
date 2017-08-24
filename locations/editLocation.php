@@ -15,7 +15,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitLocation(event); return false;" >
+            <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
                 <label for="loc_new"></label>
                 <div>
@@ -128,4 +128,10 @@
   {
     $( '#loc_new' ).focus();
   }
+
+  function onSubmitEditDialog()
+  {
+    alert( 'submit' );
+  }
+
 </script>
