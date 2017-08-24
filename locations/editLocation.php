@@ -5,12 +5,12 @@
 ?>
 
 <!-- Edit Location dialog -->
-<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editLocationLabel">
+<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogTitle">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></span></button>
-        <h4 class="modal-title" id="editLocationLabel"></h4>
+        <h4 class="modal-title" id="editDialogTitle"></h4>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -117,7 +117,7 @@
     $( '#loc_descr' ).val( g_sDescription );
 
     // Label dialog and submit button
-    $( '#editLocationLabel' ).text( g_sSubmitLabel );
+    $( '#editDialogTitle' ).text( g_sSubmitLabel );
     $( '#submitLocation' ).text( g_sSubmitLabel );
 
     // Clear messages
