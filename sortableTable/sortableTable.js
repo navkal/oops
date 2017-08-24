@@ -21,8 +21,7 @@ function getSortableTable()
 
     // Customize the button
     var tAddButton = $( '#sortableTableAddButton' );
-    tAddButton.html( '<span class="glyphicon glyphicon-plus"></span> Add ' + g_sSortableTableObjectName );
-    tAddButton.click( initAddDialog );
+    tAddButton.append( g_sSortableTableObjectName );
     tAddButton.show();
   }
 

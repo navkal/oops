@@ -31,7 +31,8 @@
     <span id="sortableTableTitle" class="h4"></span>
 
     <!-- Add button -->
-    <button id="sortableTableAddButton" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-backdrop="static" data-target="#editDialog" style="display:none" >
+    <button id="sortableTableAddButton" class="btn btn-default btn-sm pull-right" onclick="initAddDialog()" data-toggle="modal" data-backdrop="static" data-target="#editDialog" style="display:none" >
+      <span class="glyphicon glyphicon-plus"></span> Add
     </button>
     <br/>
 
