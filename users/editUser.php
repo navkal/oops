@@ -7,7 +7,7 @@
 ?>
 
 <!-- Edit User dialog -->
-<div class="modal fade" id="editUserDialog" tabindex="-1" role="dialog" aria-labelledby="editUserLabel">
+<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editUserLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">

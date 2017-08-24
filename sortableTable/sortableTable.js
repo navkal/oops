@@ -15,7 +15,7 @@ function getSortableTable()
   if ( g_sSortableTableObjectName )
   {
     // Set modal event handlers
-    var sSelector = '#edit' + g_sSortableTableObjectName + 'Dialog'
+    var sSelector = '#editDialog'
     $( sSelector ).on( 'show.bs.modal', onShowEditDialog );
     $( sSelector ).on( 'shown.bs.modal', onShownEditDialog );
 
