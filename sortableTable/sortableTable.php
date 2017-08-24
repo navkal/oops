@@ -26,18 +26,16 @@
 
 <div class="container-fluid">
   <div id="tableTop" style="padding-bottom:15px" >
+
+    <!-- Title -->
     <span id="sortableTableTitle" class="h4"></span>
 
     <!-- Add button -->
     <button id="addSortableTableRowButton" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-backdrop="static" data-keyboard=false style="display:none" >
     </button>
-
-    <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/locations/editLocation.php";
-      require_once $_SERVER["DOCUMENT_ROOT"]."/users/editUser.php";
-      require_once $_SERVER["DOCUMENT_ROOT"]."/users/confirmRemoveUser.php";
-    ?>
     <br/>
+
+    <!-- Subtitle -->
     <small id="sortableTableSubtitle"></small>
   </div>
 
