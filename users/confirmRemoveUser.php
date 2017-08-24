@@ -5,7 +5,7 @@
 ?>
 
 <!-- Confirm Remove User dialog -->
-<div class="modal fade" id="removeUserDialog" tabindex="-1" role="dialog" aria-labelledby="removeUserLabel">
+<div class="modal fade" id="removeDialog" tabindex="-1" role="dialog" aria-labelledby="removeUserLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -36,13 +36,13 @@
 
 <script>
   var g_sUsername = null;
-  function initConfirmRemoveUserDialog( sUsername )
+  function initRemoveDialog( sUsername )
   {
     g_sUsername = sUsername;
     $( '#removeUsername' ).val( g_sUsername );
   }
 
-  $( '#removeUserDialog' ).on( 'shown.bs.modal', initUsername );
+  $( '#removeDialog' ).on( 'shown.bs.modal', initUsername );
   function initUsername()
   {
     $( '#removeUsername' ).focus();

@@ -285,7 +285,7 @@ var g_tPropertyRules =
     formatButtonAttributes:
       function( sUsername )
       {
-        return ' onclick="initConfirmRemoveUserDialog('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'" data-target="#removeUserDialog" ';
+        return ' onclick="initRemoveDialog('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'" ';
       },
     displayIndex: displayIndex ++
   },
