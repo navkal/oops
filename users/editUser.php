@@ -79,7 +79,7 @@
     getAllFacilities();
   }
 
-  function initUpdateUserDialog( sUsername )
+  function initUpdate( sUsername )
   {
     g_sAction = 'update';
     g_sUsername = sUsername;

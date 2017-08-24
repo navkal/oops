@@ -88,7 +88,7 @@
     g_sDescription = '';
   }
 
-  function initUpdateLocationDialog( sLocationId )
+  function initUpdate( sLocationId )
   {
     initLocationDialog();
 
