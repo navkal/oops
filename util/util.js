@@ -254,10 +254,10 @@ var g_tPropertyRules =
     showInSortableTable: true,
     columnType: 'control',
     controlType: 'update',
-    formatButtonAttributes:
+    customizeButton:
       function( sLocationId )
       {
-        return ' onclick="initUpdateDialog('+"'"+sLocationId+"'"+')" title="Update Location" ';
+        return ' title="Update Location" ';
       },
     displayIndex: displayIndex ++
   },
@@ -268,10 +268,10 @@ var g_tPropertyRules =
     showInSortableTable: true,
     columnType: 'control',
     controlType: 'update',
-    formatButtonAttributes:
+    customizeButton:
       function( sUsername )
       {
-        return ' onclick="initUpdateDialog('+"'"+sUsername+"'"+')" title="Update '+"'"+sUsername+"'"+'" ';
+        return ' title="Update '+"'"+sUsername+"'"+'" ';
       },
     displayIndex: displayIndex ++
   },
@@ -282,10 +282,10 @@ var g_tPropertyRules =
     showInSortableTable: true,
     columnType: 'control',
     controlType: 'remove',
-    formatButtonAttributes:
+    customizeButton:
       function( sUsername )
       {
-        return ' onclick="initRemoveDialog('+"'"+sUsername+"'"+')" title="Remove '+"'"+sUsername+"'"+'" ';
+        return ' title="Remove '+"'"+sUsername+"'"+'" ';
       },
     displayIndex: displayIndex ++
   },
