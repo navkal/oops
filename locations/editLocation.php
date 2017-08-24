@@ -15,7 +15,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form id="editLocationForm" class="form-horizontal" onsubmit="onSubmitLocation(event); return false;" >
+            <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitLocation(event); return false;" >
               <div class="form-group">
                 <label for="loc_new"></label>
                 <div>
@@ -41,7 +41,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button id="editDialogSubmit" type="submit" class="btn btn-primary" form="editLocationForm" ></button>
+          <button id="editDialogSubmit" type="submit" class="btn btn-primary" form="editDialogForm" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
@@ -65,15 +65,15 @@
 
   function initLocationDialog()
   {
-    makeFormLabels( $( '.form-control', '#editLocationForm' ) );
+    makeFormLabels( $( '.form-control', '#editDialogForm' ) );
 
     // Turn off autocomplete
-    $( 'input', '#editLocationForm' ).attr( 'autocomplete', 'off' );
+    $( 'input', '#editDialogForm' ).attr( 'autocomplete', 'off' );
 
     // Customize responsive layout
     var nLabelColumnWidth = 3;
     $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
-    $( '.form-control', '#editLocationForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+    $( '.form-control', '#editDialogForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
   }
 
   function initAddDialog()
