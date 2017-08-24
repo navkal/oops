@@ -135,7 +135,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'update':
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs"' + tRule.formatButtonAttributes( sCellValue ) + ' data-toggle="modal" data-backdrop="static" data-keyboard=false>';
+                sCell += '<button class="btn btn-link btn-xs"' + tRule.formatButtonAttributes( sCellValue ) + ' data-toggle="modal" data-backdrop="static">';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
