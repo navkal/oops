@@ -131,12 +131,12 @@
 
   function onChangeControl()
   {
-    console.log( 'LOCATION CONTROL CHANGED' );
+    console.log( '==> change' );
   }
 
   function onSubmitEditDialog()
   {
-    alert( 'submit' );
+    console.log( '==> submit' );
   }
 
 </script>

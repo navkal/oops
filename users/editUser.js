@@ -107,7 +107,6 @@ function clearAllFacilities()
 
 function onChangeControl()
 {
-  console.log( 'USER CONTROL CHANGED' );
   g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );
 }
 
