@@ -19,13 +19,13 @@
               <div class="form-group">
                 <label for="loc_new"></label>
                 <div>
-                  <input type="text" class="form-control" id="loc_new" maxlength="10">
+                  <input type="text" class="form-control" id="loc_new" maxlength="50">
                 </div>
               </div>
               <div class="form-group">
                 <label for="loc_old"></label>
                 <div>
-                  <input type="text" class="form-control" id="loc_old" maxlength="10">
+                  <input type="text" class="form-control" id="loc_old" maxlength="50">
                 </div>
               </div>
               <div class="form-group">
