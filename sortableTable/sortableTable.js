@@ -24,6 +24,8 @@ function getSortableTable()
     var tAddButton = $( '#sortableTableAddButton' );
     tAddButton.append( g_sSortableTableEditWhat );
     tAddButton.show();
+
+    resetChangeHandler();
   }
 
   // Set wait cursor

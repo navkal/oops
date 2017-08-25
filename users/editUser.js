@@ -1,7 +1,5 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-// Detect change of input controls
-resetChangeHandler();
 
 // Initialize field labels (etc.)
 function formatLabels( nLabelColumnWidth )
@@ -98,7 +96,6 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
 
   $( '#auth_facilities' ).html( sHtml );
 
-  // Reset the change handler
   resetChangeHandler();
 }
 
@@ -108,14 +105,9 @@ function clearAllFacilities()
   resetChangeHandler();
 }
 
-function resetChangeHandler()
-{
-  $( 'input,select,textarea' ).off( 'change' );
-  $( 'input,select,textarea' ).on( 'change', onChangeControl );
-}
-
 function onChangeControl()
 {
+  console.log( 'USER CONTROL CHANGED' );
   g_bDoValidation = g_bDoValidation || ( g_sAction == 'update' );
 }
 

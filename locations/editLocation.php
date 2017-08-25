@@ -129,6 +129,11 @@
     $( '#loc_new' ).focus();
   }
 
+  function onChangeControl()
+  {
+    console.log( 'LOCATION CONTROL CHANGED' );
+  }
+
   function onSubmitEditDialog()
   {
     alert( 'submit' );

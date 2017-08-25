@@ -342,29 +342,6 @@ function comparePropertyIndex( sLabel1, sLabel2 )
   return idx1 - idx2;
 };
 
-
-// Make labels for Add and Update input forms
-function makeFormLabels( aFields )
-{
-  for ( var iField = 0; iField < aFields.length; iField ++ )
-  {
-    var tField = aFields[iField];
-    var sKey = tField.id;
-    var tRule = g_tPropertyRules[sKey];
-
-    // If there is a rule for this element,
-    if ( tRule )
-    {
-      var sLabel = tRule.label;
-      $( 'label[for=' + sKey + ']' ).text( sLabel );
-      if ( tField.tagName.toLowerCase() == 'input' )
-      {
-        $( tField ).attr( 'placeholder', sLabel );
-      }
-    }
-  }
-}
-
 var g_aImageWindows = [];
 
 function openImageWindow( tEvent )
@@ -440,6 +417,40 @@ function childWindowsClose( aWindows )
 
 // <- <- <- Manage child windows <- <- <-
 
+
+// -> -> -> Edit forms -> -> ->
+
+// Make labels for Add and Update input forms
+function makeFormLabels( aFields )
+{
+  for ( var iField = 0; iField < aFields.length; iField ++ )
+  {
+    var tField = aFields[iField];
+    var sKey = tField.id;
+    var tRule = g_tPropertyRules[sKey];
+
+    // If there is a rule for this element,
+    if ( tRule )
+    {
+      var sLabel = tRule.label;
+      $( 'label[for=' + sKey + ']' ).text( sLabel );
+      if ( tField.tagName.toLowerCase() == 'input' )
+      {
+        $( tField ).attr( 'placeholder', sLabel );
+      }
+    }
+  }
+}
+
+function resetChangeHandler()
+{
+  $( 'input,select,textarea' ).off( 'change' );
+  $( 'input,select,textarea' ).on( 'change', onChangeControl );
+}
+
+// <- <- <- Edit forms <- <- <-
+
+
 // -> -> -> Error messages -> -> ->
 
   function clearMessages()
@@ -485,4 +496,3 @@ function clearWaitCursor()
   $( '#spinner' ).css( 'display', 'none' );
   $( '#content' ).css( 'display', 'block' );
 }
-

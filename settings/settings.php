@@ -74,6 +74,8 @@
 
   function initSettings()
   {
+    resetChangeHandler();
+
     var tUser = JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user'];
 
     g_sAction = 'update';
