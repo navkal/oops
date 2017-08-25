@@ -153,9 +153,9 @@
     }
   }
 
-  function submitEditDialogDone()
+  function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
-    console.log( '=========> DONE' );
+    console.log( '=========> DONE.  rsp=' + JSON.stringify( tRsp ) );
   }
 
 </script>

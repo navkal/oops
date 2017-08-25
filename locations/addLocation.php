@@ -4,6 +4,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
   error_log( "==> post=" . print_r( $_POST, true ) );
+  echo( json_encode( $_POST ) );exit;
 
   // Get attributes
   $sNew = $_POST['loc_new'];
