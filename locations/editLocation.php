@@ -116,9 +116,15 @@
     $( '#loc_new' ).focus();
   }
 
-  function onChangeControl()
+  function onChangeControl( tEvent )
   {
-    console.log( '==> change' );
+    console.log( '==> changed: ' + tEvent.target.id );
+
+    // Trim the value
+    var tControl = $( tEvent.target );
+    tControl.val( tControl.val().trim() );
+
+    // Set flag
     g_bChanged = true;
   }
 
