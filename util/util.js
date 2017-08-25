@@ -420,8 +420,25 @@ function childWindowsClose( aWindows )
 
 // -> -> -> Edit forms -> -> ->
 
+function initEditDialog( sWhat, nLabelColumnWidth )
+{
+  g_bChanged = false;
+  g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + sWhat;
+
+  makeFieldLabels( $( '.form-control', '#editDialogForm' ) );
+
+  // Turn off autocomplete
+  $( 'input', '#editDialogForm' ).attr( 'autocomplete', 'off' );
+
+  // Customize responsive layout
+  nLabelColumnWidth = nLabelColumnWidth || 3;
+  console.log( '======> label col wid=' + nLabelColumnWidth );
+  $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
+  $( '.form-control', '#editDialogForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+}
+
 // Make labels for Add and Update input forms
-function makeFormLabels( aFields )
+function makeFieldLabels( aFields )
 {
   for ( var iField = 0; iField < aFields.length; iField ++ )
   {

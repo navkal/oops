@@ -62,26 +62,12 @@
   var g_sLocation = null;
   var g_sOldLocation = null;
   var g_sDescription = null;
-
-  function initLocationDialog()
-  {
-    makeFormLabels( $( '.form-control', '#editDialogForm' ) );
-
-    // Turn off autocomplete
-    $( 'input', '#editDialogForm' ).attr( 'autocomplete', 'off' );
-
-    // Customize responsive layout
-    var nLabelColumnWidth = 3;
-    $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
-    $( '.form-control', '#editDialogForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
-  }
+  var g_sLocationId = null;
 
   function initAddDialog()
   {
-    initLocationDialog();
-
     g_sAction = 'add';
-    g_sSubmitLabel = 'Add Location';
+    initEditDialog( 'Location' );
 
     g_sLocation = '';
     g_sOldLocation = '';
@@ -90,11 +76,10 @@
 
   function initUpdateDialog( sLocationId )
   {
-    initLocationDialog();
-
     g_sAction = 'update';
-    g_sSubmitLabel = 'Update Location';
+    initEditDialog( 'Location' );
 
+    // Find the selected row
     var iRow = 0;
     var tRow = null;
     do
@@ -104,6 +89,8 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sLocationId ) );
 
+    // Save values of selected row
+    g_sLocationId = tRow.id;
     g_sLocation = tRow.loc_new;
     g_sOldLocation = tRow.loc_old;
     g_sDescription = tRow.loc_descr;
@@ -132,11 +119,43 @@
   function onChangeControl()
   {
     console.log( '==> change' );
+    g_bChanged = true;
   }
 
   function onSubmitEditDialog()
   {
     console.log( '==> submit' );
+
+    if ( g_bChanged )
+    {
+      var tPostData = new FormData();
+      if ( g_sLocationId )
+      {
+        tPostData.append( "id", g_sLocationId );
+      }
+      tPostData.append( "loc_new", $( '#loc_new' ).val() );
+      tPostData.append( "loc_old", $( '#loc_old' ).val() );
+      tPostData.append( "loc_descr", $( '#loc_descr' ).val() );
+
+      // Post request to server
+      $.ajax(
+        "locations/" + g_sAction + "Location.php",
+        {
+          type: 'POST',
+          processData: false,
+          contentType: false,
+          dataType : 'json',
+          data: tPostData
+        }
+      )
+      .done( submitEditDialogDone )
+      .fail( handleAjaxError );
+    }
+  }
+
+  function submitEditDialogDone()
+  {
+    console.log( '=========> DONE' );
   }
 
 </script>

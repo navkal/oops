@@ -4,7 +4,7 @@
 // Initialize field labels (etc.)
 function formatLabels( nLabelColumnWidth )
 {
-  makeFormLabels( $( '.form-control,.list-unstyled', '#editUserForm' ) );
+  makeFieldLabels( $( '.form-control,.list-unstyled', '#editUserForm' ) );
 
   // Set up display of password/confirm fields
   if ( g_sUsername == JSON.parse( localStorage.getItem( 'panelSpy.session' ) )['user']['username'] )
