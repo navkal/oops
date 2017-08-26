@@ -702,6 +702,34 @@ class addLocation:
         self.success = True
 
 
+class updateLocation:
+    def __init__( self, by, id, location, old_location, description, enterprise, facility ):
+        open_database( enterprise )
+
+        # Update specified location
+        target_table = facility + 'Room'
+
+        cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
+            ( location, old_location, description, id ) )
+
+        # Log activity
+        if location != '':
+            target_column = 'room_num'
+            target_value = location
+        else:
+            target_column = 'old_num'
+            target_value = old_location
+
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+        facility_id = cur.fetchone()[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, "Update location ('" + location + "','" + old_location + "')", facility_id ) )
+
+        conn.commit()
+
+        self.success = True
+
+
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )

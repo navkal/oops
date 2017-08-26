@@ -10,6 +10,7 @@ dcEventTypes = {
     'database': 'Database',
     'notes': 'Notes',
     'addLocation': 'Add Location',
+    'updateLocation': 'Update Location',
     'addUser': 'Add User',
     'updateUser': 'Update User',
     'removeUser': 'Remove User'
