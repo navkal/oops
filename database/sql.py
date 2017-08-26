@@ -685,12 +685,19 @@ class addLocation:
             VALUES (?,?,?,?)''', (location, old_location, '', description) )
 
         # Log activity
+        if location != '':
+            target_column = 'room_num'
+            target_value = location
+        else:
+            target_column = 'old_num'
+            target_value = old_location
+
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], 'Room', 'room_num', location, "Add location ('" + location + "','" + old_location + "')" ) )
+            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], 'Room', target_column, target_value, "Add location ('" + location + "','" + old_location + "')" ) )
 
         conn.commit()
 
-        self.id = location_id
+        self.added = target_value
 
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
