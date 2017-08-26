@@ -680,7 +680,8 @@ class addLocation:
         open_database( enterprise )
 
         # Add new location
-        cur.execute('''INSERT OR IGNORE INTO ''' + facility + '''Room (room_num, old_num, location_type, description)
+        target_table = facility + 'Room'
+        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_num, old_num, location_type, description)
             VALUES (?,?,?,?)''', (location, old_location, '', description) )
 
         # Log activity
@@ -691,8 +692,10 @@ class addLocation:
             target_column = 'old_num'
             target_value = old_location
 
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], 'Room', target_column, target_value, "Add location ('" + location + "','" + old_location + "')" ) )
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+        facility_id = cur.fetchone()[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, "Add location ('" + location + "','" + old_location + "')", facility_id ) )
 
         conn.commit()
 
