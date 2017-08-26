@@ -675,7 +675,6 @@ class changePassword:
                 self.organization = user.organization
 
 
-
 class addLocation:
     def __init__( self, by, location, old_location, description, enterprise, facility ):
         open_database( enterprise )
@@ -697,7 +696,8 @@ class addLocation:
 
         conn.commit()
 
-        self.added = ( location, old_location, description )
+        self.success = True
+
 
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
