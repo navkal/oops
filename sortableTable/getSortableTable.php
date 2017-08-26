@@ -5,9 +5,6 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
   error_log( "==> post=" . print_r( $_POST, true ) );
 
-
-  error_log( '========> role=' . $_SESSION['panelSpy']['user']['role'] );
-
   $command = quote( getenv( "PYTHON" ) ) . " ../database/getSortableTable.py 2>&1 -o " . $_POST['object_type'] . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
