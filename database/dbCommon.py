@@ -9,6 +9,7 @@ def hash( text ):
 dcEventTypes = {
     'database': 'Database',
     'notes': 'Notes',
+    'addLocation': 'Add Location',
     'addUser': 'Add User',
     'updateUser': 'Update User',
     'removeUser': 'Remove User'

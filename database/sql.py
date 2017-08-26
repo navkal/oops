@@ -679,7 +679,20 @@ class changePassword:
 class addLocation:
     def __init__( self, by, location, old_location, description, enterprise, facility ):
         open_database( enterprise )
-        self.username = by
+
+        # Add new location
+        cur.execute('''INSERT OR IGNORE INTO ''' + facility + '''Room (room_num, old_num, location_type, description)
+            VALUES (?,?,?,?)''', (location, old_location, '', description) )
+
+
+        # Log activity
+        location_id = cur.lastrowid
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
+            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], 'Room', 'id', location_id, "Add location ('" + location + "','" + old_location + "')" ) )
+
+        conn.commit()
+
+        self.id = location_id
 
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
