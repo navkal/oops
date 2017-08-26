@@ -697,7 +697,7 @@ class addLocation:
 
         conn.commit()
 
-        self.added = target_value
+        self.added = ( location, old_location, description )
 
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):

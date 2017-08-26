@@ -179,7 +179,6 @@
 
   function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
-    console.log( '=========> DONE.  rsp=' + JSON.stringify( tRsp ) );
     location.reload();
   }
 
