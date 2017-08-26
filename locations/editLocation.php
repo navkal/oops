@@ -132,7 +132,7 @@
   {
     console.log( '==> submit' );
 
-    if ( g_bChanged )
+    if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
       if ( g_sLocationId )
@@ -159,9 +159,28 @@
     }
   }
 
+  function validateInput()
+  {
+    clearMessages();
+
+    var aMessages = [];
+
+    if ( ( $( '#loc_new' ).val() == '' ) && ( $( '#loc_old' ).val() == '' ) )
+    {
+      aMessages.push( 'Location and Old Location cannot both be empty.' );
+      $( '#loc_new' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#loc_old' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    showMessages( aMessages );
+
+    return ( aMessages.length == 0 );
+  }
+
   function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
     console.log( '=========> DONE.  rsp=' + JSON.stringify( tRsp ) );
+    location.reload();
   }
 
 </script>
