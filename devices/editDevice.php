@@ -73,7 +73,7 @@
   {
     g_sAction = 'add';
     initEditDialog( 'Device' );
-    
+
     loadDropdowns();
 
     g_sSourcePath = '';
@@ -108,13 +108,39 @@
   function loadDropdowns()
   {
     console.log( '==> load dropdowns' );
+    var sHtmlPath = '';
+    var sHtmlLoc = '';
     for ( var i = 1; i <= 500; i++ )
     {
-      console.log( '<option>' + i + '</option>' );
-      $( '#source_path' ).append( '<option>' + i + '</option>' );
-      console.log( '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>' );
-      $( '#location' ).append( '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>' );
+      sHtmlPath += '<option>' + i + '</option>';
+      sHtmlLoc += '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>';
     }
+
+    $( '#source_path' ).html( '' );
+    $( '#location' ).html( '' );
+    var iBf = Date.now();
+    $( '#source_path' ).html( sHtmlPath );
+    $( '#location' ).html( sHtmlLoc );
+    var iAf = Date.now();
+    console.log( '==> html delta=' + ( iAf - iBf ) );
+    
+    $( '#source_path' ).html( '' );
+    $( '#location' ).html( '' );
+    var iBf = Date.now();
+    $( '#source_path' ).append( sHtmlPath );
+    $( '#location' ).append( sHtmlLoc );
+    var iAf = Date.now();
+    console.log( '==> append delta=' + ( iAf - iBf ) );
+
+    $( '#source_path' ).html( '' );
+    $( '#location' ).html( '' );
+    var iBf = Date.now();
+    $( '#source_path' )[0].innerHTML = sHtmlPath;
+    $( '#location' )[0].innerHTML = sHtmlLoc;
+    var iAf = Date.now();
+    console.log( '==> inner delta=' + ( iAf - iBf ) );
+
+
     $('.selectpicker').selectpicker( 'refresh' );
   }
 
