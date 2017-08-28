@@ -22,13 +22,7 @@
                 <label for="source_path"></label>
                 <div>
                   <select id="source_path" class="form-control selectpicker show-tick" data-show-subtext="true" data-live-search="true">
-                    <option>MSWB.1-PBA.1</option>
-                    <option>MSWB.5-DHB.1-L42Csec2.31</option>
-                    <option>MSWB.5-DHB.1-L42Csec2.38-T2C.L2C.23</option>
-                    <option>MSWB.7-DG.1-P4Gsec1.15</option>
-                    <option>MSWB.8-DL.5-L42B.33-T2B.L2B.1</option>
-                    <option>MSWB.9-AMDP.7-HSHLA.100-TCC.HSLAsec1.20</option>
-                    <option>MSWB.9-AMDP.8</option>
+
                   </select>
                 </div>
               </div>
@@ -42,14 +36,7 @@
                 <label for="location">Location</label>
                 <div>
                   <select id="location" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                    <option data-subtext="1005">101</option>
-                    <option data-subtext="1006">101-02</option>
-                    <option data-subtext="1007">101-01</option>
-                    <option data-subtext="1011">101-09</option>
-                    <option data-subtext="1013">101-13</option>
-                    <option data-subtext="1020">102-05</option>
-                    <option data-subtext="1073">130-02</option>
-                    <option data-subtext="1074">130-03</option>
+
                   </select>
                 </div>
               </div>
@@ -121,6 +108,14 @@
   function loadDropdowns()
   {
     console.log( '==> load dropdowns' );
+    for ( var i = 1; i <= 500; i++ )
+    {
+      console.log( '<option>' + i + '</option>' );
+      $( '#source_path' ).append( '<option>' + i + '</option>' );
+      console.log( '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>' );
+      $( '#location' ).append( '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>' );
+    }
+    $('.selectpicker').selectpicker( 'refresh' );
   }
 
   function onShowEditDialog()
