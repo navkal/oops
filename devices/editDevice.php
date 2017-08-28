@@ -90,6 +90,8 @@
     g_sSourcePath = '';
     g_sName = '';
     g_sLocation = '';
+
+    loadDropdowns();
   }
 
   function initUpdateDialog( sDeviceId )
@@ -111,6 +113,13 @@
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
     g_sLocation = tRow.loc_new;
+
+    loadDropdowns();
+  }
+
+  function loadDropdowns()
+  {
+    console.log( '==> load dropdowns' );
   }
 
   function onShowEditDialog()
@@ -156,13 +165,13 @@
       {
         tPostData.append( "id", g_sLocationId );
       }
-      tPostData.append( "loc_new", $( '#loc_new' ).val() );
-      tPostData.append( "loc_old", $( '#loc_old' ).val() );
-      tPostData.append( "loc_descr", $( '#loc_descr' ).val() );
+      tPostData.append( "source_path", $( '#source_path' ).val() );
+      tPostData.append( "name", $( '#name' ).val() );
+      tPostData.append( "location", $( '#location' ).val() );
 
       // Post request to server
       $.ajax(
-        "locations/" + g_sAction + "Location.php",
+        "locations/" + g_sAction + "Device.php",
         {
           type: 'POST',
           processData: false,

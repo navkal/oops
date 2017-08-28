@@ -135,6 +135,7 @@ class device:
             row = cur.fetchone()
 
         self.id = row[0]
+        self.update_device = row[0]
         self.room_id = row[1]
         self.parent_id = row[2]
         self.description = row[3]

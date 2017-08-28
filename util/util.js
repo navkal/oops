@@ -247,6 +247,20 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  update_device:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'update',
+    customizeButton:
+      function( sDeviceId )
+      {
+        return ' title="Update Device" ';
+      },
+    displayIndex: displayIndex ++
+  },
   update_location:
   {
     label: "Update",
