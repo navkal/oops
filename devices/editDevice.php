@@ -86,18 +86,20 @@
   {
     g_sAction = 'add';
     initEditDialog( 'Device' );
+    
+    loadDropdowns();
 
     g_sSourcePath = '';
     g_sName = '';
     g_sLocation = '';
 
-    loadDropdowns();
   }
 
   function initUpdateDialog( sDeviceId )
   {
     g_sAction = 'update';
     initEditDialog( 'Device' );
+    loadDropdowns();
 
     // Find the selected row
     var iRow = 0;
@@ -114,7 +116,6 @@
     g_sName = tRow.name;
     g_sLocation = tRow.loc_new;
 
-    loadDropdowns();
   }
 
   function loadDropdowns()
