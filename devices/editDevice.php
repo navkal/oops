@@ -67,7 +67,31 @@
   var g_sName = null;
   var g_sLocation = null;
 
-  var g_bFirstTime = true;
+  function initSortableTableCallback()
+  {
+    if ( g_sSortableTableEditWhat )
+    {
+      var iBf = Date.now();
+
+      sHtmlSourcePath = '';
+      sHtmlLocation = '';
+
+      for ( var i = 1; i <= 500; i++ )
+      {
+        sHtmlSourcePath += '<option>' + i + '</option>';
+        sHtmlLocation += '<option data-subtext="(1-' + i + ') ' + "'" + 'descr descr descr' + "'" + '">' + i + '</option>';
+      }
+
+      $( '#source_path' ).html( sHtmlSourcePath );
+      $( '#loc_new' ).html( sHtmlLocation );
+
+      $('.selectpicker').selectpicker( 'refresh' );
+
+      var iAf = Date.now();
+
+      console.log( '===> loadDropdowns() elapsed time: ' + ( iAf - iBf ) + 'ms' );
+    }
+  }
 
   function initAddDialog()
   {
@@ -102,13 +126,6 @@
 
   function onShowEditDialog()
   {
-    // Load Select Picker dropdowns
-    if ( g_bFirstTime )
-    {
-      g_bFirstTime = false;
-      loadDropdowns();
-    }
-
     // Initialize input fields
     $( '#source_path' ).selectpicker( 'val', g_sSourcePath );
     $( '#name' ).val( g_sName );
@@ -120,30 +137,6 @@
 
     // Clear messages
     clearMessages();
-  }
-
-  function loadDropdowns()
-  {
-
-    var iBf = Date.now();
-
-    sHtmlSourcePath = '';
-    sHtmlLocation = '';
-
-    for ( var i = 1; i <= 500; i++ )
-    {
-      sHtmlSourcePath += '<option>' + i + '</option>';
-      sHtmlLocation += '<option data-subtext="(1-' + i + ') ' + "'" + 'descr descr descr' + "'" + '">' + i + '</option>';
-    }
-
-    $( '#source_path' ).html( sHtmlSourcePath );
-    $( '#loc_new' ).html( sHtmlLocation );
-
-    $('.selectpicker').selectpicker( 'refresh' );
-
-    var iAf = Date.now();
-
-    console.log( '===> loadDropdowns() elapsed time: ' + ( iAf - iBf ) + 'ms' );
   }
 
   function onShownEditDialog()
