@@ -112,7 +112,7 @@ def facility_names_to_ids( name_csv ):
 
 
 class device:
-    def __init__(self,id=None,row=None,enterprise=None,facility=None):
+    def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
 
         if not row:
@@ -135,7 +135,6 @@ class device:
             row = cur.fetchone()
 
         self.id = row[0]
-        self.update_device = row[0]
         self.room_id = row[1]
         self.parent_id = row[2]
         self.description = row[3]
@@ -160,6 +159,9 @@ class device:
 
         cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
         self.events = cur.fetchall()
+
+        if user_role == 'Technician':
+            self.update_device = self.id
 
 
     def properties(self):
@@ -483,7 +485,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = device( row=obj, enterprise=enterprise, facility=facility )
+                row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
 
         elif object_type == 'location':
