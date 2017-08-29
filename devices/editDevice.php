@@ -105,6 +105,7 @@
     // Load Select Picker dropdowns
     if ( g_bFirstTime )
     {
+      g_bFirstTime = false;
       loadDropdowns();
     }
 
@@ -123,7 +124,6 @@
 
   function loadDropdowns()
   {
-    g_bFirstTime = false;
 
     var iBf = Date.now();
 
@@ -144,7 +144,6 @@
     var iAf = Date.now();
 
     console.log( '===> loadDropdowns() elapsed time: ' + ( iAf - iBf ) + 'ms' );
-
   }
 
   function onShownEditDialog()
