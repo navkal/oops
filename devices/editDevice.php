@@ -69,24 +69,37 @@
   var g_sName = null;
   var g_sLocation = null;
 
+  function initSortableTableCallback()
+  {
+    sHtmlSourcePath = '';
+    sHtmlLocation = '';
+
+    for ( var i = 1; i <= 500; i++ )
+    {
+      sHtmlSourcePath += '<option>' + i + '</option>';
+      sHtmlLocation += '<option data-subtext="1-' + i + '">' + i + '</option>';
+    }
+    
+    $( '#source_path' ).html( sHtmlSourcePath );
+    $( '#location' ).html( sHtmlLocation );
+
+    $('.selectpicker').selectpicker( 'refresh' );
+  }
+
   function initAddDialog()
   {
     g_sAction = 'add';
     initEditDialog( 'Device' );
 
-    loadDropdowns();
-
     g_sSourcePath = '';
     g_sName = '';
     g_sLocation = '';
-
   }
 
   function initUpdateDialog( sDeviceId )
   {
     g_sAction = 'update';
     initEditDialog( 'Device' );
-    loadDropdowns();
 
     // Find the selected row
     var iRow = 0;
@@ -102,46 +115,6 @@
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
     g_sLocation = tRow.loc_new;
-
-  }
-
-  function loadDropdowns()
-  {
-    console.log( '==> load dropdowns' );
-    var sHtmlPath = '';
-    var sHtmlLoc = '';
-    for ( var i = 1; i <= 500; i++ )
-    {
-      sHtmlPath += '<option>' + i + '</option>';
-      sHtmlLoc += '<option data-subtext="' + ( i + 10*i ) + '">' + i + '-' + ( 10 * i ) + '</option>';
-    }
-
-    $( '#source_path' ).html( '' );
-    $( '#location' ).html( '' );
-    var iBf = Date.now();
-    $( '#source_path' ).html( sHtmlPath );
-    $( '#location' ).html( sHtmlLoc );
-    var iAf = Date.now();
-    console.log( '==> html delta=' + ( iAf - iBf ) );
-    
-    $( '#source_path' ).html( '' );
-    $( '#location' ).html( '' );
-    var iBf = Date.now();
-    $( '#source_path' ).append( sHtmlPath );
-    $( '#location' ).append( sHtmlLoc );
-    var iAf = Date.now();
-    console.log( '==> append delta=' + ( iAf - iBf ) );
-
-    $( '#source_path' ).html( '' );
-    $( '#location' ).html( '' );
-    var iBf = Date.now();
-    $( '#source_path' )[0].innerHTML = sHtmlPath;
-    $( '#location' )[0].innerHTML = sHtmlLoc;
-    var iAf = Date.now();
-    console.log( '==> inner delta=' + ( iAf - iBf ) );
-
-
-    $('.selectpicker').selectpicker( 'refresh' );
   }
 
   function onShowEditDialog()
