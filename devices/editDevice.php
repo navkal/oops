@@ -75,7 +75,7 @@
     for ( var i = 1; i <= 500; i++ )
     {
       sHtmlSourcePath += '<option>' + i + '</option>';
-      sHtmlLocation += '<option data-subtext="1-' + i + '">' + i + '</option>';
+      sHtmlLocation += '<option data-subtext="(1-' + i + ') descr descr descr">' + i + '</option>';
     }
     
     $( '#source_path' ).html( sHtmlSourcePath );
