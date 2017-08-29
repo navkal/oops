@@ -21,8 +21,7 @@
               <div class="form-group">
                 <label for="source_path"></label>
                 <div>
-                  <select id="source_path" class="form-control selectpicker show-tick" data-show-subtext="true" data-live-search="true">
-
+                  <select id="source_path" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                   </select>
                 </div>
               </div>
@@ -33,10 +32,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="location">Location</label>
+                <label for="loc_new">Location</label>
                 <div>
-                  <select id="location" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-
+                  <select id="loc_new" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                   </select>
                 </div>
               </div>
@@ -81,7 +79,7 @@
     }
     
     $( '#source_path' ).html( sHtmlSourcePath );
-    $( '#location' ).html( sHtmlLocation );
+    $( '#loc_new' ).html( sHtmlLocation );
 
     $('.selectpicker').selectpicker( 'refresh' );
   }
@@ -120,9 +118,9 @@
   function onShowEditDialog()
   {
     // Initialize input fields
-    $( '#source_path' ).val( g_sSourcePath );
+    $( '#source_path' ).selectpicker( 'val', g_sSourcePath );   
     $( '#name' ).val( g_sName );
-    $( '#location' ).val( g_sLocation );
+    $( '#loc_new' ).selectpicker( 'val', g_sLocation );    
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -162,7 +160,7 @@
       }
       tPostData.append( "source_path", $( '#source_path' ).val() );
       tPostData.append( "name", $( '#name' ).val() );
-      tPostData.append( "location", $( '#location' ).val() );
+      tPostData.append( "loc_new", $( '#loc_new' ).val() );
 
       // Post request to server
       $.ajax(

@@ -458,16 +458,26 @@ function makeFieldLabels( aFields )
   {
     var tField = aFields[iField];
     var sKey = tField.id;
+    alert( '' + iField + ' ' + sKey );
     var tRule = g_tPropertyRules[sKey];
 
-    // If there is a rule for this element,
+    // If there is a rule for this element, apply it
     if ( tRule )
     {
+      alert( 'yes' );
       var sLabel = tRule.label;
       $( 'label[for=' + sKey + ']' ).text( sLabel );
-      if ( tField.tagName.toLowerCase() == 'input' )
+
+      switch( tField.tagName.toLowerCase() )
       {
-        $( tField ).attr( 'placeholder', sLabel );
+        case 'input':
+          $( tField ).attr( 'placeholder', sLabel );
+          break;
+
+        case 'select':
+          alert( sLabel );
+          $( tField ).attr( 'title', sLabel );
+          break;
       }
     }
   }
