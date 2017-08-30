@@ -853,3 +853,9 @@ class allFacilities:
         self.sorted_fullnames = sorted( fullnames )
         self.name_map = name_map
         self.fullname_map = fullname_map
+
+
+class deviceDropdowns:
+    def __init__(self, enterprise, facility):
+        self.moo = 'moo'
+    

@@ -8,8 +8,8 @@
   // Execute command
   $command = quote( getenv( "PYTHON" ) ) . " ../database/getDeviceDropdowns.py 2>&1 " . $g_sContext;
   error_log( "==> command=" . $command );
-  //////////////////////////          exec( $command, $output, $status );
-  //////////////////////////error_log( "==> output=" . print_r( $output, true ) );
+  exec( $command, $output, $status );
+  error_log( "==> output=" . print_r( $output, true ) );
 
   $aSourcePaths = [];
   $aLocations = [];
@@ -33,7 +33,7 @@
   ];
 
   $sResult = json_encode( $tResult );
-  
+
   error_log( '=====> dropdowns=' . $sResult );
 
   echo $sResult;
