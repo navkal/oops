@@ -69,28 +69,62 @@
 
   function initSortableTableCallback()
   {
+    // If editing is allowed, initialize the dropdowns
     if ( g_sSortableTableEditWhat )
     {
-      var iBf = Date.now();
-
-      sHtmlSourcePath = '';
-      sHtmlLocation = '';
-
-      for ( var i = 1; i <= 500; i++ )
-      {
-        sHtmlSourcePath += '<option>' + i + '</option>';
-        sHtmlLocation += '<option data-subtext="(1-' + i + ') ' + "'" + 'descr descr descr' + "'" + '">' + i + '</option>';
-      }
-
-      $( '#source_path' ).html( sHtmlSourcePath );
-      $( '#loc_new' ).html( sHtmlLocation );
-
-      $('.selectpicker').selectpicker( 'refresh' );
-
-      var iAf = Date.now();
-
-      console.log( '===> loadDropdowns() elapsed time: ' + ( iAf - iBf ) + 'ms' );
+      getDropdowns();
     }
+  }
+
+  var g_iBfDebug = null;
+  function getDropdowns()
+  {
+    g_iBfDebug = Date.now();
+
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "postSecurity", "" );
+
+    $.ajax(
+      "devices/getDeviceDropdowns.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( loadDropdowns )
+    .fail( handleAjaxError );
+  }
+
+  function loadDropdowns( tRsp, sStatus, tJqXhr )
+  {
+    console.log( JSON.stringify( tRsp.sourcePaths ) );
+    console.log( JSON.stringify( tRsp.locations ) );
+
+    var sHtmlSourcePath = '';
+    var aSourcePaths = tRsp.sourcePaths;
+    for ( var iPath in aSourcePaths )
+    {
+      var sPath = aSourcePaths[iPath];
+      sHtmlSourcePath += '<option>' + sPath + '</option>';
+    }
+
+    var sHtmlLocation = '';
+    var aLocations = tRsp.locations;
+    for ( var iLoc in aLocations )
+    {
+      var tLoc = aLocations[iLoc];
+      sHtmlLocation += '<option data-subtext="(' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '">' + tLoc.loc_new + '</option>';
+    }
+
+    $( '#source_path' ).html( sHtmlSourcePath );
+    $( '#loc_new' ).html( sHtmlLocation );
+    $('.selectpicker').selectpicker( 'refresh' );
+
+    console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
   }
 
   function initAddDialog()
