@@ -11,30 +11,7 @@
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
-  $aSourcePaths = [];
-  $aLocations = [];
-
-  for ( $i = 1; $i <= 500; $i ++ )
-  {
-    array_push( $aSourcePaths, $i );
-    $aLocation =
-    [
-      'loc_new' => $i,
-      'loc_old' => 'old-' . $i,
-      'loc_descr' => 'descr ' . $i
-    ];
-    array_push( $aLocations, $aLocation );
-  }
-
-  $tResult =
-  [
-    'sourcePaths' => $aSourcePaths,
-    'locations' => $aLocations
-  ];
-
-  $sResult = json_encode( $tResult );
-
-  error_log( '=====> dropdowns=' . $sResult );
+  $sResult = $output[ count( $output ) - 1 ];
 
   echo $sResult;
 ?>

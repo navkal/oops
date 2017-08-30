@@ -857,5 +857,26 @@ class allFacilities:
 
 class deviceDropdowns:
     def __init__(self, enterprise, facility):
-        self.moo = 'moo'
-    
+
+        open_database( enterprise )
+
+        # Get all potential source paths for devices
+        cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE object_type = "Circuit"')
+        rows = cur.fetchall()
+
+        source_paths = []
+        for row in rows:
+            source_paths.append( row[0] )
+
+        self.source_paths = source_paths
+
+        # Get all locations
+        cur.execute('SELECT * FROM ' + facility + 'Room')
+        rows = cur.fetchall()
+
+        locations = []
+        for row in rows:
+            location = { 'id': row[0], 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] }
+            locations.append( location )
+
+        self.locations = locations

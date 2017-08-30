@@ -101,11 +101,8 @@
 
   function loadDropdowns( tRsp, sStatus, tJqXhr )
   {
-    console.log( JSON.stringify( tRsp.sourcePaths ) );
-    console.log( JSON.stringify( tRsp.locations ) );
-
     var sHtmlSourcePath = '';
-    var aSourcePaths = tRsp.sourcePaths;
+    var aSourcePaths = tRsp.source_paths;
     for ( var iPath in aSourcePaths )
     {
       var sPath = aSourcePaths[iPath];
