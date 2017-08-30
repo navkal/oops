@@ -69,54 +69,6 @@
 
   var g_bGotDropdowns = false;
 
-  var g_iBfDebug = null;
-  function getDropdowns()
-  {
-    g_iBfDebug = Date.now();
-
-    // Post request to server
-    var tPostData = new FormData();
-    tPostData.append( "postSecurity", "" );
-
-    $.ajax(
-      "devices/getDeviceDropdowns.php",
-      {
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        dataType : 'json',
-        data: tPostData
-      }
-    )
-    .done( loadDropdowns )
-    .fail( handleAjaxError );
-  }
-
-  function loadDropdowns( tRsp, sStatus, tJqXhr )
-  {
-    var sHtmlSourcePath = '';
-    var aSourcePaths = tRsp.source_paths;
-    for ( var iPath in aSourcePaths )
-    {
-      var sPath = aSourcePaths[iPath];
-      sHtmlSourcePath += '<option>' + sPath + '</option>';
-    }
-
-    var sHtmlLocation = '';
-    var aLocations = tRsp.locations;
-    for ( var iLoc in aLocations )
-    {
-      var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option data-subtext="(' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '">' + tLoc.loc_new + '</option>';
-    }
-
-    $( '#source_path' ).html( sHtmlSourcePath );
-    $( '#loc_new' ).html( sHtmlLocation );
-    $('.selectpicker').selectpicker( 'refresh' );
-
-    console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
-  }
-
   function initAddDialog()
   {
     g_sAction = 'add';
@@ -167,6 +119,55 @@
 
     // Clear messages
     clearMessages();
+  }
+
+  var g_iBfDebug = null;
+  function getDropdowns()
+  {
+    g_iBfDebug = Date.now();
+
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "postSecurity", "" );
+
+    $.ajax(
+      "devices/getDeviceDropdowns.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( loadDropdowns )
+    .fail( handleAjaxError );
+  }
+
+  function loadDropdowns( tRsp, sStatus, tJqXhr )
+  {
+    console.log( '===> dropdown retrieval elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
+    var sHtmlSourcePath = '';
+    var aSourcePaths = tRsp.source_paths;
+    for ( var iPath in aSourcePaths )
+    {
+      var sPath = aSourcePaths[iPath];
+      sHtmlSourcePath += '<option>' + sPath + '</option>';
+    }
+
+    var sHtmlLocation = '';
+    var aLocations = tRsp.locations;
+    for ( var iLoc in aLocations )
+    {
+      var tLoc = aLocations[iLoc];
+      sHtmlLocation += '<option data-subtext="(' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '">' + tLoc.loc_new + '</option>';
+    }
+
+    $( '#source_path' ).html( sHtmlSourcePath );
+    $( '#loc_new' ).html( sHtmlLocation );
+    $('.selectpicker').selectpicker( 'refresh' );
+
+    console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
   }
 
   function onShownEditDialog()
