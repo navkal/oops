@@ -198,9 +198,17 @@
   {
     console.log( '==> changed: ' + tEvent.target.id );
 
-    // Trim the value
     var tControl = $( tEvent.target );
-    tControl.val( tControl.val().trim() );
+    if ( tControl.hasClass( 'selectpicker' ) )
+    {
+      // Update the selectpicker
+      tControl.selectpicker( 'val', tControl.val() );
+    }
+    else
+    {
+      // Trim the value
+      tControl.val( tControl.val().trim() );
+    }
 
     // Set flag
     g_bChanged = true;
