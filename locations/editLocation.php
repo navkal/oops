@@ -64,40 +64,21 @@
   var g_sDescription = null;
   var g_sLocationId = null;
 
-  function initAddDialog()
-  {
-    g_sAction = 'add';
-    initEditDialog( 'Location' );
-
-    g_sLocation = '';
-    g_sOldLocation = '';
-    g_sDescription = '';
-  }
-
-  function initUpdateDialog( sLocationId )
-  {
-    g_sAction = 'update';
-    initEditDialog( 'Location' );
-
-    // Find the selected row
-    var iRow = 0;
-    var tRow = null;
-    do
-    {
-      tRow = g_aSortableTableRows[iRow];
-      iRow ++
-    }
-    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sLocationId ) );
-
-    // Save values of selected row
-    g_sLocationId = tRow.id;
-    g_sLocation = tRow.loc_new;
-    g_sOldLocation = tRow.loc_old;
-    g_sDescription = tRow.loc_descr;
-  }
-
   function onShowEditDialog()
   {
+    initEditDialog( 'Location' );
+
+    switch( g_sAction )
+    {
+      case 'add':
+        initAddDialog();
+        break;
+
+      case 'update':
+        initUpdateDialog();
+        break;
+    }
+
     // Initialize input fields
     $( '#loc_new' ).val( g_sLocation );
     $( '#loc_old' ).val( g_sOldLocation );
@@ -109,6 +90,32 @@
 
     // Clear messages
     clearMessages();
+  }
+
+  function initAddDialog()
+  {
+    g_sLocation = '';
+    g_sOldLocation = '';
+    g_sDescription = '';
+  }
+
+  function initUpdateDialog()
+  {
+    // Find the selected row
+    var iRow = 0;
+    var tRow = null;
+    do
+    {
+      tRow = g_aSortableTableRows[iRow];
+      iRow ++
+    }
+    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
+
+    // Save values of selected row
+    g_sLocationId = tRow.id;
+    g_sLocation = tRow.loc_new;
+    g_sOldLocation = tRow.loc_old;
+    g_sDescription = tRow.loc_descr;
   }
 
   function onShownEditDialog()

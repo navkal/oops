@@ -69,56 +69,19 @@
 
   var g_bGotDropdowns = false;
 
-  function initAddDialog()
-  {
-    g_sAction = 'add';
-    initEditDialog( 'Device' );
-
-    g_sSourcePath = '';
-    g_sName = '';
-    g_sLocation = '';
-  }
-
-  function initUpdateDialog( sDeviceId )
-  {
-    g_sAction = 'update';
-    initEditDialog( 'Device' );
-
-    // Find the selected row
-    var iRow = 0;
-    var tRow = null;
-    do
-    {
-      tRow = g_aSortableTableRows[iRow];
-      iRow ++
-    }
-    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sDeviceId ) );
-
-    // Save values of selected row
-    g_sSourcePath = tRow.source_path;
-    g_sName = tRow.name;
-    g_sLocation = tRow.loc_new;
-  }
-
   function onShowEditDialog()
   {
+    showSpinner();
+
     if ( ! g_bGotDropdowns )
     {
       g_bGotDropdowns = true;
       getDropdowns();
     }
-
-    // Initialize input fields
-    $( '#source_path' ).selectpicker( 'val', g_sSourcePath );
-    $( '#name' ).val( g_sName );
-    $( '#loc_new' ).selectpicker( 'val', g_sLocation );
-
-    // Label dialog and submit button
-    $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogSubmit' ).text( g_sSubmitLabel );
-
-    // Clear messages
-    clearMessages();
+    else
+    {
+      loadEditDialog();
+    }
   }
 
   var g_iBfDebug = null;
@@ -168,11 +131,67 @@
     $('.selectpicker').selectpicker( 'refresh' );
 
     console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
+
+    loadEditDialog()
   }
+
+  function loadEditDialog()
+  {
+    initEditDialog( 'Device' );
+
+    switch( g_sAction )
+    {
+      case 'add':
+        initAddDialog();
+        break;
+
+      case 'update':
+        initUpdateDialog();
+        break;
+    }
+
+    // Initialize input fields
+    $( '#source_path' ).selectpicker( 'val', g_sSourcePath );
+    $( '#name' ).val( g_sName );
+    $( '#loc_new' ).selectpicker( 'val', g_sLocation );
+
+    // Label dialog and submit button
+    $( '#editDialogTitle' ).text( g_sSubmitLabel );
+    $( '#editDialogSubmit' ).text( g_sSubmitLabel );
+
+    // Clear messages
+    clearMessages();
+  }
+
+  function initAddDialog()
+  {
+    g_sSourcePath = '';
+    g_sName = '';
+    g_sLocation = '';
+  }
+
+  function initUpdateDialog()
+  {
+    // Find the selected row
+    var iRow = 0;
+    var tRow = null;
+    do
+    {
+      tRow = g_aSortableTableRows[iRow];
+      iRow ++
+    }
+    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
+
+    // Save values of selected row
+    g_sSourcePath = tRow.source_path;
+    g_sName = tRow.name;
+    g_sLocation = tRow.loc_new;
+ }
 
   function onShownEditDialog()
   {
     $( '#source_path' ).focus();
+    hideSpinner();
   }
 
   function onChangeControl( tEvent )

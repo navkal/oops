@@ -434,6 +434,16 @@ function childWindowsClose( aWindows )
 
 // -> -> -> Edit forms -> -> ->
 
+function showSpinner()
+{
+  $( '#spinner' ).css( 'display', 'block' );
+}
+
+function hideSpinner()
+{
+  $( '#spinner' ).css( 'display', 'none' );
+}
+
 function initEditDialog( sWhat, nLabelColumnWidth )
 {
   g_bChanged = false;

@@ -54,74 +54,19 @@
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;
 
-  function initAddDialog()
-  {
-    g_sAction = 'add';
-    g_sUsername = '';
-    formatLabels( 3 );
-
-    g_sSubmitLabel = 'Add User';
-    g_sRole = 'Visitor';
-    g_sStatus = 'Enabled';
-    g_sFirstName = '';
-    g_sLastName = '';
-    g_sEmailAddress = '';
-    g_sOrganization = '';
-    g_sDescription = '';
-    g_tAuthFacilities = null;
-
-    $( '.adminHide' ).show();
-
-    g_bUsernameDisabled = false;
-    g_bDoValidation = true;
-    g_fnSubmitUserDone = addUserDone;
-
-    getAllFacilities();
-  }
-
-  function initUpdateDialog( sUsername )
-  {
-    g_sAction = 'update';
-    g_sUsername = sUsername;
-    formatLabels( 4 );
-
-    g_sSubmitLabel = 'Update User';
-    g_bUsernameDisabled = true;
-
-    var iRow = 0;
-    var tRow = null;
-    do
-    {
-      tRow = g_aSortableTableRows[iRow];
-      iRow ++
-    }
-    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != sUsername ) );
-
-    // Load fields from the row
-    g_sRole = tRow.role;
-    g_sStatus = tRow.status;
-    g_sFirstName = tRow.first_name;
-    g_sLastName = tRow.last_name;
-    g_sEmailAddress = tRow.email_address;
-    g_sOrganization = tRow.organization;
-    g_sDescription = tRow.user_description;
-    g_tAuthFacilities = tRow.facilities_maps;
-
-    g_bDoValidation = false;
-    g_fnSubmitUserDone = updateUserDone;
-
-    if ( g_sRole != 'Administrator' )
-    {
-      getAllFacilities();
-    }
-    else
-    {
-      clearAllFacilities()
-    }
-  }
-
   function onShowEditDialog()
   {
+    switch( g_sAction )
+    {
+      case 'add':
+        initAddDialog();
+        break;
+
+      case 'update':
+        initUpdateDialog();
+        break;
+    }
+
     // Initialize input fields
     $( '#username' ).val( g_sUsername );
     $( '#username' ).prop( 'disabled', g_bUsernameDisabled );
@@ -160,6 +105,72 @@
 
     // Clear messages
     clearMessages();
+  }
+
+  function initAddDialog()
+  {
+    g_sAction = 'add';
+    g_sUsername = '';
+    formatLabels( 3 );
+
+    g_sSubmitLabel = 'Add User';
+    g_sRole = 'Visitor';
+    g_sStatus = 'Enabled';
+    g_sFirstName = '';
+    g_sLastName = '';
+    g_sEmailAddress = '';
+    g_sOrganization = '';
+    g_sDescription = '';
+    g_tAuthFacilities = null;
+
+    $( '.adminHide' ).show();
+
+    g_bUsernameDisabled = false;
+    g_bDoValidation = true;
+    g_fnSubmitUserDone = addUserDone;
+
+    getAllFacilities();
+  }
+
+  function initUpdateDialog()
+  {
+    g_sAction = 'update';
+    g_sUsername = g_sUpdateTarget;
+    formatLabels( 4 );
+
+    g_sSubmitLabel = 'Update User';
+    g_bUsernameDisabled = true;
+
+    var iRow = 0;
+    var tRow = null;
+    do
+    {
+      tRow = g_aSortableTableRows[iRow];
+      iRow ++
+    }
+    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != g_sUpdateTarget ) );
+
+    // Load fields from the row
+    g_sRole = tRow.role;
+    g_sStatus = tRow.status;
+    g_sFirstName = tRow.first_name;
+    g_sLastName = tRow.last_name;
+    g_sEmailAddress = tRow.email_address;
+    g_sOrganization = tRow.organization;
+    g_sDescription = tRow.user_description;
+    g_tAuthFacilities = tRow.facilities_maps;
+
+    g_bDoValidation = false;
+    g_fnSubmitUserDone = updateUserDone;
+
+    if ( g_sRole != 'Administrator' )
+    {
+      getAllFacilities();
+    }
+    else
+    {
+      clearAllFacilities()
+    }
   }
 
   function onShownEditDialog()
