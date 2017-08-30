@@ -67,14 +67,7 @@
   var g_sName = null;
   var g_sLocation = null;
 
-  function initSortableTableCallback()
-  {
-    // If editing is allowed, initialize the dropdowns
-    if ( g_sSortableTableEditWhat )
-    {
-      getDropdowns();
-    }
-  }
+  var g_bGotDropdowns = false;
 
   var g_iBfDebug = null;
   function getDropdowns()
@@ -157,6 +150,12 @@
 
   function onShowEditDialog()
   {
+    if ( ! g_bGotDropdowns )
+    {
+      g_bGotDropdowns = true;
+      getDropdowns();
+    }
+
     // Initialize input fields
     $( '#source_path' ).selectpicker( 'val', g_sSourcePath );
     $( '#name' ).val( g_sName );

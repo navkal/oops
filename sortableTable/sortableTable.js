@@ -250,12 +250,6 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Style the table
   styleTable( 'sortableTable', aHeaders, tSortState, tFilterState );
-
-  // Invoke initialization callback if it exists
-  if ( typeof initSortableTableCallback === "function" )
-  {
-    initSortableTableCallback();
-  }
 }
 
 
