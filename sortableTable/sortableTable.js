@@ -12,22 +12,6 @@ function getSortableTable()
   // Set handler to close any child windows
   $( window ).on( 'unload', closeChildWindows );
 
-  // Initialize optional editing
-  if ( g_sSortableTableEditWhat )
-  {
-    // Set modal event handlers
-    var tEditDialog = $( '#editDialog ' );
-    tEditDialog.on( 'show.bs.modal', onShowEditDialog );
-    tEditDialog.on( 'shown.bs.modal', onShownEditDialog );
-
-    // Customize and show the Add button
-    var tAddButton = $( '#sortableTableAddButton' );
-    tAddButton.append( g_sSortableTableEditWhat );
-    tAddButton.show();
-
-    resetChangeHandler();
-  }
-
   // Set wait cursor
   setWaitCursor();
 
@@ -319,6 +303,22 @@ function onSortableTableReady( tEvent )
   if ( g_bSortDescending )
   {
     $( $( '#sortableTableHead th' )[1] ).click();
+  }
+
+  // Initialize optional editing
+  if ( g_sSortableTableEditWhat )
+  {
+    // Set modal event handlers
+    var tEditDialog = $( '#editDialog ' );
+    tEditDialog.on( 'show.bs.modal', onShowEditDialog );
+    tEditDialog.on( 'shown.bs.modal', onShownEditDialog );
+
+    // Customize and show the Add button
+    var tAddButton = $( '#sortableTableAddButton' );
+    tAddButton.append( g_sSortableTableEditWhat );
+    tAddButton.show();
+
+    resetChangeHandler();
   }
 
   // Clear the wait cursor
