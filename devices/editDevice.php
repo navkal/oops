@@ -1,5 +1,5 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.js"></script>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
 
 <?php
@@ -165,9 +165,9 @@
 
   function initAddDialog()
   {
-    g_sSourcePath = '';
+    g_sSourcePath = "\n";
     g_sName = '';
-    g_sLocation = '';
+    g_sLocation = "\n";
   }
 
   function initUpdateDialog()
