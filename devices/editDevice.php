@@ -62,7 +62,7 @@
 
   var g_sSourcePath = null;
   var g_sName = null;
-  var g_sLocation = null;
+  var g_sLocationId = null;
 
   var g_bGotDropdowns = false;
   var g_tRsp = null;
@@ -133,7 +133,7 @@
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option value="' + tLoc.id + '" >' + formatLocation( tLoc ) + '</option>';
+      sHtmlLocation += '<option value="' + tLoc.room_id + '" >' + formatLocation( tLoc ) + '</option>';
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
@@ -161,7 +161,7 @@
 
     // Initialize combobox
     $( '#source_path' ).val( g_sSourcePath );
-    $( '#loc_new' ).val( g_sLocation );
+    $( '#loc_new' ).val( g_sLocationId );
     $( '.combobox' ).combobox(
       {
         bsVersion: '3',
@@ -183,7 +183,7 @@
     $( '#name' ).val( g_sName );
     // $('#source_path,#source_path_input').val( g_sSourcePath );
     // $('#source_path').data( 'combobox' ).refresh();
-    // $('#loc_new').val( g_sLocation );
+    // $('#loc_new').val( g_sLocationId );
     // $('#loc_new').data( 'combobox' ).refresh();
 
     // Label dialog and submit button
@@ -198,7 +198,7 @@
   {
     g_sSourcePath = "\n";
     g_sName = '';
-    g_sLocation = "\n";
+    g_sLocationId = "\n";
   }
 
   function initUpdateDialog()
@@ -216,7 +216,8 @@
     // Save values of selected row
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
-    g_sLocation = formatLocation( tRow );
+    console.log( '===> row=' + JSON.stringify( tRow ) );
+    g_sLocationId = tRow.room_id;
  }
 
   function formatLocation( tLoc )
@@ -249,7 +250,7 @@
       var tPostData = new FormData();
       tPostData.append( 'source_path', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
-      tPostData.append( 'loc_id', $( '#loc_new' ).val() );
+      tPostData.append( 'room_id', $( '#loc_new' ).val() );
 
       // Post request to server
       $.ajax(

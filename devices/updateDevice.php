@@ -9,7 +9,7 @@
   // Get attributes
   $sSourcePath = $_POST['source_path'];
   $sName = quote( $_POST['name'] );
-  $sLocationId = $_POST['loc_id'];
+  $sLocationId = $_POST['room_id'];
 
   // Format command
   // $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']

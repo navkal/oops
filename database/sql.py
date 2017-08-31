@@ -876,7 +876,7 @@ class deviceDropdowns:
 
         locations = []
         for row in rows:
-            location = { 'id': row[0], 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] }
+            location = { 'room_id': row[0], 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] }
             locations.append( location )
 
         self.locations = locations
