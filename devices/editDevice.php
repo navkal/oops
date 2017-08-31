@@ -177,7 +177,6 @@
     $( 'label[for=loc_new]' ).attr( 'for', 'loc_new_input' );
     $( '#source_path_input' ).prop( 'required', true );
     $( '#name' ).prop( 'required', true );
-    $( '#loc_new_input' ).prop( 'required', true );
 
     // Initialize input fields
     $( '#name' ).val( g_sName );
@@ -250,7 +249,10 @@
       var tPostData = new FormData();
       tPostData.append( 'source_path', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
-      tPostData.append( 'room_id', $( '#loc_new' ).val() );
+
+      var sRoomId = ( $( '#loc_new' ).val() == null ) ? '' : $( '#loc_new' ).val();
+      alert( "$( '#loc_new' ).val()=" + $( '#loc_new' ).val() + "\nsRoomId=" + sRoomId );
+      tPostData.append( 'room_id', sRoomId );
 
       // Post request to server
       $.ajax(
