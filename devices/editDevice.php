@@ -133,7 +133,7 @@
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option>' + formatLocation( tLoc ) + '</option>';
+      sHtmlLocation += '<option value="' + tLoc.id + '" >' + formatLocation( tLoc ) + '</option>';
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
@@ -247,15 +247,13 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
-      tPostData.append( "source_path", $( '#source_path_input' ).val() );
-      tPostData.append( "name", $( '#name' ).val() );
-      tPostData.append( "loc_new", $( '#loc_new_input' ).val() );
-
-      alert( JSON.stringify( tPostData ) );
+      tPostData.append( 'source_path', $( '#source_path' ).val() );
+      tPostData.append( 'name', $( '#name' ).val() );
+      tPostData.append( 'loc_id', $( '#loc_new' ).val() );
 
       // Post request to server
       $.ajax(
-        "devices/" + g_sAction + "Device.php",
+        'devices/' + g_sAction + 'Device.php',
         {
           type: 'POST',
           processData: false,
