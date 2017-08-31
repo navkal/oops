@@ -119,7 +119,6 @@
       tRsp = g_tRsp;
     }
 
-    console.log( '===> dropdown retrieval elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
     var sHtmlSourcePath = '<option></option>';
     var aSourcePaths = tRsp.source_paths;
     for ( var iPath in aSourcePaths )
@@ -138,8 +137,6 @@
 
     $( '#source_path' ).html( sHtmlSourcePath );
     $( '#loc_new' ).html( sHtmlLocation );
-
-    console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
 
     loadEditDialog()
   }
@@ -215,7 +212,6 @@
     // Save values of selected row
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
-    console.log( '===> row=' + JSON.stringify( tRow ) );
     g_sLocationId = tRow.room_id;
  }
 
@@ -231,8 +227,6 @@
 
   function onChangeControl( tEvent )
   {
-    console.log( '==> changed: ' + tEvent.target.id );
-
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
 
@@ -242,8 +236,6 @@
 
   function onSubmitEditDialog()
   {
-    console.log( '==> submit' );
-
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
@@ -251,7 +243,6 @@
       tPostData.append( 'name', $( '#name' ).val() );
 
       var sRoomId = ( $( '#loc_new' ).val() == null ) ? '' : $( '#loc_new' ).val();
-      alert( "$( '#loc_new' ).val()=" + $( '#loc_new' ).val() + "\nsRoomId=" + sRoomId );
       tPostData.append( 'room_id', sRoomId );
 
       // Post request to server

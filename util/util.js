@@ -456,7 +456,6 @@ function initEditDialog( sWhat, nLabelColumnWidth )
 
   // Customize responsive layout
   nLabelColumnWidth = nLabelColumnWidth || 3;
-  console.log( '======> label col wid=' + nLabelColumnWidth );
   $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
   $( '.form-control', '#editDialogForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }

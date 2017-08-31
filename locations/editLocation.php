@@ -125,8 +125,6 @@
 
   function onChangeControl( tEvent )
   {
-    console.log( '==> changed: ' + tEvent.target.id );
-
     // Trim the value
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
@@ -137,8 +135,6 @@
 
   function onSubmitEditDialog()
   {
-    console.log( '==> submit' );
-
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
