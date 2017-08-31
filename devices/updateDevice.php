@@ -12,7 +12,7 @@
   $sLocationId = $_POST['loc_id'];
 
   // Format command
-  // $command = quote( getenv( 'PYTHON' ) ) . ' ../database/addDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+  // $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
     // . ' -s ' . $sSourcePath
     // . ' -n ' . $sName
     // . ' -l ' . $sLocationId
