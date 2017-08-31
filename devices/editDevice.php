@@ -168,12 +168,16 @@
         appendId: '_input'
       }
     );
+    resetChangeHandler();
 
     // Fix side effects of combobox initialization
     $( '.combobox-container .col-sm-9' ).removeClass( 'col-sm-9' );
     $( '.add-on' ).removeClass( 'add-on' ).addClass( 'input-group-addon' );
     $( 'label[for=source_path]' ).attr( 'for', 'source_path_input' );
     $( 'label[for=loc_new]' ).attr( 'for', 'loc_new_input' );
+    $( '#source_path_input' ).prop( 'required', true );
+    $( '#name' ).prop( 'required', true );
+    $( '#loc_new_input' ).prop( 'required', true );
 
     // Initialize input fields
     $( '#name' ).val( g_sName );
@@ -232,7 +236,6 @@
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
 
-
     // Set flag
     g_bChanged = true;
   }
@@ -271,17 +274,8 @@
   function validateInput()
   {
     clearMessages();
-
     var aMessages = [];
-
-    if ( false )
-    {
-      aMessages.push( 'Source path not valid??????????' );
-      $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
     showMessages( aMessages );
-
     return ( aMessages.length == 0 );
   }
 
