@@ -247,17 +247,15 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
-      if ( g_sLocationId )
-      {
-        tPostData.append( "id", g_sLocationId );
-      }
-      tPostData.append( "source_path", $( '#source_path' ).val() );
+      tPostData.append( "source_path", $( '#source_path_input' ).val() );
       tPostData.append( "name", $( '#name' ).val() );
-      tPostData.append( "loc_new", $( '#loc_new' ).val() );
+      tPostData.append( "loc_new", $( '#loc_new_input' ).val() );
+
+      alert( JSON.stringify( tPostData ) );
 
       // Post request to server
       $.ajax(
-        "locations/" + g_sAction + "Device.php",
+        "devices/" + g_sAction + "Device.php",
         {
           type: 'POST',
           processData: false,
