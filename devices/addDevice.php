@@ -9,13 +9,13 @@
   // Get attributes
   $sSourcePath = $_POST['source_path'];
   $sName = quote( $_POST['name'] );
-  $sLocationId = $_POST['room_id'];
+  $sRoomId = $_POST['room_id'];
 
   // Format command
   // $command = quote( getenv( 'PYTHON' ) ) . ' ../database/addDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
     // . ' -s ' . $sSourcePath
     // . ' -n ' . $sName
-    // . ' -l ' . $sLocationId
+    // . ' -r ' . $sRoomId
     // . $g_sContext;
 
   // Execute command
