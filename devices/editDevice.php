@@ -65,6 +65,7 @@
   var g_sLocation = null;
 
   var g_bGotDropdowns = false;
+  var g_tRsp = null;
 
   function onShowEditDialog()
   {
@@ -80,7 +81,7 @@
     }
     else
     {
-      loadEditDialog();
+      makeDropdowns();
     }
   }
 
@@ -103,12 +104,21 @@
         data: tPostData
       }
     )
-    .done( loadDropdowns )
+    .done( makeDropdowns )
     .fail( handleAjaxError );
   }
 
-  function loadDropdowns( tRsp, sStatus, tJqXhr )
+  function makeDropdowns( tRsp, sStatus, tJqXhr )
   {
+    if ( tRsp )
+    {
+      g_tRsp = tRsp;
+    }
+    else
+    {
+      tRsp = g_tRsp;
+    }
+
     console.log( '===> dropdown retrieval elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
     var sHtmlSourcePath = '<option></option>';
     var aSourcePaths = tRsp.source_paths;
@@ -167,6 +177,10 @@
 
     // Initialize input fields
     $( '#name' ).val( g_sName );
+    // $('#source_path,#source_path_input').val( g_sSourcePath );
+    // $('#source_path').data( 'combobox' ).refresh();
+    // $('#loc_new').val( g_sLocation );
+    // $('#loc_new').data( 'combobox' ).refresh();
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
