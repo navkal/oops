@@ -133,7 +133,7 @@
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option>' + tLoc.loc_new + ' (' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '</option>';
+      sHtmlLocation += '<option>' + formatLocation( tLoc ) + '</option>';
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
@@ -212,15 +212,13 @@
     // Save values of selected row
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
-    g_sLocation = tRow.loc_new;
-
-
-
-
-    //////////////// FAKE FAKE FAKE
-    g_sLocation = "101-01 (1007) 'FIFC'";
-    /////////////////// FAKE FAKE FAKE
+    g_sLocation = formatLocation( tRow );
  }
+
+  function formatLocation( tLoc )
+  {
+    return tLoc.loc_new + ' (' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'";
+  }
 
   function onShownEditDialog()
   {
