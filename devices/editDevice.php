@@ -152,13 +152,18 @@
     // Initialize combobox
     $( '#source_path' ).val( g_sSourcePath );
     $( '#loc_new' ).val( g_sLocation );
-    $('.combobox').combobox( {bsVersion: '3'} );
+    $( '.combobox' ).combobox(
+      {
+        bsVersion: '3',
+        appendId: '_input'
+      }
+    );
 
     // Fix side effects of combobox initialization
     $( '.combobox-container .col-sm-9' ).removeClass( 'col-sm-9' );
     $( '.add-on' ).removeClass( 'add-on' ).addClass( 'input-group-addon' );
-    $( '#source_pathundefined' ).attr( 'id', 'source_path' );
-    $( '#loc_newundefined' ).attr( 'id', 'loc_new' );
+    $( 'label[for=source_path]' ).attr( 'for', 'source_path_input' );
+    $( 'label[for=loc_new]' ).attr( 'for', 'loc_new_input' );
 
     // Initialize input fields
     $( '#name' ).val( g_sName );
