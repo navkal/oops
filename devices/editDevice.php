@@ -4,17 +4,14 @@
 <link rel="stylesheet" href="lib/combobox/combobox.css">
 
 <style>
-  .combobox-container .glyphicon-remove
+  .input-group-addon .glyphicon-remove,
+  .input-group-addon .caret
   {
     color: #8c8c8c;
   }
-  .combobox-container:hover .glyphicon-remove
+  .caret
   {
-    color: #666666;
-  }
-  .input-group-addon.dropdown-toggle
-  {
-    cursor: pointer;
+    width: 9px;
   }
 </style>
 
@@ -185,6 +182,7 @@
     // Fix side effects of combobox initialization
     $( '.combobox-container .col-sm-9' ).removeClass( 'col-sm-9' );
     $( '.add-on' ).removeClass( 'add-on' ).addClass( 'input-group-addon' );
+    $( '.input-group-addon' ).addClass( 'btn' ).addClass( 'btn-default' );
     $( 'label[for=source_path]' ).attr( 'for', 'source_path_input' );
     $( 'label[for=loc_new]' ).attr( 'for', 'loc_new_input' );
     $( '#source_path_input' ).prop( 'required', true );
