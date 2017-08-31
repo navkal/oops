@@ -4,10 +4,18 @@
 <link rel="stylesheet" href="lib/combobox/combobox.css">
 
 <style>
-    .combobox-container .glyphicon-remove
-    {
-      color: #8c8c8c;
-    }
+  .combobox-container .glyphicon-remove
+  {
+    color: #8c8c8c;
+  }
+  .combobox-container:hover .glyphicon-remove
+  {
+    color: #666666;
+  }
+  .input-group-addon.dropdown-toggle
+  {
+    cursor: pointer;
+  }
 </style>
 
 <?php
@@ -229,6 +237,7 @@
 
   function onShownEditDialog()
   {
+    $( '#source_path_input' ).focus();
     hideSpinner();
   }
 
