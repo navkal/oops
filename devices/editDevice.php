@@ -123,7 +123,7 @@
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option data-subtext="(' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '">' + tLoc.loc_new + '</option>';
+      sHtmlLocation += '<option>' + tLoc.loc_new + ' (' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'" + '</option>';
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
@@ -150,6 +150,8 @@
     }
 
     // Initialize combobox
+    $( '#source_path' ).val( g_sSourcePath );
+    $( '#loc_new' ).val( g_sLocation );
     $('.combobox').combobox( {bsVersion: '3'} );
 
     // Fix side effects of combobox initialization
@@ -159,9 +161,7 @@
     $( '#loc_newundefined' ).attr( 'id', 'loc_new' );
 
     // Initialize input fields
-    $( '#source_path' ).val( g_sSourcePath );
     $( '#name' ).val( g_sName );
-    $( '#loc_new' ).val( g_sLocation );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -194,11 +194,17 @@
     g_sSourcePath = tRow.source_path;
     g_sName = tRow.name;
     g_sLocation = tRow.loc_new;
+
+
+
+
+    //////////////// FAKE FAKE FAKE
+    g_sLocation = "101-01 (1007) 'FIFC'";
+    /////////////////// FAKE FAKE FAKE
  }
 
   function onShownEditDialog()
   {
-    $( '#source_path' ).focus();
     hideSpinner();
   }
 
