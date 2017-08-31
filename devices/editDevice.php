@@ -3,6 +3,13 @@
 <script src="lib/combobox/combobox.js"></script>
 <link rel="stylesheet" href="lib/combobox/combobox.css">
 
+<style>
+    .combobox-container .glyphicon-remove
+    {
+      color: #8c8c8c;
+    }
+</style>
+
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
 ?>
