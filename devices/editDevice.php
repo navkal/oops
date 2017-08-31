@@ -1,6 +1,7 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+
+<script src="lib/combobox/combobox.js"></script>
+<link rel="stylesheet" href="lib/combobox/combobox.css">
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
@@ -20,9 +21,7 @@
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
                 <label for="source_path"></label>
-                <div>
-                  <select id="source_path" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                  </select>
+                <div id="source_path_container" >
                 </div>
               </div>
               <div class="form-group">
@@ -33,9 +32,7 @@
               </div>
               <div class="form-group">
                 <label for="loc_new">Location</label>
-                <div>
-                  <select id="loc_new" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                  </select>
+                <div id="loc_new_container" >
                 </div>
               </div>
             </form>
@@ -72,6 +69,9 @@
   function onShowEditDialog()
   {
     showSpinner();
+
+    $( '#source_path_container' ).html( '<select id="source_path" class="form-control combobox" ></select>' );
+    $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control combobox" ></select>' );
 
     if ( ! g_bGotDropdowns )
     {
@@ -110,7 +110,7 @@
   function loadDropdowns( tRsp, sStatus, tJqXhr )
   {
     console.log( '===> dropdown retrieval elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
-    var sHtmlSourcePath = '';
+    var sHtmlSourcePath = '<option></option>';
     var aSourcePaths = tRsp.source_paths;
     for ( var iPath in aSourcePaths )
     {
@@ -118,7 +118,7 @@
       sHtmlSourcePath += '<option>' + sPath + '</option>';
     }
 
-    var sHtmlLocation = '';
+    var sHtmlLocation = '<option></option>';
     var aLocations = tRsp.locations;
     for ( var iLoc in aLocations )
     {
@@ -128,7 +128,6 @@
 
     $( '#source_path' ).html( sHtmlSourcePath );
     $( '#loc_new' ).html( sHtmlLocation );
-    $('.selectpicker').selectpicker( 'refresh' );
 
     console.log( '===> dropdown initialization elapsed time: ' + ( Date.now() - g_iBfDebug ) + 'ms' );
 
@@ -150,10 +149,19 @@
         break;
     }
 
+    // Initialize combobox
+    $('.combobox').combobox( {bsVersion: '3'} );
+
+    // Fix side effects of combobox initialization
+    $( '.combobox-container .col-sm-9' ).removeClass( 'col-sm-9' );
+    $( '.add-on' ).removeClass( 'add-on' ).addClass( 'input-group-addon' );
+    $( '#source_pathundefined' ).attr( 'id', 'source_path' );
+    $( '#loc_newundefined' ).attr( 'id', 'loc_new' );
+
     // Initialize input fields
-    $( '#source_path' ).selectpicker( 'val', g_sSourcePath );
+    $( '#source_path' ).val( g_sSourcePath );
     $( '#name' ).val( g_sName );
-    $( '#loc_new' ).selectpicker( 'val', g_sLocation );
+    $( '#loc_new' ).val( g_sLocation );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -199,16 +207,8 @@
     console.log( '==> changed: ' + tEvent.target.id );
 
     var tControl = $( tEvent.target );
-    if ( tControl.hasClass( 'selectpicker' ) )
-    {
-      // Update the selectpicker
-      tControl.selectpicker( 'val', tControl.val() );
-    }
-    else
-    {
-      // Trim the value
-      tControl.val( tControl.val().trim() );
-    }
+    tControl.val( tControl.val().trim() );
+
 
     // Set flag
     g_bChanged = true;
