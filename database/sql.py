@@ -689,6 +689,13 @@ class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
+        # Update specified location
+        target_table = facility + 'Device'
+        cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
+            ( parent_id, name, room_id, description, id ) )
+
+        conn.commit()
+
         self.success = True
 
 
