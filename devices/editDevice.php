@@ -223,7 +223,6 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
 
-    console.log( 'g_sUpdateTarget=' + g_sUpdateTarget );
     // Save values of selected row
     g_sDeviceId = tRow.id;
     g_sSourceId = tRow.parent_id;
