@@ -7,25 +7,24 @@
   error_log( '==> post=' . print_r( $_POST, true ) );
 
   // Get attributes
-  $sSourcePath = $_POST['source_path'];
+  $sParentId = $_POST['parent_id'];
   $sName = quote( $_POST['name'] );
   $sRoomId = $_POST['room_id'];
 
   // Format command
-  // $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
-    // . ' -s ' . $sSourcePath
-    // . ' -n ' . $sName
-    // . ' -r ' . $sRoomId
-    // . $g_sContext;
+  $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+    . ' -p ' . $sParentId
+    . ' -n ' . $sName
+    . ' -r ' . $sRoomId
+    . $g_sContext;
 
   // Execute command
-  // error_log( '==> command=' . $command );
-  // exec( $command, $output, $status );
-  // error_log( '==> output=' . print_r( $output, true ) );
+  error_log( '==> command=' . $command );
+  exec( $command, $output, $status );
+  error_log( '==> output=' . print_r( $output, true ) );
 
   // Echo status
-  // $sStatus = $output[ count( $output ) - 1 ];
+  $sStatus = $output[ count( $output ) - 1 ];
 
-  $sStatus = json_encode( 'debug' );
   echo $sStatus;
 ?>

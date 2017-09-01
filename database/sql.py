@@ -678,6 +678,20 @@ class changePassword:
                 self.organization = user.organization
 
 
+class addDevice:
+    def __init__( self, by, parent_id, name, room_id, enterprise, facility ):
+        open_database( enterprise )
+
+        self.success = True
+
+
+class updateDevice:
+    def __init__( self, by, parent_id, name, room_id, enterprise, facility ):
+        open_database( enterprise )
+
+        self.success = True
+
+
 class addLocation:
     def __init__( self, by, location, old_location, description, enterprise, facility ):
         open_database( enterprise )
@@ -860,15 +874,16 @@ class deviceDropdowns:
 
         open_database( enterprise )
 
-        # Get all potential source paths for devices
-        cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE object_type = "Circuit"')
+        # Get all potential sources
+        cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE object_type = "Circuit"')
         rows = cur.fetchall()
 
-        source_paths = []
+        sources = []
         for row in rows:
-            source_paths.append( row[0] )
+            source = { 'parent_id': row[0], 'source_path': row[1] }
+            sources.append( source )
 
-        self.source_paths = source_paths
+        self.sources = sources
 
         # Get all locations
         cur.execute('SELECT * FROM ' + facility + 'Room')

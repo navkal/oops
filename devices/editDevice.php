@@ -72,7 +72,7 @@
   var g_sAction = null;
   var g_sSubmitLabel = null;
 
-  var g_sSourcePath = null;
+  var g_sSourceId = null;
   var g_sName = null;
   var g_sLocationId = null;
 
@@ -132,11 +132,11 @@
     }
 
     var sHtmlSourcePath = '<option></option>';
-    var aSourcePaths = tRsp.source_paths;
-    for ( var iPath in aSourcePaths )
+    var aSources = tRsp.sources;
+    for ( var iSource in aSources )
     {
-      var sPath = aSourcePaths[iPath];
-      sHtmlSourcePath += '<option>' + sPath + '</option>';
+      var tSource = aSources[iSource];
+      sHtmlSourcePath += '<option value="' + tSource.parent_id + '" >' + tSource.source_path + '</option>';
     }
 
     var sHtmlLocation = '<option></option>';
@@ -168,8 +168,8 @@
         break;
     }
 
-    // Initialize combobox
-    $( '#source_path' ).val( g_sSourcePath );
+    // Initialize comboboxes
+    $( '#source_path' ).val( g_sSourceId );
     $( '#loc_new' ).val( g_sLocationId );
     $( '.combobox' ).combobox(
       {
@@ -190,7 +190,7 @@
 
     // Initialize input fields
     $( '#name' ).val( g_sName );
-    // $('#source_path,#source_path_input').val( g_sSourcePath );
+    // $('#source_path,#source_path_input').val( g_sSourceId );
     // $('#source_path').data( 'combobox' ).refresh();
     // $('#loc_new').val( g_sLocationId );
     // $('#loc_new').data( 'combobox' ).refresh();
@@ -205,7 +205,7 @@
 
   function initAddDialog()
   {
-    g_sSourcePath = "\n";
+    g_sSourceId = "\n";
     g_sName = '';
     g_sLocationId = "\n";
   }
@@ -223,10 +223,10 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
 
     // Save values of selected row
-    g_sSourcePath = tRow.source_path;
+    g_sSourceId = tRow.parent_id;
     g_sName = tRow.name;
     g_sLocationId = tRow.room_id;
- }
+  }
 
   function formatLocation( tLoc )
   {
@@ -253,7 +253,7 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
-      tPostData.append( 'source_path', $( '#source_path' ).val() );
+      tPostData.append( 'parent_id', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
 
       var sRoomId = ( $( '#loc_new' ).val() == null ) ? '' : $( '#loc_new' ).val();
