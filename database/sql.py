@@ -694,6 +694,12 @@ class updateDevice:
         cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
             ( parent_id, name, room_id, description, id ) )
 
+        # Log activity
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+        facility_id = cur.fetchone()[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device " + description, facility_id ) )
+
         conn.commit()
 
         self.success = True

@@ -262,7 +262,7 @@
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
       tPostData.append( 'room_id', ( $( '#loc_new' ).val() == null ) ? '' : $( '#loc_new' ).val() );
-      tPostData.append( 'description', $( '#name' ).val() + ( $( '#loc_new_input' ).val() ? ( ': ' + $( '#loc_new_input' ).val() ) : '' ) );
+      tPostData.append( 'description', "'" + $( '#name' ).val() + "' at " + ( $( '#loc_new_input' ).val() ? ( $( '#loc_new_input' ).val() + ', ' ) : '' ) + $( '#source_path_input' ).val() );
 
       // Post request to server
       $.ajax(
