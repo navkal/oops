@@ -9,7 +9,9 @@
   // Get attributes
   $sParentId = $_POST['parent_id'];
   $sName = quote( $_POST['name'] );
-  $sRoomId = $_POST['room_id'];
+  $sRoomId = quote( $_POST['room_id'] );
+
+  error_log( '===> addDevice: room_id=' . $sRoomId );
 
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/addDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']

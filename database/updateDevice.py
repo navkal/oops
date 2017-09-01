@@ -11,6 +11,7 @@ import sql
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='update device' )
     parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
+    parser.add_argument( '-i', '--id', dest='id', help='device id' )
     parser.add_argument( '-p', '--parent_id', dest='parent_id', help='parent id' )
     parser.add_argument( '-n', '--name', dest='name', help='device name' )
     parser.add_argument( '-r', '--room_id', dest='room_id', help='location id' )

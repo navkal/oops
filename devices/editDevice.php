@@ -72,6 +72,7 @@
   var g_sAction = null;
   var g_sSubmitLabel = null;
 
+  var g_sDeviceId = null;
   var g_sSourceId = null;
   var g_sName = null;
   var g_sLocationId = null;
@@ -222,7 +223,9 @@
     }
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
 
+    console.log( 'g_sUpdateTarget=' + g_sUpdateTarget );
     // Save values of selected row
+    g_sDeviceId = tRow.id;
     g_sSourceId = tRow.parent_id;
     g_sName = tRow.name;
     g_sLocationId = tRow.room_id;
@@ -253,6 +256,10 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
+      if ( g_sDeviceId )
+      {
+        tPostData.append( "id", g_sDeviceId );
+      }
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
 

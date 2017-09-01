@@ -686,7 +686,7 @@ class addDevice:
 
 
 class updateDevice:
-    def __init__( self, by, parent_id, name, room_id, enterprise, facility ):
+    def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
         self.success = True

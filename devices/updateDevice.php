@@ -7,12 +7,16 @@
   error_log( '==> post=' . print_r( $_POST, true ) );
 
   // Get attributes
+  $sId = $_POST['id'];
   $sParentId = $_POST['parent_id'];
   $sName = quote( $_POST['name'] );
-  $sRoomId = $_POST['room_id'];
+  $sRoomId = quote( $_POST['room_id'] );
+
+  error_log( '===> updateDevice: room_id=' . $sRoomId );
 
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+    . ' -i ' . $sId
     . ' -p ' . $sParentId
     . ' -n ' . $sName
     . ' -r ' . $sRoomId
