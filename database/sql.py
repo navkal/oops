@@ -4,6 +4,7 @@ import sqlite3
 import os
 import time
 import uuid
+import natsort
 import dbCommon
 
 
@@ -909,7 +910,7 @@ class deviceDropdowns:
             source = { 'parent_id': row[0], 'source_path': row[1] }
             sources.append( source )
 
-        self.sources = sources
+        self.sources = natsort.natsorted( sources, key=lambda x: x['source_path'] )
 
         # Get all locations
         cur.execute('SELECT * FROM ' + facility + 'Room')
