@@ -232,7 +232,26 @@
 
   function formatLocation( tLoc )
   {
-    return tLoc.loc_new + ' (' + tLoc.loc_old + ') ' + "'" + tLoc.loc_descr + "'";
+    // Create the fragments
+    var sNew = tLoc.loc_new;
+    var sOld = tLoc.loc_old ? ( '(' + tLoc.loc_old + ')' ) : '';
+    var sDescr = tLoc.loc_descr ? ( "'" + tLoc.loc_descr + "'" ) : '';
+
+    // Combine the fragments
+    var sFormat = sNew;
+    if ( sOld )
+    {
+      sFormat += ' ' + sOld;
+    }
+    if ( sDescr )
+    {
+      sFormat += ' ' + sDescr;
+    }
+
+    // Trim the result
+    sFormat = sFormat.trim();
+
+    return sFormat;
   }
 
   function onShownEditDialog()

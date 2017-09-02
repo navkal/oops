@@ -895,6 +895,33 @@ class allFacilities:
         self.name_map = name_map
         self.fullname_map = fullname_map
 
+def formatLocation( tLoc ):
+
+    # Create the fragments
+    sNew = tLoc['loc_new']
+
+    sOld = ''
+    if tLoc['loc_old']:
+        sOld = '(' + tLoc['loc_old'] + ')'
+
+    sDescr = ''
+    if tLoc['loc_descr']:
+        sDescr = "'" + tLoc['loc_descr'] + "'"
+
+    # Combine the fragments
+    sFormat = sNew;
+
+    if sOld:
+      sFormat += ' ' + sOld;
+
+    if sDescr:
+      sFormat += ' ' + sDescr;
+
+    # Trim the result
+    sFormat = sFormat.strip();
+
+    return sFormat;
+
 
 class deviceDropdowns:
     def __init__(self, enterprise, facility):
@@ -921,4 +948,5 @@ class deviceDropdowns:
             location = { 'room_id': row[0], 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] }
             locations.append( location )
 
-        self.locations = locations
+        self.locations = natsort.natsorted( locations, key=lambda x: formatLocation( x ) )
+
