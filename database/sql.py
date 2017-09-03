@@ -933,9 +933,15 @@ class deviceDropdowns:
         rows = cur.fetchall()
 
         sources = []
+        testId = 0
         for row in rows:
+            testId = max( testId, row[0] )
             source = { 'id': row[0], 'text': row[1] }
             sources.append( source )
+
+        # To test large volume of dropdown elements, change 0 to number desired.
+        for i in range( len(sources), 0 ):
+            sources.append( { 'id': str( testId + i ), 'text': str( testId + i ) } )
 
         self.sources = natsort.natsorted( sources, key=lambda x: x['text'] )
 
