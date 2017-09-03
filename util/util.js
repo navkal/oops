@@ -141,7 +141,7 @@ var g_tPropertyRules =
   },
   source_path:
   {
-    label: "Source Path",
+    label: "Circuit",
     showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++

@@ -111,7 +111,7 @@
     if ( tRsp )
     {
       g_tRsp = tRsp;
-      console.log( '==> Source Path count: ' + tRsp.sources.length );
+      console.log( '==> Circuit count: ' + tRsp.sources.length );
       console.log( '==> Location count: ' + tRsp.locations.length );
     }
     else
@@ -275,7 +275,7 @@
 
     if ( $( '#source_path_container .selection' ).text() == '' )
     {
-      aMessages.push( 'Source Path is required' );
+      aMessages.push( 'Circuit is required' );
       $( '#source_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
