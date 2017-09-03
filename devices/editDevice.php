@@ -163,7 +163,8 @@
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-    $( 'select' ).select2();
+    $( '#source_path' ).select2( { placeholder: 'Select a Circuit' } );
+    $( '#loc_new' ).select2( { placeholder: 'Select a Location' } );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
