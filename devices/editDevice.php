@@ -1,26 +1,11 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
-<script src="lib/combobox/combobox.js"></script>
-<link rel="stylesheet" href="lib/combobox/combobox.css">
-
-<style>
-  .input-group-addon .glyphicon-remove,
-  .input-group-addon .caret
-  {
-    color: #8c8c8c;
-  }
-  .caret
-  {
-    width: 9px;
-  }
-</style>
-
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
 ?>
 
 <!-- Edit Location dialog -->
-<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogTitle">
+<div class="modal fade" id="editDialog" role="dialog" aria-labelledby="editDialogTitle">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -39,7 +24,7 @@
               <div class="form-group">
                 <label for="name"></label>
                 <div>
-                  <input type="text" class="form-control" id="name" maxlength="50">
+                  <input type="text" class="form-control" id="name" maxlength="50" required>
                 </div>
               </div>
               <div class="form-group">
@@ -84,8 +69,8 @@
   {
     showSpinner();
 
-    $( '#source_path_container' ).html( '<select id="source_path" class="form-control combobox" ></select>' );
-    $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control combobox" ></select>' );
+    $( '#source_path_container' ).html( '<select id="source_path" class="form-control" style="width: 100%" ></select>' );
+    $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
 
     if ( ! g_bGotDropdowns )
     {
@@ -132,20 +117,20 @@
       tRsp = g_tRsp;
     }
 
-    var sHtmlSourcePath = '<option></option>';
+    var sHtmlSourcePath = '';
     var aSources = tRsp.sources;
     for ( var iSource in aSources )
     {
       var tSource = aSources[iSource];
-      sHtmlSourcePath += '<option value="' + tSource.parent_id + '" >' + tSource.source_path + '</option>';
+      sHtmlSourcePath += '<option value="' + tSource.id + '" >' + tSource.text + '</option>';
     }
 
-    var sHtmlLocation = '<option></option>';
+    var sHtmlLocation = '<option value="0" >[none]</option>';
     var aLocations = tRsp.locations;
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
-      sHtmlLocation += '<option value="' + tLoc.room_id + '" >' + formatLocation( tLoc ) + '</option>';
+      sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
@@ -169,36 +154,21 @@
         break;
     }
 
-    // Initialize comboboxes
-    $( '#source_path' ).val( g_sSourceId );
-    $( '#loc_new' ).val( g_sLocationId );
-    $( '.combobox' ).combobox(
-      {
-        bsVersion: '3',
-        appendId: '_input'
-      }
-    );
-    resetChangeHandler();
-
-    // Fix side effects of combobox initialization
-    $( '.combobox-container .col-sm-9' ).removeClass( 'col-sm-9' );
-    $( '.add-on' ).removeClass( 'add-on' ).addClass( 'input-group-addon' );
-    $( '.input-group-addon' ).addClass( 'btn' ).addClass( 'btn-default' );
-    $( 'label[for=source_path]' ).attr( 'for', 'source_path_input' );
-    $( 'label[for=loc_new]' ).attr( 'for', 'loc_new_input' );
-    $( '#source_path_input' ).prop( 'required', true );
-    $( '#name' ).prop( 'required', true );
-
     // Initialize input fields
+    $( '#source_path' ).val( g_sSourceId );
     $( '#name' ).val( g_sName );
-    // $('#source_path,#source_path_input').val( g_sSourceId );
-    // $('#source_path').data( 'combobox' ).refresh();
-    // $('#loc_new').val( g_sLocationId );
-    // $('#loc_new').data( 'combobox' ).refresh();
+    $( '#loc_new' ).val( g_sLocationId );
+
+    // Initialize select2 objects
+    $.fn.select2.defaults.set( 'theme', 'bootstrap' );
+    $( 'select' ).select2();
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
     $( '#editDialogSubmit' ).text( g_sSubmitLabel );
+
+    // Set change handler
+    resetChangeHandler();
 
     // Clear messages
     clearMessages();
@@ -206,9 +176,9 @@
 
   function initAddDialog()
   {
-    g_sSourceId = "\n";
+    g_sSourceId = '';
     g_sName = '';
-    g_sLocationId = "\n";
+    g_sLocationId = '';
   }
 
   function initUpdateDialog()
@@ -230,33 +200,9 @@
     g_sLocationId = tRow.room_id;
   }
 
-  function formatLocation( tLoc )
-  {
-    // Create the fragments
-    var sNew = tLoc.loc_new;
-    var sOld = tLoc.loc_old ? ( '(' + tLoc.loc_old + ')' ) : '';
-    var sDescr = tLoc.loc_descr ? ( "'" + tLoc.loc_descr + "'" ) : '';
-
-    // Combine the fragments
-    var sFormat = sNew;
-    if ( sOld )
-    {
-      sFormat += ' ' + sOld;
-    }
-    if ( sDescr )
-    {
-      sFormat += ' ' + sDescr;
-    }
-
-    // Trim the result
-    sFormat = sFormat.trim();
-
-    return sFormat;
-  }
-
   function onShownEditDialog()
   {
-    $( '#source_path_input' ).focus();
+    $( '#source_path' ).focus();
     hideSpinner();
   }
 
@@ -265,8 +211,23 @@
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
 
+    // Special handling for select2 objects
+    if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
+    {
+      $( '#select2-' + tControl.attr( 'id' ) + '-container' ).text( getSelect2Text( tControl ) );
+    }
+
     // Set flag
     g_bChanged = true;
+  }
+
+  function getSelect2Text( tControl )
+  {
+    var sId = tControl.attr( 'id' );
+    var sSelector = '#select2-' + sId + '-container';
+    var sVal = tControl.val();
+    var sText = ( sVal == 0 ) ? '' : $( '#' + sId + ' option[value="' + sVal + '"]' ).text();
+    return sText;
   }
 
   function onSubmitEditDialog()
@@ -274,14 +235,20 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
+
       if ( g_sDeviceId )
       {
         tPostData.append( "id", g_sDeviceId );
       }
+
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
-      tPostData.append( 'room_id', ( $( '#loc_new' ).val() == null ) ? '' : $( '#loc_new' ).val() );
-      tPostData.append( 'description', "'" + $( '#name' ).val() + "' at " + ( $( '#loc_new_input' ).val() ? ( $( '#loc_new_input' ).val() + ', ' ) : '' ) + $( '#source_path_input' ).val() );
+
+      var sLocVal = $( '#loc_new' ).val();
+      tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
+
+      var sLoc = getSelect2Text( $( '#loc_new' ) );
+      tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
 
       // Post request to server
       $.ajax(
@@ -303,6 +270,13 @@
   {
     clearMessages();
     var aMessages = [];
+
+    if ( $( '#source_path_container .selection' ).text() == '' )
+    {
+      aMessages.push( 'Source Path is required' );
+      $( '#source_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
     showMessages( aMessages );
     return ( aMessages.length == 0 );
   }
@@ -313,3 +287,7 @@
   }
 
 </script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
+<link rel="stylesheet" href="https://select2.github.io/select2-bootstrap-theme/css/select2-bootstrap.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>

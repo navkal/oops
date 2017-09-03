@@ -934,10 +934,10 @@ class deviceDropdowns:
 
         sources = []
         for row in rows:
-            source = { 'parent_id': row[0], 'source_path': row[1] }
+            source = { 'id': row[0], 'text': row[1] }
             sources.append( source )
 
-        self.sources = natsort.natsorted( sources, key=lambda x: x['source_path'] )
+        self.sources = natsort.natsorted( sources, key=lambda x: x['text'] )
 
         # Get all locations
         cur.execute('SELECT * FROM ' + facility + 'Room')
@@ -945,8 +945,8 @@ class deviceDropdowns:
 
         locations = []
         for row in rows:
-            location = { 'room_id': row[0], 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] }
+            location = { 'id': row[0], 'text': formatLocation( { 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] } )  }
             locations.append( location )
 
-        self.locations = natsort.natsorted( locations, key=lambda x: formatLocation( x ) )
+        self.locations = natsort.natsorted( locations, key=lambda x: x['text'] )
 
