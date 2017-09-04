@@ -697,7 +697,7 @@ class addDevice:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device " + description, facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
 
         conn.commit()
 
@@ -717,7 +717,7 @@ class updateDevice:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device " + description, facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
 
         conn.commit()
 
@@ -744,7 +744,7 @@ class addLocation:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, "Add location ('" + location + "','" + old_location + "')", facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, 'Add location [' + format_location( location, old_location, description ) + ']', facility_id ) )
 
         conn.commit()
 
@@ -772,7 +772,7 @@ class updateLocation:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, "Update location ('" + location + "','" + old_location + "')", facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Update location [' + format_location( location, old_location, description ) + ']', facility_id ) )
 
         conn.commit()
 
