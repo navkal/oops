@@ -41,16 +41,26 @@ def make_device_label( name, room_id, facility ):
 
     if location or location_old or location_descr:
         label += ': <span class="glyphicon glyphicon-map-marker"></span>'
-
-        if location:
-            label += location + ' '
-        if location_old:
-            label += '(' + location_old + ') '
-        if location_descr:
-            label += "'" + location_descr + "'"
+        label += format_location( location, location_old, location_descr )
 
     label = label.strip()
     return label
+
+
+def format_location( location, location_old, location_descr ):
+
+    format = ''
+
+    if location:
+        format += location + ' '
+    if location_old:
+        format += '(' + location_old + ') '
+    if location_descr:
+        format += "'" + location_descr + "'"
+    format = format.strip();
+
+    return format;
+
 
 def make_cirobj_label( o ):
     label = ''
@@ -68,12 +78,7 @@ def make_cirobj_label( o ):
 
         if o.loc_new or o.loc_old or o.loc_descr:
             label += ' <span class="glyphicon glyphicon-map-marker"></span>'
-            if o.loc_new:
-                label += o.loc_new + ' '
-            if o.loc_old:
-                label += '(' + o.loc_old + ') '
-            if o.loc_descr:
-                label += " '" + o.loc_descr + "'"
+            label += format_location( o.loc_new, o.loc_old, o.loc_descr );
 
         # Prepend name
         name = o.path.split( '.' )[-1]
@@ -895,33 +900,6 @@ class allFacilities:
         self.name_map = name_map
         self.fullname_map = fullname_map
 
-def formatLocation( tLoc ):
-
-    # Create the fragments
-    sNew = tLoc['loc_new']
-
-    sOld = ''
-    if tLoc['loc_old']:
-        sOld = '(' + tLoc['loc_old'] + ')'
-
-    sDescr = ''
-    if tLoc['loc_descr']:
-        sDescr = "'" + tLoc['loc_descr'] + "'"
-
-    # Combine the fragments
-    sFormat = sNew;
-
-    if sOld:
-      sFormat += ' ' + sOld;
-
-    if sDescr:
-      sFormat += ' ' + sDescr;
-
-    # Trim the result
-    sFormat = sFormat.strip();
-
-    return sFormat;
-
 
 class deviceDropdowns:
     def __init__(self, enterprise, facility):
@@ -951,7 +929,7 @@ class deviceDropdowns:
 
         locations = []
         for row in rows:
-            location = { 'id': row[0], 'text': formatLocation( { 'loc_new': row[1], 'loc_old': row[2], 'loc_descr': row[4] } )  }
+            location = { 'id': row[0], 'text': format_location( row[1], row[2], row[4] )  }
             locations.append( location )
 
         self.locations = natsort.natsorted( locations, key=lambda x: x['text'] )
