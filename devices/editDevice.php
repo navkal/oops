@@ -274,7 +274,7 @@
     clearMessages();
     var aMessages = [];
 
-    if ( $( '#source_path_container .selection' ).text() == $( '#source_path_container .select2-selection__placeholder' ).text()  )
+    if ( $( '#source_path' ).val() == null )
     {
       aMessages.push( 'Circuit is required' );
       $( '#source_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
