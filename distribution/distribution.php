@@ -11,7 +11,7 @@
   var g_sReservedDelimiter = "<?=RESERVED_DELIMITER?>";
 </script>
 
-<!-- Circuit Navigator scripts -->
+<!-- Panel Spy scripts -->
 <link rel="stylesheet" href="distribution/distribution.css?version=<?=$iVersion?>">
 <script src="distribution/distribution.js?version=<?=$iVersion?>"></script>
 
@@ -103,7 +103,7 @@
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Circuit" checked >
-                  <span>xxxxxxxxxx</span>
+                  <span>Circuits</span>
                 </label>
               </li>
               <li>
