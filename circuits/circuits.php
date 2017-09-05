@@ -103,7 +103,7 @@
               <li>
                 <label class="checkbox checkbox-inline" >
                   <input type="checkbox" value="Circuit" checked >
-                  <span>Distribution</span>
+                  <span>xxxxxxxxxx</span>
                 </label>
               </li>
               <li>

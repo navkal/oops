@@ -5,7 +5,7 @@
 ?>
 
 <script>
-  g_sSortableTableTitle = 'Distribution';
+  g_sSortableTableTitle = 'xxxxxxxxxx';
   g_sSortableTableType = 'circuit';
   $( document ).ready( getSortableTable );
 </script>
