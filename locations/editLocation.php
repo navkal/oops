@@ -34,6 +34,7 @@
                   <textarea class="form-control" id="loc_descr" maxlength="512" ></textarea>
                 </div>
               </div>
+              <button id="editDialogSubmitProxy" type="submit" style="display:none" ></button>
             </form>
           </div>
         </div>
@@ -41,7 +42,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button id="editDialogSubmit" type="submit" class="btn btn-primary" form="editDialogForm" ></button>
+          <button id="editDialogSubmit" class="btn btn-primary" onclick="$('#editDialogSubmitProxy').click()" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
