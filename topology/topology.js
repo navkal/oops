@@ -40,7 +40,7 @@ function makeHyperlink( i, tEl )
 
       if ( sLink == 'PANELSPY' )
       {
-        // Link is to home (Circuits) view
+        // Link is to home (Distribution) view
         tAnchor.click( goHome );
       }
       else

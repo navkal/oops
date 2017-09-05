@@ -96,7 +96,7 @@ function getSearchResults( tEvent )
       tPostData.append( "searchTargets", g_sSearchTargets );
 
       $.ajax(
-        "circuits/search.php",
+        "distribution/search.php",
         {
           type: 'POST',
           processData: false,

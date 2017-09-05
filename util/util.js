@@ -362,7 +362,7 @@ function openImageWindow( tEvent )
 {
   var tAnchor = $( tEvent.target ).closest( "a" );
   var sPath = tAnchor.attr( "path" );
-  var sUrl = '../circuits/image.php?path=' + sPath;
+  var sUrl = '../distribution/image.php?path=' + sPath;
 
   var nDefaultWidth = 800;
   var nDefaultAspect = 2550 / 3300;

@@ -24,7 +24,7 @@
 
     <div class="container">
       <div class="clearfix" style="padding-top: 5px">
-        <button class="btn btn-link btn-xs" onclick="goBack(event,'<?=$sPath?>')" title="Back to Circuits">
+        <button class="btn btn-link btn-xs" onclick="goBack(event,'<?=$sPath?>')" title="Back to Distribution">
           <span class="glyphicon glyphicon-arrow-left" ></span>
         </button>
       </div>

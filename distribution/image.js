@@ -33,15 +33,15 @@ function goBack( tEvent, sPath )
   var tMain = window.opener;
 
   // Navigate according to current state of main window
-  if ( tMain.document.title.indexOf( 'Circuits' ) == 0 )
+  if ( tMain.document.title.indexOf( 'Distribution' ) == 0 )
   {
-    // Currently on Circuits page.  Navigate directly to panel.
+    // Currently on Distribution page.  Navigate directly to panel.
     tMain.g_sSearchTargetPath = sPath;
     tMain.navigateToSearchTarget();
   }
   else
   {
-    // Not currently on Circuits page.  Navigate to page and then to panel.
+    // Not currently on Distribution page.  Navigate to page and then to panel.
     var sGotoUrl = '/?goto=' + sPath;
     tMain.location.assign( sGotoUrl );
   }

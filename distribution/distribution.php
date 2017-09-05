@@ -12,12 +12,12 @@
 </script>
 
 <!-- Circuit Navigator scripts -->
-<link rel="stylesheet" href="circuits/circuits.css?version=<?=$iVersion?>">
-<script src="circuits/circuits.js?version=<?=$iVersion?>"></script>
+<link rel="stylesheet" href="distribution/distribution.css?version=<?=$iVersion?>">
+<script src="distribution/distribution.js?version=<?=$iVersion?>"></script>
 
 <!-- Search scripts -->
-<link rel="stylesheet" href="circuits/search.css?version=<?=$iVersion?>">
-<script src="circuits/search.js?version=<?=$iVersion?>"></script>
+<link rel="stylesheet" href="distribution/search.css?version=<?=$iVersion?>">
+<script src="distribution/search.js?version=<?=$iVersion?>"></script>
 
 <!-- Goto parameter -->
 <input id="goto" type="hidden" value="<?=$sGoto?>"/>
@@ -25,7 +25,7 @@
 <div class="container">
 
   <p>
-    <span class="h4">Circuits</span>
+    <span class="h4">Distribution</span>
     <?php
       // 'Add <object>' button goes here
     ?>
