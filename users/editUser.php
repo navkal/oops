@@ -22,7 +22,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button id="editDialogSubmit" type="submit" class="btn btn-primary" form="editUserForm" ></button>
+          <button type="button" id="editUserFormSubmitProxy" class="btn btn-primary" onclick="$('#editUserFormSubmitButton').click()" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
@@ -101,7 +101,7 @@
     }
 
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogSubmit' ).text( g_sSubmitLabel );
+    $( '#editUserFormSubmitProxy' ).text( g_sSubmitLabel );
 
     // Clear messages
     clearMessages();

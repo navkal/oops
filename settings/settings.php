@@ -19,7 +19,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div style="text-align:center;" >
-        <button type="submit" class="btn btn-primary" form="editUserForm" >Submit</button>
+        <button type="button" class="btn btn-primary" onclick="$('#editUserFormSubmitButton').click()" >Submit</button>
         <button type="button" class="btn btn-default" onclick="location.reload();" >Clear</button>
       </div>
     </div>

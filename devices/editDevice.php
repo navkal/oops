@@ -32,7 +32,7 @@
                 <div id="loc_new_container" >
                 </div>
               </div>
-              <button id="editDialogSubmitProxy" type="submit" style="display:none" ></button>
+              <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>
         </div>
@@ -40,7 +40,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button type="button" id="editDialogSubmit" class="btn btn-primary" onclick="$('#editDialogSubmitProxy').click()" ></button>
+          <button type="button" id="editDialogFormSubmitProxy" class="btn btn-primary" onclick="$('#editDialogFormSubmitButton').click()" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
@@ -169,7 +169,7 @@
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogSubmit' ).text( g_sSubmitLabel );
+    $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
 
     // Set change handler
     resetChangeHandler();

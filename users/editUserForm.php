@@ -104,6 +104,7 @@
           </div>
         </div>
       </div>
+      <button id="editUserFormSubmitButton" type="submit" style="display:none" ></button>
     </form>
   </div>
 </div>
