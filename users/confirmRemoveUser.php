@@ -20,13 +20,14 @@
                 <label for="removeUsername">Username</label>
                 <input type="text" class="form-control" id="removeUsername" placeholder="Username" disabled >
               </div>
+              <button type="submit" id="removeUserSubmitProxy" style="display:none" ></button>
             </form>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button type="submit" class="btn btn-danger" form="removeUserForm" >Remove User</button>
+          <button type="button" class="btn btn-danger" onclick="$('#removeUserSubmitProxy').click()" >Remove User</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>

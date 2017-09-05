@@ -42,7 +42,7 @@
 
       <div class="modal-footer">
         <div style="text-align:center;" >
-          <button id="editDialogSubmit" class="btn btn-primary" onclick="$('#editDialogSubmitProxy').click()" ></button>
+          <button type="button" id="editDialogSubmit" class="btn btn-primary" onclick="$('#editDialogSubmitProxy').click()" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         <br/>
