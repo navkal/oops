@@ -254,6 +254,48 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  update_circuit:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'update',
+    customizeButton:
+      function( sDeviceId )
+      {
+        return ' title="Update Circuit" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  update_panel:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'update',
+    customizeButton:
+      function( sDeviceId )
+      {
+        return ' title="Update Panel" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  update_transformer:
+  {
+    label: "Update",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'update',
+    customizeButton:
+      function( sDeviceId )
+      {
+        return ' title="Update Transformer" ';
+      },
+    displayIndex: displayIndex ++
+  },
   update_device:
   {
     label: "Update",

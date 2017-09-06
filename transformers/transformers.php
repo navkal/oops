@@ -2,10 +2,17 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/editCircuitObject.php";
 ?>
 
 <script>
   g_sSortableTableTitle = 'Transformers';
   g_sSortableTableType = 'transformer';
+
+  if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
+  {
+    g_sSortableTableEditWhat = "Transformer";
+  }
+
   $( document ).ready( getSortableTable );
 </script>

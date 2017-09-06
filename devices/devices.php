@@ -8,6 +8,7 @@
 <script>
   g_sSortableTableTitle = 'Devices';
   g_sSortableTableType = 'device';
+
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
     g_sSortableTableEditWhat = "Device";

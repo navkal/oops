@@ -4,7 +4,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
 ?>
 
-<!-- Edit Device dialog -->
+<!-- Edit dialog for Circuit, Panel, Transformer -->
 <div class="modal fade" id="editDialog" role="dialog" aria-labelledby="editDialogTitle">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
