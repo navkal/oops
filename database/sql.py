@@ -549,7 +549,7 @@ class location:
 
 class sortableTableRow:
 
-    def __init__(self,row, enterprise, facility ):
+    def __init__( self, row, enterprise, facility ):
 
         self.id = row[0]
         self.room_id = row[1]
@@ -558,10 +558,22 @@ class sortableTableRow:
         self.parent_id = row[7]
         self.source = row[10]
 
-        self.name = self.path.split('.')[-1]
-        aName = self.name.split( '-', maxsplit=1 )
-        if ( len( aName ) == 2 ) and aName[0].isdigit():
-            self.name = aName[1]
+        # Extract number and name from trailing segment of path
+        trailing = self.path.split('.')[-1]
+        aTrailing = trailing.split( '-', maxsplit=1 )
+
+        self.number = ''
+        self.name = ''
+
+        if aTrailing[0].isdigit():
+            # Segment format is <number> or <number>-<name>.  Save the number.
+            self.number = aTrailing[0]
+            if len( aTrailing ) == 2:
+                # Segment format is <number>-<name>.  Save the name.
+                self.name = aTrailing[1]
+        else:
+            # Segment format is <notNumber>.  Save as name.
+            self.name = trailing
 
         cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
         voltage = cur.fetchone()

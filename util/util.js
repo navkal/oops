@@ -146,6 +146,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  number:
+  {
+    label: "Number",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   name:
   {
     label: "Name",
