@@ -207,6 +207,33 @@
   function onShownEditDialog()
   {
     $( '#source_path' ).focus();
+
+    // Allow user to select text in setting display
+    if ( $( '#source_path' ).val() )
+    {
+      $( '#select2-source_path-container' ).css(
+        {
+          '-webkit-user-select': 'text',
+          '-moz-user-select': 'text',
+          '-ms-user-select': 'text',
+          'user-select': 'text',
+        }
+      );
+    }
+    if ( $( '#loc_new' ).val() )
+    {
+      $( '#select2-loc_new-container' ).css(
+        {
+          '-webkit-user-select': 'text',
+          '-moz-user-select': 'text',
+          '-ms-user-select': 'text',
+          'user-select': 'text',
+        }
+      );
+    }
+
+    var tSelect2 = $( '#select2-source_path-container' );
+
     hideSpinner();
   }
 
@@ -218,7 +245,21 @@
     // Special handling for select2 objects
     if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
     {
-      $( '#select2-' + tControl.attr( 'id' ) + '-container' ).text( getSelect2Text( tControl ) );
+      var tSelect2 = $( '#select2-' + tControl.attr( 'id' ) + '-container' );
+      tSelect2.text( getSelect2Text( tControl ) );
+
+      // Allow user to select text in setting display
+      tSelect2.css(
+        {
+          '-webkit-user-select': 'text',
+          '-moz-user-select': 'text',
+          '-ms-user-select': 'text',
+          'user-select': 'text',
+        }
+      );
+
+      // Allow user to select text in dropdown setting
+      tSelect2
     }
 
     // Set flag
