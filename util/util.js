@@ -493,6 +493,7 @@ function hideSpinner()
   $( '#spinner' ).css( 'display', 'none' );
 }
 
+var g_sAction = null;
 var g_sSubmitLabel = null;
 function initEditDialog( sWhat, nLabelColumnWidth )
 {

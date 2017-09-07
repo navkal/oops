@@ -62,7 +62,6 @@
 </div>
 
 <script>
-  var g_sAction = null;
   var g_sUsername = null;
   var g_fnSubmitUserDone = null;
   var g_bDoValidation = null;

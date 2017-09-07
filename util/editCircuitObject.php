@@ -76,8 +76,6 @@
 
 
 <script>
-  var g_sAction = null;
-
   var g_sDeviceId = null;
   var g_sSourceId = null;
   var g_sName = null;

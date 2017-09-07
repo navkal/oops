@@ -57,8 +57,6 @@
 
 
 <script>
-  var g_sAction = null;
-
   var g_sLocationId = null;
   var g_sLocation = null;
   var g_sOldLocation = null;

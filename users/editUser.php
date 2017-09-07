@@ -36,7 +36,6 @@
 </div>
 
 <script>
-  var g_sAction = null;
   var g_sUsername = null;
   var g_sRole = null;
   var g_sStatus = null;
