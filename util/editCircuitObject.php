@@ -17,7 +17,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
-                <label for="parent_path">mooooooo</label>
+                <label for="parent_path"></label>
                 <div id="parent_path_container" >
                 </div>
               </div>

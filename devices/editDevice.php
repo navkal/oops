@@ -81,11 +81,8 @@
     }
   }
 
-  var g_iBfDebug = null;
   function getDropdowns()
   {
-    g_iBfDebug = Date.now();
-
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( "postSecurity", "" );
