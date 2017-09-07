@@ -138,7 +138,7 @@
 
   function loadEditDialog()
   {
-    initEditDialog( 'Device' );
+    initEditDialog();
 
     switch( g_sAction )
     {

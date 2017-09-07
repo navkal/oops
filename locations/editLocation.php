@@ -64,7 +64,7 @@
 
   function onShowEditDialog()
   {
-    initEditDialog( 'Location' );
+    initEditDialog();
 
     switch( g_sAction )
     {

@@ -495,10 +495,10 @@ function hideSpinner()
 
 var g_sAction = null;
 var g_sSubmitLabel = null;
-function initEditDialog( sWhat, nLabelColumnWidth )
+function initEditDialog( nLabelColumnWidth )
 {
   g_bChanged = false;
-  g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + sWhat;
+  g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + g_sSortableTableEditWhat;
 
   makeFieldLabels( $( '.form-control', '#editDialogForm' ) );
 
