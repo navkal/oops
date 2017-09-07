@@ -17,11 +17,6 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
-                <label for="source_path"></label>
-                <div id="source_path_container" >
-                </div>
-              </div>
-              <div class="form-group">
                 <label for="parent_path">mooooooo</label>
                 <div id="parent_path_container" >
                 </div>
@@ -88,7 +83,7 @@
   {
     showSpinner();
 
-    $( '#source_path_container' ).html( '<select id="source_path" class="form-control" style="width: 100%" ></select>' );
+    $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
     $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
 
     if ( ! g_bGotDropdowns )
@@ -154,7 +149,7 @@
       sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
     }
 
-    $( '#source_path' ).html( sHtmlSourcePath );
+    $( '#parent_path' ).html( sHtmlSourcePath );
     $( '#loc_new' ).html( sHtmlLocation );
 
     loadEditDialog()
@@ -176,13 +171,13 @@
     }
 
     // Initialize input fields
-    $( '#source_path' ).val( g_sParentId );
+    $( '#parent_path' ).val( g_sParentId );
     $( '#name' ).val( g_sName );
     $( '#loc_new' ).val( g_sLocationId );
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-    $( '#source_path' ).select2( { placeholder: 'Select a Circuit' } );
+    $( '#parent_path' ).select2( { placeholder: 'Select a Parent' } );
     $( '#loc_new' ).select2( { placeholder: 'Select a Location' } );
 
     // Label dialog and submit button
@@ -224,12 +219,12 @@
 
   function onShownEditDialog()
   {
-    $( '#source_path' ).focus();
+    $( '#parent_path' ).focus();
 
     // Allow user to select text in setting display
-    if ( $( '#source_path' ).val() )
+    if ( $( '#parent_path' ).val() )
     {
-      $( '#select2-source_path-container' ).css(
+      $( '#select2-parent_path-container' ).css(
         {
           '-webkit-user-select': 'text',
           '-moz-user-select': 'text',
@@ -250,7 +245,7 @@
       );
     }
 
-    var tSelect2 = $( '#select2-source_path-container' );
+    var tSelect2 = $( '#select2-parent_path-container' );
 
     hideSpinner();
   }
@@ -304,7 +299,7 @@
         tPostData.append( "id", g_sObjectId );
       }
 
-      tPostData.append( 'parent_id', $( '#source_path' ).val() );
+      tPostData.append( 'parent_id', $( '#parent_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
 
       var sLocVal = $( '#loc_new' ).val();
@@ -334,10 +329,10 @@
     clearMessages();
     var aMessages = [];
 
-    if ( $( '#source_path' ).val() == null )
+    if ( $( '#parent_path' ).val() == null )
     {
       aMessages.push( 'Circuit is required' );
-      $( '#source_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );
