@@ -58,7 +58,6 @@
 
 <script>
   var g_sAction = null;
-  var g_sSubmitLabel = null;
 
   var g_sLocationId = null;
   var g_sLocation = null;

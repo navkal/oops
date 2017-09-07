@@ -56,7 +56,6 @@
 
 <script>
   var g_sAction = null;
-  var g_sSubmitLabel = null;
 
   var g_sDeviceId = null;
   var g_sSourceId = null;
