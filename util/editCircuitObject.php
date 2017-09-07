@@ -38,8 +38,9 @@
                 <div>
                   <select class="form-control" id="voltage" >
                     <option>111/222</option>
+                    <option>120/208</option>
                     <option>222/333</option>
-                    <option>333/444</option>
+                    <option>277/480</option>
                   </select>
                 </div>
               </div>
@@ -75,6 +76,7 @@
   var g_sParentId = null;
   var g_sNumber = null;
   var g_sName = null;
+  var g_sVoltage = null;
   var g_sLocationId = null;
 
   var g_bGotDropdowns = false;
@@ -175,6 +177,7 @@
     $( '#parent_path' ).val( g_sParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
+    $( '#voltage' ).val( g_sVoltage );
     $( '#loc_new' ).val( g_sLocationId );
 
     // Initialize select2 objects
@@ -198,6 +201,7 @@
     g_sParentId = '';
     g_sNumber = '';
     g_sName = '';
+    g_sVoltage = '';
     g_sLocationId = '';
   }
 
@@ -218,6 +222,7 @@
     g_sParentId = tRow.parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
+    g_sVoltage = tRow.voltage;
     g_sLocationId = tRow.room_id;
   }
 
