@@ -73,6 +73,7 @@
 <script>
   var g_sObjectId = null;
   var g_sParentId = null;
+  var g_sNumber = null;
   var g_sName = null;
   var g_sLocationId = null;
 
@@ -172,6 +173,7 @@
 
     // Initialize input fields
     $( '#parent_path' ).val( g_sParentId );
+    $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
     $( '#loc_new' ).val( g_sLocationId );
 
@@ -194,6 +196,7 @@
   function initAddDialog()
   {
     g_sParentId = '';
+    g_sNumber = '';
     g_sName = '';
     g_sLocationId = '';
   }
@@ -213,6 +216,7 @@
     // Save values of selected row
     g_sObjectId = tRow.id;
     g_sParentId = tRow.parent_id;
+    g_sNumber = tRow.number;
     g_sName = tRow.name;
     g_sLocationId = tRow.room_id;
   }
