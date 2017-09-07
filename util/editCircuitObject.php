@@ -22,9 +22,30 @@
                 </div>
               </div>
               <div class="form-group">
+                <label for="parent_path">mooooooo</label>
+                <div id="parent_path_container" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="number"></label>
+                <div>
+                  <input type="number" class="form-control" id="number" min="1" max="9999">
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="name"></label>
                 <div>
-                  <input type="text" class="form-control" id="name" maxlength="50" required>
+                  <input type="text" class="form-control" id="name" maxlength="40">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="voltage"></label>
+                <div>
+                  <select class="form-control" id="voltage" >
+                    <option>111/222</option>
+                    <option>222/333</option>
+                    <option>333/444</option>
+                  </select>
                 </div>
               </div>
               <div class="form-group">
