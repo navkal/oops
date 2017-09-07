@@ -130,6 +130,24 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
+def get_circuit_object_dropdown( facility, sCondition ):
+
+    cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE ' + sCondition )
+    rows = cur.fetchall()
+
+    testId = 0
+    objects = []
+    for row in rows:
+        testId = max( testId, row[0] )
+        objects.append( { 'id': row[0], 'text': row[1] } )
+
+    # To test large volume of dropdown elements, change 0 to number desired.
+    for i in range( len(objects), 0 ):
+        objects.append( { 'id': str( testId + i ), 'text': str( testId + i ) } )
+
+    return natsort.natsorted( objects, key=lambda x: x['text'] )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -940,21 +958,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE object_type = "Circuit"')
-        rows = cur.fetchall()
-
-        sources = []
-        testId = 0
-        for row in rows:
-            testId = max( testId, row[0] )
-            source = { 'id': row[0], 'text': row[1] }
-            sources.append( source )
-
-        # To test large volume of dropdown elements, change 0 to number desired.
-        for i in range( len(sources), 0 ):
-            sources.append( { 'id': str( testId + i ), 'text': str( testId + i ) } )
-
-        self.sources = natsort.natsorted( sources, key=lambda x: x['text'] )
+        self.sources = get_circuit_object_dropdown( facility, 'object_type = "Circuit"' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -965,16 +969,9 @@ class circuitObjectDropdowns:
 
         open_database( enterprise )
 
+        # Get all potential parents
+        self.parents = get_circuit_object_dropdown( facility, 'object_type = "Panel"' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
-
-
-
-
-
-
-
-
-
 

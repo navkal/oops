@@ -124,7 +124,7 @@
     if ( tRsp )
     {
       g_tRsp = tRsp;
-      console.log( '==> Circuit count: ' + tRsp.sources.length );
+      console.log( '==> Circuit count: ' + tRsp.parents.length );
       console.log( '==> Location count: ' + tRsp.locations.length );
     }
     else
@@ -132,12 +132,12 @@
       tRsp = g_tRsp;
     }
 
-    var sHtmlSourcePath = '';
-    var aSources = tRsp.sources;
-    for ( var iSource in aSources )
+    var sHtmlParentPath = '';
+    var aParents = tRsp.parents;
+    for ( var iParent in aParents )
     {
-      var tSource = aSources[iSource];
-      sHtmlSourcePath += '<option value="' + tSource.id + '" >' + tSource.text + '</option>';
+      var tParent = aParents[iParent];
+      sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
     }
 
     var sHtmlLocation = '<option value="0" >[none]</option>';
@@ -148,7 +148,7 @@
       sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
     }
 
-    $( '#parent_path' ).html( sHtmlSourcePath );
+    $( '#parent_path' ).html( sHtmlParentPath );
     $( '#loc_new' ).html( sHtmlLocation );
 
     loadEditDialog()
