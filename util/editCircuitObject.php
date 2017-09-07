@@ -76,8 +76,8 @@
 
 
 <script>
-  var g_sDeviceId = null;
-  var g_sSourceId = null;
+  var g_sObjectId = null;
+  var g_sParentId = null;
   var g_sName = null;
   var g_sLocationId = null;
 
@@ -176,7 +176,7 @@
     }
 
     // Initialize input fields
-    $( '#source_path' ).val( g_sSourceId );
+    $( '#source_path' ).val( g_sParentId );
     $( '#name' ).val( g_sName );
     $( '#loc_new' ).val( g_sLocationId );
 
@@ -198,7 +198,7 @@
 
   function initAddDialog()
   {
-    g_sSourceId = '';
+    g_sParentId = '';
     g_sName = '';
     g_sLocationId = '';
   }
@@ -216,8 +216,8 @@
     while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
 
     // Save values of selected row
-    g_sDeviceId = tRow.id;
-    g_sSourceId = tRow.parent_id;
+    g_sObjectId = tRow.id;
+    g_sParentId = tRow.parent_id;
     g_sName = tRow.name;
     g_sLocationId = tRow.room_id;
   }
@@ -299,9 +299,9 @@
     {
       var tPostData = new FormData();
 
-      if ( g_sDeviceId )
+      if ( g_sObjectId )
       {
-        tPostData.append( "id", g_sDeviceId );
+        tPostData.append( "id", g_sObjectId );
       }
 
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
