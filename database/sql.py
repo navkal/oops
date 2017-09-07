@@ -117,6 +117,19 @@ def facility_names_to_ids( name_csv ):
     return facility_id_csv
 
 
+def get_location_dropdown( facility ):
+
+    cur.execute('SELECT * FROM ' + facility + 'Room')
+    rows = cur.fetchall()
+
+    locations = []
+    for row in rows:
+        location = { 'id': row[0], 'text': format_location( row[1], row[2], row[4] )  }
+        locations.append( location )
+
+    return natsort.natsorted( locations, key=lambda x: x['text'] )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -944,19 +957,24 @@ class deviceDropdowns:
         self.sources = natsort.natsorted( sources, key=lambda x: x['text'] )
 
         # Get all locations
-        cur.execute('SELECT * FROM ' + facility + 'Room')
-        rows = cur.fetchall()
-
-        locations = []
-        for row in rows:
-            location = { 'id': row[0], 'text': format_location( row[1], row[2], row[4] )  }
-            locations.append( location )
-
-        self.locations = natsort.natsorted( locations, key=lambda x: x['text'] )
+        self.locations = get_location_dropdown( facility )
 
 
 class circuitObjectDropdowns:
     def __init__(self, object_type, enterprise, facility):
 
         open_database( enterprise )
-        self.success = True
+
+
+        # Get all locations
+        self.locations = get_location_dropdown( facility )
+
+
+
+
+
+
+
+
+
+
