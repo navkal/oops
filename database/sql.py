@@ -130,9 +130,9 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_circuit_object_dropdown( facility, sCondition ):
+def get_circuit_object_dropdown( facility, sTypes ):
 
-    cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE ' + sCondition )
+    cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE object_type IN (' + sTypes + ')'  )
     rows = cur.fetchall()
 
     testId = 0
@@ -958,7 +958,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_circuit_object_dropdown( facility, 'object_type = "Circuit"' )
+        self.sources = get_circuit_object_dropdown( facility, '"Circuit"' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -970,7 +970,7 @@ class circuitObjectDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        self.parents = get_circuit_object_dropdown( facility, 'object_type = "Panel"' )
+        self.parents = get_circuit_object_dropdown( facility, '"Panel"' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
