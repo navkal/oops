@@ -106,7 +106,7 @@
     if ( tRsp )
     {
       g_tRsp = tRsp;
-      console.log( '==> Circuit count: ' + tRsp.sources.length );
+      console.log( '==> Source count: ' + tRsp.sources.length );
       console.log( '==> Location count: ' + tRsp.locations.length );
     }
     else

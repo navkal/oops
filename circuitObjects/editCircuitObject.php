@@ -124,7 +124,7 @@
     if ( tRsp )
     {
       g_tRsp = tRsp;
-      console.log( '==> Circuit count: ' + tRsp.parents.length );
+      console.log( '==> Parent count: ' + tRsp.parents.length );
       console.log( '==> Location count: ' + tRsp.locations.length );
     }
     else

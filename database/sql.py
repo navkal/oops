@@ -970,7 +970,10 @@ class circuitObjectDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        self.parents = get_circuit_object_dropdown( facility, '"Panel"' )
+        sTypes = '"Panel"'
+        if object_type == 'panel':
+            sTypes += ',"Transformer"'
+        self.parents = get_circuit_object_dropdown( facility, sTypes )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
