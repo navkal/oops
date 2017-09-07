@@ -954,3 +954,9 @@ class deviceDropdowns:
 
         self.locations = natsort.natsorted( locations, key=lambda x: x['text'] )
 
+
+class circuitObjectDropdowns:
+    def __init__(self, object_type, enterprise, facility):
+
+        open_database( enterprise )
+        self.success = True

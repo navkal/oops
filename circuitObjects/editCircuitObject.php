@@ -37,10 +37,6 @@
                 <label for="voltage"></label>
                 <div>
                   <select class="form-control" id="voltage" >
-                    <option>111/222</option>
-                    <option>120/208</option>
-                    <option>222/333</option>
-                    <option>277/480</option>
                   </select>
                 </div>
               </div>
@@ -107,10 +103,10 @@
 
     // Post request to server
     var tPostData = new FormData();
-    tPostData.append( "postSecurity", "" );
+    tPostData.append( 'object_type', g_sSortableTableType );
 
     $.ajax(
-      "devices/getDeviceDropdowns.php",
+      "circuitObjects/getCircuitObjectDropdowns.php",
       {
         type: 'POST',
         processData: false,
