@@ -227,7 +227,7 @@
     g_sParentId = tRow.parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
-    g_sVoltage = tRow.voltage;
+    g_sVoltage = tRow.voltage_id;
     g_sLocationId = tRow.room_id;
   }
 

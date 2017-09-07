@@ -608,6 +608,7 @@ class sortableTableRow:
 
         cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
         voltage = cur.fetchone()
+        self.voltage_id = voltage[0]
         self.voltage = voltage[1]
 
         cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (self.room_id,))
