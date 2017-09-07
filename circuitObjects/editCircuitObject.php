@@ -36,8 +36,8 @@
               <div class="form-group">
                 <label for="voltage"></label>
                 <div>
-                  <select class="form-control" id="voltage" >
-                  </select>
+                  <div id="voltage_container" >
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -83,6 +83,7 @@
     showSpinner();
 
     $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
+    $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
     $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
 
     if ( ! g_bGotDropdowns )
@@ -188,6 +189,7 @@
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
     $( '#parent_path' ).select2( { placeholder: 'Select a Parent' } );
+    $( '#voltage' ).select2( { placeholder: 'Select a Voltage' } );
     $( '#loc_new' ).select2( { placeholder: 'Select a Location' } );
 
     // Label dialog and submit button
