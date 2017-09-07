@@ -978,3 +978,12 @@ class circuitObjectDropdowns:
         # Get all locations
         self.locations = get_location_dropdown( facility )
 
+        # Get all voltages
+        cur.execute('SELECT id, description FROM Voltage')
+        rows = cur.fetchall()
+
+        voltages = []
+        for row in rows:
+            voltages.append( { 'id': row[0], 'text': row[1]  } )
+
+        self.voltages = natsort.natsorted( voltages, key=lambda x: x['text'] )

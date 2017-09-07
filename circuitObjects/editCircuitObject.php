@@ -140,6 +140,14 @@
       sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
     }
 
+    var sHtmlVoltage = '';
+    var aVoltages = tRsp.voltages;
+    for ( var iVoltage in aVoltages )
+    {
+      var tVoltage = aVoltages[iVoltage];
+      sHtmlVoltage += '<option value="' + tVoltage.id + '" >' + tVoltage.text + '</option>';
+    }
+
     var sHtmlLocation = '<option value="0" >[none]</option>';
     var aLocations = tRsp.locations;
     for ( var iLoc in aLocations )
@@ -149,6 +157,7 @@
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
+    $( '#voltage' ).html( sHtmlVoltage );
     $( '#loc_new' ).html( sHtmlLocation );
 
     loadEditDialog()
