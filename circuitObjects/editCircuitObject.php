@@ -389,6 +389,12 @@
         break;
     }
 
+    if ( ( sName.length > 0 ) && ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
+    {
+      aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
+      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
 
     showMessages( aMessages );
     return ( aMessages.length == 0 );
