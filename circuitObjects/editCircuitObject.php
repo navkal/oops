@@ -425,12 +425,6 @@
     showMessages( aMessages );
     return ( aMessages.length == 0 );
   }
-
-  function submitEditDialogDone( tRsp, sStatus, tJqXhr )
-  {
-    location.reload();
-  }
-
 </script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />

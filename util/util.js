@@ -555,6 +555,11 @@ function resetChangeHandler()
   $( 'input,select,textarea' ).on( 'change', onChangeControl );
 }
 
+function submitEditDialogDone( tRsp, sStatus, tJqXhr )
+{
+  location.reload();
+}
+
 // <- <- <- Edit forms <- <- <-
 
 

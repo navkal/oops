@@ -177,10 +177,4 @@
 
     return ( aMessages.length == 0 );
   }
-
-  function submitEditDialogDone( tRsp, sStatus, tJqXhr )
-  {
-    location.reload();
-  }
-
 </script>
