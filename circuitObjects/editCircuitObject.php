@@ -297,22 +297,10 @@
           'user-select': 'text',
         }
       );
-
-      // Allow user to select text in dropdown setting
-      tSelect2
     }
 
     // Set flag
     g_bChanged = true;
-  }
-
-  function getSelect2Text( tControl )
-  {
-    var sId = tControl.attr( 'id' );
-    var sSelector = '#select2-' + sId + '-container';
-    var sVal = tControl.val();
-    var sText = ( sVal == 0 ) ? '' : $( '#' + sId + ' option[value="' + sVal + '"]' ).text();
-    return sText;
   }
 
   function onSubmitEditDialog()

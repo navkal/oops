@@ -540,6 +540,15 @@ function makeFieldLabels( aFields )
   }
 }
 
+function getSelect2Text( tControl )
+{
+  var sId = tControl.attr( 'id' );
+  var sSelector = '#select2-' + sId + '-container';
+  var sVal = tControl.val();
+  var sText = ( sVal == 0 ) ? '' : $( '#' + sId + ' option[value="' + sVal + '"]' ).text();
+  return sText;
+}
+
 function resetChangeHandler()
 {
   $( 'input,select,textarea' ).off( 'change' );
