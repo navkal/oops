@@ -362,10 +362,12 @@
       $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
+    var sNumber = $( '#number' ).val();
+    var sName = $( '#name' ).val();
     switch( g_sSortableTableEditWhat )
     {
       case 'Circuit':
-        if ( ! $( '#number' ).val() && ! $( '#name' ).val() )
+        if ( ! sNumber && ! sName )
         {
           aMessages.push( 'Number or Name is required' );
           $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
@@ -375,7 +377,7 @@
 
       case 'Panel':
       case 'Transformer':
-        if ( ! $( '#name' ).val() )
+        if ( ! sName )
         {
           aMessages.push( 'Name is required' );
           $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
@@ -386,6 +388,7 @@
         aMessages.push( "Unrecognized Circuit Object type '" + g_sSortableTableEditWhat + "'" );
         break;
     }
+
 
     showMessages( aMessages );
     return ( aMessages.length == 0 );
