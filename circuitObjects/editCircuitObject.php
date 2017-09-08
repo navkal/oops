@@ -24,7 +24,7 @@
               <div class="form-group">
                 <label for="number"></label>
                 <div>
-                  <input type="number" class="form-control" id="number" min="1" max="9999">
+                  <input type="text" class="form-control" id="number" maxlength="4">
                 </div>
               </div>
               <div class="form-group">
@@ -387,6 +387,21 @@
       default:
         aMessages.push( "Unrecognized Circuit Object type '" + g_sSortableTableEditWhat + "'" );
         break;
+    }
+
+    if ( sNumber.length > 0 )
+    {
+      if ( ! sNumber.match( /^\d+$/ ) )
+      {
+        aMessages.push( 'Number can contain only digits.' );
+        $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+
+      if ( parseInt( sNumber ) == 0 )
+      {
+        aMessages.push( 'Number must be an integer value between 1 and 9999.' );
+        $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
     }
 
     if ( ( sName.length > 0 ) && ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
