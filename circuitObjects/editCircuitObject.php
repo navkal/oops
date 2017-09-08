@@ -315,13 +315,25 @@
       }
 
       tPostData.append( 'parent_id', $( '#parent_path' ).val() );
-      tPostData.append( 'name', $( '#name' ).val() );
+
+      var sParentPath = getSelect2Text( $( '#parent_path' ) );
+      var sNumber = $( '#number' ).val();
+      var sName = $( '#name' ).val();
+      var sHyphen = ( sNumber && sName ) ? '-' : '';
+      var sTrailing = sNumber + sHyphen + sName;
+      var sPath = sParentPath + sTrailing;
+      tPostData.append( 'path', sPath );
+
+      tPostData.append( 'voltage', $( '#voltage' ).val() );
 
       var sLocVal = $( '#loc_new' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
+      var sParentTrailing = sParentPath.split( '.' ).pop();
+      var sVoltage = getSelect2Text( $( '#voltage' ) );
       var sLoc = getSelect2Text( $( '#loc_new' ) );
-      tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
+      var sDescription = sTrailing + ': ' + sParentTrailing + ' | ' + sVoltage + 'V' +  ( sLoc ? ( ' | ' + sLoc ) : '' );
+      tPostData.append( 'description', sDescription );
 
       // Post request to server
       $.ajax(
@@ -343,6 +355,8 @@
   {
     clearMessages();
     var aMessages = [];
+
+    aMessages.push( 'Implement validateInput() next!' );
 
     if ( $( '#parent_path' ).val() == null )
     {
