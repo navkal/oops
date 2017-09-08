@@ -249,6 +249,17 @@
         }
       );
     }
+    if ( $( '#voltage' ).val() )
+    {
+      $( '#select2-voltage-container' ).css(
+        {
+          '-webkit-user-select': 'text',
+          '-moz-user-select': 'text',
+          '-ms-user-select': 'text',
+          'user-select': 'text',
+        }
+      );
+    }
     if ( $( '#loc_new' ).val() )
     {
       $( '#select2-loc_new-container' ).css(
