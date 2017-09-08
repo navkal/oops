@@ -321,7 +321,7 @@
       var sName = $( '#name' ).val();
       var sHyphen = ( sNumber && sName ) ? '-' : '';
       var sTrailing = sNumber + sHyphen + sName;
-      var sPath = sParentPath + sTrailing;
+      var sPath = sParentPath + '.' + sTrailing;
       tPostData.append( 'path', sPath );
 
       tPostData.append( 'voltage', $( '#voltage' ).val() );
@@ -346,9 +346,14 @@
           data: tPostData
         }
       )
-      .done( submitEditDialogDone )
+      .done( fake/*submitEditDialogDone*/ )
       .fail( handleAjaxError );
     }
+  }
+
+  function fake( tRsp )
+  {
+    alert( JSON.stringify( tRsp ) );
   }
 
   function validateInput()
