@@ -395,6 +395,11 @@
       $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
+    if ( $( '#voltage' ).val() == null )
+    {
+      aMessages.push( 'Voltage is required' );
+      $( '#voltage_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
 
     showMessages( aMessages );
     return ( aMessages.length == 0 );
