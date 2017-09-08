@@ -346,14 +346,9 @@
           data: tPostData
         }
       )
-      .done( fake/*submitEditDialogDone*/ )
+      .done( editCircuitObjectDone )
       .fail( handleAjaxError );
     }
-  }
-
-  function fake( tRsp )
-  {
-    alert( JSON.stringify( tRsp ) );
   }
 
   function validateInput()
@@ -429,6 +424,26 @@
 
     showMessages( aMessages );
     return ( aMessages.length == 0 );
+  }
+
+  function editCircuitObjectDone( tRsp, sStatus, tJqXhr )
+  {
+    alert( JSON.stringify( tRsp ) );
+
+    if ( true /* tRsp.messages.length */ )
+    {
+      // Show error messages
+      showMessages( ['fake backend error: path "xxxxxx" not available'] );
+
+      // Highlight the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
+      $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+    else
+    {
+      location.reload();
+    }
   }
 </script>
 
