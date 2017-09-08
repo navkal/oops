@@ -356,11 +356,9 @@
     clearMessages();
     var aMessages = [];
 
-    aMessages.push( 'Implement validateInput() next!' );
-
     if ( $( '#parent_path' ).val() == null )
     {
-      aMessages.push( 'Circuit is required' );
+      aMessages.push( 'Parent is required' );
       $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
