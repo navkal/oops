@@ -387,7 +387,7 @@ class search:
                     + sWhere +
                     ''')
                   WHERE
-                      (object_type = "Panel"
+                      (object_type IN ( "Panel", "Transformer" )
                         AND
                         (tail LIKE "%''' + searchText + '''%"
                         OR source LIKE "%''' + searchText + '''%"

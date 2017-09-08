@@ -324,7 +324,7 @@
       var sPath = sParentPath + '.' + sTrailing;
       tPostData.append( 'path', sPath );
 
-      tPostData.append( 'voltage', $( '#voltage' ).val() );
+      tPostData.append( 'voltage_id', $( '#voltage' ).val() );
 
       var sLocVal = $( '#loc_new' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
