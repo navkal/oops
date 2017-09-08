@@ -337,7 +337,7 @@
 
       // Post request to server
       $.ajax(
-        'devices/' + g_sAction + 'Device.php',
+        'circuitObjects/' + g_sAction + 'CircuitObject.php',
         {
           type: 'POST',
           processData: false,
@@ -360,6 +360,31 @@
     {
       aMessages.push( 'Parent is required' );
       $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    switch( g_sSortableTableEditWhat )
+    {
+      case 'Circuit':
+        if ( ! $( '#number' ).val() && ! $( '#name' ).val() )
+        {
+          aMessages.push( 'Number or Name is required' );
+          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+        break;
+
+      case 'Panel':
+      case 'Transformer':
+        if ( ! $( '#name' ).val() )
+        {
+          aMessages.push( 'Name is required' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+        break;
+
+      default:
+        aMessages.push( "Unrecognized Circuit Object type '" + g_sSortableTableEditWhat + "'" );
+        break;
     }
 
     showMessages( aMessages );
