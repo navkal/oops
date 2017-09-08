@@ -149,7 +149,7 @@
       sHtmlVoltage += '<option value="' + tVoltage.id + '" >' + tVoltage.text + '</option>';
     }
 
-    var sHtmlLocation = '<option value="0" >[none]</option>';
+    var sHtmlLocation = '';
     var aLocations = tRsp.locations;
     for ( var iLoc in aLocations )
     {
@@ -399,6 +399,12 @@
     {
       aMessages.push( 'Voltage is required' );
       $( '#voltage_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( $( '#loc_new' ).val() == null )
+    {
+      aMessages.push( 'Location is required' );
+      $( '#loc_new_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );
