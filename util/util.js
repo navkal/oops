@@ -543,6 +543,7 @@ function makeFieldLabels( aFields )
       switch( tField.tagName.toLowerCase() )
       {
         case 'input':
+        case 'textarea':
           $( tField ).attr( 'placeholder', sLabel );
           break;
 

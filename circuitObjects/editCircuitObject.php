@@ -45,6 +45,12 @@
                 <div id="loc_new_container" >
                 </div>
               </div>
+              <div id="description" class="form-group">
+                <label></label>
+                <div>
+                  <textarea class="form-control" maxlength="512" ></textarea>
+                </div>
+              </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>
@@ -166,6 +172,11 @@
 
   function loadEditDialog()
   {
+    // Customize ID of description field
+    var sDescrId = g_sSortableTableEditWhat.toLowerCase() + '_descr';
+    $( '#description textarea' ).attr( 'id', sDescrId );
+    $( '#description label' ).attr( 'for', sDescrId );
+
     initEditDialog();
 
     switch( g_sAction )
@@ -185,12 +196,13 @@
     $( '#name' ).val( g_sName );
     $( '#voltage' ).val( g_sVoltage );
     $( '#loc_new' ).val( g_sLocationId );
+    $( '#' + sDescrId ).val( g_sDescription );
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-    $( '#parent_path' ).select2( { placeholder: 'Select a Parent' } );
-    $( '#voltage' ).select2( { placeholder: 'Select a Voltage' } );
-    $( '#loc_new' ).select2( { placeholder: 'Select a Location' } );
+    $( '#parent_path' ).select2( { placeholder: 'Parent' } );
+    $( '#voltage' ).select2( { placeholder: 'Voltage' } );
+    $( '#loc_new' ).select2( { placeholder: 'Location' } );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -210,6 +222,7 @@
     g_sName = '';
     g_sVoltage = '';
     g_sLocationId = '';
+    g_sDescription = '';
   }
 
   function initUpdateDialog()
@@ -231,6 +244,7 @@
     g_sName = tRow.name;
     g_sVoltage = tRow.voltage_id;
     g_sLocationId = tRow.room_id;
+    g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
   }
 
   function onShownEditDialog()
