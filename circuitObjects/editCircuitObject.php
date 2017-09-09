@@ -320,8 +320,8 @@
       var sNumber = $( '#number' ).val();
       var sName = $( '#name' ).val();
       var sHyphen = ( sNumber && sName ) ? '-' : '';
-      var sTrailing = sNumber + sHyphen + sName;
-      var sPath = sParentPath + '.' + sTrailing;
+      var sTail = sNumber + sHyphen + sName;
+      var sPath = sParentPath + '.' + sTail;
       tPostData.append( 'path', sPath );
 
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
@@ -329,10 +329,10 @@
       var sLocVal = $( '#loc_new' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
-      var sParentTrailing = sParentPath.split( '.' ).pop();
+      var sParentTail = sParentPath.split( '.' ).pop();
       var sVoltage = getSelect2Text( $( '#voltage' ) );
       var sLoc = getSelect2Text( $( '#loc_new' ) );
-      var sDescription = sTrailing + ': ' + sParentTrailing + ' | ' + sVoltage + 'V' +  ( sLoc ? ( ' | ' + sLoc ) : '' );
+      var sDescription = sTail + ': ' + sParentTail + ' | ' + sVoltage + 'V' +  ( sLoc ? ( ' | ' + sLoc ) : '' );
       tPostData.append( 'description', sDescription );
 
       // Post request to server
