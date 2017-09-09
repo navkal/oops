@@ -171,6 +171,7 @@ class device:
 
             row = cur.fetchone()
 
+        self.object_type = "Device"
         self.id = row[0]
         self.room_id = row[1]
         self.parent_id = row[2]
