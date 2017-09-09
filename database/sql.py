@@ -587,6 +587,7 @@ class sortableTableRow:
         self.room_id = row[1]
         self.path = row[2]
         self.object_type = row[5].title()
+        self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
 
@@ -642,6 +643,13 @@ class sortableTableRow:
                     WHERE path = ?''', (self.path,) )
 
         self.devices = cur.fetchone()[0]
+
+        if self.object_type == 'Circuit':
+            self.circuit_descr = self.description
+        elif self.object_type == 'Panel':
+            self.panel_descr = self.description
+        elif self.object_type == 'Transformer':
+            self.transformer_descr = self.description
 
         if user_role == 'Technician':
             if self.object_type == 'Circuit':

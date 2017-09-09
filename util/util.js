@@ -189,6 +189,13 @@ var g_tPropertyRules =
     columnType: 'text', // Controls text-align
     displayIndex: displayIndex ++
   },
+  loc_type:
+  {
+    label: "Location Type",
+    showInPropertiesWindow: true,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   loc_descr:
   {
     label: "Location Description",
@@ -196,10 +203,24 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  loc_type:
+  circuit_descr:
   {
-    label: "Location Type",
-    showInPropertiesWindow: true,
+    label: "Circuit Description",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  panel_descr:
+  {
+    label: "Panel Description",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  transformer_descr:
+  {
+    label: "Transformer Description",
+    showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
