@@ -247,13 +247,13 @@ var g_tPropertyRules =
     controlType: 'image',
     displayIndex: displayIndex ++
   },
-  description:
-  {
-    label: "Description",
-    showInPropertiesWindow: false,
-    showInSortableTable: false,
-    displayIndex: displayIndex ++
-  },
+  // description:
+  // {
+    // label: "Description",
+    // showInPropertiesWindow: false,
+    // showInSortableTable: false,
+    // displayIndex: displayIndex ++
+  // },
   update_circuit:
   {
     label: "Update",
