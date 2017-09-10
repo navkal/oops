@@ -244,6 +244,13 @@ class cirobj:
         self.parent_id = row[7]
         self.source = row[10]
 
+        if self.object_type == 'Circuit':
+            self.circuit_descr = self.description
+        elif self.object_type == 'Panel':
+            self.panel_descr = self.description
+        elif self.object_type == 'Transformer':
+            self.transformer_descr = self.description
+
         # Retrieve parent path
         cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE id = ?', (self.parent_id,))
         path_row = cur.fetchone()

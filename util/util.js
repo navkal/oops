@@ -213,14 +213,14 @@ var g_tPropertyRules =
   panel_descr:
   {
     label: "Panel Description",
-    showInPropertiesWindow: false,
+    showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   transformer_descr:
   {
     label: "Transformer Description",
-    showInPropertiesWindow: false,
+    showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
