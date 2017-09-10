@@ -120,7 +120,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'update':
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" data-backdrop="static" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
@@ -128,7 +128,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'remove':
                 sCell = '<a username="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" data-backdrop="static" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
