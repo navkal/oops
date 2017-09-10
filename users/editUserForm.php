@@ -100,7 +100,7 @@
         <div class="form-group">
           <label for="user_description" ></label>
           <div>
-            <textarea class="form-control" id="user_description" maxlength="512" ></textarea>
+            <textarea class="form-control" id="user_description" maxlength="500" ></textarea>
           </div>
         </div>
       </div>

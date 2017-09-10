@@ -48,7 +48,7 @@
               <div id="description" class="form-group">
                 <label></label>
                 <div>
-                  <textarea class="form-control" maxlength="512" ></textarea>
+                  <textarea class="form-control" maxlength="100" ></textarea>
                 </div>
               </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
@@ -325,7 +325,7 @@
 
       if ( g_sObjectId )
       {
-        tPostData.append( "id", g_sObjectId );
+        tPostData.append( 'id', g_sObjectId );
       }
 
       tPostData.append( 'parent_id', $( '#parent_path' ).val() );
