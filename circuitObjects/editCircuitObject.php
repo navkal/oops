@@ -48,7 +48,7 @@
               <div id="description" class="form-group">
                 <label></label>
                 <div>
-                  <textarea class="form-control" maxlength="100" ></textarea>
+                  <textarea class="form-control" maxlength="150" ></textarea>
                 </div>
               </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>

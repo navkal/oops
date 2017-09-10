@@ -65,9 +65,7 @@ def format_location( location, location_old, location_descr ):
 def make_cirobj_label( o ):
     label = ''
 
-    if o.object_type.lower() == 'panel':
-
-        # It's a panel.  Generate label.
+    if o.object_type in ( 'Panel', 'Transformer' ):
 
         # Concatenate label fragments
         if o.source:
@@ -80,18 +78,18 @@ def make_cirobj_label( o ):
             label += ' <span class="glyphicon glyphicon-map-marker"></span>'
             label += format_location( o.loc_new, o.loc_old, o.loc_descr );
 
-        # Prepend name
-        name = o.path.split( '.' )[-1]
-        label = label.strip()
-        if label:
-            label = name + ':' + label
-        else:
-            label = name
-
     else:
-
-        # Not a panel; use description field from database
+        # Circuit - show description
         label = o.description
+
+    # Prepend name
+    name = o.path.split( '.' )[-1]
+    label = label.strip()
+
+    if label:
+        label = name + ': ' + label
+    else:
+        label = name
 
     return label
 
@@ -368,15 +366,15 @@ class search:
                         sWhere += ' OR '
 
             cur.execute(
-              '''SELECT path, description
+              '''SELECT path, search_result
                   FROM
                     (SELECT
-                        ''' + facility + '''CircuitObject.object_type,
-                        ''' + facility + '''CircuitObject.description,
                         ''' + facility + '''CircuitObject.path,
+                        ''' + facility + '''CircuitObject.search_result,
+                        ''' + facility + '''CircuitObject.object_type,
                         ''' + facility + '''CircuitObject.tail AS tail,
-                        ''' + facility + '''CircuitObject.search_text AS search_text,
                         ''' + facility + '''CircuitObject.source AS source,
+                        ''' + facility + '''CircuitObject.description AS description,
                         Voltage.description AS voltage,
                         ''' + facility + '''Room.room_num AS location,
                         ''' + facility + '''Room.old_num AS location_old,
@@ -388,16 +386,13 @@ class search:
                     + sWhere +
                     ''')
                   WHERE
-                      (object_type IN ( "Panel", "Transformer" )
-                        AND
-                        (tail LIKE "%''' + searchText + '''%"
-                        OR source LIKE "%''' + searchText + '''%"
-                        OR voltage LIKE "%''' + searchText + '''%"
-                        OR location LIKE "%''' + searchText + '''%"
-                        OR location_old LIKE "%''' + searchText + '''%"
-                        OR location_descr LIKE "%''' + searchText + '''%"))
-                      OR
-                        search_text LIKE "%''' + searchText + '''%"''' )
+                      tail LIKE "%''' + searchText + '''%"
+                      OR source LIKE "%''' + searchText + '''%"
+                      OR voltage LIKE "%''' + searchText + '''%"
+                      OR location LIKE "%''' + searchText + '''%"
+                      OR location_old LIKE "%''' + searchText + '''%"
+                      OR location_descr LIKE "%''' + searchText + '''%"
+                      OR description LIKE "%''' + searchText + '''%"''' )
 
             cirobjRows = cur.fetchall()
         else:
@@ -413,7 +408,7 @@ class search:
                     ''' + facility + '''CircuitObject.path || "." || ''' + facility + '''Device.id AS path,
                     ''' + facility + '''Device.description,
                     ''' + facility + '''CircuitObject.id,
-                    ''' + facility + '''Device.name as name,
+                    ''' + facility + '''Device.name AS name,
                     ''' + facility + '''Room.room_num AS location,
                     ''' + facility + '''Room.old_num AS location_old,
                     ''' + facility + '''Room.description AS location_descr

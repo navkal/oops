@@ -31,7 +31,7 @@
               <div class="form-group">
                 <label for="loc_descr" ></label>
                 <div>
-                  <textarea class="form-control" id="loc_descr" maxlength="100" ></textarea>
+                  <textarea class="form-control" id="loc_descr" maxlength="50" ></textarea>
                 </div>
               </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
