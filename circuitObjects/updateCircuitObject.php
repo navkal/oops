@@ -5,14 +5,15 @@
   require_once $_SERVER['DOCUMENT_ROOT'] . '/util/postSecurity.php';
   require_once $_SERVER['DOCUMENT_ROOT'] . '/util/context.php';
   error_log( '==> post=' . print_r( $_POST, true ) );
-  echo( json_encode( $_POST ) ); exit();
 
   // Get attributes
   $sId = $_POST['id'];
   $sParentId = $_POST['parent_id'];
-  $sName = quote( $_POST['name'] );
+  $sPath = $_POST['path'];
+  $sVoltageId = $_POST['voltage_id'];
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
+  echo( json_encode( $_POST ) ); exit();
 
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
