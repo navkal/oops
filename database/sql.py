@@ -802,14 +802,9 @@ class addCircuitObject:
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['add' + object_type], target_table, 'name', tail, "Add " + object_type.lower() + ' ' + path, facility_id ) )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['add' + object_type], target_table, 'tail', tail, "Add " + object_type.lower() + ' ' + path, facility_id ) )
 
             conn.commit()
-
-
-            # FAKE RETURN
-            self.messages.append( 'addCircuitObject: This is a stub' )
-            return
 
             self.success = True
 
