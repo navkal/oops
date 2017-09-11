@@ -330,11 +330,10 @@
 
       tPostData.append( 'parent_id', $( '#parent_path' ).val() );
 
-      var sParentPath = getSelect2Text( $( '#parent_path' ) );
       var sNumber = $( '#number' ).val();
       var sName = $( '#name' ).val();
       var sHyphen = ( sNumber && sName ) ? '-' : '';
-      tPostData.append( 'path', sParentPath + '.' + sNumber + sHyphen + sName );
+      tPostData.append( 'tail', sNumber + sHyphen + sName );
 
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
       tPostData.append( 'room_id', $( '#loc_new' ).val() );

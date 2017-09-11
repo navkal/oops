@@ -8,7 +8,7 @@
 
   // Get attributes
   $sParentId = $_POST['parent_id'];
-  $sPath = $_POST['path'];
+  $sTail = $_POST['tail'];
   $sVoltageId = $_POST['voltage_id'];
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
