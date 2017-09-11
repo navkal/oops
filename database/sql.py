@@ -763,7 +763,7 @@ class addCircuitObject:
         target_table = facility + 'CircuitObject'
 
         # FAKE RETURN
-        self.success = True
+        self.messages = ['addCircuitObject: This is a stub']
         return
 
 
@@ -793,7 +793,7 @@ class updateCircuitObject:
         target_table = facility + 'CircuitObject'
 
         # FAKE RETURN
-        self.success = True
+        self.messages = ['updateCircuitObject: This is a stub']
         return
 
 

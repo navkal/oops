@@ -432,12 +432,10 @@
 
   function editCircuitObjectDone( tRsp, sStatus, tJqXhr )
   {
-    alert( JSON.stringify( tRsp ) );
-
-    if ( true /* tRsp.messages.length */ )
+    if ( tRsp.messages.length )
     {
       // Show error messages
-      showMessages( ['fake backend error: path "xxxxxx" not available'] );
+      showMessages( tRsp.messages );
 
       // Highlight the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
       $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
