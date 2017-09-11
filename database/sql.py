@@ -754,21 +754,44 @@ class changePassword:
 
 
 
+def get_path_and_id( target_table, parent_id, tail ):
+
+    # Get parent path
+    cur.execute('SELECT path FROM ' + target_table + ' WHERE id = ?', (parent_id,))
+    parent_path = cur.fetchone()[0]
+
+    # Format test path
+    test_path = parent_path + '.' + tail
+
+    # Attempt to get test id
+    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (test_path,))
+    test_row = cur.fetchone()
+
+    if test_row:
+        test_id = str( test_row[0] )
+    else:
+        test_id = None
+
+    # Return results
+    return ( test_path, test_id )
+
 
 class addCircuitObject:
     def __init__( self, by, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
-        # Determine target table
+        self.messages = []
         target_table = facility + 'CircuitObject'
 
+        # Determine whether path is available
+        ( test_path, test_id ) = get_path_and_id( target_table, parent_id, tail )
+        if test_id:
+            self.messages.append( "Path '" + test_path + "' is not available." )
+
         # FAKE RETURN
-        self.messages = ['addCircuitObject: This is a stub']
+        self.messages.append( 'addCircuitObject: This is a stub' )
         return
 
-
-        # TO DO:
-        # Check that path is unique
 
         # Add new object
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
@@ -789,17 +812,24 @@ class updateCircuitObject:
     def __init__( self, by, id, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
-        # Determine target table
+        self.messages = []
         target_table = facility + 'CircuitObject'
 
+        # Determine whether path is available
+        ( test_path, test_id ) = get_path_and_id( target_table, parent_id, tail )
+        if ( test_id != None ) and ( test_id != id ):
+            self.messages.append( "Path '" + test_path + "' is not available." )
+            self.messages.append( 'test_id=' + test_id )
+            self.messages.append( 'id=' + id )
+
         # FAKE RETURN
-        self.messages = ['updateCircuitObject: This is a stub']
+        self.messages.append( 'updateCircuitObject: This is a stub' )
         return
 
 
 
+
         # TO DO:
-        # Check that path is unique
         # Update paths of all descendants
 
 
