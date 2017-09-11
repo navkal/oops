@@ -29,7 +29,6 @@
   error_log( '==> command=' . $command );
   exec( $command, $output, $status );
   error_log( '==> output=' . print_r( $output, true ) );
-  echo( json_encode( $_POST ) ); exit();
 
   // Echo status
   $sStatus = $output[ count( $output ) - 1 ];
