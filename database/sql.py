@@ -799,18 +799,17 @@ class addCircuitObject:
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
 
-
-            # FAKE RETURN
-            conn.commit()
-            self.messages.append( 'addCircuitObject: This is a stub' )
-            return
-
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['add' + object_type], target_table, 'name', tail, "Add " + object_type.lower() + ' ' + path, facility_id ) )
 
             conn.commit()
+
+
+            # FAKE RETURN
+            self.messages.append( 'addCircuitObject: This is a stub' )
+            return
 
             self.success = True
 
