@@ -6,6 +6,7 @@ def hash( text ):
     h.update( text.encode() )
     return h.hexdigest()
 
+
 dcEventTypes = {
     'database': 'Database',
     'notes': 'Notes',
@@ -17,6 +18,7 @@ dcEventTypes = {
     'updateUser': 'Update User',
     'removeUser': 'Remove User'
 }
+
 
 def add_interactive_user( cur, conn, by, username, password, role, force_change_password=True, enabled=True, first_name='', last_name='', email_address='', organization='', description='', facility_ids='' ):
 
@@ -39,25 +41,30 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
     return bUnique
 
 
+def format_location( location, location_old, location_descr ):
+
+    format = ''
+
+    if location:
+        format += location + ' '
+    if location_old:
+        format += '(' + location_old + ') '
+    if location_descr:
+        format += "'" + location_descr + "'"
+    format = format.strip();
+
+    return format;
+
+
 def append_location( text, location, location_old, location_descr, end_delimiter ):
 
     if location or location_old or location_descr:
-
-        if location:
-            text += ' ' + location
-
-        if location_old:
-            text += ' (' + location_old + ')'
-
-        if location_descr:
-            text += " '" + location_descr + "'"
-
-        text += end_delimiter
+        text += ' ' + format_location( location, location_old, location_descr ) + end_delimiter
 
     return text
 
 
-def make_search_result( source, voltage, location, location_old, location_descr, object_type, descr_input, name ):
+def make_search_result( source, voltage, location, location_old, location_descr, object_type, description, name ):
 
     bar = ' | '
 
@@ -72,22 +79,15 @@ def make_search_result( source, voltage, location, location_old, location_descr,
 
     search_result = append_location( search_result, location, location_old, location_descr, bar )
 
-    if object_type == 'Panel':
-        # It's a panel; leave description empty and remove trailing bar delimiter
-        description = ''
-        if search_result:
-            search_result = search_result[:-3]
-    else:
-        # Not a panel; use description field from CSV file
-        description = descr_input
-        if description:
-            search_result += ' "' + description + '"'
-        elif search_result:
-            search_result = search_result[:-3]
+    if description:
+        search_result += ' "' + description + '"' + bar
+
+    if search_result:
+        search_result = search_result[:-3]
 
     if search_result.strip():
         search_result = name + ':' + search_result
     else:
         search_result = name
 
-    return ( search_result, description )
+    return search_result
