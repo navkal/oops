@@ -754,17 +754,17 @@ class changePassword:
 
 
 
-def get_path_and_id( target_table, parent_id, tail ):
+def test_path_availability( target_table, parent_id, tail ):
 
     # Get parent path
     cur.execute('SELECT path FROM ' + target_table + ' WHERE id = ?', (parent_id,))
     parent_path = cur.fetchone()[0]
 
     # Format test path
-    test_path = parent_path + '.' + tail
+    path = parent_path + '.' + tail
 
     # Attempt to get test id
-    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (test_path,))
+    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (path,))
     test_row = cur.fetchone()
 
     if test_row:
@@ -773,7 +773,8 @@ def get_path_and_id( target_table, parent_id, tail ):
         test_id = None
 
     # Return results
-    return ( test_path, test_id )
+    source  = parent_path.split( '.' )[-1]
+    return ( test_id, path, source )
 
 
 class addCircuitObject:
@@ -784,28 +785,38 @@ class addCircuitObject:
         target_table = facility + 'CircuitObject'
 
         # Determine whether path is available
-        ( test_path, test_id ) = get_path_and_id( target_table, parent_id, tail )
+        ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+
         if test_id:
-            self.messages.append( "Path '" + test_path + "' is not available." )
+            # Path already in use
+            self.messages.append( "Path '" + path + "' is not available." )
 
-        # FAKE RETURN
-        self.messages.append( 'addCircuitObject: This is a stub' )
-        return
+        else:
+            # Path is not in use; okay to add
+
+            # Need these
+            search_result = 'mooooooooooooooooooo'
+            object_type = 'fooooooooooooooooooooooo'
+
+            # Add new object
+            zone = ''
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+                 VALUES (?,?,?,?)''', (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source))
 
 
-        # Add new object
-        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
-             VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
+            # FAKE RETURN
+            self.messages.append( 'addCircuitObject: This is a stub' )
+            return
 
-        # Log activity
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
+            # Log activity
+            cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+            facility_id = cur.fetchone()[0]
+            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
 
-        conn.commit()
+            conn.commit()
 
-        self.success = True
+            self.success = True
 
 
 class updateCircuitObject:
@@ -816,9 +827,9 @@ class updateCircuitObject:
         target_table = facility + 'CircuitObject'
 
         # Determine whether path is available
-        ( test_path, test_id ) = get_path_and_id( target_table, parent_id, tail )
+        ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
         if ( test_id != None ) and ( test_id != id ):
-            self.messages.append( "Path '" + test_path + "' is not available." )
+            self.messages.append( "Path '" + path + "' is not available." )
             self.messages.append( 'test_id=' + test_id )
             self.messages.append( 'id=' + id )
 
