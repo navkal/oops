@@ -79,6 +79,12 @@ def make_cirobj_label( o ):
     return label
 
 
+def facility_name_to_id( facility_name ):
+    cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility_name,) )
+    facility_id = cur.fetchone()[0]
+    return str( facility_id )
+
+
 def facility_names_to_ids( name_csv ):
 
     if name_csv != '':
@@ -87,9 +93,7 @@ def facility_names_to_ids( name_csv ):
 
         facility_ids = []
         for i in range( len ( name_list ) ):
-            cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( name_list[i],) )
-            id = cur.fetchone()[0]
-            facility_ids.append( str( id ) )
+            facility_ids.append( facility_name_to_id( name_list[i] ) )
 
         facility_id_csv = ','.join( facility_ids )
 
@@ -653,8 +657,7 @@ class saveNotes:
         open_database( args.enterprise )
 
         # Map facility name to facility ID
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( args.facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( args.facility );
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + args.targetTable, args.targetColumn, args.targetValue, args.notes, facility_id ) )
@@ -803,8 +806,7 @@ class addCircuitObject:
             return
 
             # Log activity
-            cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-            facility_id = cur.fetchone()[0]
+            facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
                 VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
 
@@ -846,8 +848,7 @@ class updateCircuitObject:
             ( parent_id, name, room_id, description, id ) )
 
         # Log activity
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
 
@@ -870,8 +871,7 @@ class addDevice:
              VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
 
         # Log activity
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
 
@@ -890,8 +890,7 @@ class updateDevice:
             ( parent_id, name, room_id, description, id ) )
 
         # Log activity
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
 
@@ -917,8 +916,7 @@ class addLocation:
             target_column = 'old_num'
             target_value = old_location
 
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, 'Add location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
 
@@ -945,8 +943,7 @@ class updateLocation:
             target_column = 'old_num'
             target_value = old_location
 
-        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
-        facility_id = cur.fetchone()[0]
+        facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Update location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
 
