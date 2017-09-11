@@ -798,9 +798,8 @@ class addCircuitObject:
             search_result = 'mooooooooooooooooooo'
 
             # Add new object
-            zone = ''
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?)''', (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source))
+                 VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
 
 
             # FAKE RETURN
