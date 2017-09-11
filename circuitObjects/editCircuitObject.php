@@ -296,6 +296,13 @@
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
 
+    // Special handling for Name field
+    if ( tControl.attr( 'id' ) == 'name' )
+    {
+      // Conver to uppercase
+      tControl.val( tControl.val().toUpperCase() );
+    }
+
     // Special handling for select2 objects
     if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
     {
