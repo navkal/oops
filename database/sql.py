@@ -41,25 +41,10 @@ def make_device_label( name, room_id, facility ):
 
     if location or location_old or location_descr:
         label += ': <span class="glyphicon glyphicon-map-marker"></span>'
-        label += format_location( location, location_old, location_descr )
+        label += dbCommon.format_location( location, location_old, location_descr )
 
     label = label.strip()
     return label
-
-
-def format_location( location, location_old, location_descr ):
-
-    format = ''
-
-    if location:
-        format += location + ' '
-    if location_old:
-        format += '(' + location_old + ') '
-    if location_descr:
-        format += "'" + location_descr + "'"
-    format = format.strip();
-
-    return format;
 
 
 def make_cirobj_label( o ):
@@ -76,7 +61,7 @@ def make_cirobj_label( o ):
 
         if o.loc_new or o.loc_old or o.loc_descr:
             label += ' <span class="glyphicon glyphicon-map-marker"></span>'
-            label += format_location( o.loc_new, o.loc_old, o.loc_descr );
+            label += dbCommon.format_location( o.loc_new, o.loc_old, o.loc_descr );
 
     else:
         # Circuit - show description
@@ -122,7 +107,7 @@ def get_location_dropdown( facility ):
 
     locations = []
     for row in rows:
-        location = { 'id': row[0], 'text': format_location( row[1], row[2], row[4] )  }
+        location = { 'id': row[0], 'text': dbCommon.format_location( row[1], row[2], row[4] )  }
         locations.append( location )
 
     return natsort.natsorted( locations, key=lambda x: x['text'] )
@@ -925,7 +910,7 @@ class addLocation:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, 'Add location [' + format_location( location, old_location, description ) + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, 'Add location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
 
         conn.commit()
 
@@ -953,7 +938,7 @@ class updateLocation:
         cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
         facility_id = cur.fetchone()[0]
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Update location [' + format_location( location, old_location, description ) + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Update location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
 
         conn.commit()
 
