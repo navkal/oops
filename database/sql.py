@@ -778,7 +778,7 @@ def test_path_availability( target_table, parent_id, tail ):
 
 
 class addCircuitObject:
-    def __init__( self, by, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+    def __init__( self, by, object_type, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
         self.messages = []
@@ -796,7 +796,6 @@ class addCircuitObject:
 
             # Need these
             search_result = 'mooooooooooooooooooo'
-            object_type = 'fooooooooooooooooooooooo'
 
             # Add new object
             zone = ''
@@ -805,6 +804,7 @@ class addCircuitObject:
 
 
             # FAKE RETURN
+            conn.commit()
             self.messages.append( 'addCircuitObject: This is a stub' )
             return
 
@@ -820,7 +820,7 @@ class addCircuitObject:
 
 
 class updateCircuitObject:
-    def __init__( self, by, id, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+    def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
         self.messages = []

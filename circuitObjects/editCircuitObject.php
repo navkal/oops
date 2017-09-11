@@ -335,6 +335,7 @@
         tPostData.append( 'id', g_sObjectId );
       }
 
+      tPostData.append( 'object_type', g_sSortableTableEditWhat );
       tPostData.append( 'parent_id', $( '#parent_path' ).val() );
 
       var sNumber = $( '#number' ).val();

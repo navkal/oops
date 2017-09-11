@@ -8,6 +8,7 @@
 
   // Get attributes
   $sId = $_POST['id'];
+  $sObjectType = $_POST['object_type'];
   $sParentId = $_POST['parent_id'];
   $sTail = $_POST['tail'];
   $sVoltageId = $_POST['voltage_id'];
@@ -17,6 +18,7 @@
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateCircuitObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
+    . ' -o ' . $sObjectType
     . ' -p ' . $sParentId
     . ' -t ' . $sTail
     . ' -v ' . $sVoltageId

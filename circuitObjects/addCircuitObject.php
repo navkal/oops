@@ -7,6 +7,7 @@
   error_log( '==> post=' . print_r( $_POST, true ) );
 
   // Get attributes
+  $sObjectType = $_POST['object_type'];
   $sParentId = $_POST['parent_id'];
   $sTail = $_POST['tail'];
   $sVoltageId = $_POST['voltage_id'];
@@ -15,6 +16,7 @@
 
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/addCircuitObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+    . ' -o ' . $sObjectType
     . ' -p ' . $sParentId
     . ' -t ' . $sTail
     . ' -v ' . $sVoltageId

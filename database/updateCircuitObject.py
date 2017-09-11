@@ -12,6 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='update circuit object' )
     parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
     parser.add_argument( '-i', '--id', dest='id', help='circuit object id' )
+    parser.add_argument( '-o', '--object_type', dest='object_type', help='circuit object type' )
     parser.add_argument( '-p', '--parent_id', dest='parent_id', help='parent id' )
     parser.add_argument( '-t', '--tail', dest='tail', help='tail segment of path' )
     parser.add_argument( '-v', '--voltage_id', dest='voltage_id', help='voltage id' )
@@ -21,7 +22,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.updateCircuitObject( args.by, args.id, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.enterprise, args.facility )
+        status = sql.updateCircuitObject( args.by, args.id, args.object_type, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to update circuit object' }
     else:
