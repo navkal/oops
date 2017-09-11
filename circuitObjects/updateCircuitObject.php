@@ -13,16 +13,18 @@
   $sVoltageId = $_POST['voltage_id'];
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
-  echo( json_encode( $_POST ) ); exit();
 
   // Format command
-  $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateDevice.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+  $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateCircuitObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
     . ' -p ' . $sParentId
-    . ' -n ' . $sName
+    . ' -t ' . $sTail
+    . ' -v ' . $sVoltageId
     . ' -r ' . $sRoomId
     . ' -d ' . $sDescription
     . $g_sContext;
+
+  echo( json_encode( $_POST ) ); exit();
 
   // Execute command
   error_log( '==> command=' . $command );
