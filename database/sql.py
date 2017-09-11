@@ -779,8 +779,18 @@ class addCircuitObject:
         else:
             # Path is not in use; okay to add
 
-            # Need these
-            search_result = 'mooooooooooooooooooo'
+            # Get fragments of search result text
+            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
+            voltage = cur.fetchone()[0]
+
+            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
+            rooms = cur.fetchone()
+            location = rooms[0]
+            location_old = rooms[1]
+            location_descr = rooms[2]
+
+            # Generate search result text
+            search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
 
             # Add new object
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
