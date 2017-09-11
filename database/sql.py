@@ -747,6 +747,84 @@ class changePassword:
                 self.organization = user.organization
 
 
+
+
+
+
+
+
+
+
+class addCircuitObject:
+    def __init__( self, by, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+        open_database( enterprise )
+
+        # Determine target table
+        target_table = facility + 'CircuitObject'
+
+        # FAKE RETURN
+        self.success = True
+        return
+
+
+        # TO DO:
+        # Check that path is unique
+
+        # Add new object
+        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
+             VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
+
+        # Log activity
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+        facility_id = cur.fetchone()[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
+
+        conn.commit()
+
+        self.success = True
+
+
+class updateCircuitObject:
+    def __init__( self, by, id, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+        open_database( enterprise )
+
+        # Determine target table
+        target_table = facility + 'CircuitObject'
+
+        # FAKE RETURN
+        self.success = True
+        return
+
+
+
+        # TO DO:
+        # Check that path is unique
+        # Update paths of all descendants
+
+
+
+
+
+        # Update specified object
+        cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
+            ( parent_id, name, room_id, description, id ) )
+
+        # Log activity
+        cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility,) )
+        facility_id = cur.fetchone()[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
+
+        conn.commit()
+
+        self.success = True
+
+
+
+
+
+
 class addDevice:
     def __init__( self, by, parent_id, name, room_id, description, enterprise, facility ):
         open_database( enterprise )

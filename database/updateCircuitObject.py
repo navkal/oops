@@ -21,7 +21,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.updateCircuitObject( args.by, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.enterprise, args.facility )
+        status = sql.updateCircuitObject( args.by, args.id, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to update circuit object' }
     else:
