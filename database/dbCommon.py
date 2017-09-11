@@ -37,3 +37,57 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
         conn.commit()
 
     return bUnique
+
+
+def append_location( text, location, location_old, location_descr, end_delimiter ):
+
+    if location or location_old or location_descr:
+
+        if location:
+            text += ' ' + location
+
+        if location_old:
+            text += ' (' + location_old + ')'
+
+        if location_descr:
+            text += " '" + location_descr + "'"
+
+        text += end_delimiter
+
+    return text
+
+
+def make_search_result( source, voltage, location, location_old, location_descr, object_type, descr_input, name ):
+
+    bar = ' | '
+
+    # Generate search result string, which must include all fragments matched by search operation
+    search_result = ''
+
+    if source:
+        search_result += ' ' + source + bar
+
+    if voltage:
+        search_result += ' ' + voltage + 'V' + bar
+
+    search_result = append_location( search_result, location, location_old, location_descr, bar )
+
+    if object_type == 'Panel':
+        # It's a panel; leave description empty and remove trailing bar delimiter
+        description = ''
+        if search_result:
+            search_result = search_result[:-3]
+    else:
+        # Not a panel; use description field from CSV file
+        description = descr_input
+        if description:
+            search_result += ' "' + description + '"'
+        elif search_result:
+            search_result = search_result[:-3]
+
+    if search_result.strip():
+        search_result = name + ':' + search_result
+    else:
+        search_result = name
+
+    return ( search_result, description )
