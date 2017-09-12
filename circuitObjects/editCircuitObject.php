@@ -82,7 +82,6 @@
   var g_sLocationId = null;
   var g_sPath = null;
 
-  var g_bGotDropdowns = false;
   var g_tDropdowns = null;
 
   function onShowEditDialog()
@@ -93,9 +92,8 @@
     $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
     $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
 
-    if ( ! g_bGotDropdowns )
+    if ( ! g_tDropdowns )
     {
-      g_bGotDropdowns = true;
       getDropdowns();
     }
     else
