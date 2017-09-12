@@ -119,14 +119,14 @@ def get_location_dropdown( facility ):
 
 def get_circuit_object_dropdown( facility, sTypes ):
 
-    cur.execute('SELECT id, path, voltage_id FROM ' + facility + 'CircuitObject WHERE object_type IN (' + sTypes + ')'  )
+    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + 'CircuitObject WHERE object_type IN (' + sTypes + ')'  )
     rows = cur.fetchall()
 
     testId = 0
     objects = []
     for row in rows:
         testId = max( testId, row[0] )
-        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[2] } )
+        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[2], 'object_type': row[3] } )
 
     # To test large volume of dropdown elements, change 0 to number desired.
     for i in range( len(objects), 0 ):

@@ -243,13 +243,21 @@
     {
       var tParent = aParents[iParent];
 
+      console.log( '==========================================>' );
       console.log( '===> tParent=' + JSON.stringify( tParent ) );
-      console.log( '===> target object voltage_id=' + sVoltageId );
-      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) && ( tParent.voltage_id == sVoltageId ) )
+      console.log( '===> target ' + g_sSortableTableEditWhat + ' voltage_id=' + sVoltageId );
+      var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
+      var bVoltageSame = ( tParent.voltage_id == sVoltageId );
+      // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
+      var bVoltageCompatible = ( tParent.voltage_id < sVoltageId  ) && ( tParent.object_type == "Transformer" ) && ( g_sSortableTableEditWhat == 'Panel' );
+      // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
+      var bVoltageAllowed = bVoltageSame || bVoltageCompatible;
+      console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageSame=' + bVoltageSame + ' bVoltageCompatible=' + bVoltageCompatible );
+      if ( bPathAllowed && bVoltageAllowed )
       {
         sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
       }
-      else console.log( '===> Skipping parent ' + tParent.text + ' ' + tParent.voltage_id );
+      else console.log( '=======> xxxxxxxx rejected xxxxxxxxxxxxxxxx' );
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
