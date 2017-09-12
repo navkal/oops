@@ -212,20 +212,7 @@
 
   function makeDropdowns()
   {
-    var sHtmlParentPath = '';
-    var aParents = g_tDropdowns.parents;
-    for ( var iParent in aParents )
-    {
-      var tParent = aParents[iParent];
-      
-      console.log( '===> tParent=' + JSON.stringify( tParent ) );
-      console.log( '===> target object voltage_id=' + g_sVoltageId );
-      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) && ( tParent.voltage_id == g_sVoltageId ) )
-      {
-        sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
-      }
-      else console.log( '===> Skipping parent ' + tParent.text + ' ' + tParent.voltage_id );
-    }
+    makeParentDropdown( g_sVoltageId )
 
     var sHtmlVoltage = '';
     var aVoltages = g_tDropdowns.voltages;
@@ -235,6 +222,8 @@
       sHtmlVoltage += '<option value="' + tVoltage.id + '" >' + tVoltage.text + '</option>';
     }
 
+    $( '#voltage' ).html( sHtmlVoltage );
+
     var sHtmlLocation = '';
     var aLocations = g_tDropdowns.locations;
     for ( var iLoc in aLocations )
@@ -243,9 +232,27 @@
       sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
     }
 
-    $( '#parent_path' ).html( sHtmlParentPath );
-    $( '#voltage' ).html( sHtmlVoltage );
     $( '#loc_new' ).html( sHtmlLocation );
+  }
+
+  function makeParentDropdown( sVoltageId )
+  {
+    var sHtmlParentPath = '';
+    var aParents = g_tDropdowns.parents;
+    for ( var iParent in aParents )
+    {
+      var tParent = aParents[iParent];
+
+      console.log( '===> tParent=' + JSON.stringify( tParent ) );
+      console.log( '===> target object voltage_id=' + sVoltageId );
+      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) && ( tParent.voltage_id == sVoltageId ) )
+      {
+        sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
+      }
+      else console.log( '===> Skipping parent ' + tParent.text + ' ' + tParent.voltage_id );
+    }
+
+    $( '#parent_path' ).html( sHtmlParentPath );
   }
 
   function onShownEditDialog()
@@ -324,7 +331,9 @@
     // Special handling for Voltage field
     if ( tControl.attr( 'id' ) == 'voltage' )
     {
-      alert( 'voltage' );
+      var sVoltageId = tControl.val();
+      alert( 'voltage changed to ' + sVoltageId );
+      makeParentDropdown( sVoltageId );
     }
 
     // Set flag
