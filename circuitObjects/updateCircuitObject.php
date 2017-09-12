@@ -7,9 +7,9 @@
   error_log( '==> post=' . print_r( $_POST, true ) );
 
   // Get attributes
-  $sId = $_POST['id'];
+  $sId = quote( $_POST['id'] );
   $sObjectType = $_POST['object_type'];
-  $sParentId = $_POST['parent_id'];
+  $sParentId = quote( $_POST['parent_id'] );
   $sTail = $_POST['tail'];
   $sVoltageId = $_POST['voltage_id'];
   $sRoomId = quote( $_POST['room_id'] );

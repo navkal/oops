@@ -135,6 +135,29 @@ def get_circuit_object_dropdown( facility, sTypes ):
     return natsort.natsorted( objects, key=lambda x: x['text'] )
 
 
+def test_path_availability( target_table, parent_id, tail ):
+
+    # Get parent path
+    cur.execute('SELECT path FROM ' + target_table + ' WHERE id = ?', (parent_id,))
+    parent_path = cur.fetchone()[0]
+
+    # Format test path
+    path = parent_path + '.' + tail
+
+    # Attempt to get test id
+    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (path,))
+    test_row = cur.fetchone()
+
+    if test_row:
+        test_id = str( test_row[0] )
+    else:
+        test_id = None
+
+    # Return results
+    source  = parent_path.split( '.' )[-1]
+    return ( test_id, path, source )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -733,36 +756,6 @@ class changePassword:
                 self.last_name = user.last_name
                 self.email_address = user.email_address
                 self.organization = user.organization
-
-
-
-
-
-
-
-
-
-def test_path_availability( target_table, parent_id, tail ):
-
-    # Get parent path
-    cur.execute('SELECT path FROM ' + target_table + ' WHERE id = ?', (parent_id,))
-    parent_path = cur.fetchone()[0]
-
-    # Format test path
-    path = parent_path + '.' + tail
-
-    # Attempt to get test id
-    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (path,))
-    test_row = cur.fetchone()
-
-    if test_row:
-        test_id = str( test_row[0] )
-    else:
-        test_id = None
-
-    # Return results
-    source  = parent_path.split( '.' )[-1]
-    return ( test_id, path, source )
 
 
 class addCircuitObject:
