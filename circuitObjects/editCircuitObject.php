@@ -247,12 +247,11 @@
       console.log( '===> tParent=' + JSON.stringify( tParent ) );
       console.log( '===> target ' + g_sSortableTableEditWhat + ' voltage_id=' + sVoltageId );
       var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
-      var bVoltageSame = ( tParent.voltage_id == sVoltageId );
+      var bTransformerToPanel = ( tParent.object_type == 'Transformer' ) && ( g_sSortableTableEditWhat == 'Panel' );
       // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-      var bVoltageCompatible = ( tParent.voltage_id < sVoltageId  ) && ( tParent.object_type == "Transformer" ) && ( g_sSortableTableEditWhat == 'Panel' );
+      var bVoltageAllowed = bTransformerToPanel ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  );
       // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
-      var bVoltageAllowed = bVoltageSame || bVoltageCompatible;
-      console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageSame=' + bVoltageSame + ' bVoltageCompatible=' + bVoltageCompatible );
+      console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageAllowed=' + bVoltageAllowed );
       if ( bPathAllowed && bVoltageAllowed )
       {
         sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
