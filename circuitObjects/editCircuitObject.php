@@ -80,6 +80,7 @@
   var g_sName = null;
   var g_sVoltage = null;
   var g_sLocationId = null;
+  var g_sPath = null;
 
   var g_bGotDropdowns = false;
   var g_tRsp = null;
@@ -99,7 +100,7 @@
     }
     else
     {
-      makeDropdowns();
+      loadEditDialog();
     }
   }
 
@@ -122,33 +123,26 @@
         data: tPostData
       }
     )
-    .done( makeDropdowns )
+    .done( loadEditDialog )
     .fail( handleAjaxError );
   }
 
-  function makeDropdowns( tRsp, sStatus, tJqXhr )
+  function makeDropdowns()
   {
-    if ( tRsp )
-    {
-      g_tRsp = tRsp;
-      console.log( '==> Parent count: ' + tRsp.parents.length );
-      console.log( '==> Location count: ' + tRsp.locations.length );
-    }
-    else
-    {
-      tRsp = g_tRsp;
-    }
-
     var sHtmlParentPath = '';
-    var aParents = tRsp.parents;
+    var aParents = g_tRsp.parents;
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
-      sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
+      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) )
+      {
+        sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
+      }
+      else console.log( '===> Skipping parent ' + tParent.text );
     }
 
     var sHtmlVoltage = '';
-    var aVoltages = tRsp.voltages;
+    var aVoltages = g_tRsp.voltages;
     for ( var iVoltage in aVoltages )
     {
       var tVoltage = aVoltages[iVoltage];
@@ -156,7 +150,7 @@
     }
 
     var sHtmlLocation = '';
-    var aLocations = tRsp.locations;
+    var aLocations = g_tRsp.locations;
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
@@ -166,13 +160,18 @@
     $( '#parent_path' ).html( sHtmlParentPath );
     $( '#voltage' ).html( sHtmlVoltage );
     $( '#loc_new' ).html( sHtmlLocation );
-
-    loadEditDialog()
   }
 
-  function loadEditDialog()
+  function loadEditDialog( tRsp, sStatus, tJqXhr )
   {
-    // Customize ID of description field
+    if ( tRsp )
+    {
+      g_tRsp = tRsp;
+      console.log( '==> Parent count: ' + tRsp.parents.length );
+      console.log( '==> Location count: ' + tRsp.locations.length );
+    }
+
+   // Customize ID of description field
     var sDescrId = g_sSortableTableEditWhat.toLowerCase() + '_descr';
     $( '#description textarea' ).attr( 'id', sDescrId );
     $( '#description label' ).attr( 'for', sDescrId );
@@ -189,6 +188,8 @@
         initUpdateDialog();
         break;
     }
+
+    makeDropdowns();
 
     // Initialize input fields
     $( '#parent_path' ).val( g_sParentId );
@@ -223,6 +224,7 @@
     g_sVoltage = '';
     g_sLocationId = '';
     g_sDescription = '';
+    g_sPath = '';
   }
 
   function initUpdateDialog()
@@ -245,6 +247,7 @@
     g_sVoltage = tRow.voltage_id;
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
+    g_sPath = tRow.path;
   }
 
   function onShownEditDialog()
