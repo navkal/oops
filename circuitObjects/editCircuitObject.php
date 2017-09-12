@@ -328,12 +328,12 @@
       );
     }
 
-    // Special handling for Voltage field
+    // If voltage changed, re-populate the parent dropdown with compatible objects
     if ( tControl.attr( 'id' ) == 'voltage' )
     {
       var sVoltageId = tControl.val();
-      alert( 'voltage changed to ' + sVoltageId );
       makeParentDropdown( sVoltageId );
+      $( '#parent_path' ).val( '' );
     }
 
     // Set flag
