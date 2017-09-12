@@ -806,8 +806,6 @@ class addCircuitObject:
 
             conn.commit()
 
-            self.success = True
-
 
 class updateCircuitObject:
     def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
@@ -818,41 +816,42 @@ class updateCircuitObject:
 
         # Determine whether path is available
         ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+
         if ( test_id != None ) and ( test_id != id ):
+            # Path is neither available nor original
             self.messages.append( "Path '" + path + "' is not available." )
-            self.messages.append( 'test_id=' + test_id )
-            self.messages.append( 'id=' + id )
 
-        # FAKE RETURN
-        self.messages.append( 'updateCircuitObject: This is a stub' )
-        return
+        else:
+            # Path is either available or original; okay to update
 
+            # Get original path of target element
+            cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id = ?', (id,) )
+            original_path = cur.fetchone()[0]
 
+            # If path of target object is to change, update paths of all descendants
+            if path != original_path:
 
+                # Retrieve all descendants of the target object
+                cur.execute( 'SELECT id, path FROM ' + target_table + ' WHERE path LIKE "' + original_path + '.%"' )
+                descendants = cur.fetchall()
 
-        # TO DO:
-        # Update paths of all descendants
+                # Update paths of all descendants
+                for descendant in descendants:
+                    descendant_id = descendant[0]
+                    descendant_path = descendant[1]
+                    new_descendant_path = descendant_path.replace( original_path, path, 1 )
+                    cur.execute( 'UPDATE ' + target_table + ' SET path=? WHERE id=? ' , ( new_descendant_path, descendant_id ) )
 
+            # Update target object
+            cur.execute( '''UPDATE ''' + target_table + ''' SET object_type=?, parent_id=?, tail=?, voltage_id=?, room_id=?, description=? WHERE id=?''',
+                ( object_type, parent_id, tail, voltage_id, room_id, description, id ) )
 
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['update' + object_type], target_table, 'tail', tail, "Update " + object_type.lower() + ' ' + path, facility_id ) )
 
-
-
-        # Update specified object
-        cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
-            ( parent_id, name, room_id, description, id ) )
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
-
-        conn.commit()
-
-        self.success = True
-
-
-
-
+            conn.commit()
 
 
 class addDevice:
