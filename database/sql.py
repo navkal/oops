@@ -836,8 +836,8 @@ class updateCircuitObject:
                     cur.execute( 'UPDATE ' + target_table + ' SET path=? WHERE id=? ' , ( new_descendant_path, descendant_id ) )
 
             # Update target object
-            cur.execute( '''UPDATE ''' + target_table + ''' SET object_type=?, parent_id=?, tail=?, voltage_id=?, room_id=?, description=? WHERE id=?''',
-                ( object_type, parent_id, tail, voltage_id, room_id, description, id ) )
+            cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, zone=?, voltage_id=?, object_type=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
+                ( room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source, id ) )
 
             # Log activity
             facility_id = facility_name_to_id( facility )
