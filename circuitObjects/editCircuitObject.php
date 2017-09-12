@@ -83,7 +83,7 @@
   var g_sPath = null;
 
   var g_bGotDropdowns = false;
-  var g_tRsp = null;
+  var g_tDropdowns = null;
 
   function onShowEditDialog()
   {
@@ -130,7 +130,7 @@
   function makeDropdowns()
   {
     var sHtmlParentPath = '';
-    var aParents = g_tRsp.parents;
+    var aParents = g_tDropdowns.parents;
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
@@ -142,7 +142,7 @@
     }
 
     var sHtmlVoltage = '';
-    var aVoltages = g_tRsp.voltages;
+    var aVoltages = g_tDropdowns.voltages;
     for ( var iVoltage in aVoltages )
     {
       var tVoltage = aVoltages[iVoltage];
@@ -150,7 +150,7 @@
     }
 
     var sHtmlLocation = '';
-    var aLocations = g_tRsp.locations;
+    var aLocations = g_tDropdowns.locations;
     for ( var iLoc in aLocations )
     {
       var tLoc = aLocations[iLoc];
@@ -166,7 +166,7 @@
   {
     if ( tRsp )
     {
-      g_tRsp = tRsp;
+      g_tDropdowns = tRsp;
       console.log( '==> Parent count: ' + tRsp.parents.length );
       console.log( '==> Location count: ' + tRsp.locations.length );
     }
