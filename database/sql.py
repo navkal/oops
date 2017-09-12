@@ -780,10 +780,10 @@ class addCircuitObject:
             voltage = cur.fetchone()[0]
 
             cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
-            rooms = cur.fetchone()
-            location = rooms[0]
-            location_old = rooms[1]
-            location_descr = rooms[2]
+            loc = cur.fetchone()
+            location = loc[0]
+            location_old = loc[1]
+            location_descr = loc[2]
 
             # Generate search result text
             search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
@@ -835,9 +835,22 @@ class updateCircuitObject:
                     new_descendant_path = descendant_path.replace( original_path, path, 1 )
                     cur.execute( 'UPDATE ' + target_table + ' SET path=? WHERE id=? ' , ( new_descendant_path, descendant_id ) )
 
+            # Get fragments of search result text
+            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
+            voltage = cur.fetchone()[0]
+
+            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
+            loc = cur.fetchone()
+            location = loc[0]
+            location_old = loc[1]
+            location_descr = loc[2]
+
+            # Generate search result text
+            search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
+
             # Update target object
-            cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, zone=?, voltage_id=?, object_type=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
-                ( room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source, id ) )
+            cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, zone=?, voltage_id=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
+                ( room_id, path, '', voltage_id, description, parent_id, tail, search_result, source, id ) )
 
             # Log activity
             facility_id = facility_name_to_id( facility )
