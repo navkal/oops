@@ -78,7 +78,7 @@
   var g_sParentId = null;
   var g_sNumber = null;
   var g_sName = null;
-  var g_sVoltage = null;
+  var g_sVoltageId = null;
   var g_sLocationId = null;
   var g_sPath = null;
 
@@ -155,7 +155,7 @@
     $( '#parent_path' ).val( g_sParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
-    $( '#voltage' ).val( g_sVoltage );
+    $( '#voltage' ).val( g_sVoltageId );
     $( '#loc_new' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
 
@@ -181,7 +181,7 @@
     g_sParentId = '';
     g_sNumber = '';
     g_sName = '';
-    g_sVoltage = '';
+    g_sVoltageId = '';
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
@@ -204,7 +204,7 @@
     g_sParentId = tRow.parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
-    g_sVoltage = tRow.voltage_id;
+    g_sVoltageId = tRow.voltage_id;
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
@@ -217,11 +217,14 @@
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
-      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) )
+      
+      console.log( '===> tParent=' + JSON.stringify( tParent ) );
+      console.log( '===> target object voltage_id=' + g_sVoltageId );
+      if ( ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' ) && ( tParent.voltage_id == g_sVoltageId ) )
       {
         sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
       }
-      else console.log( '===> Skipping parent ' + tParent.text );
+      else console.log( '===> Skipping parent ' + tParent.text + ' ' + tParent.voltage_id );
     }
 
     var sHtmlVoltage = '';
@@ -297,7 +300,7 @@
     // Special handling for Name field
     if ( tControl.attr( 'id' ) == 'name' )
     {
-      // Conver to uppercase
+      // Convert to uppercase
       tControl.val( tControl.val().toUpperCase() );
     }
 
@@ -316,6 +319,12 @@
           'user-select': 'text',
         }
       );
+    }
+
+    // Special handling for Voltage field
+    if ( tControl.attr( 'id' ) == 'voltage' )
+    {
+      alert( 'voltage' );
     }
 
     // Set flag
