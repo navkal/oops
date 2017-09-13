@@ -249,7 +249,7 @@
       var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
       var bTransformerToPanel = ( tParent.object_type == 'Transformer' ) && ( g_sSortableTableEditWhat == 'Panel' );
       // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-      var bVoltageAllowed = bTransformerToPanel ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  );
+      var bVoltageAllowed = sVoltageId ? ( bTransformerToPanel ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  ) ) : true;
       // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
       console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageAllowed=' + bVoltageAllowed );
       if ( bPathAllowed && bVoltageAllowed )
