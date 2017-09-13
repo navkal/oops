@@ -248,22 +248,18 @@
     {
       var tParent = aParents[iParent];
 
-      console.log( '==========================================>' );
-      console.log( '===> tParent=' + JSON.stringify( tParent ) );
-      console.log( '===> target ' + g_sSortableTableEditWhat + ' voltage_id=' + sVoltageId );
       var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
       // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
       var bVoltageAllowed = sVoltageId ? ( ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  ) ) : true;
       // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
-      console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageAllowed=' + bVoltageAllowed );
       if ( bPathAllowed && bVoltageAllowed )
       {
         sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
       }
-      else console.log( '=======> xxxxxxxx rejected xxxxxxxxxxxxxxxx' );
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
+    console.log( '=====> Parent count changed to ' + $( '#parent_path option' ).length );
 
     // Restore parent selection, if possible
     $( '#parent_path' ).val( sParentVal );
@@ -340,7 +336,6 @@
         alert( 'parent changed to value=' + sVal + ', type=' + sParentType + ', voltage_id=' + sParentVoltageId );
 
         // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-        debugger;
         var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
         sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
         // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
