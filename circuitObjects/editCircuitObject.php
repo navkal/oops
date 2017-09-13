@@ -237,8 +237,13 @@
 
   function makeParentDropdown( sVoltageId )
   {
+    // Save parent selection, if any
+    var sParentVal = $( '#parent_path' ).val() || '';
+
+    // Generate dropdown
     var sHtmlParentPath = '';
     var aParents = g_tDropdowns.parents;
+
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
@@ -260,6 +265,9 @@
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
+
+    // Restore parent selection, if possible
+    $( '#parent_path' ).val( sParentVal );
   }
 
   function onShownEditDialog()
@@ -340,7 +348,6 @@
     {
       var sVoltageId = tControl.val();
       makeParentDropdown( sVoltageId );
-      $( '#parent_path' ).val( '' );
     }
 
     // Set flag
