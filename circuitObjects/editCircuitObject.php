@@ -259,7 +259,7 @@
       console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageAllowed=' + bVoltageAllowed );
       if ( bPathAllowed && bVoltageAllowed )
       {
-        sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
+        sHtmlParentPath += '<option value="' + tParent.id + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
       }
       else console.log( '=======> xxxxxxxx rejected xxxxxxxxxxxxxxxx' );
     }
@@ -319,17 +319,35 @@
     var tControl = $( tEvent.target );
     tControl.val( tControl.val().trim() );
 
+    var sId = tControl.attr( 'id' );
+    var sVal = tControl.val();
+
     // Special handling for Name field
-    if ( tControl.attr( 'id' ) == 'name' )
+    if ( sId == 'name' )
     {
       // Convert to uppercase
-      tControl.val( tControl.val().toUpperCase() );
+      tControl.val( sVal.toUpperCase() );
+    }
+
+    // If voltage changed, re-populate the parent dropdown with compatible objects
+    if ( sId == 'voltage' )
+    {
+      alert( 'voltage changed' );
+      makeParentDropdown( sVal );
+    }
+
+    // If parent changed, select voltage
+    if ( sId == 'parent_path' )
+    {
+      alert( 'parent changed' );
+      var sVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' )
+      $( '#voltage' ).val( sVoltageId ).trigger( 'change' );
     }
 
     // Special handling for select2 objects
     if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
     {
-      var tSelect2 = $( '#select2-' + tControl.attr( 'id' ) + '-container' );
+      var tSelect2 = $( '#select2-' + sId + '-container' );
       tSelect2.text( getSelect2Text( tControl ) );
 
       // Allow user to select text in setting display
@@ -341,13 +359,6 @@
           'user-select': 'text',
         }
       );
-    }
-
-    // If voltage changed, re-populate the parent dropdown with compatible objects
-    if ( tControl.attr( 'id' ) == 'voltage' )
-    {
-      var sVoltageId = tControl.val();
-      makeParentDropdown( sVoltageId );
     }
 
     // Set flag
