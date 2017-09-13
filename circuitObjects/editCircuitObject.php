@@ -329,19 +329,20 @@
       tControl.val( sVal.toUpperCase() );
     }
 
-    // If voltage changed, re-populate the parent dropdown with compatible objects
-    if ( sId == 'voltage' )
-    {
-      alert( 'voltage changed' );
-      makeParentDropdown( sVal );
-    }
-
     // If parent changed, select voltage
     if ( sId == 'parent_path' )
     {
-      alert( 'parent changed' );
+      alert( 'parent changed to ' + sVal );
       var sVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' )
+      alert( 'changing voltage to ' + sVoltageId );
       $( '#voltage' ).val( sVoltageId ).trigger( 'change' );
+    }
+
+    // If voltage changed, re-populate the parent dropdown with compatible objects
+    if ( sId == 'voltage' )
+    {
+      alert( 'voltage changed to ' + sVal );
+      makeParentDropdown( sVal );
     }
 
     // Special handling for select2 objects
