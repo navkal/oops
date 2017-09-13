@@ -252,14 +252,13 @@
       console.log( '===> tParent=' + JSON.stringify( tParent ) );
       console.log( '===> target ' + g_sSortableTableEditWhat + ' voltage_id=' + sVoltageId );
       var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
-      var bTransformerToPanel = ( tParent.object_type == 'Transformer' ) && ( g_sSortableTableEditWhat == 'Panel' );
       // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-      var bVoltageAllowed = sVoltageId ? ( bTransformerToPanel ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  ) ) : true;
+      var bVoltageAllowed = sVoltageId ? ( ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  ) ) : true;
       // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
       console.log( '===> Rules: ' + tParent.text + ' bPathAllowed=' + bPathAllowed + ' bVoltageAllowed=' + bVoltageAllowed );
       if ( bPathAllowed && bVoltageAllowed )
       {
-        sHtmlParentPath += '<option value="' + tParent.id + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
+        sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
       }
       else console.log( '=======> xxxxxxxx rejected xxxxxxxxxxxxxxxx' );
     }
@@ -317,49 +316,66 @@
   function onChangeControl( tEvent )
   {
     var tControl = $( tEvent.target );
-    tControl.val( tControl.val().trim() );
 
-    var sId = tControl.attr( 'id' );
-    var sVal = tControl.val();
-
-    // Special handling for Name field
-    if ( sId == 'name' )
+    if ( tControl.val() != null )
     {
-      // Convert to uppercase
-      tControl.val( sVal.toUpperCase() );
-    }
+      tControl.val( tControl.val().trim() );
 
-    // If parent changed, select voltage
-    if ( sId == 'parent_path' )
-    {
-      alert( 'parent changed to ' + sVal );
-      var sVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' )
-      alert( 'changing voltage to ' + sVoltageId );
-      $( '#voltage' ).val( sVoltageId ).trigger( 'change' );
-    }
+      var sId = tControl.attr( 'id' );
+      var sVal = tControl.val();
 
-    // If voltage changed, re-populate the parent dropdown with compatible objects
-    if ( sId == 'voltage' )
-    {
-      alert( 'voltage changed to ' + sVal );
-      makeParentDropdown( sVal );
-    }
+      // Special handling for Name field
+      if ( sId == 'name' )
+      {
+        // Convert to uppercase
+        tControl.val( sVal.toUpperCase() );
+      }
 
-    // Special handling for select2 objects
-    if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
-    {
-      var tSelect2 = $( '#select2-' + sId + '-container' );
-      tSelect2.text( getSelect2Text( tControl ) );
+      // If parent changed, correct voltage
+      if ( sId == 'parent_path' )
+      {
+        var sParentType = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'object_type' );
+        var sParentVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' );
+        var sCurrentVoltageId = $( '#voltage' ).val();
+        alert( 'parent changed to value=' + sVal + ', type=' + sParentType + ', voltage_id=' + sParentVoltageId );
 
-      // Allow user to select text in setting display
-      tSelect2.css(
+        // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
+        debugger;
+        var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
+        sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
+        // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
+
+        alert( '===> Voltage: current=' + sCurrentVoltageId + ', allowed=' + sAllowedVoltageId );
+        if ( sCurrentVoltageId != sAllowedVoltageId )
         {
-          '-webkit-user-select': 'text',
-          '-moz-user-select': 'text',
-          '-ms-user-select': 'text',
-          'user-select': 'text',
+          alert( 'setting voltage to ' + sAllowedVoltageId );
+          $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
         }
-      );
+      }
+
+      // If voltage changed, re-populate the parent dropdown with compatible objects
+      if ( sId == 'voltage' )
+      {
+        alert( 'voltage changed to ' + sVal );
+        makeParentDropdown( sVal );
+      }
+
+      // Special handling for select2 objects
+      if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
+      {
+        var tSelect2 = $( '#select2-' + sId + '-container' );
+        tSelect2.text( getSelect2Text( tControl ) );
+
+        // Allow user to select text in setting display
+        tSelect2.css(
+          {
+            '-webkit-user-select': 'text',
+            '-moz-user-select': 'text',
+            '-ms-user-select': 'text',
+            'user-select': 'text',
+          }
+        );
+      }
     }
 
     // Set flag
