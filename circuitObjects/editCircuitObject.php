@@ -333,17 +333,17 @@
         var sParentType = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'object_type' );
         var sParentVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' );
         var sCurrentVoltageId = $( '#voltage' ).val();
-        alert( 'parent changed to value=' + sVal + ', type=' + sParentType + ', voltage_id=' + sParentVoltageId );
+        console.log( 'parent changed to value=' + sVal + ', type=' + sParentType + ', voltage_id=' + sParentVoltageId );
 
         // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
         var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
         sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
         // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
 
-        alert( '===> Voltage: current=' + sCurrentVoltageId + ', allowed=' + sAllowedVoltageId );
+        console.log( '===> Voltage: current=' + sCurrentVoltageId + ', allowed=' + sAllowedVoltageId );
         if ( sCurrentVoltageId != sAllowedVoltageId )
         {
-          alert( 'setting voltage to ' + sAllowedVoltageId );
+          console.log( 'setting voltage to ' + sAllowedVoltageId );
           $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
         }
       }
@@ -351,7 +351,7 @@
       // If voltage changed, re-populate the parent dropdown with compatible objects
       if ( sId == 'voltage' )
       {
-        alert( 'voltage changed to ' + sVal );
+        console.log( 'voltage changed to ' + sVal );
         makeParentDropdown( sVal );
       }
 
