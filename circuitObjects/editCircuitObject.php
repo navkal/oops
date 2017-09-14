@@ -17,6 +17,13 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
+                <label for="voltage"></label>
+                <div>
+                  <div id="voltage_container" >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="parent_path"></label>
                 <div id="parent_path_container" >
                 </div>
@@ -31,13 +38,6 @@
                 <label for="name"></label>
                 <div>
                   <input type="text" class="form-control" id="name" maxlength="40">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="voltage"></label>
-                <div>
-                  <div id="voltage_container" >
-                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -185,6 +185,9 @@
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
+
+    // Allow user to select a voltage
+    $( '#voltage' ).prop( 'disabled', false );
   }
 
   function initUpdateDialog()
@@ -208,6 +211,9 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
+
+    // Don't let the user change the voltage
+    $( '#voltage' ).prop( 'disabled', true );
   }
 
   function makeDropdowns()
@@ -303,8 +309,6 @@
         }
       );
     }
-
-    var tSelect2 = $( '#select2-parent_path-container' );
 
     hideSpinner();
   }
