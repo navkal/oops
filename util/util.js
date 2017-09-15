@@ -373,6 +373,13 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  panel_photo_input_group:
+  {
+    label: "Panel Photo",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
   id:
   {
     label: "ID",
@@ -514,15 +521,15 @@ function initEditDialog( nLabelColumnWidth )
   g_bChanged = false;
   g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + g_sSortableTableEditWhat;
 
-  makeFieldLabels( $( '.form-control', '#editDialogForm' ) );
+  makeFieldLabels( $( '.form-control,.input-group', '#editDialogForm' ) );
 
   // Turn off autocomplete
   $( 'input', '#editDialogForm' ).attr( 'autocomplete', 'off' );
 
   // Customize responsive layout
   nLabelColumnWidth = nLabelColumnWidth || 3;
-  $( '.form-group>label' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
-  $( '.form-control', '#editDialogForm' ).parent().removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
+  $( '.form-group>label', '#editDialogForm' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
+  $( '.form-group>div', '#editDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
 // Make labels for Add and Update input forms

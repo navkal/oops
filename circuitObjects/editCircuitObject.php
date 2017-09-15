@@ -51,6 +51,20 @@
                   <textarea class="form-control" maxlength="150" ></textarea>
                 </div>
               </div>
+              <div class="form-group" id="panel_photo_upload_block" >
+                <label for="panel_photo_input_group"></label>
+                <div >
+                  <div class="input-group" id="panel_photo_input_group" >
+                    <label class="input-group-btn" >
+                      <span class="btn btn-default" >
+                        Browse…
+                        <input type="file" id="panel_photo_file" style="display:none" onchange="showUploadFilename( 'panel_photo_file', 'panel_photo_filename'  )" >
+                      </span>
+                    </label>
+                    <input id="panel_photo_filename" type="text" class="form-control" onclick="$('#panel_photo_file').click();" readonly >
+                  </div>
+                </div>
+              </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>
@@ -164,6 +178,9 @@
     $( '#parent_path' ).select2( { placeholder: 'Parent' } );
     $( '#voltage' ).select2( { placeholder: 'Voltage' } );
     $( '#loc_new' ).select2( { placeholder: 'Location' } );
+
+    // Optionally show control for uploading Panel picture
+    $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -288,7 +305,7 @@
     allowUserSelectText( 'loc_new' );
 
     // Set handler to focus on select2 object after user sets value
-    $( '#voltage,#parent_path,#loc_new' ).on(
+    $( 'select' ).on(
       'select2:close',
       function( e )
       {
@@ -373,6 +390,13 @@
         }
       );
     }
+  }
+
+  // Show selected filename in input field
+  function showUploadFilename( sFileId, sFilenameId )
+  {
+    var sFilename = $( '#' + sFileId ).val().split('\\').pop().split('/').pop();
+    $( '#' + sFilenameId ).val( sFilename );
   }
 
   function onSubmitEditDialog()
