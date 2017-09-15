@@ -934,6 +934,40 @@ class updateLocation:
         cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
             ( location, old_location, description, id ) )
 
+
+        # Update search result of objects that refer to this location
+
+        # Get circuit objects that refer to this location
+        cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE room_id = ?', (id,))
+        rows = cur.fetchall()
+
+        # Traverse circuit objects
+        for row in rows:
+            # Get search result fragments
+            source = row[10]
+
+            voltage_id = row[4]
+            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
+            voltage = cur.fetchone()[0]
+
+            room_id = row[1]
+            cur.execute('SELECT room_num, old_num, description FROM ' + facility + 'Room WHERE id = ?', (room_id,))
+            loc_row = cur.fetchone()
+            loc_new = loc_row[0]
+            loc_old = loc_row[1]
+            loc_descr = loc_row[2]
+
+            object_type = row[5]
+            description = row[6]
+            tail = row[8]
+
+            # Generate the search result
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+
+            # Save the new search result
+            ptc_id = row[0]
+            cur.execute( 'UPDATE ' + facility + 'CircuitObject SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
+
         # Log activity
         if location != '':
             target_column = 'room_num'
