@@ -578,6 +578,17 @@ function allowSelect2SelectText( sId )
   }
 }
 
+function setSelect2CloseHandler()
+{
+  $( 'select' ).on(
+    'select2:close',
+    function( e )
+    {
+      $( this ).focus();
+    }
+  );
+}
+
 function getSelect2Text( tControl )
 {
   var sId = tControl.attr( 'id' );

@@ -206,16 +206,8 @@
     allowSelect2SelectText( 'source_path' );
     allowSelect2SelectText( 'loc_new' );
 
-    var tSelect2 = $( '#select2-source_path-container' );
-
     // Set handler to focus on select2 object after user sets value
-    $( 'select' ).on(
-      'select2:close',
-      function( e )
-      {
-        $( this ).focus();
-      }
-    );
+    setSelect2CloseHandler();
 
     hideSpinner();
   }

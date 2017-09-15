@@ -305,13 +305,7 @@
     allowSelect2SelectText( 'loc_new' );
 
     // Set handler to focus on select2 object after user sets value
-    $( 'select' ).on(
-      'select2:close',
-      function( e )
-      {
-        $( this ).focus();
-      }
-    );
+    setSelect2CloseHandler();
 
     hideSpinner();
   }
