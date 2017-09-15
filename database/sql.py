@@ -935,7 +935,7 @@ class updateLocation:
             ( location, old_location, description, id ) )
 
 
-        # Update search result of objects that refer to this location
+        # Update search results of circuit objects that refer to this location
 
         # Get circuit objects that refer to this location
         cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE room_id = ?', (id,))
@@ -950,23 +950,39 @@ class updateLocation:
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
             voltage = cur.fetchone()[0]
 
-            room_id = row[1]
-            cur.execute('SELECT room_num, old_num, description FROM ' + facility + 'Room WHERE id = ?', (room_id,))
-            loc_row = cur.fetchone()
-            loc_new = loc_row[0]
-            loc_old = loc_row[1]
-            loc_descr = loc_row[2]
-
             object_type = row[5]
-            description = row[6]
+            object_descr = row[6]
             tail = row[8]
 
             # Generate the search result
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+            search_result = dbCommon.make_search_result( source, voltage, location, old_location, description, object_type, object_descr, tail )
 
             # Save the new search result
             ptc_id = row[0]
             cur.execute( 'UPDATE ' + facility + 'CircuitObject SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
+
+
+        # Update descriptions of devices that refer to this location
+
+        # Get devices that refer to this location
+        cur.execute('SELECT * FROM ' + facility + 'Device WHERE room_id = ?', (id,))
+        rows = cur.fetchall()
+
+        # Traverse devices
+        for row in rows:
+
+            name = row[5]
+
+            # Generate device description
+            desc = dbCommon.append_location( '', location, old_location, description, '' )
+            if desc:
+                desc = name + ':' + desc
+            else:
+                desc = name
+
+            dev_id = row[0]
+            cur.execute( 'UPDATE ' + facility + 'Device SET description=? WHERE id=?', ( desc, dev_id ) )
+
 
         # Log activity
         if location != '':
