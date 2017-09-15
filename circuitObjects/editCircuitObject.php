@@ -273,7 +273,15 @@
 
   function onShownEditDialog()
   {
-    $( '#parent_path' ).focus();
+    if ( $( '#voltage' ).prop( 'disabled' ) )
+    {
+      $( '#parent_path' ).focus();
+    }
+    else
+    {
+      $( '#voltage' ).focus();
+    }
+
 
     // Allow user to select text in setting display
     if ( $( '#parent_path' ).val() )
@@ -309,6 +317,15 @@
         }
       );
     }
+
+    // Set handler to focus on select2 object after user sets value
+    $( '#voltage,#parent_path,#loc_new' ).on(
+      'select2:close',
+      function( e )
+      {
+        $( this ).focus();
+      }
+    );
 
     hideSpinner();
   }
