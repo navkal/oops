@@ -562,6 +562,22 @@ function makeFieldLabels( aFields )
   }
 }
 
+// Allow user to select text in select2 rendering
+function allowSelect2SelectText( sId )
+{
+  if ( $( '#' + sId ).val() )
+  {
+    $( '#select2-' + sId + '-container' ).css(
+      {
+        '-webkit-user-select': 'text',
+        '-moz-user-select': 'text',
+        '-ms-user-select': 'text',
+        'user-select': 'text',
+      }
+    );
+  }
+}
+
 function getSelect2Text( tControl )
 {
   var sId = tControl.attr( 'id' );

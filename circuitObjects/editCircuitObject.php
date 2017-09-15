@@ -300,9 +300,9 @@
     }
 
     // Allow user to select text in select2 rendering
-    allowUserSelectText( 'parent_path' );
-    allowUserSelectText( 'voltage' );
-    allowUserSelectText( 'loc_new' );
+    allowSelect2SelectText( 'parent_path' );
+    allowSelect2SelectText( 'voltage' );
+    allowSelect2SelectText( 'loc_new' );
 
     // Set handler to focus on select2 object after user sets value
     $( 'select' ).on(
@@ -368,28 +368,12 @@
         var tSelect2 = $( '#select2-' + sId + '-container' );
         tSelect2.text( getSelect2Text( tControl ) );
 
-        allowUserSelectText( sId );
+        allowSelect2SelectText( sId );
       }
     }
 
     // Set flag
     g_bChanged = true;
-  }
-
-  // Allow user to select text in select2 rendering
-  function allowUserSelectText( sId )
-  {
-    if ( $( '#' + sId ).val() )
-    {
-      $( '#select2-' + sId + '-container' ).css(
-        {
-          '-webkit-user-select': 'text',
-          '-moz-user-select': 'text',
-          '-ms-user-select': 'text',
-          'user-select': 'text',
-        }
-      );
-    }
   }
 
   // Show selected filename in input field
