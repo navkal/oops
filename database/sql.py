@@ -247,7 +247,7 @@ class cirobj:
         cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
         voltage = cur.fetchone()
 
-        self.id = row[0]
+        self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
         self.voltage = voltage[1]
@@ -283,7 +283,7 @@ class cirobj:
         self.label = make_cirobj_label( self )
 
         # Add image filename
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = filename
         else:
@@ -293,14 +293,15 @@ class cirobj:
         if getkids:
 
             # Retrieve children
-            cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE parent_id = ?', (self.id,))
+            cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE parent_id = ?', (self.id,))
             child_paths = cur.fetchall()
             self.children = []
 
             for i in range( len( child_paths ) ):
-                child_path = child_paths[i][0]
+                child_id = str( child_paths[i][0] )
+                child_path = child_paths[i][1]
                 child = cirobj( path=child_path, getkids=False, enterprise=enterprise, facility=facility )
-                filename = '../database/' + enterprise + '/' + facility + '/images/' + child_path + '.jpg'
+                filename = '../database/' + enterprise + '/' + facility + '/images/' + child_id + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
                 else:
@@ -597,7 +598,7 @@ class sortableTableRow:
 
     def __init__( self, row, user_role, enterprise, facility ):
 
-        self.id = row[0]
+        self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
         self.object_type = row[5].title()
@@ -635,7 +636,7 @@ class sortableTableRow:
         self.loc_descr = room[4]
 
         # Add image filename
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.path + '.jpg'
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
         if os.path.isfile( filename ):
             self.image_file = self.path
         else:
@@ -1174,3 +1175,11 @@ class circuitObjectDropdowns:
             voltages.append( { 'id': row[0], 'text': row[1]  } )
 
         self.voltages = natsort.natsorted( voltages, key=lambda x: x['text'] )
+
+
+class imageFilename:
+    def __init__(self, path, enterprise, facility):
+
+        open_database( enterprise )
+        id = dbCommon.path_to_id( cur, path, facility )
+        self.image_filename = id + '.jpg'

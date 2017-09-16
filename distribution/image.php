@@ -5,13 +5,26 @@
 
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/util.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
     require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+
     if ( ! isset( $_REQUEST["path"] ) )
     {
       abort();
     }
+
     $sPath = $_REQUEST['path'];
-    $sImg = '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $sPath . '.jpg';
+
+    $command = quote( getenv( "PYTHON" ) ) . " ../database/getImageFilename.py 2>&1 -p " . quote( $sPath ) . $g_sContext;
+    error_log( "==> command=" . $command );
+    exec( $command, $output, $status );
+    error_log( "==> output=" . print_r( $output, true ) );
+
+    $sResult = $output[ count( $output ) - 1 ];
+    $tObject = json_decode( $sResult );
+    $sImageFilename = $tObject->image_filename;
+
+    $sImg = '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $sImageFilename;
   ?>
 
   <!-- Head -->

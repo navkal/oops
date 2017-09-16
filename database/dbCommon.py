@@ -97,3 +97,9 @@ def make_search_result( source, voltage, location, location_old, location_descr,
         search_result = name
 
     return search_result
+
+
+def path_to_id( cur, path, sFacility='' ):
+    cur.execute('SELECT id FROM ' + sFacility + 'CircuitObject WHERE path = ?', ( path, ))
+    index = cur.fetchone()
+    return str( index[0] )
