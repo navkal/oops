@@ -822,22 +822,14 @@ class updateCircuitObject:
             cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id = ?', (id,) )
             original_path = cur.fetchone()[0]
 
-            # If path of target object is to change, rename image files and update paths of all descendants
+            # If path of target object is to change, update paths of all descendants
             if path != original_path:
-
-                # Rename image file
-                dir = '../database/' + enterprise + '/' + facility + '/images/'
-                ext = '.jpg'
-                original_filename = dir + original_path + ext
-                if os.path.isfile( original_filename ):
-                    new_filename = dir + path + ext
-                    os.rename( original_filename, new_filename )
 
                 # Retrieve all descendants of the target object
                 cur.execute( 'SELECT id, path FROM ' + target_table + ' WHERE path LIKE "' + original_path + '.%"' )
                 descendants = cur.fetchall()
 
-                # Update update paths and rename image files of all descendants
+                # Update paths of all descendants
                 for descendant in descendants:
                     descendant_id = descendant[0]
                     descendant_path = descendant[1]
@@ -845,12 +837,6 @@ class updateCircuitObject:
 
                     # Update descendant row in database
                     cur.execute( 'UPDATE ' + target_table + ' SET path=? WHERE id=? ' , ( new_descendant_path, descendant_id ) )
-
-                    # Rename descendant image file
-                    descendant_filename = dir + descendant_path + ext
-                    if os.path.isfile( descendant_filename ):
-                        new_descendant_filename = dir + new_descendant_path + ext
-                        os.rename( descendant_filename, new_descendant_filename )
 
             # Get fragments of search result text
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
