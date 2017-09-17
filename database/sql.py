@@ -483,6 +483,8 @@ class sortableTable:
                 row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'facility_fullname': facility_fullname, 'event_target': target_value, 'event_description': obj[7] }
                 self.rows.append( row )
 
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
+
         elif object_type == 'user':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM User')
@@ -515,6 +517,8 @@ class sortableTable:
                     row = { 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
+
         elif object_type == 'device':
             # Retrieve all objects of requested type
             cur.execute(
@@ -541,6 +545,8 @@ class sortableTable:
                 row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
 
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
+
         elif object_type == 'location':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM ' + facility + 'Room')
@@ -552,6 +558,8 @@ class sortableTable:
                 row = location( row=obj, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
 
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['loc_new'] )
+
         else:
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE upper(object_type) = ?', (object_type.upper(),))
@@ -562,6 +570,8 @@ class sortableTable:
             for obj in objects:
                 row = sortableTableRow( obj, user_role, enterprise, facility )
                 self.rows.append( row.__dict__ )
+
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
 
         print('found ' + str(len(self.rows)) + ' rows' )
 

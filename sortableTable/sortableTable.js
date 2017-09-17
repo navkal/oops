@@ -298,13 +298,6 @@ function onSortableTableReady( tEvent )
   // Suppress further handling of this event
   $( tEvent.target ).off( 'tablesorter-ready' );
 
-  // Trigger initial column sort
-  $( $( '#sortableTableHead th' )[1] ).click();
-  if ( g_bSortDescending )
-  {
-    $( $( '#sortableTableHead th' )[1] ).click();
-  }
-
   // Initialize optional editing
   if ( g_sSortableTableEditWhat )
   {
