@@ -506,10 +506,13 @@
       // Show error messages
       showMessages( tRsp.messages );
 
-      // Highlight the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
-      $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
-      $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+      // Highlight pertinent fields
+      var aSelectors = tRsp.selectors;
+      for ( var iSelector in aSelectors )
+      {
+        var sSelector = aSelectors[iSelector];
+        $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
+      }
     }
     else
     {
