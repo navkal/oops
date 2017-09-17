@@ -402,6 +402,7 @@
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
       tPostData.append( 'room_id', $( '#loc_new' ).val() );
       tPostData.append( 'description', $( '#description textarea' ).val() );
+      tPostData.append( "panel_photo_file", $( "#panel_photo_file" ).prop( "files" )[0] );
 
       // Post request to server
       $.ajax(

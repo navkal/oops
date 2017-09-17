@@ -5,6 +5,7 @@
   require_once $_SERVER['DOCUMENT_ROOT'] . '/util/postSecurity.php';
   require_once $_SERVER['DOCUMENT_ROOT'] . '/util/context.php';
   error_log( '==> post=' . print_r( $_POST, true ) );
+  error_log( '==> files=' . print_r( $_FILES, true ) );
 
   // Get attributes
   $sId = quote( $_POST['id'] );
