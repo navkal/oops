@@ -819,7 +819,12 @@ class updateCircuitObject:
         target_table = facility + 'CircuitObject'
 
         # Determine whether path is available
-        ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+        if parent_id:
+            ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+        else:
+            test_id = None
+            path = tail
+            source = ''
 
         if ( test_id != None ) and ( test_id != id ):
             # Path is neither available nor original

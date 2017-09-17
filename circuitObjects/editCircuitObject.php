@@ -389,7 +389,7 @@
       }
 
       tPostData.append( 'object_type', g_sSortableTableEditWhat );
-      tPostData.append( 'parent_id', $( '#parent_path' ).val() );
+      tPostData.append( 'parent_id', $( '#parent_path' ).val() ? $( '#parent_path' ).val() : '' );
 
       var sNumber = $( '#number' ).val();
       var sName = $( '#name' ).val();
@@ -421,7 +421,7 @@
     clearMessages();
     var aMessages = [];
 
-    if ( $( '#parent_path' ).val() == null )
+    if ( ( $( '#parent_path' ).val() == null ) && ( $( '#parent_path option' ).length > 0 ) )
     {
       aMessages.push( 'Parent is required' );
       $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
