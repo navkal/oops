@@ -316,7 +316,10 @@
 
     if ( tControl.val() != null )
     {
-      tControl.val( tControl.val().trim() );
+      if ( ( tControl.attr( 'type' ) == 'text' ) || ( tControl.prop( 'tagName' ).toLowerCase() == 'textarea' ) )
+      {
+        tControl.val( tControl.val().trim() );
+      }
 
       var sId = tControl.attr( 'id' );
       var sVal = tControl.val();
