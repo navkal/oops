@@ -7,6 +7,5 @@
 <script>
   g_sSortableTableTitle = 'Activity';
   g_sSortableTableType = 'activity';
-  g_bSortDescending = true;
   $( document ).ready( getSortableTable );
 </script>

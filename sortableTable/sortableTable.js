@@ -3,7 +3,6 @@
 var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
-var g_bSortDescending = false;
 var g_sSortableTableEditWhat = null;
 
 // Retrieve sortable table from backend
