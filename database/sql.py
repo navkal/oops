@@ -2,6 +2,7 @@
 
 import sqlite3
 import os
+import shutil
 import time
 import uuid
 import natsort
@@ -770,7 +771,7 @@ class changePassword:
 
 
 class addCircuitObject:
-    def __init__( self, by, object_type, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+    def __init__( self, by, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
         self.messages = []
@@ -803,6 +804,15 @@ class addCircuitObject:
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
 
+
+
+            # Copy uploaded image file
+            if filename:
+                id = dbCommon.path_to_id( cur, path, facility )
+                target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
+                shutil.move( filename, target );
+
+
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
@@ -812,7 +822,7 @@ class addCircuitObject:
 
 
 class updateCircuitObject:
-    def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, enterprise, facility ):
+    def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
         self.messages = []
@@ -832,6 +842,11 @@ class updateCircuitObject:
 
         else:
             # Path is either available or original; okay to update
+
+            # Copy uploaded image file
+            if filename:
+                target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
+                shutil.move( filename, target );
 
             # Get original path of target element
             cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id = ?', (id,) )

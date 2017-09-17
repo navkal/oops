@@ -15,6 +15,16 @@
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
 
+  // Get uploaded file
+  $sFilename = '';
+  if ( isset( $_FILES['panel_photo_file'] ) && $_FILES['panel_photo_file']['size'] <= 5000000 )
+  {
+    $sFilename = tempnam( sys_get_temp_dir(), 'ps_' );
+    move_uploaded_file( $_FILES['panel_photo_file']['tmp_name'], $sFilename );
+  }
+  $sFilename = quote( $sFilename );
+
+
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/addCircuitObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
     . ' -o ' . $sObjectType
@@ -23,6 +33,7 @@
     . ' -v ' . $sVoltageId
     . ' -r ' . $sRoomId
     . ' -d ' . $sDescription
+    . ' -f ' . $sFilename
     . $g_sContext;
 
 
