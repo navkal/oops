@@ -18,7 +18,7 @@
 
   // Get uploaded file
   $sFilename = '';
-  if ( isset( $_FILES['panel_photo_file'] ) && $_FILES['panel_photo_file']['size'] <= 5000000 )
+  if ( isset( $_FILES['panel_photo_file'] ) && $_FILES['panel_photo_file']['size'] <= 10000000 )
   {
     $sFilename = tempnam( sys_get_temp_dir(), 'ps_' );
     move_uploaded_file( $_FILES['panel_photo_file']['tmp_name'], $sFilename );
