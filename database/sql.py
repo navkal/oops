@@ -27,7 +27,7 @@ def make_device_label( name, room_id, facility ):
 
     # Get location details
     if room_id:
-        cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
+        cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
         rooms = cur.fetchone()
         location = rooms[0]
         location_old = rooms[1]
@@ -107,7 +107,7 @@ def facility_names_to_ids( name_csv ):
 
 def get_location_dropdown( facility ):
 
-    cur.execute('SELECT * FROM ' + facility + 'Room')
+    cur.execute('SELECT * FROM ' + facility + '_Room')
     rows = cur.fetchall()
 
     locations = []
@@ -120,7 +120,7 @@ def get_location_dropdown( facility ):
 
 def get_circuit_object_dropdown( facility, sTypes ):
 
-    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + 'CircuitObject WHERE object_type IN (' + sTypes + ')'  )
+    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + '_CircuitObject WHERE object_type IN (' + sTypes + ')'  )
     rows = cur.fetchall()
 
     testId = 0
@@ -168,15 +168,15 @@ class device:
               '''SELECT *
                   FROM
                     (SELECT
-                        ''' + facility + '''Device.id,
-                        ''' + facility + '''Device.room_id,
-                        ''' + facility + '''Device.parent_id,
-                        ''' + facility + '''Device.description,
-                        ''' + facility + '''Device.name,
-                        ''' + facility + '''CircuitObject.path,
-                        ''' + facility + '''CircuitObject.id
-                    FROM ''' + facility + '''Device
-                        LEFT JOIN ''' + facility + '''CircuitObject ON ''' + facility + '''Device.parent_id = ''' + facility + '''CircuitObject.id)
+                        ''' + facility + '''_Device.id,
+                        ''' + facility + '''_Device.room_id,
+                        ''' + facility + '''_Device.parent_id,
+                        ''' + facility + '''_Device.description,
+                        ''' + facility + '''_Device.name,
+                        ''' + facility + '''_CircuitObject.path,
+                        ''' + facility + '''_CircuitObject.id
+                    FROM ''' + facility + '''_Device
+                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
                   WHERE
                       id = ?''', (id,) )
 
@@ -194,7 +194,7 @@ class device:
 
         #gets room where device is located
         if str( self.room_id ).isdigit():
-            cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (self.room_id,))
+            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
             room = cur.fetchone()
             self.loc_new = room[1]
             self.loc_old = room[2]
@@ -206,7 +206,7 @@ class device:
             self.loc_type = ''
             self.loc_descr = ''
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
+        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
         self.events = cur.fetchall()
 
         if user_role == 'Technician':
@@ -237,11 +237,11 @@ class cirobj:
         open_database( enterprise )
 
         if id:
-            cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE id = ?', (id,))
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
         elif path:
-            cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE upper(path) = ?', (path.upper(),))
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE upper(path) = ?', (path.upper(),))
         else:
-            cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE path NOT LIKE "%.%"' )
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE path NOT LIKE "%.%"' )
 
         #initialize circuitObject properties
         row = cur.fetchone()
@@ -265,7 +265,7 @@ class cirobj:
             self.transformer_descr = self.description
 
         # Retrieve parent path
-        cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE id = ?', (self.parent_id,))
+        cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (self.parent_id,))
         path_row = cur.fetchone()
         if path_row:
             self.parent_path = path_row[0]
@@ -273,7 +273,7 @@ class cirobj:
             self.parent_path = ''
 
         # Get room information
-        cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (self.room_id,))
+        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
         room = cur.fetchone()
         self.loc_new = room[1]
         self.loc_old = room[2]
@@ -294,7 +294,7 @@ class cirobj:
         if getkids:
 
             # Retrieve children
-            cur.execute('SELECT id, path FROM ' + facility + 'CircuitObject WHERE parent_id = ?', (self.id,))
+            cur.execute('SELECT id, path FROM ' + facility + '_CircuitObject WHERE parent_id = ?', (self.id,))
             child_paths = cur.fetchall()
             self.children = []
 
@@ -314,12 +314,12 @@ class cirobj:
               '''SELECT device_id
                     FROM
                         (SELECT
-                            ''' + facility + '''Device.id AS device_id,
-                            ''' + facility + '''Device.parent_id,
-                            ''' + facility + '''CircuitObject.id,
-                            ''' + facility + '''CircuitObject.path
-                        FROM ''' + facility + '''Device
-                            LEFT JOIN ''' + facility + '''CircuitObject ON ''' + facility + '''Device.parent_id = ''' + facility + '''CircuitObject.id)
+                            ''' + facility + '''_Device.id AS device_id,
+                            ''' + facility + '''_Device.parent_id,
+                            ''' + facility + '''_CircuitObject.id,
+                            ''' + facility + '''_CircuitObject.path
+                        FROM ''' + facility + '''_Device
+                            LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
                         WHERE path = ?''', (self.path,) )
 
             dev_ids = cur.fetchall()
@@ -330,7 +330,7 @@ class cirobj:
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "CircuitObject' AND target_column = 'path' AND target_value = ?", (self.path,) )
+        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_CircuitObject' AND target_column = 'path' AND target_value = ?", (self.path,) )
         self.events = cur.fetchall()
 
 
@@ -358,7 +358,7 @@ class search:
 
         # Search CircuitObject paths
         if ( 'All' in aTargets ) or ( 'Path' in aTargets ):
-            cur.execute('SELECT path, path FROM ' + facility + 'CircuitObject WHERE tail LIKE "%' + searchText + '%"')
+            cur.execute('SELECT path, path FROM ' + facility + '_CircuitObject WHERE tail LIKE "%' + searchText + '%"')
             pathRows = cur.fetchall()
         else:
             pathRows = []
@@ -373,11 +373,11 @@ class search:
             else:
                 aWhere = []
                 if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ):
-                    aWhere.append( facility + 'CircuitObject.object_type = "Circuit"' )
+                    aWhere.append( facility + '_CircuitObject.object_type = "Circuit"' )
                 if ( 'All' in aTargets ) or ( 'Panel' in aTargets ):
-                    aWhere.append( facility + 'CircuitObject.object_type = "Panel"' )
+                    aWhere.append( facility + '_CircuitObject.object_type = "Panel"' )
                 if ( 'All' in aTargets ) or ( 'Transformer' in aTargets ):
-                    aWhere.append( facility + 'CircuitObject.object_type = "Transformer"' )
+                    aWhere.append( facility + '_CircuitObject.object_type = "Transformer"' )
 
                 sWhere = 'WHERE '
 
@@ -390,19 +390,19 @@ class search:
               '''SELECT path, search_result
                   FROM
                     (SELECT
-                        ''' + facility + '''CircuitObject.path,
-                        ''' + facility + '''CircuitObject.search_result,
-                        ''' + facility + '''CircuitObject.object_type,
-                        ''' + facility + '''CircuitObject.tail AS tail,
-                        ''' + facility + '''CircuitObject.source AS source,
-                        ''' + facility + '''CircuitObject.description AS description,
+                        ''' + facility + '''_CircuitObject.path,
+                        ''' + facility + '''_CircuitObject.search_result,
+                        ''' + facility + '''_CircuitObject.object_type,
+                        ''' + facility + '''_CircuitObject.tail AS tail,
+                        ''' + facility + '''_CircuitObject.source AS source,
+                        ''' + facility + '''_CircuitObject.description AS description,
                         Voltage.description AS voltage,
-                        ''' + facility + '''Room.room_num AS location,
-                        ''' + facility + '''Room.old_num AS location_old,
-                        ''' + facility + '''Room.description AS location_descr
-                    FROM ''' + facility + '''CircuitObject
-                        LEFT JOIN Voltage ON ''' + facility + '''CircuitObject.voltage_id = Voltage.id
-                        LEFT JOIN ''' + facility + '''Room ON ''' + facility + '''CircuitObject.room_id = ''' + facility + '''Room.id
+                        ''' + facility + '''_Room.room_num AS location,
+                        ''' + facility + '''_Room.old_num AS location_old,
+                        ''' + facility + '''_Room.description AS location_descr
+                    FROM ''' + facility + '''_CircuitObject
+                        LEFT JOIN Voltage ON ''' + facility + '''_CircuitObject.voltage_id = Voltage.id
+                        LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_CircuitObject.room_id = ''' + facility + '''_Room.id
                     '''
                     + sWhere +
                     ''')
@@ -426,16 +426,16 @@ class search:
               '''SELECT path, description
                   FROM
                   (SELECT
-                    ''' + facility + '''CircuitObject.path || "." || ''' + facility + '''Device.id AS path,
-                    ''' + facility + '''Device.description,
-                    ''' + facility + '''CircuitObject.id,
-                    ''' + facility + '''Device.name AS name,
-                    ''' + facility + '''Room.room_num AS location,
-                    ''' + facility + '''Room.old_num AS location_old,
-                    ''' + facility + '''Room.description AS location_descr
-                  FROM ''' + facility + '''Device
-                    LEFT JOIN ''' + facility + '''CircuitObject ON ''' + facility + '''Device.parent_id = ''' + facility + '''CircuitObject.id
-                    LEFT JOIN ''' + facility + '''Room ON ''' + facility + '''Device.room_id = ''' + facility + '''Room.id)
+                    ''' + facility + '''_CircuitObject.path || "." || ''' + facility + '''_Device.id AS path,
+                    ''' + facility + '''_Device.description,
+                    ''' + facility + '''_CircuitObject.id,
+                    ''' + facility + '''_Device.name AS name,
+                    ''' + facility + '''_Room.room_num AS location,
+                    ''' + facility + '''_Room.old_num AS location_old,
+                    ''' + facility + '''_Room.description AS location_descr
+                  FROM ''' + facility + '''_Device
+                    LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id
+                    LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_Device.room_id = ''' + facility + '''_Room.id)
                   WHERE
                     name LIKE "%''' + searchText + '''%"
                     OR location LIKE "%''' + searchText + '''%"
@@ -466,13 +466,13 @@ class sortableTable:
                 target_column = obj[5]
                 target_value = obj[6]
 
-                if ( target_table == facility + 'Device' ) and ( target_column == 'id' ):
+                if ( target_table == facility + '_Device' ) and ( target_column == 'id' ):
                     # Target is in Device table.  Enhance text representing event target.
-                    cur.execute('SELECT parent_id, name FROM ' + facility + 'Device WHERE id = ?', (target_value,))
+                    cur.execute('SELECT parent_id, name FROM ' + facility + '_Device WHERE id = ?', (target_value,))
                     device_row = cur.fetchone()
                     parent_id = device_row[0]
                     name = device_row[1]
-                    cur.execute('SELECT path FROM ' + facility + 'CircuitObject WHERE id = ?', (parent_id,))
+                    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
                     target_value = cur.fetchone()[0] + " '" + name + "'"
 
                 facility_fullname = ''
@@ -526,15 +526,15 @@ class sortableTable:
               '''SELECT *
                   FROM
                     (SELECT
-                        ''' + facility + '''Device.id,
-                        ''' + facility + '''Device.room_id,
-                        ''' + facility + '''Device.parent_id,
-                        ''' + facility + '''Device.description,
-                        ''' + facility + '''Device.name,
-                        ''' + facility + '''CircuitObject.path,
-                        ''' + facility + '''CircuitObject.id
-                    FROM ''' + facility + '''Device
-                        LEFT JOIN ''' + facility + '''CircuitObject ON ''' + facility + '''Device.parent_id = ''' + facility + '''CircuitObject.id)''')
+                        ''' + facility + '''_Device.id,
+                        ''' + facility + '''_Device.room_id,
+                        ''' + facility + '''_Device.parent_id,
+                        ''' + facility + '''_Device.description,
+                        ''' + facility + '''_Device.name,
+                        ''' + facility + '''_CircuitObject.path,
+                        ''' + facility + '''_CircuitObject.id
+                    FROM ''' + facility + '''_Device
+                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)''')
 
 
 
@@ -550,7 +550,7 @@ class sortableTable:
 
         elif object_type == 'location':
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM ' + facility + 'Room')
+            cur.execute('SELECT * FROM ' + facility + '_Room')
             objects = cur.fetchall()
 
             # Add other fields to each row
@@ -563,7 +563,7 @@ class sortableTable:
 
         else:
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE upper(object_type) = ?', (object_type.upper(),))
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE upper(object_type) = ?', (object_type.upper(),))
             objects = cur.fetchall()
 
             # Add other fields to each row
@@ -580,7 +580,7 @@ class sortableTable:
 class location:
     def __init__(self, id=None, row=None, facility=None, user_role=None):
         if not row:
-            cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (id,))
+            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (id,))
             row = cur.fetchone()
 
         self.id = row[0]
@@ -589,16 +589,16 @@ class location:
         self.loc_type = row[3]
         self.loc_descr = row[4]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + 'Device WHERE room_id = ?', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (self.id,))
         self.devices = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + 'CircuitObject WHERE room_id = ? AND object_type = "Panel"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Panel"', (self.id,))
         self.panels = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + 'CircuitObject WHERE room_id = ? AND object_type = "Transformer"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Transformer"', (self.id,))
         self.transformers = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + 'CircuitObject WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
         self.circuits = cur.fetchone()[0]
 
         if user_role == 'Technician':
@@ -639,7 +639,7 @@ class sortableTableRow:
         self.voltage_id = voltage[0]
         self.voltage = voltage[1]
 
-        cur.execute('SELECT * FROM ' + facility + 'Room WHERE id = ?', (self.room_id,))
+        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
         room = cur.fetchone()
         self.loc_new = room[1]
         self.loc_old = room[2]
@@ -653,19 +653,19 @@ class sortableTableRow:
         else:
             self.image_file = ''
 
-        cur.execute('SELECT COUNT(id) FROM ' + facility + 'CircuitObject WHERE parent_id = ?', (self.id,))
+        cur.execute('SELECT COUNT(id) FROM ' + facility + '_CircuitObject WHERE parent_id = ?', (self.id,))
         self.children = cur.fetchone()[0]
 
         cur.execute(
           '''SELECT COUNT( device_id )
                 FROM
                     (SELECT
-                        ''' + facility + '''Device.id AS device_id,
-                        ''' + facility + '''Device.parent_id,
-                        ''' + facility + '''CircuitObject.id,
-                        ''' + facility + '''CircuitObject.path
-                    FROM ''' + facility + '''Device
-                        LEFT JOIN ''' + facility + '''CircuitObject ON ''' + facility + '''Device.parent_id = ''' + facility + '''CircuitObject.id)
+                        ''' + facility + '''_Device.id AS device_id,
+                        ''' + facility + '''_Device.parent_id,
+                        ''' + facility + '''_CircuitObject.id,
+                        ''' + facility + '''_CircuitObject.path
+                    FROM ''' + facility + '''_Device
+                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
                     WHERE path = ?''', (self.path,) )
 
         self.devices = cur.fetchone()[0]
@@ -775,7 +775,7 @@ class addCircuitObject:
         open_database( enterprise )
 
         self.messages = []
-        target_table = facility + 'CircuitObject'
+        target_table = facility + '_CircuitObject'
 
         # Determine whether path is available
         ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
@@ -791,7 +791,7 @@ class addCircuitObject:
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
             voltage = cur.fetchone()[0]
 
-            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
+            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
             loc = cur.fetchone()
             location = loc[0]
             location_old = loc[1]
@@ -825,7 +825,7 @@ class updateCircuitObject:
         open_database( enterprise )
 
         self.messages = []
-        target_table = facility + 'CircuitObject'
+        target_table = facility + '_CircuitObject'
 
         # Determine whether path is available
         if parent_id:
@@ -871,7 +871,7 @@ class updateCircuitObject:
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
             voltage = cur.fetchone()[0]
 
-            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''Room WHERE id = ?''', (room_id,))
+            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
             loc = cur.fetchone()
             location = loc[0]
             location_old = loc[1]
@@ -897,7 +897,7 @@ class addDevice:
         open_database( enterprise )
 
         # Add new object
-        target_table = facility + 'Device'
+        target_table = facility + '_Device'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
              VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
 
@@ -916,7 +916,7 @@ class updateDevice:
         open_database( enterprise )
 
         # Update specified object
-        target_table = facility + 'Device'
+        target_table = facility + '_Device'
         cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
             ( parent_id, name, room_id, description, id ) )
 
@@ -935,7 +935,7 @@ class addLocation:
         open_database( enterprise )
 
         # Add new location
-        target_table = facility + 'Room'
+        target_table = facility + '_Room'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_num, old_num, location_type, description)
             VALUES (?,?,?,?)''', (location, old_location, '', description) )
 
@@ -961,7 +961,7 @@ class updateLocation:
         open_database( enterprise )
 
         # Update specified location
-        target_table = facility + 'Room'
+        target_table = facility + '_Room'
 
         cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
             ( location, old_location, description, id ) )
@@ -970,7 +970,7 @@ class updateLocation:
         # Update search results of circuit objects that refer to this location
 
         # Get circuit objects that refer to this location
-        cur.execute('SELECT * FROM ' + facility + 'CircuitObject WHERE room_id = ?', (id,))
+        cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE room_id = ?', (id,))
         rows = cur.fetchall()
 
         # Traverse circuit objects
@@ -991,13 +991,13 @@ class updateLocation:
 
             # Save the new search result
             ptc_id = row[0]
-            cur.execute( 'UPDATE ' + facility + 'CircuitObject SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
+            cur.execute( 'UPDATE ' + facility + '_CircuitObject SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
 
 
         # Update descriptions of devices that refer to this location
 
         # Get devices that refer to this location
-        cur.execute('SELECT * FROM ' + facility + 'Device WHERE room_id = ?', (id,))
+        cur.execute('SELECT * FROM ' + facility + '_Device WHERE room_id = ?', (id,))
         rows = cur.fetchall()
 
         # Traverse devices
@@ -1013,7 +1013,7 @@ class updateLocation:
                 desc = name
 
             dev_id = row[0]
-            cur.execute( 'UPDATE ' + facility + 'Device SET description=? WHERE id=?', ( desc, dev_id ) )
+            cur.execute( 'UPDATE ' + facility + '_Device SET description=? WHERE id=?', ( desc, dev_id ) )
 
 
         # Log activity

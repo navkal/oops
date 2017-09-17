@@ -217,7 +217,7 @@ function saveNotes( tEvent )
   {
     // Post request to server
     var tPostData = new FormData();
-    tPostData.append( "targetTable", ( ( g_sType == 'device' ) ? "Device" : "CircuitObject" ) );
+    tPostData.append( "targetTable", ( ( g_sType == 'device' ) ? "_Device" : "_CircuitObject" ) );
     tPostData.append( "targetColumn", ( ( g_sType == 'device' ) ? "id" : "path" ) );
     tPostData.append( "targetValue", ( ( g_sType == 'device' ) ? g_sOid : g_sPath ) );
     tPostData.append( "notes", sNotes );
