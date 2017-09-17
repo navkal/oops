@@ -803,15 +803,14 @@ class addCircuitObject:
             # Add new object
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
-
-
+            
+            conn.commit()
 
             # Copy uploaded image file
             if filename:
                 id = dbCommon.path_to_id( cur, path, facility )
                 target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
                 shutil.move( filename, target );
-
 
             # Log activity
             facility_id = facility_name_to_id( facility )
