@@ -402,9 +402,10 @@
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
       tPostData.append( 'room_id', $( '#loc_new' ).val() );
       tPostData.append( 'description', $( '#description textarea' ).val() );
+
       if ( $( '#panel_photo_filename' ).val() )
       {
-        tPostData.append( "panel_photo_file", $( "#panel_photo_file" ).prop( "files" )[0] );
+        tPostData.append( 'panel_photo_file', $( '#panel_photo_file' ).prop( 'files' )[0] );
       }
 
       // Post request to server
