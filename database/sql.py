@@ -695,7 +695,7 @@ class saveNotes:
         facility_id = facility_name_to_id( args.facility );
 
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + args.targetTable, args.targetColumn, args.targetValue, args.notes, facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + '_' + args.targetTable, args.targetColumn, args.targetValue, args.notes, facility_id ) )
 
         conn.commit()
 
