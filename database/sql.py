@@ -845,7 +845,7 @@ class updateCircuitObject:
             # Copy uploaded image file
             if filename:
                 target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
-                shutil.move( filename, target );
+                shutil.copy2( filename, target );
 
             # Get original path of target element
             cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id = ?', (id,) )
