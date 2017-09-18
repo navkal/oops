@@ -172,6 +172,7 @@
     $( '#voltage' ).val( g_sVoltageId );
     $( '#loc_new' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
+    $( '#panel_photo_file,#panel_photo_filename' ).val( '' );
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
