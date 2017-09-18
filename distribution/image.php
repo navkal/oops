@@ -44,7 +44,7 @@
     </div>
 
     <div class="container-fluid">
-      <img class="img-responsive" src="<?=$sImg?>?version=<?=time()?>" alt="<?=$sPath?>">
+      <img class="img-responsive" src="<?=$sImg?>?version=<?=microtime()?>" alt="<?=$sPath?>">
     </div>
 
   </body>
