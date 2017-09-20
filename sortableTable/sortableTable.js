@@ -120,7 +120,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 break;
 
               case 'update':
-                sCell = '<a username="' + sCell + '">';
+                sCell = '<a>';
                 sCell += '<button class="btn btn-link btn-xs" onclick="g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
