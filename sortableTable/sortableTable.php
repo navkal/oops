@@ -7,6 +7,8 @@
 
 <!-- Utility scripts -->
 <script src="sortableTable/sortableTable.js?version=<?=$iVersion?>"></script>
+<script src="sortableTable/editSortableTableRow.js?version=<?=$iVersion?>"></script>
+<script src="sortableTable/removeSortableTableRow.js?version=<?=$iVersion?>"></script>
 <link rel="stylesheet" href="util/spinner.css?version=<?=$iVersion?>">
 
 <!-- tablesorter Bootstrap theme -->

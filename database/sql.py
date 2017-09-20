@@ -603,6 +603,11 @@ class location:
 
         if user_role == 'Technician':
             self.update_location = self.id
+            self.remove_what = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
+            if ( self.devices + self.panels + self.transformers + self.circuits ) == 0:
+                self.remove_location = self.id
+            else:
+                self.remove_location = ''
 
 
 class sortableTableRow:

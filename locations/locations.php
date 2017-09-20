@@ -3,6 +3,7 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/locations/editLocation.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/locations/confirmRemoveLocation.php";
 ?>
 
 <script>
