@@ -33,8 +33,10 @@ function getSortableTable()
 }
 
 // Load sortable table onto page
+var g_iStartRenderingTime = null;
 function loadSortableTable( tRsp, sStatus, tJqXhr )
 {
+  g_iStartRenderingTime = Date.now();
   g_aSortableTableRows = tRsp['rows'];
 
   // Build map of columns from list of rows
@@ -45,7 +47,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     var tRow = g_aSortableTableRows[iRow];
 
     // Insert artificial index cell
-    tRow['index'] = iRow;
+    tRow['index'] = parseInt( iRow ) + 1;
 
     // Traverse fields of the current row
     for ( sKey in tRow )
@@ -315,6 +317,8 @@ function onSortableTableReady( tEvent )
 
   // Clear the wait cursor
   clearWaitCursor();
+
+  console.log( '==> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
 
 function renumberIndex()
