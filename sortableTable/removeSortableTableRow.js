@@ -1,15 +1,14 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_sRemoveTarget = null;
+var g_sRemoveId = null;
 
-function initRemoveDialog( sRemoveTarget )
+function initRemoveDialog( sRemoveId )
 {
-  g_sRemoveTarget = sRemoveTarget;
+  g_sRemoveId = sRemoveId;
 
   // Set labels
   $( '#removeObjectLabel' ).text( 'Remove ' + g_sSortableTableEditWhat );
   $( '#removeFormSubmitProxy' ).text( 'Remove ' + g_sSortableTableEditWhat );
-  $( '#removeWhatLabel' ).text( g_sSortableTableEditWhat );
 
   // Find the selected row
   var iRow = 0;
@@ -19,13 +18,19 @@ function initRemoveDialog( sRemoveTarget )
     tRow = g_aSortableTableRows[iRow];
     iRow ++
   }
-  while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sRemoveTarget ) );
+  while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sRemoveId ) );
 
   // Show what would be removed
-  $( '#removeWhat' ).val( tRow.remove_what );
+  $( '#removeWhatLabel' ).text( g_tPropertyRules[tRow.remove_what] ? g_tPropertyRules[tRow.remove_what].label : g_sSortableTableEditWhat );
+  $( '#removeWhat' ).val( tRow[tRow.remove_what] );
 
   // Set dialog 'shown' handler
   $( '#removeDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRemoveDialogFocus );
+
+  if ( typeof customizeRemoveDialog === "function" )
+  {
+    customizeRemoveDialog( tRow );
+  }
 }
 
 function initRemoveDialogFocus()

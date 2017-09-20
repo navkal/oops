@@ -6,10 +6,10 @@
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   // Get user attributes
-  $sUsername = $_POST['username'];
+  $sId = $_POST['id'];
 
   // Remove user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] . ' -u ' . $sUsername . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] . ' -i ' . $sId . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );

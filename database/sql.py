@@ -499,12 +499,15 @@ class sortableTable:
                     cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
                     role = cur.fetchone()[0]
 
+                    id = obj[0]
                     username = obj[1]
 
                     if role == 'Administrator':
-                        remove_username = ''
+                        remove_id = ''
+                        remove_what = ''
                     else:
-                        remove_username = username
+                        remove_id = id
+                        remove_what = 'username'
 
                     facilities = authFacilities( username, enterprise )
                     auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
@@ -515,7 +518,7 @@ class sortableTable:
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': username, 'remove_user': remove_username, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
+                    row = { 'id': id, 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': username, 'remove_user': remove_id, 'remove_what': remove_what, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
@@ -603,7 +606,8 @@ class location:
 
         if user_role == 'Technician':
             self.update_location = self.id
-            self.remove_what = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
+            self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
+            self.remove_what = 'formatted_location'
             if ( self.devices + self.panels + self.transformers + self.circuits ) == 0:
                 self.remove_location = self.id
             else:
@@ -1099,12 +1103,21 @@ class updateUser:
 
 
 class removeUser:
-    def __init__(self, by, username, enterprise):
+    def __init__(self, by, id, enterprise):
         open_database( enterprise )
+
+        # Get username for reporting
+        cur.execute( 'SELECT username FROM User WHERE id=?', ( id, ) )
+        username = cur.fetchone()[0]
         self.username = username
-        cur.execute( 'DELETE FROM User WHERE lower(username)=?', ( username.lower(), ) )
+
+        # Delete the user
+        cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
+
+        # Report
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
             VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeUser'], 'User', 'username', username, "Remove user '" + username + "'" ) )
+
         conn.commit()
 
 class authFacilities:
