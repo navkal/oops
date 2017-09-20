@@ -128,7 +128,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 break;
 
               case 'remove':
-                sCell = '<a username="' + sCell + '">';
+                sCell = '<a>';
                 sCell += '<button class="btn btn-link btn-xs" onclick="initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
                 sCell += '</button>';
