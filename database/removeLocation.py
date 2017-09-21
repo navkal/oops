@@ -16,7 +16,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.removeLocation( args.by, args.id, args.enterprise )
+        status = sql.removeLocation( args.by, args.id, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to remove location' }
     else:

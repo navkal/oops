@@ -28,10 +28,10 @@ def make_device_label( name, room_id, facility ):
     # Get location details
     if room_id:
         cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
-        rooms = cur.fetchone()
-        location = rooms[0]
-        location_old = rooms[1]
-        location_descr = rooms[2]
+        room = cur.fetchone()
+        location = room[0]
+        location_old = room[1]
+        location_descr = room[2]
     else:
         location = ''
         location_old = ''
@@ -1043,17 +1043,17 @@ class updateLocation:
 
 
 class removeLocation:
-    def __init__(self, by, id, enterprise):
+    def __init__( self, by, id, enterprise, facility ):
         open_database( enterprise )
 
         target_table = facility + '_Room'
 
         # Get formatted location for reporting
         cur.execute('''SELECT room_num, old_num, description FROM ''' + target_table + ''' WHERE id = ?''', (id,))
-        rooms = cur.fetchone()
-        loc_new = rooms[0]
-        loc_old = rooms[1]
-        loc_descr = rooms[2]
+        room = cur.fetchone()
+        loc_new = room[0]
+        loc_old = room[1]
+        loc_descr = room[2]
         formatted_location = format_location( loc_new, loc_old, loc_descr )
 
         # Delete the object
