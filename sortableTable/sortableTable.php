@@ -63,8 +63,11 @@
       </tbody>
 
     </table>
-    <div id="sortableTableIsEmpty" style="display:none; text-align:center" >
-      This table is empty.
+
+    <div id="sortableTableIsEmpty" class="panel-heading" style="display:none;text-align:center" >
+      <h3 class="panel-title">
+        This table is empty.
+      </h3>
     </div>
 
   </div>
