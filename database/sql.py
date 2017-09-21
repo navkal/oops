@@ -460,7 +460,7 @@ class sortableTable:
             objects = cur.fetchall()
             self.rows = []
             for obj in objects:
-                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_descr': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5] }
+                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5] }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -1071,7 +1071,7 @@ class removeLocation:
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Location', formatted_location, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Location', formatted_location, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects

@@ -266,9 +266,9 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  remove_object_descr:
+  remove_object_origin:
   {
-    label: "Description",
+    label: "Origin",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++
