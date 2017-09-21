@@ -1046,18 +1046,29 @@ class removeLocation:
     def __init__( self, by, id, enterprise, facility ):
         open_database( enterprise )
 
+        # Create entry in Recycle Bin
+        timestamp = time.time()
+        recycle_bin = facility + '_RecycleBin'
+        cur.execute( 'INSERT INTO ' + recycle_bin + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, 'FAKE REMOVE COMMENT', 'Location', id ) )
+        remove_id = cur.lastrowid
+
+        # Get row to be deleted
         target_table = facility + '_Room'
+        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+        row = cur.fetchone()
 
-        # Get formatted location for reporting
-        cur.execute('''SELECT room_num, old_num, description FROM ''' + target_table + ''' WHERE id = ?''', (id,))
-        room = cur.fetchone()
-        loc_new = room[0]
-        loc_old = room[1]
-        loc_descr = room[2]
-        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+        # Insert target object in table of removed objects
+        removed_table = facility + '_Removed_Room'
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_num, old_num, location_type, description, remove_id ) VALUES(?,?,?,?,?,?) ''', ( row[0], row[1], row[2], row[3], row[4], remove_id ) )
 
-        # Delete the object
+        # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+
+        # Format location
+        loc_new = row[1]
+        loc_old = row[2]
+        loc_descr = row[4]
+        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
 
         # Log activity
         if loc_new != '':
@@ -1067,7 +1078,7 @@ class removeLocation:
 
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( timestamp, by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
 
         conn.commit()
 
