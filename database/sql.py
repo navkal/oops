@@ -460,8 +460,10 @@ class sortableTable:
             objects = cur.fetchall()
             self.rows = []
             for obj in objects:
-                row = { 'id': obj[0], 'remove_timestamp': obj[1], 'remove_comment': obj[2], 'object_type': obj[3], 'object_id': obj[4] }
+                row = { 'id': obj[0], 'timestamp': obj[1], 'comment': obj[2], 'object_type': obj[3], 'object_id': obj[4] }
                 self.rows.append( row )
+
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
         elif object_type == 'activity':
             # Retrieve all objects of requested type
