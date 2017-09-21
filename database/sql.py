@@ -951,14 +951,14 @@ class addLocation:
         # Log activity
         if location != '':
             target_column = 'room_num'
-            target_value = location
         else:
             target_column = 'old_num'
-            target_value = old_location
+
+        formatted_location = dbCommon.format_location( location, old_location, description )
 
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, target_value, 'Add location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, formatted_location, 'Add location [' + formatted_location + ']', facility_id ) )
 
         conn.commit()
 
@@ -1028,14 +1028,14 @@ class updateLocation:
         # Log activity
         if location != '':
             target_column = 'room_num'
-            target_value = location
         else:
             target_column = 'old_num'
-            target_value = old_location
+
+        formatted_location = dbCommon.format_location( location, old_location, description )
 
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Update location [' + dbCommon.format_location( location, old_location, description ) + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, formatted_location, 'Update location [' + formatted_location + ']', facility_id ) )
 
         conn.commit()
 
@@ -1054,7 +1054,7 @@ class removeLocation:
         loc_new = room[0]
         loc_old = room[1]
         loc_descr = room[2]
-        formatted_location = format_location( loc_new, loc_old, loc_descr )
+        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
 
         # Delete the object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1062,14 +1062,12 @@ class removeLocation:
         # Log activity
         if loc_new != '':
             target_column = 'room_num'
-            target_value = loc_new
         else:
             target_column = 'old_num'
-            target_value = loc_old
 
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Remove location [' + formatted_location + ']', facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
 
         conn.commit()
 
