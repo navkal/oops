@@ -1,8 +1,7 @@
 <!-- Copyright 2017 Panel Spy.  All rights reserved. -->
 
 <?php
-  require_once $_SERVER["DOCUMENT_ROOT"]."/pi/pi.php";
-  //require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
 ?>
 
 <script>

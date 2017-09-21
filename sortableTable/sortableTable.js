@@ -196,7 +196,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Format table body HTML
   sHtml = '';
-  var bDone = false;
+  var bDone = ( g_aSortableTableRows.length == 0 );
   var nRow = 0;
   while ( ! bDone )
   {

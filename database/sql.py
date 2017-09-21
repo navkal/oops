@@ -454,7 +454,16 @@ class sortableTable:
     def __init__(self, object_type, user_role, enterprise, facility):
         open_database( enterprise )
 
-        if object_type == 'activity':
+        if object_type == 'recycle':
+            recycle_table = facility + '_Recycle'
+            cur.execute( 'SELECT * FROM ' + recycle_table )
+            objects = cur.fetchall()
+            self.rows = []
+            for obj in objects:
+                row = { 'id': obj[0], 'remove_timestamp': obj[1], 'remove_comment': obj[2], 'object_type': obj[3], 'object_id': obj[4] }
+                self.rows.append( row )
+
+        elif object_type == 'activity':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM Activity')
             objects = cur.fetchall()
@@ -1048,8 +1057,8 @@ class removeLocation:
 
         # Create entry in Recycle Bin
         timestamp = time.time()
-        recycle_bin = facility + '_RecycleBin'
-        cur.execute( 'INSERT INTO ' + recycle_bin + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, comment, 'Location', id ) )
+        recycle_table = facility + '_Recycle'
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, comment, 'Location', id ) )
         remove_id = cur.lastrowid
 
         # Get row to be deleted
