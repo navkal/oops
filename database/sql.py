@@ -460,7 +460,7 @@ class sortableTable:
             objects = cur.fetchall()
             self.rows = []
             for obj in objects:
-                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_comment': obj[2], 'remove_object_type': obj[3], 'object_id': obj[4] }
+                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_descr': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5] }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -1057,16 +1057,22 @@ class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
-        # Create entry in Recycle Bin
-        timestamp = time.time()
-        recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, comment, 'Location', id ) )
-        remove_id = cur.lastrowid
-
         # Get row to be deleted
         target_table = facility + '_Room'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
+
+        # Format location
+        loc_new = row[1]
+        loc_old = row[2]
+        loc_descr = row[4]
+        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+
+        # Create entry in Recycle Bin
+        timestamp = time.time()
+        recycle_table = facility + '_Recycle'
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Location', formatted_location, comment, id ) )
+        remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
         removed_table = facility + '_Removed_Room'
@@ -1074,12 +1080,6 @@ class removeLocation:
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
-
-        # Format location
-        loc_new = row[1]
-        loc_old = row[2]
-        loc_descr = row[4]
-        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
 
         # Log activity
         if loc_new != '':

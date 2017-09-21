@@ -266,6 +266,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  remove_object_descr:
+  {
+    label: "Description",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   remove_comment:
   {
     label: "Comment",
