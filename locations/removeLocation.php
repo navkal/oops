@@ -7,9 +7,14 @@
 
   // Get user attributes
   $sId = quote( $_POST['id'] );
+  $sComment = quote( $_POST['comment'] );
 
   // Remove user
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeLocation.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username'] . ' -i ' . $sId . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeLocation.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
+    . ' -i ' . $sId
+    . ' -c ' . $sComment
+    . $g_sContext;
+
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );

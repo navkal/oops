@@ -1043,13 +1043,13 @@ class updateLocation:
 
 
 class removeLocation:
-    def __init__( self, by, id, enterprise, facility ):
+    def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_bin = facility + '_RecycleBin'
-        cur.execute( 'INSERT INTO ' + recycle_bin + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, 'FAKE REMOVE COMMENT', 'Location', id ) )
+        cur.execute( 'INSERT INTO ' + recycle_bin + ' ( remove_timestamp, remove_comment, object_type, object_id ) VALUES(?,?,?,?) ''', ( timestamp, comment, 'Location', id ) )
         remove_id = cur.lastrowid
 
         # Get row to be deleted

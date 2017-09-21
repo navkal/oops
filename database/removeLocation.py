@@ -11,12 +11,13 @@ import sql
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='remove location' )
     parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
-    parser.add_argument( '-i', '--id', dest='id', help='id' )
+    parser.add_argument( '-i', '--id', dest='id', help='object id' )
+    parser.add_argument( '-c', '--comment', dest='comment', help='remove comment' )
     parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
-        status = sql.removeLocation( args.by, args.id, args.enterprise, args.facility )
+        status = sql.removeLocation( args.by, args.id, args.comment, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to remove location' }
     else:
