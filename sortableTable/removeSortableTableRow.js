@@ -1,6 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
 var g_sRemoveId = null;
+var g_sRemoveCodeFolder = null;
 
 function initRemoveDialog( sRemoveId )
 {
@@ -45,7 +46,7 @@ function removeObject()
   tPostData.append( "id", g_sRemoveId );
 
   $.ajax(
-    'users/remove' + g_sSortableTableEditWhat + '.php',
+    g_sRemoveCodeFolder + '/remove' + g_sSortableTableEditWhat + '.php',
     {
       type: 'POST',
       processData: false,

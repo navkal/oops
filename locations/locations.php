@@ -12,6 +12,7 @@
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
     g_sSortableTableEditWhat = 'Location';
+    g_sRemoveCodeFolder = 'locations';
   }
 
   $( document ).ready( getSortableTable );

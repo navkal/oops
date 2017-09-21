@@ -1042,6 +1042,40 @@ class updateLocation:
         self.success = True
 
 
+class removeLocation:
+    def __init__(self, by, id, enterprise):
+        open_database( enterprise )
+
+        target_table = facility + '_Room'
+
+        # Get formatted location for reporting
+        cur.execute('''SELECT room_num, old_num, description FROM ''' + target_table + ''' WHERE id = ?''', (id,))
+        rooms = cur.fetchone()
+        loc_new = rooms[0]
+        loc_old = rooms[1]
+        loc_descr = rooms[2]
+        formatted_location = format_location( loc_new, loc_old, loc_descr )
+
+        # Delete the object
+        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+
+        # Log activity
+        if loc_new != '':
+            target_column = 'room_num'
+            target_value = loc_new
+        else:
+            target_column = 'old_num'
+            target_value = loc_old
+
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateLocation'], target_table, target_column, target_value, 'Remove location [' + formatted_location + ']', facility_id ) )
+
+        conn.commit()
+
+        self.success = True
+
+
 class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
