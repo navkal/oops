@@ -7,6 +7,7 @@ transformers,Transformers,transformers/transformers.php
 circuits,Circuits,circuits/circuits.php
 devices,Devices,devices/devices.php
 locations,Locations,locations/locations.php
+recycleBin,Recycle Bin,recycleBin/recycleBin.php
 topology,Topology,topology/topology.php
 settings,Settings,settings/settings.php
 about,About,about/about.php
