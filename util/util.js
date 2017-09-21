@@ -259,6 +259,20 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  remove_object_type:
+  {
+    label: "Type",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  remove_comment:
+  {
+    label: "Comment",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   image_file:
   {
     label: "Image",
