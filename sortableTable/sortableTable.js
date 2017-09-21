@@ -197,7 +197,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   // Format table body HTML
   if ( g_aSortableTableRows.length == 0 )
   {
-    sHtml = 'No elements found';
+    $( '#sortableTableIsEmpty' ).show();
   }
   else
   {
@@ -227,8 +227,8 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
       nRow ++;
     }
+    $( '#sortableTableBody' ).html( sHtml );
   }
-  $( '#sortableTableBody' ).html( sHtml );
 
   // Track sort and filter states
   var tSortState =
