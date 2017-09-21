@@ -195,31 +195,38 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
   // Format table body HTML
-  sHtml = '';
-  var bDone = ( g_aSortableTableRows.length == 0 );
-  var nRow = 0;
-  while ( ! bDone )
+  if ( g_aSortableTableRows.length == 0 )
   {
-    sHtml += '<tr>';
-    for ( var iHeader in aSortedHeaders )
+    sHtml = 'No elements found';
+  }
+  else
+  {
+    sHtml = '';
+    var bDone = false;
+    var nRow = 0;
+    while ( ! bDone )
     {
-      var sHeader = aSortedHeaders[iHeader];
-      var tColumn = tColumnMap[sHeader];
-      if ( ! tColumn.empty )
+      sHtml += '<tr>';
+      for ( var iHeader in aSortedHeaders )
       {
-        var sCell = tColumn.cells[nRow];
-        if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
+        var sHeader = aSortedHeaders[iHeader];
+        var tColumn = tColumnMap[sHeader];
+        if ( ! tColumn.empty )
         {
-          tColumn.align = 'center';
+          var sCell = tColumn.cells[nRow];
+          if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
+          {
+            tColumn.align = 'center';
+          }
+          var sAlign = 'text-align:' + tColumn.align;
+          sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
+          bDone = ( nRow == tColumn.cells.length - 1 );
         }
-        var sAlign = 'text-align:' + tColumn.align;
-        sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
-        bDone = ( nRow == tColumn.cells.length - 1 );
       }
-    }
-    sHtml += '</tr>';
+      sHtml += '</tr>';
 
-    nRow ++;
+      nRow ++;
+    }
   }
   $( '#sortableTableBody' ).html( sHtml );
 
