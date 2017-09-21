@@ -13,6 +13,7 @@
   {
     g_sSortableTableEditWhat = 'Location';
     g_sRemoveCodeFolder = 'locations';
+    g_bShowRemoveComment = true;
   }
 
   $( document ).ready( getSortableTable );

@@ -18,6 +18,10 @@
                 <label id="removeWhatLabel" for="removeWhat"></label>
                 <input type="text" class="form-control" id="removeWhat" disabled >
               </div>
+              <div class="form-group" id="removeCommentDiv" hidden >
+                <label for="removeComment">Comment</label>
+                <textarea id="removeComment" class="form-control" maxlength="200" autofocus ></textarea>
+              </div>
               <button type="submit" id="removeFormSubmitButton" style="display:none" ></button>
             </form>
           </div>

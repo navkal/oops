@@ -2,6 +2,7 @@
 
 var g_sRemoveId = null;
 var g_sRemoveCodeFolder = null;
+var g_bShowRemoveComment = null;
 
 function initRemoveDialog( sRemoveId )
 {
@@ -28,6 +29,12 @@ function initRemoveDialog( sRemoveId )
   // Set dialog 'shown' handler
   $( '#removeDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRemoveDialogFocus );
 
+  // Optionally show comment field
+  if ( g_bShowRemoveComment )
+  {
+    $( '#removeCommentDiv' ).show();
+  }
+
   if ( typeof customizeRemoveDialog === "function" )
   {
     customizeRemoveDialog( tRow );
@@ -36,7 +43,15 @@ function initRemoveDialog( sRemoveId )
 
 function initRemoveDialogFocus()
 {
-  $( '#removeFormSubmitProxy' ).focus();
+  // Focus on comment or remove button
+  if ( g_bShowRemoveComment )
+  {
+    $( '#removeComment' ).focus();
+  }
+  else
+  {
+    $( '#removeFormSubmitProxy' ).focus();
+  }
 }
 
 function removeObject()
