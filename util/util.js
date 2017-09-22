@@ -314,7 +314,8 @@ var g_tPropertyRules =
     customizeButton:
       function( sId )
       {
-        return ' title="Update Circuit" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Update ' + "'" + tRow.source + '.' + tRow.number + "'" + '" ';
       },
     displayIndex: displayIndex ++
   },
