@@ -291,7 +291,7 @@ var g_tPropertyRules =
       function( sDeviceId )
       {
         var tRow = findSortableTableRow( sDeviceId );
-        return ' title="Restore '+"'"+tRow.remove_object_type+"'"+'" ';
+        return ' title="Restore ' + tRow.remove_object_type + '" ';
       },
     displayIndex: displayIndex ++
   },
