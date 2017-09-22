@@ -343,7 +343,8 @@ var g_tPropertyRules =
     customizeButton:
       function( sId )
       {
-        return ' title="Update Transformer" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Update ' + "'" + tRow.name + "'" + '" ';
       },
     displayIndex: displayIndex ++
   },
