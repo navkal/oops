@@ -15,6 +15,10 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="restoreForm" onsubmit="restoreObject(event); return false;" >
               <div class="form-group">
+                <label for="timestamp"></label>
+                <input type="text" class="form-control" id="timestamp" disabled >
+              </div>
+              <div class="form-group">
                 <label for="remove_object_origin"></label>
                 <input type="text" class="form-control" id="remove_object_origin" disabled >
               </div>
