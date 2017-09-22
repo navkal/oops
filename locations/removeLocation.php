@@ -9,7 +9,7 @@
   $sId = quote( $_POST['id'] );
   $sComment = quote( $_POST['comment'] );
 
-  // Remove user
+  // Remove location
   $command = quote( getenv( "PYTHON" ) ) . " ../database/removeLocation.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
     . ' -c ' . $sComment
