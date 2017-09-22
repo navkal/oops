@@ -390,7 +390,8 @@ var g_tPropertyRules =
     customizeButton:
       function( sId )
       {
-        return ' title="Remove Location" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Remove ' + tRow.formatted_location + '" ';
       },
     displayIndex: displayIndex ++
   },
