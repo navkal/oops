@@ -146,7 +146,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           }
           else if ( tRule.columnType == 'timestamp' )
           {
-            sCell = new Date( Math.floor( sCell * 1000 ) ).toLocaleString();
+            sCell = formatTimestamp( sCell );
           }
         }
 
@@ -369,4 +369,9 @@ function findSortableTableRow( sId )
   while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sId ) );
 
   return tRow;
+}
+
+function formatTimestamp( sTimestamp )
+{
+  return new Date( Math.floor( sTimestamp * 1000 ) ).toLocaleString();
 }
