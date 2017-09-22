@@ -5,7 +5,6 @@ var g_sRestoreId = null;
 
 function initRestoreDialog( sRestoreId )
 {
-  alert( sRestoreId );
   g_sRestoreId = sRestoreId;
 
   // Find the selected row
