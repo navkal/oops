@@ -373,9 +373,10 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sLocationId )
+      function( sId )
       {
-        return ' title="Update Location" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Update ' + tRow.formatted_location + '" ';
       },
     displayIndex: displayIndex ++
   },
