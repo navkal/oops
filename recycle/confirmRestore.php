@@ -15,12 +15,12 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="restoreForm" onsubmit="restoreObject(event); return false;" >
               <div class="form-group">
-                <label id="restoreWhatLabel" for="restoreWhat"></label>
-                <input type="text" class="form-control" id="restoreWhat" disabled >
+                <label for="origin">Origin</label>
+                <input type="text" class="form-control" id="origin" disabled >
               </div>
-              <div class="form-group" id="restoreCommentDiv" hidden >
-                <label for="removeComment">Comment</label>
-                <textarea id="removeComment" class="form-control" maxlength="200" readonly ></textarea>
+              <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea id="comment" class="form-control" disabled ></textarea>
               </div>
               <button type="submit" id="restoreFormSubmitButton" style="display:none" ></button>
             </form>
