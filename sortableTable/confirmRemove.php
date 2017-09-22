@@ -20,7 +20,7 @@
               </div>
               <div class="form-group" id="removeCommentDiv" hidden >
                 <label for="removeComment">Comment</label>
-                <textarea id="removeComment" class="form-control" maxlength="200" autofocus ></textarea>
+                <textarea id="removeComment" class="form-control" maxlength="200" ></textarea>
               </div>
               <button type="submit" id="removeFormSubmitButton" style="display:none" ></button>
             </form>
