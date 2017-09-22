@@ -6,6 +6,7 @@ var g_sRestoreId = null;
 function initRestoreDialog( sRestoreId )
 {
   g_sRestoreId = sRestoreId;
+  makeFieldLabels( $( '.form-control,.input-group', '#restoreForm' ) );
 
   // Find the selected row
   var tRow = findSortableTableRow( g_sRestoreId );
