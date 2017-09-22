@@ -280,6 +280,21 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  restore_object:
+  {
+    label: "Restore",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'restore',
+    customizeButton:
+      function( sDeviceId )
+      {
+        var tRow = findSortableTableRow( sDeviceId );
+        return ' title="Restore '+"'"+tRow.remove_object_type+"'"+'" ';
+      },
+    displayIndex: displayIndex ++
+  },
   image_file:
   {
     label: "Image",

@@ -13,14 +13,7 @@ function initRemoveDialog( sRemoveId )
   $( '#removeFormSubmitProxy' ).text( 'Remove ' + g_sSortableTableEditWhat );
 
   // Find the selected row
-  var iRow = 0;
-  var tRow = null;
-  do
-  {
-    tRow = g_aSortableTableRows[iRow];
-    iRow ++
-  }
-  while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sRemoveId ) );
+  var tRow = findSortableTableRow( g_sRemoveId );
 
   // Show what would be removed
   $( '#removeWhatLabel' ).text( g_tPropertyRules[tRow.remove_what] ? g_tPropertyRules[tRow.remove_what].label : g_sSortableTableEditWhat );

@@ -182,14 +182,7 @@
   function initUpdateDialog()
   {
     // Find the selected row
-    var iRow = 0;
-    var tRow = null;
-    do
-    {
-      tRow = g_aSortableTableRows[iRow];
-      iRow ++
-    }
-    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != g_sUpdateTarget ) );
+    var tRow = findSortableTableRow( g_sUpdateTarget );
 
     // Save values of selected row
     g_sDeviceId = tRow.id;

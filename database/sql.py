@@ -460,7 +460,7 @@ class sortableTable:
             objects = cur.fetchall()
             self.rows = []
             for obj in objects:
-                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5] }
+                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5], 'restore_object': obj[0] }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )

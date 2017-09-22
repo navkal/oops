@@ -134,6 +134,14 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
                 sCell += '</button>';
                 sCell += '</a>';
                 break;
+
+              case 'restore':
+                sCell = '<a>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="initRestoreDialog('+"'"+sCellValue+"'"+')" data-target="#restoreDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<span class="glyphicon glyphicon-plus" style="font-size:18px;" ></span>';
+                sCell += '</button>';
+                sCell += '</a>';
+                break;
             }
           }
           else if ( tRule.columnType == 'timestamp' )
@@ -347,4 +355,18 @@ function openImageWindowEtc( tEvent )
 function closeChildWindows()
 {
   childWindowsClose( g_aImageWindows );
+}
+
+function findSortableTableRow( sId )
+{
+  var iRow = 0;
+  var tRow = null;
+  do
+  {
+    tRow = g_aSortableTableRows[iRow];
+    iRow ++
+  }
+  while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sId ) );
+
+  return tRow;
 }

@@ -139,14 +139,7 @@
     g_sSubmitLabel = 'Update User';
     g_bUsernameDisabled = true;
 
-    var iRow = 0;
-    var tRow = null;
-    do
-    {
-      tRow = g_aSortableTableRows[iRow];
-      iRow ++
-    }
-    while( ( iRow < g_aSortableTableRows.length ) && ( tRow.username != g_sUpdateTarget ) );
+    var tRow = findSortableTableRow( g_sUpdateTarget );
 
     // Load fields from the row
     g_sRole = tRow.role;
