@@ -288,9 +288,9 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'restore',
     customizeButton:
-      function( sDeviceId )
+      function( sId )
       {
-        var tRow = findSortableTableRow( sDeviceId );
+        var tRow = findSortableTableRow( sId );
         return ' title="Restore ' + tRow.remove_object_type + '" ';
       },
     displayIndex: displayIndex ++
@@ -312,7 +312,7 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sDeviceId )
+      function( sId )
       {
         return ' title="Update Circuit" ';
       },
@@ -326,9 +326,10 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sDeviceId )
+      function( sId )
       {
-        return ' title="Update Panel" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Update ' + "'" + tRow.name + "'" + '" ';
       },
     displayIndex: displayIndex ++
   },
@@ -340,7 +341,7 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sDeviceId )
+      function( sId )
       {
         return ' title="Update Transformer" ';
       },
@@ -354,7 +355,7 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sDeviceId )
+      function( sId )
       {
         return ' title="Update Device" ';
       },
@@ -382,7 +383,7 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'remove',
     customizeButton:
-      function( sUsername )
+      function( sId )
       {
         return ' title="Remove Location" ';
       },
@@ -410,9 +411,9 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'remove',
     customizeButton:
-      function( sUserId )
+      function( sId )
       {
-        var tRow = findSortableTableRow( sUserId );
+        var tRow = findSortableTableRow( sId );
         return ' title="Remove '+"'"+tRow.username+"'"+'" ';
       },
     displayIndex: displayIndex ++
