@@ -410,9 +410,10 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'remove',
     customizeButton:
-      function( sUsername )
+      function( sUserId )
       {
-        return ' title="Remove '+"'"+sUsername+"'"+'" ';
+        var tRow = findSortableTableRow( sUserId );
+        return ' title="Remove '+"'"+tRow.username+"'"+'" ';
       },
     displayIndex: displayIndex ++
   },
