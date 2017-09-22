@@ -315,7 +315,8 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Update ' + "'" + tRow.source + '.' + tRow.number + "'" + '" ';
+        var aPath = tRow.path.split( '.' );
+        return ' title="Update ' + "'" + aPath[aPath.length-2] + '.' + aPath[aPath.length-1] + "'" + '" ';
       },
     displayIndex: displayIndex ++
   },
