@@ -2,7 +2,10 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/recycle/confirmRestore.php';
 ?>
+
+<script src="recycle/restore.js?version=<?=$iVersion?>"></script>
 
 <script>
   g_sSortableTableTitle = 'Recycle Bin';
