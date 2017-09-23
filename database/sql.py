@@ -1282,7 +1282,6 @@ class restoreObject:
         cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
         recycle_row = cur.fetchone()
         restore_object_type = recycle_row[2]
-        restore_object_id = recycle_row[5]
 
         # Handle according to object type
 
@@ -1305,20 +1304,20 @@ class restoreObject:
             target_table = facility + '_Room'
 
             # Get fields from source table
-            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( restore_object_id, ) );
-            remove_row = cur.fetchone()
+            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+            source_row = cur.fetchone()
 
             # Load fields into tuple
-            insert_row = []
-            for element in remove_row:
-                insert_row.append( element )
-            insert_row.pop()
+            restore_row = []
+            for element in source_row:
+                restore_row.append( element )
+            restore_row.pop()
 
             # Restore object into target table
-            cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( insert_row ) )
+            cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( restore_row ) )
 
             # Clean up removed object
-            cur.execute( 'DELETE FROM ' + source_table + ' WHERE id=?', ( restore_object_id, ) );
+            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
 
 
         # Clean up recyle bin
