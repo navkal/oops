@@ -18,4 +18,20 @@
   }
 
   $( document ).ready( getSortableTable );
+
+
+
+function customizeRemoveDialog( tRow )
+{
+  $( '#circuitDiv' ).remove();
+
+  var sHtml =
+    '<div class="form-group" id="circuitDiv" >' +
+      '<label for="circuit">Circuit</label>' +
+      '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" disabled >' +
+    '</div>';
+
+  $( '#removeForm' ).append( sHtml );
+}
+
 </script>

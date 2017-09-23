@@ -28,6 +28,7 @@ function initRemoveDialog( sRemoveId )
     $( '#removeCommentDiv' ).show();
   }
 
+  // Customize the dialog for the specific object type
   if ( typeof customizeRemoveDialog === "function" )
   {
     customizeRemoveDialog( tRow );
