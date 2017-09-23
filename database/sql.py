@@ -1277,4 +1277,9 @@ class restoreObject:
 
         open_database( enterprise )
 
-        self.success = True
+        recycle_table = facility + '_Recycle'
+        cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
+        recycle_row = cur.fetchone()
+
+
+        self.recycle_row = recycle_row
