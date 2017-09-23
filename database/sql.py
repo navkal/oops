@@ -200,11 +200,13 @@ class device:
             self.loc_old = room[2]
             self.loc_type = room[3]
             self.loc_descr = room[4]
+            formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
         else:
             self.loc_new = ''
             self.loc_old = ''
             self.loc_type = ''
             self.loc_descr = ''
+            formatted_location = ''
 
         cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
         self.events = cur.fetchall()
@@ -213,6 +215,7 @@ class device:
             self.update_device = self.id
             self.remove_device = self.id
             self.remove_what = 'name'
+            self.formatted_location = formatted_location
 
 
     def properties(self):

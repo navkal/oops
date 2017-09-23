@@ -24,7 +24,9 @@
 function customizeRemoveDialog( tRow )
 {
   $( '#circuitDiv' ).remove();
+  $( '#locationDiv' ).remove();
 
+  // Show circuit
   var sHtml =
     '<div class="form-group" id="circuitDiv" >' +
       '<label for="circuit">Circuit</label>' +
@@ -33,6 +35,19 @@ function customizeRemoveDialog( tRow )
 
   $( '#removeForm' ).append( sHtml );
   $( '#circuitDiv' ).insertBefore( '#removeWhatDiv' );
+
+  // Optionally show location
+  if ( tRow.formatted_location )
+  {
+    sHtml =
+      '<div class="form-group" id="locationDiv" >' +
+        '<label for="location">Location</label>' +
+        '<input type="text" class="form-control" id="location" value="' + tRow.formatted_location + '" disabled >' +
+      '</div>';
+
+    $( '#removeForm' ).append( sHtml );
+    $( '#locationDiv' ).insertBefore( '#removeCommentDiv' );
+  }
 }
 
 </script>
