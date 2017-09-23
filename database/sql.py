@@ -1277,9 +1277,54 @@ class restoreObject:
 
         open_database( enterprise )
 
+        # Get values representing object to be restored
         recycle_table = facility + '_Recycle'
         cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
         recycle_row = cur.fetchone()
+        restore_object_type = recycle_row[2]
+        restore_object_id = recycle_row[5]
+
+        # Handle according to object type
+
+        if ( restore_object_type == 'Panel' ) or ( restore_object_type == 'Transformer' ) or ( restore_object_type == 'Circuit' ):
+
+            source_table = facility + '_Removed_CircuitObject'
+            target_table = facility + '_CircuitObject'
+            # ????? Then what ?????
+
+        elif restore_object_type == 'Device':
+
+            source_table = facility + '_Removed_Device'
+            target_table = facility + '_Device'
+            # ????? Then what ?????
+
+        elif restore_object_type == 'Location':
+
+            # Determine source and target tables
+            source_table = facility + '_Removed_Room'
+            target_table = facility + '_Room'
+
+            # Get fields from source table
+            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( restore_object_id, ) );
+            remove_row = cur.fetchone()
+
+            # Load fields into tuple
+            insert_row = []
+            for element in remove_row:
+                insert_row.append( element )
+            insert_row.pop()
+
+            # Restore object into target table
+            cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( insert_row ) )
+
+            # Clean up removed object
+            cur.execute( 'DELETE FROM ' + source_table + ' WHERE id=?', ( restore_object_id, ) );
 
 
-        self.recycle_row = recycle_row
+        # Clean up recyle bin
+        cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
+
+        conn.commit()
+
+        self.success = True
+
