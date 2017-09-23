@@ -32,6 +32,7 @@ function customizeRemoveDialog( tRow )
     '</div>';
 
   $( '#removeForm' ).append( sHtml );
+  $( '#circuitDiv' ).insertBefore( '#removeWhatDiv' );
 }
 
 </script>

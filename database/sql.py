@@ -212,7 +212,7 @@ class device:
         if user_role == 'Technician':
             self.update_device = self.id
             self.remove_device = self.id
-            self.remove_what = 'description'
+            self.remove_what = 'name'
 
 
     def properties(self):

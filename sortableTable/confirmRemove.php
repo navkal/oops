@@ -14,7 +14,7 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="removeForm" onsubmit="removeObject(event); return false;" >
-              <div class="form-group">
+              <div class="form-group" id="removeWhatDiv" >
                 <label id="removeWhatLabel" for="removeWhat"></label>
                 <input type="text" class="form-control" id="removeWhat" disabled >
               </div>
