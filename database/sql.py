@@ -1292,7 +1292,6 @@ class restoreObject:
         restore_object_type = recycle_row[2]
 
         # Handle according to object type
-
         if ( restore_object_type == 'Panel' ) or ( restore_object_type == 'Transformer' ) or ( restore_object_type == 'Circuit' ):
 
             source_table = facility + '_Removed_CircuitObject'
@@ -1306,44 +1305,7 @@ class restoreObject:
             # ????? Then what ?????
 
         elif restore_object_type == 'Location':
-
-            # Determine source and target tables
-            source_table = facility + '_Removed_Room'
-            target_table = facility + '_Room'
-
-            # Get fields from source table
-            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
-            source_row = cur.fetchone()
-
-            # Load fields into tuple
-            restore_row = []
-            for element in source_row:
-                restore_row.append( element )
-            restore_row.pop()
-
-            # Restore object into target table
-            cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( restore_row ) )
-
-            # Clean up removed object
-            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
-
-            # Log activity
-            loc_new = restore_row[1]
-            loc_old = restore_row[2]
-            loc_descr = restore_row[4]
-
-            if loc_new != '':
-                target_column = 'room_num'
-            else:
-                target_column = 'old_num'
-
-            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
-
-            facility_id = facility_name_to_id( facility )
-            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreLocation'], target_table, target_column, formatted_location, 'Restore location [' + formatted_location + ']', facility_id ) )
-
-
+            self.restore_location( by, id, facility )
 
         # Clean up recyle bin
         cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
@@ -1352,3 +1314,40 @@ class restoreObject:
 
         self.success = True
 
+    def restore_location( self, by, id, facility ):
+
+        # Determine source and target tables
+        source_table = facility + '_Removed_Room'
+        target_table = facility + '_Room'
+
+        # Get fields from source table
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        source_row = cur.fetchone()
+
+        # Load fields into tuple
+        restore_row = []
+        for element in source_row:
+            restore_row.append( element )
+        restore_row.pop()
+
+        # Restore object into target table
+        cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( restore_row ) )
+
+        # Clean up removed object
+        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+
+        # Log activity
+        loc_new = restore_row[1]
+        loc_old = restore_row[2]
+        loc_descr = restore_row[4]
+
+        if loc_new != '':
+            target_column = 'room_num'
+        else:
+            target_column = 'old_num'
+
+        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreLocation'], target_table, target_column, formatted_location, 'Restore location [' + formatted_location + ']', facility_id ) )
