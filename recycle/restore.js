@@ -28,8 +28,6 @@ function initRestoreDialog( sRestoreId )
   nLabelColumnWidth = 3;
   $( '.form-group>label', '#restoreDialogForm' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
-
-
 }
 
 function initRestoreDialogFocus()
@@ -44,14 +42,14 @@ function initRestoreDialogFocus()
   }
 }
 
-function restoreObject()
+function onSubmitRestoreDialog()
 {
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "id", g_sRestoreId );
 
   $.ajax(
-    'sortableTable/restoreSortableTableRow.php',
+    'recycle/restoreObject.php',
     {
       type: 'POST',
       processData: false,
@@ -64,7 +62,8 @@ function restoreObject()
   .fail( handleAjaxError );
 }
 
-function restoreDone()
+function restoreDone( tRsp, sStatus, tJqXhr )
 {
+  alert( JSON.stringify( tRsp ) );
   location.reload();
 }

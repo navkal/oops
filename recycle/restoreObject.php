@@ -10,7 +10,7 @@
   $sId = quote( $_POST['id'] );
 
   // Restore object
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/restoreSortableTableRow.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/restoreObject.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
     . $g_sContext;
 

@@ -1270,3 +1270,11 @@ class imageFilename:
         open_database( enterprise )
         id = dbCommon.path_to_id( cur, path, facility )
         self.image_filename = id + '.jpg'
+
+
+class restoreObject:
+    def __init__(self, by, id, enterprise, facility):
+
+        open_database( enterprise )
+
+        self.success = True

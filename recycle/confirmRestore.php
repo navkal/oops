@@ -14,7 +14,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form id="restoreDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
+            <form id="restoreDialogForm" class="form-horizontal" onsubmit="onSubmitRestoreDialog(event); return false;" >
               <div class="form-group">
                 <label for="timestamp"></label>
                 <div>
