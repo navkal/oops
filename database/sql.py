@@ -1299,11 +1299,7 @@ class restoreObject:
             # ????? Then what ?????
 
         elif restore_object_type == 'Device':
-
-            source_table = facility + '_Removed_Device'
-            target_table = facility + '_Device'
-            # ????? Then what ?????
-
+            self.restore_device( by, id, facility )
         elif restore_object_type == 'Location':
             self.restore_location( by, id, facility )
 
@@ -1313,6 +1309,16 @@ class restoreObject:
         conn.commit()
 
         self.success = True
+
+
+    def restore_device( self, by, id, facility ):
+
+        # Determine source and target tables
+        source_table = facility + '_Removed_Device'
+        target_table = facility + '_Device'
+
+        # ????? Then what ?????
+
 
     def restore_location( self, by, id, facility ):
 
