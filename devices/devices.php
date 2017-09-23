@@ -3,6 +3,7 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/devices/editDevice.php";
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/sortableTable/confirmRemove.php';
 ?>
 
 <script>
@@ -12,6 +13,8 @@
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
     g_sSortableTableEditWhat = "Device";
+    g_sRemoveCodeFolder = 'devices';
+    g_bShowRemoveComment = true;
   }
 
   $( document ).ready( getSortableTable );

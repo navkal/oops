@@ -365,6 +365,21 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
+  remove_device:
+  {
+    label: "Remove",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'remove',
+    customizeButton:
+      function( sId )
+      {
+        var tRow = findSortableTableRow( sId );
+        return ' title="Remove [' + tRow.description + ']" ';
+      },
+    displayIndex: displayIndex ++
+  },
   update_location:
   {
     label: "Update",
