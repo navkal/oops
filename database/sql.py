@@ -1055,6 +1055,12 @@ class updateLocation:
         self.success = True
 
 
+class removeDevice:
+    def __init__( self, by, id, comment, enterprise, facility ):
+        open_database( enterprise )
+        self.success = True
+
+
 class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
