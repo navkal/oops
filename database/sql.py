@@ -1327,6 +1327,23 @@ class restoreObject:
             # Clean up removed object
             cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
 
+            # Log activity
+            loc_new = restore_row[1]
+            loc_old = restore_row[2]
+            loc_descr = restore_row[4]
+
+            if loc_new != '':
+                target_column = 'room_num'
+            else:
+                target_column = 'old_num'
+
+            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreLocation'], target_table, target_column, formatted_location, 'Restore location [' + formatted_location + ']', facility_id ) )
+
+
 
         # Clean up recyle bin
         cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );

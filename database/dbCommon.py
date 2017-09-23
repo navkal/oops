@@ -21,6 +21,7 @@ dcEventTypes = {
     'addLocation': 'Add Location',
     'updateLocation': 'Update Location',
     'removeLocation': 'Remove Location',
+    'restoreLocation': 'Restore Location',
     'addUser': 'Add User',
     'updateUser': 'Update User',
     'removeUser': 'Remove User'
