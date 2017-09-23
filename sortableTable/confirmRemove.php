@@ -13,14 +13,14 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <form id="removeForm" onsubmit="removeObject(event); return false;" >
+            <form id="removeDialogForm" onsubmit="removeObject(event); return false;" >
               <div class="form-group" id="removeWhatDiv" >
                 <label id="removeWhatLabel" for="removeWhat"></label>
                 <input type="text" class="form-control" id="removeWhat" disabled >
               </div>
               <div class="form-group" id="removeCommentDiv" hidden >
-                <label for="removeComment">Comment</label>
-                <textarea id="removeComment" class="form-control" maxlength="200" ></textarea>
+                <label for="remove_comment"></label>
+                <textarea id="remove_comment" class="form-control" maxlength="200" ></textarea>
               </div>
               <button type="submit" id="removeFormSubmitButton" style="display:none" ></button>
             </form>

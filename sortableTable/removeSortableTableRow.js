@@ -25,6 +25,7 @@ function initRemoveDialog( sRemoveId )
   // Optionally show comment field
   if ( g_bShowRemoveComment )
   {
+    $( '#removeCommentDiv label' ).text( g_tPropertyRules['remove_comment'].label )
     $( '#removeCommentDiv' ).show();
   }
 
@@ -40,7 +41,7 @@ function initRemoveDialogFocus()
   // Focus on comment or remove button
   if ( g_bShowRemoveComment )
   {
-    $( '#removeComment' ).focus();
+    $( '#remove_comment' ).focus();
   }
   else
   {
@@ -53,7 +54,7 @@ function removeObject()
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "id", g_sRemoveId );
-  tPostData.append( 'comment', $( '#removeComment' ).val() );
+  tPostData.append( 'comment', $( '#remove_comment' ).val() );
 
   $.ajax(
     g_sRemoveCodeFolder + '/remove' + g_sSortableTableEditWhat + '.php',

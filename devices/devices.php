@@ -33,7 +33,7 @@ function customizeRemoveDialog( tRow )
       '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" disabled >' +
     '</div>';
 
-  $( '#removeForm' ).append( sHtml );
+  $( '#removeDialogForm' ).append( sHtml );
   $( '#circuitDiv' ).insertBefore( '#removeWhatDiv' );
 
   // Optionally show location
@@ -45,7 +45,7 @@ function customizeRemoveDialog( tRow )
         '<input type="text" class="form-control" id="location" value="' + tRow.formatted_location + '" disabled >' +
       '</div>';
 
-    $( '#removeForm' ).append( sHtml );
+    $( '#removeDialogForm' ).append( sHtml );
     $( '#locationDiv' ).insertBefore( '#removeCommentDiv' );
   }
 }
