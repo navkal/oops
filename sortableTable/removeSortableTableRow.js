@@ -68,7 +68,8 @@ function removeObject()
   .fail( handleAjaxError );
 }
 
-function removeDone()
+function removeDone( tRsp, sStatus, tJqXhr )
 {
+  alert( JSON.stringify( tRsp ) );
   location.reload();
 }
