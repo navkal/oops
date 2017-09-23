@@ -316,7 +316,7 @@ var g_tPropertyRules =
       {
         var tRow = findSortableTableRow( sId );
         var aPath = tRow.path.split( '.' );
-        return ' title="Update ' + "'" + aPath[aPath.length-2] + '.' + aPath[aPath.length-1] + "'" + '" ';
+        return ' title="Update [' + aPath[aPath.length-2] + '.' + aPath[aPath.length-1] + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -331,7 +331,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Update ' + "'" + tRow.name + "'" + '" ';
+        return ' title="Update [' + tRow.name + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -346,7 +346,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Update ' + "'" + tRow.name + "'" + '" ';
+        return ' title="Update [' + tRow.name + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -361,7 +361,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Update ' + "'" + tRow.name + "'" + '" ';
+        return ' title="Update [' + tRow.name + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -391,7 +391,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Update ' + tRow.formatted_location + '" ';
+        return ' title="Update [' + tRow.formatted_location + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -406,7 +406,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Remove ' + tRow.formatted_location + '" ';
+        return ' title="Remove [' + tRow.formatted_location + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -420,7 +420,7 @@ var g_tPropertyRules =
     customizeButton:
       function( sUsername )
       {
-        return ' title="Update '+"'"+sUsername+"'"+'" ';
+        return ' title="Update [' + sUsername + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -435,7 +435,7 @@ var g_tPropertyRules =
       function( sId )
       {
         var tRow = findSortableTableRow( sId );
-        return ' title="Remove '+"'"+tRow.username+"'"+'" ';
+        return ' title="Remove [' + tRow.username + ']" ';
       },
     displayIndex: displayIndex ++
   },
