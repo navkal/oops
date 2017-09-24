@@ -18,6 +18,7 @@ dcEventTypes = {
     'updateTransformer': 'Update Transformer',
     'addDevice': 'Add Device',
     'updateDevice': 'Update Device',
+    'removeDevice': 'Remove Device',
     'addLocation': 'Add Location',
     'updateLocation': 'Update Location',
     'removeLocation': 'Remove Location',

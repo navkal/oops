@@ -1061,6 +1061,37 @@ class updateLocation:
 class removeDevice:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
+
+        # Get row to be deleted
+        target_table = facility + '_Device'
+        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+        row = cur.fetchone()
+
+        # Format descriptive text
+        descr_text = 'foo.moo.goo.too.yoo' + ': ' + row[3]
+
+        # Create entry in Recycle Bin
+        timestamp = time.time()
+        recycle_table = facility + '_Recycle'
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', descr_text, comment, id ) )
+        remove_id = cur.lastrowid
+
+        # Insert target object in table of removed objects
+        removed_table = facility + '_Removed_Device'
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ''', ( row[0], row[1], row[2], row[3], row[4], row[5], remove_id ) )
+
+        # Delete target object
+        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+
+        # Log activity
+        name = row[5]
+        description = row[3]
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeDevice'], target_table, 'name', name, "Remove device [" + description + "]", facility_id ) )
+
+        conn.commit()
+
         self.success = True
 
 
