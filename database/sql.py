@@ -1082,11 +1082,11 @@ class removeDevice:
             loc_old = room_row[2]
             loc_descr = room_row[4]
             formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
-            where = ' at ' + formatted_location
+            where = ' <span class="glyphicon glyphicon-map-marker"></span>' + formatted_location
         else:
             where = ''
 
-        origin = "'" + name + "'" + ' on ' + circuit + where
+        origin = name + ' <span class="glyphicon glyphicon-arrow-up"></span>' + circuit + where
 
         # Create entry in Recycle Bin
         timestamp = time.time()
