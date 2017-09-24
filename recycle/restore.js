@@ -44,7 +44,30 @@ function initRestoreDialog( sRestoreId )
 
 function initDeviceFields( tFields )
 {
-  $( '#restoreFields' ).html( 'Device' );
+  var sHtml = '';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="name"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="name" value="' + tFields.name + '" readonly >' +
+        '</div>' +
+      '</div>';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="source_path"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="source_path" value="' + tFields.source_path + '" readonly >' +
+        '</div>' +
+      '</div>';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="location_digest"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="location_digest" value="' + tFields.location_digest + '" readonly >' +
+        '</div>' +
+      '</div>';
+
+  $( '#restoreFields' ).html( sHtml );
 }
 
 function initLocationFields( tFields )

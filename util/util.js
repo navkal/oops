@@ -174,6 +174,13 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  location_digest:
+  {
+    label: "Location",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   loc_new:
   {
     label: "Location",

@@ -471,7 +471,28 @@ class sortableTable:
                 remove_object_id = obj[5]
 
                 if remove_object_type == 'Device':
-                    fields = {}
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
+                    device_row = cur.fetchone()
+                    room_id = device_row[1]
+                    parent_id = device_row[2]
+                    name = device_row[5]
+
+                    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
+                    parent = cur.fetchone()
+                    if parent:
+                        source_path = parent[0]
+                    else:
+                        source_path = ''
+
+                    cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
+                    room = cur.fetchone()
+                    if room:
+                        location_digest = dbCommon.format_location( room[1], room[2], room[4] )
+                    else:
+                        location_digest = ''
+
+                    fields = { 'name': name, 'source_path': source_path, 'location_digest': location_digest }
+
                 elif remove_object_type == 'Location':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
                     room = cur.fetchone()
