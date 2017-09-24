@@ -21,11 +21,11 @@ function initRestoreDialog( sRestoreId )
   switch( tRow.remove_object_type )
   {
     case 'Device':
-      initDeviceFields( tRow );
+      initDeviceFields( tRow.fields );
       break;
 
     case 'Location':
-      initLocationFields( tRow );
+      initLocationFields( tRow.fields );
       break;
   }
 
@@ -42,37 +42,33 @@ function initRestoreDialog( sRestoreId )
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-function initDeviceFields( tRow )
+function initDeviceFields( tFields )
 {
   $( '#restoreFields' ).html( 'Device' );
 }
 
-function initLocationFields( tRow )
+function initLocationFields( tFields )
 {
-  tRow.loc_new = 'foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo ';
-  tRow.loc_old = 'moooooooooooo';
-  tRow.loc_descr = 'goooooooooooo';
-
   var sHtml = '';
   sHtml +=
      '<div class="form-group">' +
         '<label for="loc_new"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_new" value="' + tRow.loc_new + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_new" value="' + tFields.loc_new + '" readonly >' +
         '</div>' +
       '</div>';
   sHtml +=
      '<div class="form-group">' +
         '<label for="loc_old"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_old" value="' + tRow.loc_old + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_old" value="' + tFields.loc_old + '" readonly >' +
         '</div>' +
       '</div>';
   sHtml +=
      '<div class="form-group">' +
         '<label for="loc_descr"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_descr" value="' + tRow.loc_descr + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_descr" value="' + tFields.loc_descr + '" readonly >' +
         '</div>' +
       '</div>';
 

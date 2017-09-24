@@ -464,8 +464,20 @@ class sortableTable:
             cur.execute( 'SELECT * FROM ' + recycle_table )
             objects = cur.fetchall()
             self.rows = []
+
             for obj in objects:
-                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': obj[2], 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': obj[5], 'restore_object': obj[0] }
+
+                remove_object_type = obj[2]
+                remove_object_id = obj[5]
+
+                if remove_object_type == 'Device':
+                    fields = {}
+                elif remove_object_type == 'Location':
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
+                    room = cur.fetchone()
+                    fields = { 'loc_new': room[1], 'loc_old': room[2], 'loc_descr': room[4] }
+
+                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': remove_object_type, 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': remove_object_id, 'restore_object': obj[0], 'fields': fields }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
