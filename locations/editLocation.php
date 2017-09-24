@@ -16,24 +16,11 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
-              <div class="form-group">
-                <label for="loc_new"></label>
-                <div>
-                  <input type="text" class="form-control" id="loc_new" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="loc_old"></label>
-                <div>
-                  <input type="text" class="form-control" id="loc_old" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="loc_descr" ></label>
-                <div>
-                  <textarea class="form-control" id="loc_descr" maxlength="50" ></textarea>
-                </div>
-              </div>
+
+              <?php
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/locations/locationFields.php';
+              ?>
+
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>

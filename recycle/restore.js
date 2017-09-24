@@ -5,21 +5,34 @@ var g_sRestoreId = null;
 
 function initRestoreDialog( sRestoreId )
 {
-  // Initialize field labels
-  makeFieldLabels( $( '.form-control,.input-group', '#restoreDialogForm' ) );
-  $( '.form-control', '#restoreDialogForm' ).attr( 'placeholder', '' );
-
-  // Initialize operation labels
+  // Initialize dialog box labels
   g_sRestoreId = sRestoreId;
   var tRow = findSortableTableRow( g_sRestoreId );
   var sLabel = 'Restore ' + tRow.remove_object_type
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
 
-  // Initialize field values
+  // Initialize field labels
+  makeFieldLabels( $( '.form-control,.input-group', '#restoreDialogForm' ) );
+  $( '.form-control', '#restoreDialogForm' ).attr( 'placeholder', '' );
+
+  // Initialize common field values
   sTimestamp = formatTimestamp( tRow.timestamp );
   $( '#timestamp' ).val( sTimestamp );
-  $( '#remove_object_origin' ).val( tRow.remove_object_origin );
   $( '#remove_comment' ).val( tRow.remove_comment );
+
+  // Show fields applicable to the object type
+  $( '#restoreDialogForm .restoreFields' ).hide();
+  switch( tRow.remove_object_type )
+  {
+    case 'Location':
+      $( '#restoreDialogForm .locationFields' ).show();
+      break;
+
+    case 'Device':
+      $( '#restoreDialogForm .deviceFields' ).show();
+      break;
+  }
+
 
   // Set dialog 'shown' handler
   $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRestoreDialogFocus );

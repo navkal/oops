@@ -22,17 +22,24 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="remove_object_origin"></label>
-                <div>
-                  <input type="text" class="form-control" id="remove_object_origin" disabled >
-                </div>
-              </div>
-              <div class="form-group">
                 <label for="remove_comment"></label>
                 <div>
                   <textarea id="remove_comment" class="form-control" disabled ></textarea>
                 </div>
               </div>
+
+              <div class="restoreFields deviceFields" hidden >
+                <?php
+                  require_once $_SERVER['DOCUMENT_ROOT'] . '/devices/deviceFields.php';
+                ?>
+              </div>
+
+              <div class="restoreFields locationFields" hidden >
+                <?php
+                  require_once $_SERVER['DOCUMENT_ROOT'] . '/locations/locationFields.php';
+                ?>
+              </div>
+
               <button id="restoreDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>
