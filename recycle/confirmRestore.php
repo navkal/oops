@@ -28,16 +28,8 @@
                 </div>
               </div>
 
-              <div class="restoreFields deviceFields" hidden >
-                <?php
-                  require_once $_SERVER['DOCUMENT_ROOT'] . '/devices/deviceFields.php';
-                ?>
-              </div>
+              <div id="restoreFields" hidden >
 
-              <div class="restoreFields locationFields" hidden >
-                <?php
-                  require_once $_SERVER['DOCUMENT_ROOT'] . '/locations/locationFields.php';
-                ?>
               </div>
 
               <button id="restoreDialogFormSubmitButton" type="submit" style="display:none" ></button>

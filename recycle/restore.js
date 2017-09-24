@@ -21,15 +21,15 @@ function initRestoreDialog( sRestoreId )
   $( '#remove_comment' ).val( tRow.remove_comment );
 
   // Show fields applicable to the object type
-  $( '#restoreDialogForm .restoreFields' ).hide();
+  $( '#restoreFields' ).html( '' );
   switch( tRow.remove_object_type )
   {
-    case 'Location':
-      $( '#restoreDialogForm .locationFields' ).show();
+    case 'Device':
+      initDeviceFields();
       break;
 
-    case 'Device':
-      $( '#restoreDialogForm .deviceFields' ).show();
+    case 'Location':
+      initLocationFields();
       break;
   }
 
@@ -42,6 +42,18 @@ function initRestoreDialog( sRestoreId )
   $( '.form-group>label', '#restoreDialogForm' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
+
+function initLocationFields()
+{
+  $( '#restoreFields' ).html( 'Location' );
+}
+
+function initDeviceFields()
+{
+  $( '#restoreFields' ).html( 'Device' );
+}
+
+
 
 function initRestoreDialogFocus()
 {
