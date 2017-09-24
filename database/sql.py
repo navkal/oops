@@ -1066,14 +1066,19 @@ class removeDevice:
         target_table = facility + '_Device'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
+        parent_id = row[2]
+        description = row[3]
+        name = row[5]
 
-        # Format descriptive text
-        descr_text = 'foo.moo.goo.too.yoo' + ': ' + row[3]
+        # Format descriptive text for recycle bin
+        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
+        circuit = cur.fetchone()[0]
+        recycle_descr = circuit + ', ' + description
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', descr_text, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', recycle_descr, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
@@ -1084,8 +1089,6 @@ class removeDevice:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
 
         # Log activity
-        name = row[5]
-        description = row[3]
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeDevice'], target_table, 'name', name, "Remove device [" + description + "]", facility_id ) )
