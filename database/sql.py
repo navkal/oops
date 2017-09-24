@@ -1066,19 +1066,32 @@ class removeDevice:
         target_table = facility + '_Device'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
+        room_id = row[1]
         parent_id = row[2]
         description = row[3]
         name = row[5]
 
-        # Format descriptive text for recycle bin
+        # Format origin text
         cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
         circuit = cur.fetchone()[0]
-        recycle_descr = circuit + ', ' + description
+
+        if room_id != '':
+            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
+            room_row = cur.fetchone()
+            loc_new = room_row[1]
+            loc_old = room_row[2]
+            loc_descr = room_row[4]
+            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+            where = ' at ' + formatted_location
+        else:
+            where = ''
+
+        origin = "'" + name + "'" + ' on ' + circuit + where
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', recycle_descr, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', origin, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects

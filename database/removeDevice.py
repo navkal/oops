@@ -19,7 +19,7 @@ if __name__ == '__main__':
     try:
         status = sql.removeDevice( args.by, args.id, args.comment, args.enterprise, args.facility )
     except:
-        dict = { 'Error': 'Failed to remove location' }
+        dict = { 'Error': 'Failed to remove device' }
     else:
         dict = status.__dict__
 
