@@ -28,7 +28,7 @@
                 </div>
               </div>
 
-              <div id="restoreFields" hidden >
+              <div id="restoreFields">
 
               </div>
 

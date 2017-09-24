@@ -33,7 +33,6 @@ function initRestoreDialog( sRestoreId )
       break;
   }
 
-
   // Set dialog 'shown' handler
   $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRestoreDialogFocus );
 
@@ -43,14 +42,14 @@ function initRestoreDialog( sRestoreId )
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-function initLocationFields()
-{
-  $( '#restoreFields' ).html( 'Location' );
-}
-
 function initDeviceFields()
 {
   $( '#restoreFields' ).html( 'Device' );
+}
+
+function initLocationFields()
+{
+  $( '#restoreFields' ).html( 'Location' );
 }
 
 
