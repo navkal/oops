@@ -11,10 +11,6 @@ function initRestoreDialog( sRestoreId )
   var sLabel = 'Restore ' + tRow.remove_object_type
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
 
-  // Initialize field labels
-  makeFieldLabels( $( '.form-control,.input-group', '#restoreDialogForm' ) );
-  $( '.form-control', '#restoreDialogForm' ).attr( 'placeholder', '' );
-
   // Initialize common field values
   sTimestamp = formatTimestamp( tRow.timestamp );
   $( '#timestamp' ).val( sTimestamp );
@@ -25,13 +21,17 @@ function initRestoreDialog( sRestoreId )
   switch( tRow.remove_object_type )
   {
     case 'Device':
-      initDeviceFields();
+      initDeviceFields( tRow );
       break;
 
     case 'Location':
-      initLocationFields();
+      initLocationFields( tRow );
       break;
   }
+
+  // Initialize field labels
+  makeFieldLabels( $( '.form-control,.input-group', '#restoreDialogForm' ) );
+  $( '.form-control', '#restoreDialogForm' ).attr( 'placeholder', '' );
 
   // Set dialog 'shown' handler
   $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRestoreDialogFocus );
@@ -42,14 +42,41 @@ function initRestoreDialog( sRestoreId )
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 }
 
-function initDeviceFields()
+function initDeviceFields( tRow )
 {
   $( '#restoreFields' ).html( 'Device' );
 }
 
-function initLocationFields()
+function initLocationFields( tRow )
 {
-  $( '#restoreFields' ).html( 'Location' );
+  tRow.loc_new = 'foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo foooooooooooo ';
+  tRow.loc_old = 'moooooooooooo';
+  tRow.loc_descr = 'goooooooooooo';
+
+  var sHtml = '';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="loc_new"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="loc_new" value="' + tRow.loc_new + '" readonly >' +
+        '</div>' +
+      '</div>';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="loc_old"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="loc_old" value="' + tRow.loc_old + '" readonly >' +
+        '</div>' +
+      '</div>';
+  sHtml +=
+     '<div class="form-group">' +
+        '<label for="loc_descr"></label>' +
+        '<div>' +
+          '<input type="text" class="form-control" id="loc_descr" value="' + tRow.loc_descr + '" readonly >' +
+        '</div>' +
+      '</div>';
+
+  $( '#restoreFields' ).html( sHtml );
 }
 
 
