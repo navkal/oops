@@ -56,13 +56,6 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="location_digest"></label>' +
-      '<div>' +
-        '<input type="text" class="form-control" id="location_digest" value="' + tFields.location_digest + '" readonly >' +
-      '</div>' +
-    '</div>';
-  sHtml +=
-    '<div class="form-group">' +
       '<label for="restore_circuit_id"></label>' +
       '<div>' +
         '<select id="restore_circuit_id" class="form-control" style="width: 100%" ></select>' +
@@ -70,9 +63,9 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="restore_location_id">Restore Location</label>' +
+      '<label for="loc_new">Restore Location</label>' +
       '<div>' +
-        '<select id="restore_location_id" class="form-control" style="width: 100%" ></select>' +
+        '<select id="loc_new" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
 
@@ -136,13 +129,13 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
     var tLoc = aLocations[iLoc];
     sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
   }
-  $( '#restore_location_id' ).html( sHtmlLocation );
-  $( '#restore_location_id' ).val( g_tRow.fields.restore_location_id );
+  $( '#loc_new' ).html( sHtmlLocation );
+  $( '#loc_new' ).val( g_tRow.fields.loc_new );
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
   $( '#restore_circuit_id' ).select2( { placeholder: 'Circuit' } );
-  $( '#restore_location_id' ).select2( { placeholder: 'Location' } );
+  $( '#loc_new' ).select2( { placeholder: 'Location' } );
 
   finishInit();
 }
@@ -200,7 +193,7 @@ function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
   allowSelect2SelectText( 'restore_circuit_id' );
-  allowSelect2SelectText( 'restore_location_id' );
+  allowSelect2SelectText( 'loc_new' );
 
   // Set handler to focus on select2 object after user sets value
   setSelect2CloseHandler();

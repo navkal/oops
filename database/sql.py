@@ -484,14 +484,7 @@ class sortableTable:
                     else:
                         source_path = ''
 
-                    cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-                    room = cur.fetchone()
-                    if room:
-                        location_digest = dbCommon.format_location( room[1], room[2], room[4] )
-                    else:
-                        location_digest = ''
-
-                    fields = { 'name': name, 'source_path': source_path, 'location_digest': location_digest, 'restore_circuit_id': parent_id, 'restore_location_id': room_id }
+                    fields = { 'name': name, 'source_path': source_path, 'restore_circuit_id': parent_id, 'loc_new': room_id }
 
                 elif remove_object_type == 'Location':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))

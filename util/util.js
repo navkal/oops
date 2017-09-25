@@ -174,13 +174,6 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  location_digest:
-  {
-    label: "Location",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    displayIndex: displayIndex ++
-  },
   loc_new:
   {
     label: "Location",
@@ -449,13 +442,6 @@ var g_tPropertyRules =
   restore_circuit_id:
   {
     label: "Restore Circuit",
-    showInPropertiesWindow: false,
-    showInSortableTable: false,
-    displayIndex: displayIndex ++
-  },
-  restore_location:
-  {
-    label: "Restore Location",
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++
