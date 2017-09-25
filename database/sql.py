@@ -477,13 +477,6 @@ class sortableTable:
                     parent_id = device_row[2]
                     name = device_row[5]
 
-                    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-                    parent = cur.fetchone()
-                    if parent:
-                        source_path = parent[0]
-                    else:
-                        source_path = ''
-
                     fields = { 'name': name, 'restore_circuit_id': parent_id, 'loc_new': room_id }
 
                 elif remove_object_type == 'Location':
