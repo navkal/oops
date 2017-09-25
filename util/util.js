@@ -446,7 +446,7 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  restore_circuit:
+  restore_circuit_id:
   {
     label: "Restore Circuit",
     showInPropertiesWindow: false,

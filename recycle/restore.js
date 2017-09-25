@@ -1,6 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
 var g_sRestoreId = null;
+var g_tRow = null;
 var g_tDeviceDropdowns = null;
 
 
@@ -13,25 +14,25 @@ function initRestoreDialog( sRestoreId )
 
   // Initialize dialog box labels
   g_sRestoreId = sRestoreId;
-  var tRow = findSortableTableRow( g_sRestoreId );
-  var sLabel = 'Restore ' + tRow.remove_object_type
+  g_tRow = findSortableTableRow( g_sRestoreId );
+  var sLabel = 'Restore ' + g_tRow.remove_object_type
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
 
   // Initialize common field values
-  sTimestamp = formatTimestamp( tRow.timestamp );
+  sTimestamp = formatTimestamp( g_tRow.timestamp );
   $( '#timestamp' ).val( sTimestamp );
-  $( '#remove_comment' ).val( tRow.remove_comment );
+  $( '#remove_comment' ).val( g_tRow.remove_comment );
 
   // Show fields applicable to the object type
   $( '#restoreFields' ).html( '' );
-  switch( tRow.remove_object_type )
+  switch( g_tRow.remove_object_type )
   {
     case 'Device':
-      initDeviceFields( tRow.fields );
+      initDeviceFields( g_tRow.fields );
       break;
 
     case 'Location':
-      initLocationFields( tRow.fields );
+      initLocationFields( g_tRow.fields );
       break;
   }
 }
@@ -62,16 +63,16 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="restore_circuit"></label>' +
+      '<label for="restore_circuit_id"></label>' +
       '<div>' +
-        '<select id="restore_circuit" class="form-control" style="width: 100%" ></select>' +
+        '<select id="restore_circuit_id" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="restore_location">Restore Location</label>' +
+      '<label for="restore_location_id">Restore Location</label>' +
       '<div>' +
-        '<select id="restore_location" class="form-control" style="width: 100%" ></select>' +
+        '<select id="restore_location_id" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
 
@@ -125,7 +126,8 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
     var tSource = aSources[iSource];
     sHtmlSourcePath += '<option value="' + tSource.id + '" >' + tSource.text + '</option>';
   }
-  $( '#restore_circuit' ).html( sHtmlSourcePath );
+  $( '#restore_circuit_id' ).html( sHtmlSourcePath );
+  $( '#restore_circuit_id' ).val( g_tRow.fields.restore_circuit_id );
 
   var sHtmlLocation = '<option value="0" >[none]</option>';
   var aLocations = g_tDeviceDropdowns.locations;
@@ -134,12 +136,13 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
     var tLoc = aLocations[iLoc];
     sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
   }
-  $( '#restore_location' ).html( sHtmlLocation );
+  $( '#restore_location_id' ).html( sHtmlLocation );
+  $( '#restore_location_id' ).val( g_tRow.fields.restore_location_id );
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#restore_circuit' ).select2( { placeholder: 'Circuit' } );
-  $( '#restore_location' ).select2( { placeholder: 'Location' } );
+  $( '#restore_circuit_id' ).select2( { placeholder: 'Circuit' } );
+  $( '#restore_location_id' ).select2( { placeholder: 'Location' } );
 
   finishInit();
 }
@@ -196,8 +199,8 @@ function finishInit()
 function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
-  allowSelect2SelectText( 'restore_circuit' );
-  allowSelect2SelectText( 'restore_location' );
+  allowSelect2SelectText( 'restore_circuit_id' );
+  allowSelect2SelectText( 'restore_location_id' );
 
   // Set handler to focus on select2 object after user sets value
   setSelect2CloseHandler();
