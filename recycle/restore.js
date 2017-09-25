@@ -233,26 +233,52 @@ function onChangeControl( tEvent )
 
 function onSubmitRestoreDialog()
 {
-  // Post request to server
-  var tPostData = new FormData();
-  tPostData.append( "id", g_sRestoreId );
+  if ( validateInput() )
+  {
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( "id", g_sRestoreId );
 
-  $.ajax(
-    'recycle/restoreObject.php',
-    {
-      type: 'POST',
-      processData: false,
-      contentType: false,
-      dataType : 'json',
-      data: tPostData
-    }
-  )
-  .done( restoreDone )
-  .fail( handleAjaxError );
+    $.ajax(
+      'recycle/restoreObject.php',
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( restoreDone )
+    .fail( handleAjaxError );
+  }
+}
+
+function validateInput()
+{
+  clearMessages();
+  var aMessages = [];
+
+  switch( g_tRow.remove_object_type )
+  {
+    case 'Device':
+      if ( $( '#source_path' ).val() == null )
+      {
+        aMessages.push( 'Circuit is required' );
+        $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+      break;
+
+    case 'Location':
+      // Do nothing
+      break;
+  }
+
+  showMessages( aMessages );
+  return ( aMessages.length == 0 );
 }
 
 function restoreDone( tRsp, sStatus, tJqXhr )
 {
-  alert( JSON.stringify( tRsp ) );
   location.reload();
 }
