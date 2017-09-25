@@ -635,3 +635,43 @@ function clearWaitCursor()
   $( '#spinner' ).css( 'display', 'none' );
   $( '#content' ).css( 'display', 'block' );
 }
+
+
+// -> -> -> Editing -> -> ->
+
+function resetChangeHandler()
+{
+  $( 'input,select,textarea' ).off( 'change' );
+  $( 'input,select,textarea' ).on( 'change', onChangeControl );
+}
+
+// Make labels for Add and Update input forms
+function makeFieldLabels( aFields )
+{
+  for ( var iField = 0; iField < aFields.length; iField ++ )
+  {
+    var tField = aFields[iField];
+    var sKey = tField.id;
+    var tRule = g_tPropertyRules[sKey];
+
+    // If there is a rule for this element, apply it
+    if ( tRule )
+    {
+      var sLabel = tRule.label;
+      $( 'label[for=' + sKey + ']' ).text( sLabel );
+
+      switch( tField.tagName.toLowerCase() )
+      {
+        case 'input':
+        case 'textarea':
+          $( tField ).attr( 'placeholder', sLabel );
+          break;
+
+        case 'select':
+          // $( tField ).attr( 'title', sLabel );
+          break;
+      }
+    }
+  }
+}
+// <- <- <- Editing <- <- <-
