@@ -4,7 +4,7 @@
 
 <!-- Confirm Remove dialog -->
 <div class="modal fade" id="removeDialog" tabindex="-1" role="dialog" aria-labelledby="removeObjectLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></span></button>

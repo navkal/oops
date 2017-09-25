@@ -18,13 +18,13 @@
               <div class="form-group">
                 <label for="timestamp"></label>
                 <div>
-                  <input type="text" class="form-control" id="timestamp" readonly >
+                  <input type="text" class="form-control" id="timestamp" disabled >
                 </div>
               </div>
               <div class="form-group">
                 <label for="remove_comment"></label>
                 <div>
-                  <textarea id="remove_comment" class="form-control" readonly ></textarea>
+                  <textarea id="remove_comment" class="form-control" disabled ></textarea>
                 </div>
               </div>
 
