@@ -446,6 +446,20 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
+  restore_circuit:
+  {
+    label: "Restore Circuit",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
+  restore_location:
+  {
+    label: "Restore Location",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
   parent_path:
   {
     label: "Parent",
