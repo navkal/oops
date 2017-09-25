@@ -56,7 +56,7 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="room_id">Restore Location</label>' +
+      '<label for="room_id"></label>' +
       '<div>' +
         '<select id="room_id" class="form-control" style="width: 100%" ></select>' +
       '</div>' +

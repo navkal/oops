@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="room_id">Location</label>
+                <label for="room_id"></label>
                 <div id="room_id_container" >
                 </div>
               </div>
