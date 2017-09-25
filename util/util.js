@@ -439,13 +439,6 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  restore_circuit_id:
-  {
-    label: "Restore Circuit",
-    showInPropertiesWindow: false,
-    showInSortableTable: false,
-    displayIndex: displayIndex ++
-  },
   parent_path:
   {
     label: "Parent",

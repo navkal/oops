@@ -49,9 +49,9 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="restore_circuit_id"></label>' +
+      '<label for="source_path"></label>' +
       '<div>' +
-        '<select id="restore_circuit_id" class="form-control" style="width: 100%" ></select>' +
+        '<select id="source_path" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -112,8 +112,8 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
     var tSource = aSources[iSource];
     sHtmlSourcePath += '<option value="' + tSource.id + '" >' + tSource.text + '</option>';
   }
-  $( '#restore_circuit_id' ).html( sHtmlSourcePath );
-  $( '#restore_circuit_id' ).val( g_tRow.fields.restore_circuit_id );
+  $( '#source_path' ).html( sHtmlSourcePath );
+  $( '#source_path' ).val( g_tRow.fields.source_path );
 
   var sHtmlLocation = '<option value="0" >[none]</option>';
   var aLocations = g_tDeviceDropdowns.locations;
@@ -127,7 +127,7 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#restore_circuit_id' ).select2( { placeholder: 'Circuit' } );
+  $( '#source_path' ).select2( { placeholder: 'Circuit' } );
   $( '#loc_new' ).select2( { placeholder: 'Location' } );
 
   finishInit();
@@ -185,7 +185,7 @@ function finishInit()
 function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
-  allowSelect2SelectText( 'restore_circuit_id' );
+  allowSelect2SelectText( 'source_path' );
   allowSelect2SelectText( 'loc_new' );
 
   // Set handler to focus on select2 object after user sets value
