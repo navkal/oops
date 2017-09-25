@@ -16,7 +16,7 @@
             <form id="removeDialogForm" onsubmit="removeObject(event); return false;" >
               <div class="form-group" id="removeWhatDiv" >
                 <label id="removeWhatLabel" for="removeWhat"></label>
-                <input type="text" class="form-control" id="removeWhat" readonly >
+                <input type="text" class="form-control" id="removeWhat" disabled >
               </div>
               <div class="form-group" id="removeCommentDiv" hidden >
                 <label for="remove_comment"></label>

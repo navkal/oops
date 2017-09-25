@@ -44,7 +44,7 @@ function initDeviceFields( tFields )
     '<div class="form-group">' +
       '<label for="name"></label>' +
       '<div>' +
-        '<input type="text" class="form-control" id="name" value="' + tFields.name + '" readonly >' +
+        '<input type="text" class="form-control" id="name" value="' + tFields.name + '" disabled >' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -141,21 +141,21 @@ function initLocationFields( tFields )
      '<div class="form-group">' +
         '<label for="loc_new"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_new" value="' + tFields.loc_new + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_new" value="' + tFields.loc_new + '" disabled >' +
         '</div>' +
       '</div>';
   sHtml +=
      '<div class="form-group">' +
         '<label for="loc_old"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_old" value="' + tFields.loc_old + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_old" value="' + tFields.loc_old + '" disabled >' +
         '</div>' +
       '</div>';
   sHtml +=
      '<div class="form-group">' +
         '<label for="loc_descr"></label>' +
         '<div>' +
-          '<input type="text" class="form-control" id="loc_descr" value="' + tFields.loc_descr + '" readonly >' +
+          '<input type="text" class="form-control" id="loc_descr" value="' + tFields.loc_descr + '" disabled >' +
         '</div>' +
       '</div>';
 
@@ -192,7 +192,7 @@ function onShownRestoreDialog()
   setSelect2CloseHandler();
 
   // Focus on first editable field or restore button
-  var tEditable = $( '#restoreDialogForm .form-control:not([readonly])' );
+  var tEditable = $( '#restoreDialogForm .form-control:not([disabled])' );
 
   if ( tEditable.length > 0 )
   {
