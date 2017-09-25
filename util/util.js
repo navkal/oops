@@ -614,29 +614,6 @@ function childWindowsClose( aWindows )
 // <- <- <- Error messages <- <- <-
 
 
-
-function handleAjaxError( tJqXhr, sStatus, sErrorThrown )
-{
-  clearWaitCursor();
-  console.log( "=> ERROR=" + sStatus + " " + sErrorThrown );
-  console.log( "=> HEADER=" + JSON.stringify( tJqXhr ) );
-}
-
-function setWaitCursor()
-{
-  $( '#view' ).css( 'cursor', 'wait' );
-  $( '#spinner' ).css( 'display', 'block' );
-  $( '#content' ).css( 'display', 'none' );
-}
-
-function clearWaitCursor()
-{
-  $( '#view' ).css( 'cursor', 'default' );
-  $( '#spinner' ).css( 'display', 'none' );
-  $( '#content' ).css( 'display', 'block' );
-}
-
-
 // -> -> -> Editing -> -> ->
 
 function resetChangeHandler()
@@ -674,4 +651,28 @@ function makeFieldLabels( aFields )
     }
   }
 }
+
 // <- <- <- Editing <- <- <-
+
+
+function handleAjaxError( tJqXhr, sStatus, sErrorThrown )
+{
+  clearWaitCursor();
+  console.log( "=> ERROR=" + sStatus + " " + sErrorThrown );
+  console.log( "=> HEADER=" + JSON.stringify( tJqXhr ) );
+}
+
+function setWaitCursor()
+{
+  $( '#view' ).css( 'cursor', 'wait' );
+  $( '#spinner' ).css( 'display', 'block' );
+  $( '#content' ).css( 'display', 'none' );
+}
+
+function clearWaitCursor()
+{
+  $( '#view' ).css( 'cursor', 'default' );
+  $( '#spinner' ).css( 'display', 'none' );
+  $( '#content' ).css( 'display', 'block' );
+}
+
