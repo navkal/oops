@@ -30,7 +30,7 @@ function customizeRemoveDialog( tRow )
   var sHtml =
     '<div class="form-group" id="circuitDiv" >' +
       '<label for="circuit">Circuit</label>' +
-      '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" disabled >' +
+      '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" readonly >' +
     '</div>';
 
   $( '#removeDialogForm' ).append( sHtml );
