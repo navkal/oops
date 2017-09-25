@@ -484,7 +484,7 @@ class sortableTable:
                     else:
                         source_path = ''
 
-                    fields = { 'name': name, 'source_path': source_path, 'restore_circuit_id': parent_id, 'loc_new': room_id }
+                    fields = { 'name': name, 'restore_circuit_id': parent_id, 'loc_new': room_id }
 
                 elif remove_object_type == 'Location':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))

@@ -49,13 +49,6 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="source_path"></label>' +
-      '<div>' +
-        '<input type="text" class="form-control" id="source_path" value="' + tFields.source_path + '" readonly >' +
-      '</div>' +
-    '</div>';
-  sHtml +=
-    '<div class="form-group">' +
       '<label for="restore_circuit_id"></label>' +
       '<div>' +
         '<select id="restore_circuit_id" class="form-control" style="width: 100%" ></select>' +
