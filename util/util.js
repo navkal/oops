@@ -2,6 +2,11 @@
 
 // Map of property rules, initialized in display order
 var displayIndex = 0;
+var g_tPropertySortContexts =
+{
+  propertiesWindow: 'propertiesWindow',
+  sortableTable: 'sortableTable'
+};
 var g_sPropertySortContext = null;
 var g_tPropertyRules =
 {
@@ -486,7 +491,13 @@ function comparePropertyIndex( sLabel1, sLabel2 )
   for ( var iKey in aKeys )
   {
     var sKey = aKeys[iKey];
-    if ( ( g_tPropertyRules[sKey].showInPropertiesWindow && g_sPropertySortContext == 'propertiesWindow' ) || ( g_tPropertyRules[sKey].showInSortableTable && g_sPropertySortContext == 'sortableTable' ) )
+
+    var bShowInCurrentContext =
+      ( g_tPropertyRules[sKey].showInPropertiesWindow && g_sPropertySortContext == g_tPropertySortContexts.propertiesWindow )
+      ||
+      ( g_tPropertyRules[sKey].showInSortableTable && g_sPropertySortContext == g_tPropertySortContexts.sortableTable );
+
+    if ( bShowInCurrentContext  )
     {
       var sLabel = g_tPropertyRules[sKey].label;
       if ( sLabel1 == sLabel )

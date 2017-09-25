@@ -120,7 +120,7 @@ function showProperties()
   }
 
   // Build layout of property display
-  g_sPropertySortContext = 'propertiesWindow';
+  g_sPropertySortContext = g_tPropertySortContexts.propertiesWindow;
   aKeys = Object.keys( tDisplayProps ).sort( comparePropertyIndex );
   var sTbody = "";
   for ( var i = 0; i < aKeys.length; i++ )

@@ -163,7 +163,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   $( '#sortableTableSubtitle' ).text( sSubtitle );
 
   // Format table head/foot HTML, and construct sorter array
-  g_sPropertySortContext = 'sortableTable';
+  g_sPropertySortContext = g_tPropertySortContexts.sortableTable;
   var aSortedHeaders = Object.keys( tColumnMap ).sort( comparePropertyIndex );
   var sHtml = '';
   var aHeaders = [];
