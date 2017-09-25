@@ -2,6 +2,7 @@
 
 // Map of property rules, initialized in display order
 var displayIndex = 0;
+var g_sPropertySortContext = null;
 var g_tPropertyRules =
 {
   error:
@@ -176,14 +177,14 @@ var g_tPropertyRules =
   },
   loc_new:
   {
-    label: "Location",
+    label: "Current Location",
     showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   loc_old:
   {
-    label: "Old Location",
+    label: "Previous Location",
     showInPropertiesWindow: true,
     showInSortableTable: true,
     columnType: 'text', // Controls text-align
@@ -469,7 +470,7 @@ var g_tPropertyRules =
   },
   room_id:
   {
-    label: "Room ID",
+    label: "Location",
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++
@@ -485,14 +486,17 @@ function comparePropertyIndex( sLabel1, sLabel2 )
   for ( var iKey in aKeys )
   {
     var sKey = aKeys[iKey];
-    var sLabel = g_tPropertyRules[sKey].label;
-    if ( sLabel1 == sLabel )
+    if ( ( g_tPropertyRules[sKey].showInPropertiesWindow && g_sPropertySortContext == 'propertiesWindow' ) || ( g_tPropertyRules[sKey].showInSortableTable && g_sPropertySortContext == 'sortableTable' ) )
     {
-      idx1 = g_tPropertyRules[sKey].displayIndex;
-    }
-    else if ( sLabel2 == sLabel )
-    {
-      idx2 = g_tPropertyRules[sKey].displayIndex;
+      var sLabel = g_tPropertyRules[sKey].label;
+      if ( sLabel1 == sLabel )
+      {
+        idx1 = g_tPropertyRules[sKey].displayIndex;
+      }
+      else if ( sLabel2 == sLabel )
+      {
+        idx2 = g_tPropertyRules[sKey].displayIndex;
+      }
     }
   }
 

@@ -28,8 +28,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="loc_new">Location</label>
-                <div id="loc_new_container" >
+                <label for="room_id"></label>
+                <div id="room_id_container" >
                 </div>
               </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
@@ -68,7 +68,7 @@
     showSpinner();
 
     $( '#source_path_container' ).html( '<select id="source_path" class="form-control" style="width: 100%" ></select>' );
-    $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
+    $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
     if ( ! g_bGotDropdowns )
     {
@@ -131,7 +131,7 @@
     }
 
     $( '#source_path' ).html( sHtmlSourcePath );
-    $( '#loc_new' ).html( sHtmlLocation );
+    $( '#room_id' ).html( sHtmlLocation );
 
     loadEditDialog()
   }
@@ -154,12 +154,12 @@
     // Initialize input fields
     $( '#source_path' ).val( g_sSourceId );
     $( '#name' ).val( g_sName );
-    $( '#loc_new' ).val( g_sLocationId );
+    $( '#room_id' ).val( g_sLocationId );
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
     $( '#source_path' ).select2( { placeholder: 'Circuit' } );
-    $( '#loc_new' ).select2( { placeholder: 'Location' } );
+    $( '#room_id' ).select2( { placeholder: 'Location' } );
 
     // Label dialog and submit button
     $( '#editDialogTitle' ).text( g_sSubmitLabel );
@@ -197,7 +197,7 @@
 
     // Allow user to select text in select2 rendering
     allowSelect2SelectText( 'source_path' );
-    allowSelect2SelectText( 'loc_new' );
+    allowSelect2SelectText( 'room_id' );
 
     // Set handler to focus on select2 object after user sets value
     setSelect2CloseHandler();
@@ -239,10 +239,10 @@
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
       tPostData.append( 'name', $( '#name' ).val() );
 
-      var sLocVal = $( '#loc_new' ).val();
+      var sLocVal = $( '#room_id' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
-      var sLoc = getSelect2Text( $( '#loc_new' ) );
+      var sLoc = getSelect2Text( $( '#room_id' ) );
       tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
 
       // Post request to server

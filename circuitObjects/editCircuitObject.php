@@ -41,8 +41,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="loc_new">Location</label>
-                <div id="loc_new_container" >
+                <label for="room_id">Location</label>
+                <div id="room_id_container" >
                 </div>
               </div>
               <div id="description" class="form-group">
@@ -104,7 +104,7 @@
 
     $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
     $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
-    $( '#loc_new_container' ).html( '<select id="loc_new" class="form-control" style="width: 100%" ></select>' );
+    $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
     if ( ! g_tDropdowns )
     {
@@ -170,7 +170,7 @@
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
     $( '#voltage' ).val( g_sVoltageId );
-    $( '#loc_new' ).val( g_sLocationId );
+    $( '#room_id' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
     $( '#panel_photo_file,#panel_photo_filename' ).val( '' );
 
@@ -178,7 +178,7 @@
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
     $( '#parent_path' ).select2( { placeholder: 'Parent' } );
     $( '#voltage' ).select2( { placeholder: 'Voltage' } );
-    $( '#loc_new' ).select2( { placeholder: 'Location' } );
+    $( '#room_id' ).select2( { placeholder: 'Location' } );
 
     // Optionally show control for uploading Panel picture
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
@@ -249,7 +249,7 @@
       sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
     }
 
-    $( '#loc_new' ).html( sHtmlLocation );
+    $( '#room_id' ).html( sHtmlLocation );
   }
 
   function makeParentDropdown( sVoltageId )
@@ -296,7 +296,7 @@
     // Allow user to select text in select2 rendering
     allowSelect2SelectText( 'parent_path' );
     allowSelect2SelectText( 'voltage' );
-    allowSelect2SelectText( 'loc_new' );
+    allowSelect2SelectText( 'room_id' );
 
     // Set handler to focus on select2 object after user sets value
     setSelect2CloseHandler();
@@ -394,7 +394,7 @@
       tPostData.append( 'tail', sNumber + sHyphen + sName );
 
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
-      tPostData.append( 'room_id', $( '#loc_new' ).val() );
+      tPostData.append( 'room_id', $( '#room_id' ).val() );
       tPostData.append( 'description', $( '#description textarea' ).val() );
 
       if ( $( '#panel_photo_filename' ).val() )
@@ -483,10 +483,10 @@
       $( '#voltage_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
-    if ( $( '#loc_new' ).val() == null )
+    if ( $( '#room_id' ).val() == null )
     {
       aMessages.push( 'Location is required' );
-      $( '#loc_new_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#room_id_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );

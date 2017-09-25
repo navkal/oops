@@ -56,9 +56,9 @@ function initDeviceFields( tFields )
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="loc_new">Restore Location</label>' +
+      '<label for="room_id">Restore Location</label>' +
       '<div>' +
-        '<select id="loc_new" class="form-control" style="width: 100%" ></select>' +
+        '<select id="room_id" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
 
@@ -122,13 +122,13 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
     var tLoc = aLocations[iLoc];
     sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
   }
-  $( '#loc_new' ).html( sHtmlLocation );
-  $( '#loc_new' ).val( g_tRow.fields.loc_new );
+  $( '#room_id' ).html( sHtmlLocation );
+  $( '#room_id' ).val( g_tRow.fields.room_id );
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
   $( '#source_path' ).select2( { placeholder: 'Circuit' } );
-  $( '#loc_new' ).select2( { placeholder: 'Location' } );
+  $( '#room_id' ).select2( { placeholder: 'Location' } );
 
   finishInit();
 }
