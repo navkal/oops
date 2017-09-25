@@ -186,7 +186,7 @@ function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
   allowSelect2SelectText( 'source_path' );
-  allowSelect2SelectText( 'loc_new' );
+  allowSelect2SelectText( 'room_id' );
 
   // Set handler to focus on select2 object after user sets value
   setSelect2CloseHandler();
