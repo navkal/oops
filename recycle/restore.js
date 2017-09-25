@@ -191,6 +191,18 @@ function onShownRestoreDialog()
   // Set handler to focus on select2 object after user sets value
   setSelect2CloseHandler();
 
+  // Focus on first editable field or restore button
+  var tEditable = $( '#restoreDialogForm .form-control:not([readonly])' );
+
+  if ( tEditable.length > 0 )
+  {
+    tEditable[0].focus();
+  }
+  else
+  {
+    $( '#restoreDialogFormSubmitProxy' ).focus();
+  }
+
   hideSpinner();
 }
 
@@ -216,19 +228,6 @@ function onChangeControl( tEvent )
 
       allowSelect2SelectText( sId );
     }
-  }
-}
-
-
-function initRestoreDialogFocus()
-{
-  // Focus on path field or restore button
-  if ( false )
-  {
-  }
-  else
-  {
-    $( '#restoreFormSubmitProxy' ).focus();
   }
 }
 
