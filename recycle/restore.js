@@ -237,7 +237,22 @@ function onSubmitRestoreDialog()
   {
     // Post request to server
     var tPostData = new FormData();
-    tPostData.append( "id", g_sRestoreId );
+    tPostData.append( 'id', g_sRestoreId );
+
+    switch( g_tRow.remove_object_type )
+    {
+      case 'Device':
+        tPostData.append( 'parent_id', $( '#source_path' ).val() );
+        var sLocVal = $( '#room_id' ).val();
+        tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
+        var sLoc = getSelect2Text( $( '#room_id' ) );
+        tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
+        break;
+
+      case 'Location':
+        // Do nothing
+        break;
+    }
 
     $.ajax(
       'recycle/restoreObject.php',

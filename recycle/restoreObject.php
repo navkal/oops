@@ -6,12 +6,19 @@
 
   error_log( "==> post=" . print_r( $_POST, true ) );
 
-  // Get user attributes
+  // Get posted values
   $sId = quote( $_POST['id'] );
+  $sParentId = quote( isset( $_POST['parent_id'] ) ? $_POST['parent_id'] : '' );
+  $sRoomId = quote( isset( $_POST['room_id'] ) ? $_POST['room_id'] : '' );
+  $sDescription = quote( isset( $_POST['description'] ) ? $_POST['description'] : '' );
+
 
   // Restore object
   $command = quote( getenv( "PYTHON" ) ) . " ../database/restoreObject.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
+    . ' -p ' . $sParentId
+    . ' -r ' . $sRoomId
+    . ' -d ' . $sDescription
     . $g_sContext;
 
   error_log( "==> command=" . $command );

@@ -1350,7 +1350,7 @@ class imageFilename:
 
 
 class restoreObject:
-    def __init__(self, by, id, enterprise, facility):
+    def __init__(self, by, id, parent_id, room_id, description, enterprise, facility):
 
         open_database( enterprise )
 
