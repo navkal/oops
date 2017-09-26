@@ -1368,7 +1368,7 @@ class restoreObject:
             # ????? Then what ?????
 
         elif restore_object_type == 'Device':
-            self.restore_device( by, id, facility )
+            self.restore_device( by, id, parent_id, room_id, description, facility )
         elif restore_object_type == 'Location':
             self.restore_location( by, id, facility )
 
@@ -1380,7 +1380,7 @@ class restoreObject:
         self.success = True
 
 
-    def restore_device( self, by, id, facility ):
+    def restore_device( self, by, id, parent_id, room_id, description, facility ):
 
         # Determine source and target tables
         source_table = facility + '_Removed_Device'
