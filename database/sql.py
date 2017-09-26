@@ -470,6 +470,8 @@ class sortableTable:
                 remove_object_type = obj[2]
                 remove_object_id = obj[5]
 
+                if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
+                    fields = {}
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
                     device_row = cur.fetchone()
@@ -1090,6 +1092,51 @@ class updateLocation:
 class removeCircuitObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
+
+        # Get row to be deleted
+        target_table = facility + '_CircuitObject'
+        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+        row = cur.fetchone()
+        room_id = row[1]
+        path = row[2]
+        zone = row[3]
+        voltage_id = row[4]
+        object_type = row[5]
+        description = row[6]
+        parent_id = row[7]
+        tail = row[8]
+        search_result = row[9]
+        source = row[10]
+
+        # Format origin text
+        if room_id != '':
+            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
+            room_row = cur.fetchone()
+            loc_new = room_row[1]
+            loc_old = room_row[2]
+            loc_descr = room_row[4]
+            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
+            where = ' <span class="glyphicon glyphicon-map-marker"></span>' + formatted_location
+        else:
+            where = ''
+
+        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
+        source = cur.fetchone()[0]
+        origin = tail + ' <span class="glyphicon glyphicon-arrow-up"></span>' + source + where
+
+        # Create entry in Recycle Bin
+        timestamp = time.time()
+        recycle_table = facility + '_Recycle'
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, object_type, origin, comment, id ) )
+        remove_id = cur.lastrowid
+
+        # Insert target object in table of removed objects
+        removed_table = facility + '_Removed_CircuitObject'
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ''',
+            ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) )
+
+
+        conn.commit()
         self.stub = True
 
 
