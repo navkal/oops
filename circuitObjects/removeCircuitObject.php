@@ -10,7 +10,7 @@
   $sComment = quote( $_POST['comment'] );
 
   // Remove object
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeDevice.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/removeCircuitObject.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
     . ' -c ' . $sComment
     . $g_sContext;
