@@ -728,12 +728,15 @@ class sortableTableRow:
                 self.update_panel = self.id
                 if self.parent_id:
                     self.remove_panel = self.id
+                    self.remove_what = 'path'
                 else:
                     # Prohibit removal of root panel
                     self.remove_panel = ''
+                    self.remove_what = ''
             elif self.object_type == 'Transformer':
                 self.update_transformer = self.id
                 self.remove_transformer = self.id
+                self.remove_what = 'path'
 
 
 class saveNotes:
