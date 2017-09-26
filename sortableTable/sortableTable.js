@@ -334,7 +334,7 @@ function onSortableTableReady( tEvent )
   // Clear the wait cursor
   clearWaitCursor();
 
-  console.log( '==> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
+  console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
 
 function renumberIndex()

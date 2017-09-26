@@ -100,8 +100,6 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
   if ( tRsp )
   {
     g_tDeviceDropdowns = tRsp;
-    console.log( '==> Source count: ' + g_tDeviceDropdowns.sources.length );
-    console.log( '==> Location count: ' + g_tDeviceDropdowns.locations.length );
   }
 
   // Generate the dropdowns
