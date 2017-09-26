@@ -574,8 +574,6 @@ class sortableTable:
                     FROM ''' + facility + '''_Device
                         LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)''')
 
-
-
             objects = cur.fetchall()
 
             # Add other fields to each row
@@ -724,10 +722,17 @@ class sortableTableRow:
         if user_role == 'Technician':
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
+                self.remove_circuit = self.id
             elif self.object_type == 'Panel':
                 self.update_panel = self.id
+                if self.parent_id:
+                    self.remove_panel = self.id
+                else:
+                    # Prohibit removal of root panel
+                    self.remove_panel = ''
             elif self.object_type == 'Transformer':
                 self.update_transformer = self.id
+                self.remove_transformer = self.id
 
 
 class saveNotes:
