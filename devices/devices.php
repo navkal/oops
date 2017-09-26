@@ -20,34 +20,26 @@
   $( document ).ready( getSortableTable );
 
 
-
-function customizeRemoveDialog( tRow )
-{
-  $( '#circuitDiv' ).remove();
-  $( '#locationDiv' ).remove();
-
-  // Show circuit
-  var sHtml =
-    '<div class="form-group" id="circuitDiv" >' +
-      '<label for="circuit">Circuit</label>' +
-      '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" disabled >' +
-    '</div>';
-
-  $( '#removeDialogForm' ).append( sHtml );
-  $( '#circuitDiv' ).insertBefore( '#removeWhatDiv' );
-
-  // Optionally show location
-  if ( tRow.formatted_location )
+  function customizeRemoveDialog( tRow )
   {
+    // Show circuit
+    $( '#circuitDiv' ).remove();
+    var sHtml =
+      '<div class="form-group" id="circuitDiv" >' +
+        '<label for="circuit">Circuit</label>' +
+        '<input type="text" class="form-control" id="circuit" value="' + tRow.source_path + '" disabled >' +
+      '</div>';
+    $( '#removeDialogForm' ).append( sHtml );
+    $( '#circuitDiv' ).insertBefore( '#removeWhatDiv' );
+
+    // Show location
+    $( '#locationDiv' ).remove();
     sHtml =
       '<div class="form-group" id="locationDiv" >' +
         '<label for="location">Location</label>' +
         '<input type="text" class="form-control" id="location" value="' + tRow.formatted_location + '" disabled >' +
       '</div>';
-
     $( '#removeDialogForm' ).append( sHtml );
     $( '#locationDiv' ).insertBefore( '#removeCommentDiv' );
   }
-}
-
 </script>

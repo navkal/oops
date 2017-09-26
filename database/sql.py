@@ -687,6 +687,7 @@ class sortableTableRow:
         self.loc_old = room[2]
         self.loc_type = room[3]
         self.loc_descr = room[4]
+        self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
         # Add image filename
         filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
