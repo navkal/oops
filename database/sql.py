@@ -723,6 +723,7 @@ class sortableTableRow:
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
                 self.remove_circuit = self.id
+                self.remove_what = 'path'
             elif self.object_type == 'Panel':
                 self.update_panel = self.id
                 if self.parent_id:
