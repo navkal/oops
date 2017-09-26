@@ -1386,7 +1386,30 @@ class restoreObject:
         source_table = facility + '_Removed_Device'
         target_table = facility + '_Device'
 
-        # ????? Then what ?????
+        # Get fields from source table
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        source_row = cur.fetchone()
+        source_row = list( source_row )
+
+        # Overwrite fields with supplied values
+        source_row[1] = room_id
+        source_row[2] = parent_id
+        source_row[3] = description
+
+        # Restore object into target table
+        restore_row = source_row
+        restore_row.pop()
+        restore_row = tuple( restore_row )
+        cur.execute( 'INSERT INTO ' + target_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_row ) )
+
+        # Clean up removed object
+        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+
+        # Log activity
+        name = restore_row[5]
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreDevice'], target_table, 'name', name, "Restore device [" + description + "]", facility_id ) )
 
 
     def restore_location( self, by, id, facility ):
@@ -1395,18 +1418,16 @@ class restoreObject:
         source_table = facility + '_Removed_Room'
         target_table = facility + '_Room'
 
-        # Get fields from source table
+        # Get fields from source table into list
         cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
         source_row = cur.fetchone()
-
-        # Load fields into tuple
-        restore_row = []
-        for element in source_row:
-            restore_row.append( element )
-        restore_row.pop()
+        source_row = list( source_row )
 
         # Restore object into target table
-        cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', tuple( restore_row ) )
+        restore_row = source_row
+        restore_row.pop()
+        restore_row = tuple( restore_row )
+        cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', restore_row )
 
         # Clean up removed object
         cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );

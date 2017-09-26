@@ -19,6 +19,7 @@ dcEventTypes = {
     'addDevice': 'Add Device',
     'updateDevice': 'Update Device',
     'removeDevice': 'Remove Device',
+    'restoreDevice': 'Restore Device',
     'addLocation': 'Add Location',
     'updateLocation': 'Update Location',
     'removeLocation': 'Remove Location',
