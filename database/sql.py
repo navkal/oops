@@ -1086,6 +1086,12 @@ class updateLocation:
         self.success = True
 
 
+class removeCircuitObject:
+    def __init__( self, by, id, comment, enterprise, facility ):
+        open_database( enterprise )
+        self.status = 'THIS IS A STUB.'
+
+
 class removeDevice:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )

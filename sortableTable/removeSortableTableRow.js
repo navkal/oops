@@ -72,5 +72,6 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
+  alert( JSON.stringify( tRsp ) );
   location.reload();
 }

@@ -13,7 +13,7 @@
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
     g_sSortableTableEditWhat = "Circuit";
-    g_sRemoveCodeFolder = 'circuitObjects';
+    g_sRemoveCodeFolder = 'circuits';
     g_bShowRemoveComment = true;
   }
 
