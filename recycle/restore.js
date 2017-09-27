@@ -2,7 +2,14 @@
 
 var g_sRestoreId = null;
 var g_tRow = null;
-var g_tDeviceDropdowns = null;
+
+var g_tDropdowns =
+{
+  Panel: null,
+  Transformer: null,
+  Circuit: null,
+  Device: null
+};
 
 
 function initRestoreDialog( sRestoreId )
@@ -30,27 +37,104 @@ function initRestoreDialog( sRestoreId )
     case 'Panel':
     case 'Transformer':
     case 'Circuit':
-      initPtcFields( g_tRow.fields );
+      initCircuitObjectFields();
       break;
 
     case 'Device':
-      initDeviceFields( g_tRow.fields );
+      initDeviceFields();
       break;
 
     case 'Location':
-      initLocationFields( g_tRow.fields );
+      initLocationFields();
       break;
   }
 }
 
-function initPtcFields( tFields )
+function initCircuitObjectFields()
 {
-  alert( JSON.stringify( tFields ) );
+  var tFields = g_tRow.fields;
+
+  console.log( JSON.stringify( tFields ) );
+
+  var sHtml = '';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="parent_id"></label>' +
+      '<div>' +
+        '<select id="parent_id" class="form-control" style="width: 100%" ></select>' +
+      '</div>' +
+    '</div>';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="number"></label>' +
+      '<div>' +
+        '<input type="text" class="form-control" id="number" value="' + tFields.number + '" disabled >' +
+      '</div>' +
+    '</div>';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="name"></label>' +
+      '<div>' +
+        '<input type="text" class="form-control" id="name" value="' + tFields.name + '" disabled >' +
+      '</div>' +
+    '</div>';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="room_id"></label>' +
+      '<div>' +
+        '<select id="room_id" class="form-control" style="width: 100%" ></select>' +
+      '</div>' +
+    '</div>';
+
+  $( '#restoreFields' ).html( sHtml );
+
+  if ( ! g_tDropdowns[g_tRow.remove_object_type] )
+  {
+    getCircuitObjectDropdowns();
+  }
+  else
+  {
+    loadRestoreCircuitObjectDialog();
+  }
+}
+
+function getCircuitObjectDropdowns()
+{
+    console.log( '===> Getting dropdowns for ' + g_tRow.remove_object_type );
+
+    // Post request to server
+    var tPostData = new FormData();
+    tPostData.append( 'object_type', g_tRow.remove_object_type );
+
+    $.ajax(
+      "circuitObjects/getCircuitObjectDropdowns.php",
+      {
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        data: tPostData
+      }
+    )
+    .done( loadRestoreCircuitObjectDialog )
+    .fail( handleAjaxError );
+}
+
+function loadRestoreCircuitObjectDialog( tRsp, sStatus, tJqXhr )
+{
+  if ( tRsp )
+  {
+    console.log( '===> Saving dropdowns for ' + g_tRow.remove_object_type );
+    g_tDropdowns[g_tRow.remove_object_type] = tRsp;
+  }
+
   finishInit();
 }
 
-function initDeviceFields( tFields )
+function initDeviceFields()
 {
+  var tFields = g_tRow.fields;
+
   var sHtml = '';
   sHtml +=
     '<div class="form-group">' +
@@ -76,7 +160,7 @@ function initDeviceFields( tFields )
 
   $( '#restoreFields' ).html( sHtml );
 
-  if ( ! g_tDeviceDropdowns )
+  if ( ! g_tDropdowns[g_tRow.remove_object_type] )
   {
     getDeviceDropdowns();
   }
@@ -111,12 +195,12 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
 {
   if ( tRsp )
   {
-    g_tDeviceDropdowns = tRsp;
+    g_tDropdowns[g_tRow.remove_object_type] = tRsp;
   }
 
   // Generate the dropdowns
   var sHtmlSourcePath = '';
-  var aSources = g_tDeviceDropdowns.sources;
+  var aSources = g_tDropdowns[g_tRow.remove_object_type].sources;
   for ( var iSource in aSources )
   {
     var tSource = aSources[iSource];
@@ -126,7 +210,7 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
   $( '#source_path' ).val( g_tRow.fields.source_path );
 
   var sHtmlLocation = '<option value="0" >[none]</option>';
-  var aLocations = g_tDeviceDropdowns.locations;
+  var aLocations = g_tDropdowns[g_tRow.remove_object_type].locations;
   for ( var iLoc in aLocations )
   {
     var tLoc = aLocations[iLoc];
@@ -144,8 +228,10 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
 }
 
 
-function initLocationFields( tFields )
+function initLocationFields()
 {
+  var tFields = g_tRow.fields;
+
   var sHtml = '';
   sHtml +=
      '<div class="form-group">' +
