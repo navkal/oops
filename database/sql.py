@@ -1179,7 +1179,7 @@ class removeCircuitObject:
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, "Remove " + object_type.lower() + " [" + path + "]", facility_id ) )
 
         conn.commit()
-        self.stub = True
+        self.success = True
 
 
 class removeDevice:

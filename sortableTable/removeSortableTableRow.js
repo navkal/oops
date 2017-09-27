@@ -72,6 +72,5 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
-  if ( tRsp.stub ) alert( "'Remove " + g_sSortableTableEditWhat + "' not yet implemented!" );
   location.reload();
 }
