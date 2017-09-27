@@ -1135,6 +1135,25 @@ class removeCircuitObject:
         cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ''',
             ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) )
 
+        # Delete target object
+        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+
+
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+
+        # Log activity
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, "Remove " + object_type.lower() + " [" + path + "]", facility_id ) )
 
         conn.commit()
         self.stub = True
