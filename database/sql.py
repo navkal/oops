@@ -1127,13 +1127,13 @@ class removeCircuitObject:
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, object_type, origin, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, object_type, origin, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
         removed_table = facility + '_Removed_CircuitObject'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ''',
-            ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ',
+            ( row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1144,6 +1144,35 @@ class removeCircuitObject:
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
+
+
+        # Retrieve all descendants of deleted object
+        cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + path + '.%"' )
+        descendants = cur.fetchall()
+
+        dev_table = facility + '_Device'
+        removed_dev_table = facility + '_Removed_Device'
+
+        # Move all descendants and attached devices to 'Removed' tables
+        for desc in descendants:
+            descendant_id = desc[0]
+
+            # Move the descendant to 'Removed' table
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ',
+                ( desc[0], desc[1], desc[2], desc[3], desc[4], desc[5], desc[6], desc[7], desc[8], desc[9], desc[10], remove_id ) )
+            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
+
+            # Retrieve all devices attached to current descendant
+            cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( descendant_id,) )
+            devices = cur.fetchall()
+
+            # Move all devices attached to current descendant
+            for dev in devices:
+                device_id = dev[0]
+                cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( dev[0], dev[1], dev[2], dev[3], dev[4], dev[5], remove_id ) )
+                cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
+
+
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
@@ -1192,12 +1221,12 @@ class removeDevice:
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Device', origin, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, 'Device', origin, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
         removed_table = facility + '_Removed_Device'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ''', ( row[0], row[1], row[2], row[3], row[4], row[5], remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( row[0], row[1], row[2], row[3], row[4], row[5], remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1230,12 +1259,12 @@ class removeLocation:
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ''', ( timestamp, 'Location', formatted_location, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, 'Location', formatted_location, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
         removed_table = facility + '_Removed_Room'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_num, old_num, location_type, description, remove_id ) VALUES(?,?,?,?,?,?) ''', ( row[0], row[1], row[2], row[3], row[4], remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_num, old_num, location_type, description, remove_id ) VALUES(?,?,?,?,?,?) ', ( row[0], row[1], row[2], row[3], row[4], remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
