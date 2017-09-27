@@ -1138,6 +1138,18 @@ class removeCircuitObject:
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
 
+        # Retrieve all devices attached to removed object
+        dev_table = facility + '_Device'
+        cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( id,) )
+        devices = cur.fetchall()
+
+        # Move all attached devices to 'Removed' table
+        removed_dev_table = facility + '_Removed_Device'
+        for dev in devices:
+            device_id = dev[0]
+            cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( dev[0], dev[1], dev[2], dev[3], dev[4], dev[5], remove_id ) )
+            cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
+
 
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
         ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
@@ -1149,9 +1161,6 @@ class removeCircuitObject:
         # Retrieve all descendants of deleted object
         cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + path + '.%"' )
         descendants = cur.fetchall()
-
-        dev_table = facility + '_Device'
-        removed_dev_table = facility + '_Removed_Device'
 
         # Move all descendants and attached devices to 'Removed' tables
         for desc in descendants:
