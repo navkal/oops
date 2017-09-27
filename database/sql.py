@@ -1143,30 +1143,22 @@ class removeCircuitObject:
         cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( id,) )
         devices = cur.fetchall()
 
-        # Move all attached devices to 'Removed' table
+        # Move all directly attached devices to 'Removed' table
         removed_dev_table = facility + '_Removed_Device'
         for dev in devices:
             device_id = dev[0]
             cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( dev[0], dev[1], dev[2], dev[3], dev[4], dev[5], remove_id ) )
             cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
-
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-
-
         # Retrieve all descendants of deleted object
         cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + path + '.%"' )
         descendants = cur.fetchall()
 
-        # Move all descendants and attached devices to 'Removed' tables
+        # Move all descendants and their respective attached devices to 'Removed' tables
         for desc in descendants:
             descendant_id = desc[0]
 
-            # Move the descendant to 'Removed' table
+            # Move current descendant to 'Removed' table
             cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ',
                 ( desc[0], desc[1], desc[2], desc[3], desc[4], desc[5], desc[6], desc[7], desc[8], desc[9], desc[10], remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
@@ -1180,13 +1172,6 @@ class removeCircuitObject:
                 device_id = dev[0]
                 cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( dev[0], dev[1], dev[2], dev[3], dev[4], dev[5], remove_id ) )
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
-
-
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
-        ################################# DELETE ALL DESCENDANTS OF TARGET OBJECT #################################
 
         # Log activity
         facility_id = facility_name_to_id( facility )
