@@ -45,6 +45,7 @@ function initRestoreDialog( sRestoreId )
 
 function initPtcFields( tFields )
 {
+  alert( JSON.stringify( tFields ) );
   finishInit();
 }
 

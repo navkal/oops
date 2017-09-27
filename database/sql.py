@@ -159,6 +159,26 @@ def test_path_availability( target_table, parent_id, tail ):
     return ( test_id, path, source )
 
 
+def tailToNumberName( tail ):
+
+    aTail = tail.split( '-', maxsplit=1 )
+
+    number = ''
+    name = ''
+
+    if aTail[0].isdigit():
+        # Segment format is <number> or <number>-<name>.  Save the number.
+        number = aTail[0]
+        if len( aTail ) == 2:
+            # Segment format is <number>-<name>.  Save the name.
+            name = aTail[1]
+    else:
+        # Segment format is <notNumber>.  Save as name.
+        name = tail
+
+    return ( number, name )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -476,21 +496,7 @@ class sortableTable:
                     room_id = ptc_row[1]
                     parent_id = ptc_row[7]
                     tail = ptc_row[8]
-
-                    # Split tail into number and name
-                    aTail = tail.split( '-', maxsplit=1 )
-                    number = ''
-                    name = ''
-                    if aTail[0].isdigit():
-                        # Segment format is <number> or <number>-<name>.  Save the number.
-                        number = aTail[0]
-                        if len( aTail ) == 2:
-                            # Segment format is <number>-<name>.  Save the name.
-                            name = aTail[1]
-                    else:
-                        # Segment format is <notNumber>.  Save as name.
-                        name = tail
-
+                    ( number, name ) = tailToNumberName( tail )
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id }
 
                 if remove_object_type == 'Device':
@@ -684,20 +690,7 @@ class sortableTableRow:
 
         # Extract number and name from path tail
         tail = self.path.split('.')[-1]
-        aTail = tail.split( '-', maxsplit=1 )
-
-        self.number = ''
-        self.name = ''
-
-        if aTail[0].isdigit():
-            # Segment format is <number> or <number>-<name>.  Save the number.
-            self.number = aTail[0]
-            if len( aTail ) == 2:
-                # Segment format is <number>-<name>.  Save the name.
-                self.name = aTail[1]
-        else:
-            # Segment format is <notNumber>.  Save as name.
-            self.name = tail
+        ( self.number, self.name ) = tailToNumberName( tail )
 
         cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
         voltage = cur.fetchone()
