@@ -27,6 +27,12 @@ function initRestoreDialog( sRestoreId )
   $( '#restoreFields' ).html( '' );
   switch( g_tRow.remove_object_type )
   {
+    case 'Panel':
+    case 'Transformer':
+    case 'Circuit':
+      initPtcFields( g_tRow.fields );
+      break;
+
     case 'Device':
       initDeviceFields( g_tRow.fields );
       break;
@@ -35,6 +41,11 @@ function initRestoreDialog( sRestoreId )
       initLocationFields( g_tRow.fields );
       break;
   }
+}
+
+function initPtcFields( tFields )
+{
+  finishInit();
 }
 
 function initDeviceFields( tFields )

@@ -471,7 +471,28 @@ class sortableTable:
                 remove_object_id = obj[5]
 
                 if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
-                    fields = {}
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_CircuitObject WHERE id = ?', (remove_object_id,))
+                    ptc_row = cur.fetchone()
+                    room_id = ptc_row[1]
+                    parent_id = ptc_row[7]
+                    tail = ptc_row[8]
+
+                    # Split tail into number and name
+                    aTail = tail.split( '-', maxsplit=1 )
+                    number = ''
+                    name = ''
+                    if aTail[0].isdigit():
+                        # Segment format is <number> or <number>-<name>.  Save the number.
+                        number = aTail[0]
+                        if len( aTail ) == 2:
+                            # Segment format is <number>-<name>.  Save the name.
+                            name = aTail[1]
+                    else:
+                        # Segment format is <notNumber>.  Save as name.
+                        name = tail
+
+                    fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id }
+
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
                     device_row = cur.fetchone()
