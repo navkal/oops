@@ -2,8 +2,8 @@
 
 var g_sRestoreId = null;
 var g_tRow = null;
-
 var g_tDropdowns = null;
+var g_sParentIdId = null;
 
 
 function initRestoreDialog( sRestoreId )
@@ -72,11 +72,13 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
     case 'Panel':
     case 'Transformer':
     case 'Circuit':
+      g_sParentIdId = 'parent_path';
       initCircuitObjectFields();
       makeDropdowns();
       break;
 
     case 'Device':
+      g_sParentIdId = 'source_path';
       initDeviceFields();
       makeDropdowns();
       break;
@@ -98,9 +100,9 @@ function initCircuitObjectFields()
   var sHtml = '';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="parent_id"></label>' +
+      '<label for="' + g_sParentIdId + '"></label>' +
       '<div>' +
-        '<select id="parent_id" class="form-control" style="width: 100%" ></select>' +
+        '<select id="' + g_sParentIdId + '" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -142,9 +144,9 @@ function initDeviceFields()
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="parent_id"></label>' +
+      '<label for="' + g_sParentIdId + '"></label>' +
       '<div>' +
-        '<select id="parent_id" class="form-control" style="width: 100%" ></select>' +
+        '<select id="' + g_sParentIdId + '" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -184,8 +186,8 @@ function makeDropdowns()
     var tParent = aParents[iParent];
     sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
   }
-  $( '#parent_id' ).html( sHtmlParentPath );
-  $( '#parent_id' ).val( g_tRow.fields.parent_id );
+  $( '#' + g_sParentIdId ).html( sHtmlParentPath );
+  $( '#' + g_sParentIdId ).val( g_tRow.fields.parent_id );
 
 
   // Generate location dropdown
@@ -201,7 +203,7 @@ function makeDropdowns()
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#parent_id' ).select2( { placeholder: 'Circuit' } );
+  $( '#' + g_sParentIdId ).select2( { placeholder: 'Circuit' } );
   $( '#room_id' ).select2( { placeholder: 'Location' } );
 }
 
@@ -256,7 +258,7 @@ function finishInit()
 function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
-  allowSelect2SelectText( 'parent_id' );
+  allowSelect2SelectText( g_sParentIdId );
   allowSelect2SelectText( 'room_id' );
 
   // Set handler to focus on select2 object after user sets value
@@ -319,7 +321,7 @@ function onSubmitRestoreDialog()
     switch( g_tRow.remove_object_type )
     {
       case 'Device':
-        tPostData.append( 'parent_id', $( '#parent_id' ).val() );
+        tPostData.append( 'parent_id', $( '#' + g_sParentIdId ).val() );
         var sLocVal = $( '#room_id' ).val();
         tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
         var sLoc = getSelect2Text( $( '#room_id' ) );
@@ -354,10 +356,10 @@ function validateInput()
   switch( g_tRow.remove_object_type )
   {
     case 'Device':
-      if ( $( '#parent_id' ).val() == null )
+      if ( $( '#' + g_sParentIdId ).val() == null )
       {
         aMessages.push( 'Circuit is required' );
-        $( '#parent_id' ).closest( '.form-group' ).addClass( 'has-error' );
+        $( '#' + g_sParentIdId ).closest( '.form-group' ).addClass( 'has-error' );
       }
       break;
 
