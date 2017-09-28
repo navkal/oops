@@ -3,24 +3,56 @@
 var g_sRestoreId = null;
 var g_tRow = null;
 
-var g_tDropdowns =
-{
-  Panel: null,
-  Transformer: null,
-  Circuit: null,
-  Device: null
-};
+var g_tDropdowns = null;
 
 
 function initRestoreDialog( sRestoreId )
 {
+  g_sRestoreId = sRestoreId;
+
   showSpinner();
+
+  if ( ! g_tDropdowns )
+  {
+    getRestoreDropdowns();
+  }
+  else
+  {
+    loadRestoreDialog();
+  }
+}
+
+function getRestoreDropdowns()
+{
+  // Post request to server
+  var tPostData = new FormData();
+  tPostData.append( "postSecurity", "" );
+
+  $.ajax(
+    "recycle/getRestoreDropdowns.php",
+    {
+      type: 'POST',
+      processData: false,
+      contentType: false,
+      dataType : 'json',
+      data: tPostData
+    }
+  )
+  .done( loadRestoreDialog )
+  .fail( handleAjaxError );
+}
+
+function loadRestoreDialog( tRsp, sStatus, tJqXhr )
+{
+  if ( tRsp )
+  {
+    g_tDropdowns = tRsp;
+  }
 
   // Set dialog 'shown' handler
   $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', onShownRestoreDialog );
 
-  // Initialize dialog box labels
-  g_sRestoreId = sRestoreId;
+  // Set operation labels
   g_tRow = findSortableTableRow( g_sRestoreId );
   var sLabel = 'Restore ' + g_tRow.remove_object_type
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
@@ -48,6 +80,8 @@ function initRestoreDialog( sRestoreId )
       initLocationFields();
       break;
   }
+
+  finishInit();
 }
 
 function initCircuitObjectFields()
@@ -87,48 +121,6 @@ function initCircuitObjectFields()
     '</div>';
 
   $( '#restoreFields' ).html( sHtml );
-
-  if ( ! g_tDropdowns[g_tRow.remove_object_type] )
-  {
-    getCircuitObjectDropdowns();
-  }
-  else
-  {
-    loadRestoreCircuitObjectDialog();
-  }
-}
-
-function getCircuitObjectDropdowns()
-{
-    console.log( '===> Getting dropdowns for ' + g_tRow.remove_object_type );
-
-    // Post request to server
-    var tPostData = new FormData();
-    tPostData.append( 'object_type', g_tRow.remove_object_type );
-
-    $.ajax(
-      "circuitObjects/getCircuitObjectDropdowns.php",
-      {
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        dataType : 'json',
-        data: tPostData
-      }
-    )
-    .done( loadRestoreCircuitObjectDialog )
-    .fail( handleAjaxError );
-}
-
-function loadRestoreCircuitObjectDialog( tRsp, sStatus, tJqXhr )
-{
-  if ( tRsp )
-  {
-    console.log( '===> Saving dropdowns for ' + g_tRow.remove_object_type );
-    g_tDropdowns[g_tRow.remove_object_type] = tRsp;
-  }
-
-  finishInit();
 }
 
 function initDeviceFields()
@@ -145,9 +137,9 @@ function initDeviceFields()
     '</div>';
   sHtml +=
     '<div class="form-group">' +
-      '<label for="source_path"></label>' +
+      '<label for="parent_id"></label>' +
       '<div>' +
-        '<select id="source_path" class="form-control" style="width: 100%" ></select>' +
+        '<select id="parent_id" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -160,57 +152,19 @@ function initDeviceFields()
 
   $( '#restoreFields' ).html( sHtml );
 
-  if ( ! g_tDropdowns[g_tRow.remove_object_type] )
-  {
-    getDeviceDropdowns();
-  }
-  else
-  {
-    loadRestoreDeviceDialog();
-  }
-}
-
-
-function getDeviceDropdowns()
-{
-  // Post request to server
-  var tPostData = new FormData();
-  tPostData.append( "postSecurity", "" );
-
-  $.ajax(
-    "devices/getDeviceDropdowns.php",
-    {
-      type: 'POST',
-      processData: false,
-      contentType: false,
-      dataType : 'json',
-      data: tPostData
-    }
-  )
-  .done( loadRestoreDeviceDialog )
-  .fail( handleAjaxError );
-}
-
-function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
-{
-  if ( tRsp )
-  {
-    g_tDropdowns[g_tRow.remove_object_type] = tRsp;
-  }
-
   // Generate the dropdowns
-  var sHtmlSourcePath = '';
-  var aSources = g_tDropdowns[g_tRow.remove_object_type].sources;
-  for ( var iSource in aSources )
+  var sHtmlParentPath = '';
+  var aParents = g_tDropdowns.device_parents;
+  for ( var iParent in aParents )
   {
-    var tSource = aSources[iSource];
-    sHtmlSourcePath += '<option value="' + tSource.id + '" >' + tSource.text + '</option>';
+    var tParent = aParents[iParent];
+    sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
   }
-  $( '#source_path' ).html( sHtmlSourcePath );
-  $( '#source_path' ).val( g_tRow.fields.source_path );
+  $( '#parent_id' ).html( sHtmlParentPath );
+  $( '#parent_id' ).val( g_tRow.fields.parent_id );
 
   var sHtmlLocation = '<option value="0" >[none]</option>';
-  var aLocations = g_tDropdowns[g_tRow.remove_object_type].locations;
+  var aLocations = g_tDropdowns.locations;
   for ( var iLoc in aLocations )
   {
     var tLoc = aLocations[iLoc];
@@ -221,12 +175,9 @@ function loadRestoreDeviceDialog( tRsp, sStatus, tJqXhr )
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#source_path' ).select2( { placeholder: 'Circuit' } );
+  $( '#parent_id' ).select2( { placeholder: 'Circuit' } );
   $( '#room_id' ).select2( { placeholder: 'Location' } );
-
-  finishInit();
 }
-
 
 function initLocationFields()
 {
@@ -256,8 +207,6 @@ function initLocationFields()
       '</div>';
 
   $( '#restoreFields' ).html( sHtml );
-
-  finishInit();
 }
 
 function finishInit()
@@ -281,7 +230,7 @@ function finishInit()
 function onShownRestoreDialog()
 {
   // Allow user to select text in select2 rendering
-  allowSelect2SelectText( 'source_path' );
+  allowSelect2SelectText( 'parent_id' );
   allowSelect2SelectText( 'room_id' );
 
   // Set handler to focus on select2 object after user sets value
@@ -329,6 +278,15 @@ function onChangeControl( tEvent )
 
 function onSubmitRestoreDialog()
 {
+  alert( 'not implemented' );
+  return;
+
+
+
+
+
+
+
   if ( validateInput() )
   {
     // Post request to server
@@ -338,7 +296,7 @@ function onSubmitRestoreDialog()
     switch( g_tRow.remove_object_type )
     {
       case 'Device':
-        tPostData.append( 'parent_id', $( '#source_path' ).val() );
+        tPostData.append( 'parent_id', $( '#parent_id' ).val() );
         var sLocVal = $( '#room_id' ).val();
         tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
         var sLoc = getSelect2Text( $( '#room_id' ) );
@@ -373,10 +331,10 @@ function validateInput()
   switch( g_tRow.remove_object_type )
   {
     case 'Device':
-      if ( $( '#source_path' ).val() == null )
+      if ( $( '#parent_id' ).val() == null )
       {
         aMessages.push( 'Circuit is required' );
-        $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
+        $( '#parent_id' ).closest( '.form-group' ).addClass( 'has-error' );
       }
       break;
 

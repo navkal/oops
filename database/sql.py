@@ -506,7 +506,7 @@ class sortableTable:
                     parent_id = device_row[2]
                     name = device_row[5]
 
-                    fields = { 'name': name, 'source_path': parent_id, 'room_id': room_id }
+                    fields = { 'name': name, 'parent_id': parent_id, 'room_id': room_id }
 
                 elif remove_object_type == 'Location':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
@@ -1421,6 +1421,31 @@ class allFacilities:
         self.sorted_fullnames = sorted( fullnames )
         self.name_map = name_map
         self.fullname_map = fullname_map
+
+
+class restoreDropdowns:
+    def __init__(self, enterprise, facility):
+
+        open_database( enterprise )
+
+        # Get voltages
+        cur.execute('SELECT id, description FROM Voltage')
+        rows = cur.fetchall()
+
+        voltages = []
+        for row in rows:
+            voltages.append( { 'id': row[0], 'text': row[1]  } )
+
+        self.voltages = natsort.natsorted( voltages, key=lambda x: x['text'] )
+
+        # Get locations
+        self.locations = get_location_dropdown( facility )
+
+        # Get parents
+        self.device_parents = get_circuit_object_dropdown( facility, '"Circuit"' )
+        self.circuit_parents = get_circuit_object_dropdown( facility, '"Panel"' )
+        self.transformer_parents = get_circuit_object_dropdown( facility, '"Panel"' )
+        self.panel_parents = get_circuit_object_dropdown( facility, '"Panel","Transformer"' )
 
 
 class deviceDropdowns:
