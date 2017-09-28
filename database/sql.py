@@ -80,6 +80,24 @@ def make_cirobj_label( o ):
     return label
 
 
+def make_device_description( name, room_id, facility ):
+
+    if room_id.isdigit():
+        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
+        room = cur.fetchone()
+        loc_new = room[1]
+        loc_old = room[2]
+        loc_descr = room[4]
+    else:
+        loc_new = ''
+        loc_old = ''
+        loc_descr = ''
+
+    description = dbCommon.format_device_description( name, loc_new, loc_old, loc_descr )
+
+    return description
+
+
 def facility_name_to_id( facility_name ):
     cur.execute( 'SELECT id FROM Facility WHERE facility_name=?', ( facility_name,) )
     facility_id = cur.fetchone()[0]
@@ -967,6 +985,9 @@ class addDevice:
     def __init__( self, by, parent_id, name, room_id, description, enterprise, facility ):
         open_database( enterprise )
 
+        # Generate new description
+        description = make_device_description( name, room_id, facility )
+
         # Add new object
         target_table = facility + '_Device'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
@@ -985,6 +1006,9 @@ class addDevice:
 class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, description, enterprise, facility ):
         open_database( enterprise )
+
+        # Generate new description
+        description = make_device_description( name, room_id, facility )
 
         # Update specified object
         target_table = facility + '_Device'
