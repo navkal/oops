@@ -68,14 +68,14 @@ function initCircuitObjectFields()
     '<div class="form-group">' +
       '<label for="number"></label>' +
       '<div>' +
-        '<input type="text" class="form-control" id="number" value="' + tFields.number + '" disabled >' +
+        '<input type="text" class="form-control" id="number" value="' + tFields.number + '" >' +
       '</div>' +
     '</div>';
   sHtml +=
     '<div class="form-group">' +
       '<label for="name"></label>' +
       '<div>' +
-        '<input type="text" class="form-control" id="name" value="' + tFields.name + '" disabled >' +
+        '<input type="text" class="form-control" id="name" value="' + tFields.name + '" >' +
       '</div>' +
     '</div>';
   sHtml +=
