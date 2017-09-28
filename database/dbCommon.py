@@ -77,6 +77,18 @@ def append_location( text, location, location_old, location_descr, end_delimiter
     return text
 
 
+def format_device_description( name, location, location_old, location_descr ):
+
+    desc = append_location( '', location, location_old, location_descr, '' )
+
+    if desc:
+        desc = name + ':' + desc
+    else:
+        desc = name
+
+    return desc
+
+
 def make_search_result( source, voltage, location, location_old, location_descr, object_type, description, name ):
 
     bar = ' | '
