@@ -494,10 +494,11 @@ class sortableTable:
                     cur.execute('SELECT * FROM ' + facility + '_Removed_CircuitObject WHERE id = ?', (remove_object_id,))
                     ptc_row = cur.fetchone()
                     room_id = ptc_row[1]
+                    voltage_id = ptc_row[4]
                     parent_id = ptc_row[7]
                     tail = ptc_row[8]
                     ( number, name ) = tailToNumberName( tail )
-                    fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id }
+                    fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
