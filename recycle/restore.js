@@ -304,10 +304,7 @@ function onChangeControl( tEvent )
 
 function onSubmitRestoreDialog()
 {
-  alert( 'not implemented' );
-  return;
-
-
+  if( ['Panel','Transformer','Circuit'].includes( g_tRow.remove_object_type ) ){alert( 'Restore operation not available.' );  return;}
 
 
 
