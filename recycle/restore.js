@@ -352,7 +352,7 @@ function onSubmitRestoreDialog()
     }
 
     $.ajax(
-      'recycle/restoreObject.php',
+      'recycle/restoreRemovedObject.php',
       {
         type: 'POST',
         processData: false,

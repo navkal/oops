@@ -19,7 +19,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.restoreObject( args.by, args.id, args.parent_id, args.room_id, args.description, args.enterprise, args.facility )
+        status = sql.restoreRemovedObject( args.by, args.id, args.parent_id, args.room_id, args.description, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to restore object' }
     else:

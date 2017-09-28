@@ -1494,7 +1494,7 @@ class imageFilename:
         self.image_filename = id + '.jpg'
 
 
-class restoreObject:
+class restoreRemovedObject:
     def __init__(self, by, id, parent_id, room_id, description, enterprise, facility):
 
         open_database( enterprise )
