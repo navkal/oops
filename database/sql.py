@@ -982,7 +982,7 @@ class updateCircuitObject:
 
 
 class addDevice:
-    def __init__( self, by, parent_id, name, room_id, description, enterprise, facility ):
+    def __init__( self, by, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
         # Generate new description
@@ -1004,7 +1004,7 @@ class addDevice:
 
 
 class updateDevice:
-    def __init__( self, by, id, parent_id, name, room_id, description, enterprise, facility ):
+    def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
         # Generate new description

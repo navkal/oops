@@ -240,9 +240,6 @@
       var sLocVal = $( '#room_id' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
-      var sLoc = getSelect2Text( $( '#room_id' ) );
-      tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
-
       // Post request to server
       $.ajax(
         'devices/' + g_sAction + 'Device.php',

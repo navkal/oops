@@ -15,12 +15,11 @@ if __name__ == '__main__':
     parser.add_argument( '-p', '--parent_id', dest='parent_id', help='parent id' )
     parser.add_argument( '-n', '--name', dest='name', help='device name' )
     parser.add_argument( '-r', '--room_id', dest='room_id', help='location id' )
-    parser.add_argument( '-d', '--description', dest='description', help='device description' )
     parser = context.add_context_args( parser )
     args = parser.parse_args()
 
     try:
-        status = sql.updateDevice( args.by, args.id, args.parent_id, args.name, args.room_id, args.description, args.enterprise, args.facility )
+        status = sql.updateDevice( args.by, args.id, args.parent_id, args.name, args.room_id, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to update device' }
     else:
