@@ -1519,7 +1519,7 @@ class imageFilename:
 
 
 class restoreRemovedObject:
-    def __init__(self, by, id, parent_id, room_id, description, enterprise, facility):
+    def __init__(self, by, id, parent_id, room_id, enterprise, facility):
 
         open_database( enterprise )
 
@@ -1537,7 +1537,7 @@ class restoreRemovedObject:
             # ????? Then what ?????
 
         elif restore_object_type == 'Device':
-            self.restore_device( by, id, parent_id, room_id, description, facility )
+            self.restore_device( by, id, parent_id, room_id, facility )
         elif restore_object_type == 'Location':
             self.restore_location( by, id, facility )
 
@@ -1549,7 +1549,7 @@ class restoreRemovedObject:
         self.success = True
 
 
-    def restore_device( self, by, id, parent_id, room_id, description, facility ):
+    def restore_device( self, by, id, parent_id, room_id, facility ):
 
         # Determine source and target tables
         source_table = facility + '_Removed_Device'
@@ -1559,8 +1559,10 @@ class restoreRemovedObject:
         cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
         source_row = cur.fetchone()
         source_row = list( source_row )
+        name = source_row[5]
+        description = make_device_description( name, room_id, facility )
 
-        # Overwrite fields with supplied values
+        # Overwrite fields with updated values
         source_row[1] = room_id
         source_row[2] = parent_id
         source_row[3] = description

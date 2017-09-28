@@ -342,8 +342,6 @@ function onSubmitRestoreDialog()
         tPostData.append( 'parent_id', $( '#' + g_sParentIdId ).val() );
         var sLocVal = $( '#room_id' ).val();
         tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
-        var sLoc = getSelect2Text( $( '#room_id' ) );
-        tPostData.append( 'description', $( '#name' ).val() + ( sLoc ? ( ': ' + sLoc ) : '' ) );
         break;
 
       case 'Location':

@@ -10,7 +10,6 @@
   $sId = quote( $_POST['id'] );
   $sParentId = quote( isset( $_POST['parent_id'] ) ? $_POST['parent_id'] : '' );
   $sRoomId = quote( isset( $_POST['room_id'] ) ? $_POST['room_id'] : '' );
-  $sDescription = quote( isset( $_POST['description'] ) ? $_POST['description'] : '' );
 
 
   // Restore object
@@ -18,7 +17,6 @@
     . ' -i ' . $sId
     . ' -p ' . $sParentId
     . ' -r ' . $sRoomId
-    . ' -d ' . $sDescription
     . $g_sContext;
 
   error_log( "==> command=" . $command );
