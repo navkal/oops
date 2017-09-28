@@ -24,6 +24,8 @@ function initRestoreDialog( sRestoreId )
 
 function getRestoreDropdowns()
 {
+  console.log( '==========> Requesting dropdowns' );
+
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "postSecurity", "" );
@@ -46,6 +48,7 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
   if ( tRsp )
   {
+    console.log( '==========> Saving dropdowns' );
     g_tDropdowns = tRsp;
   }
 
@@ -54,7 +57,7 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 
   // Set operation labels
   g_tRow = findSortableTableRow( g_sRestoreId );
-  var sLabel = 'Restore ' + g_tRow.remove_object_type
+  var sLabel = 'Restore ' + g_tRow.remove_object_type;
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
 
   // Initialize common field values
@@ -70,10 +73,12 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
     case 'Transformer':
     case 'Circuit':
       initCircuitObjectFields();
+      makeDropdowns();
       break;
 
     case 'Device':
       initDeviceFields();
+      makeDropdowns();
       break;
 
     case 'Location':
@@ -151,10 +156,29 @@ function initDeviceFields()
     '</div>';
 
   $( '#restoreFields' ).html( sHtml );
+}
 
-  // Generate the dropdowns
+function makeDropdowns()
+{
+  // Generate parent dropdown
   var sHtmlParentPath = '';
-  var aParents = g_tDropdowns.device_parents;
+  var aParents = null;
+  switch( g_tRow.remove_object_type )
+  {
+    case 'Panel':
+      aParents = g_tDropdowns.panel_parents;
+      break;
+    case 'Transformer':
+      aParents = g_tDropdowns.transformer_parents;
+      break;
+    case 'Circuit':
+      aParents = g_tDropdowns.circuit_parents;
+      break;
+    case 'Device':
+      aParents = g_tDropdowns.device_parents;
+      break;
+  }
+
   for ( var iParent in aParents )
   {
     var tParent = aParents[iParent];
@@ -163,6 +187,8 @@ function initDeviceFields()
   $( '#parent_id' ).html( sHtmlParentPath );
   $( '#parent_id' ).val( g_tRow.fields.parent_id );
 
+
+  // Generate location dropdown
   var sHtmlLocation = '<option value="0" >[none]</option>';
   var aLocations = g_tDropdowns.locations;
   for ( var iLoc in aLocations )
