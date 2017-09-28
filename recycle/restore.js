@@ -190,13 +190,15 @@ function makeDropdowns()
     switch( g_tRow.remove_object_type )
     {
       case 'Panel':
-        bParentAllowed = /*************** FIX THIS ONE ***************************/ ( g_tRow.fields.voltage_id == tParent.voltage_id );
+        // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
+        bParentAllowed = ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < g_tRow.fields.voltage_id ) : ( tParent.voltage_id == g_tRow.fields.voltage_id  );
+        // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
         break;
       case 'Transformer':
-        bParentAllowed = ( g_tRow.fields.voltage_id == tParent.voltage_id );
+        bParentAllowed = ( tParent.voltage_id == g_tRow.fields.voltage_id );
         break;
       case 'Circuit':
-        bParentAllowed = ( g_tRow.fields.voltage_id == tParent.voltage_id );
+        bParentAllowed = ( tParent.voltage_id == g_tRow.fields.voltage_id );
         break;
       case 'Device':
         bParentAllowed = true;
@@ -205,10 +207,10 @@ function makeDropdowns()
 
     if ( bParentAllowed )
     {
-      console.log( '==============> parent included ' + tParent.voltage_id );
+      console.log( '==============> parent INcluded: ' + tParent.object_type + ' ' + tParent.voltage_id );
       sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
     }
-    else console.log( '==============> parent excluded ' + tParent.voltage_id );
+    else console.log( '==============> parent EXcluded: ' + tParent.object_type + ' ' + tParent.voltage_id );
   }
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
   $( '#' + g_sParentIdId ).val( g_tRow.fields.parent_id );
