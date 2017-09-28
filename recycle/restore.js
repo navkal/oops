@@ -24,8 +24,6 @@ function initRestoreDialog( sRestoreId )
 
 function getRestoreDropdowns()
 {
-  console.log( '==========> Requesting dropdowns' );
-
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "postSecurity", "" );
@@ -48,7 +46,6 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
   if ( tRsp )
   {
-    console.log( '==========> Saving dropdowns' );
     g_tDropdowns = tRsp;
   }
 
@@ -94,8 +91,6 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 function initCircuitObjectFields()
 {
   var tFields = g_tRow.fields;
-
-  console.log( JSON.stringify( tFields ) );
 
   var sHtml = '';
   sHtml +=
@@ -181,7 +176,6 @@ function makeDropdowns()
       break;
   }
 
-  console.log( '====> object voltage id=' + g_tRow.fields.voltage_id );
   for ( var iParent in aParents )
   {
     var tParent = aParents[iParent];
@@ -207,10 +201,8 @@ function makeDropdowns()
 
     if ( bParentAllowed )
     {
-      console.log( '==============> parent INcluded: ' + tParent.object_type + ' ' + tParent.voltage_id );
       sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
     }
-    else console.log( '==============> parent EXcluded: ' + tParent.object_type + ' ' + tParent.voltage_id );
   }
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
   $( '#' + g_sParentIdId ).val( g_tRow.fields.parent_id );
