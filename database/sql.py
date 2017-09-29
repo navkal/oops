@@ -53,7 +53,7 @@ def make_cirobj_label( o ):
 
     print( o['object_type'] )
 
-    if o['object_type'] in ( 'Panel', 'Transformer' ):
+    if o['object_type'] in ( 'Panel', 'Transformer', 'PTC' ):
 
         # Concatenate label fragments
         if o['source']:
@@ -532,7 +532,7 @@ class sortableTable:
 
                     cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
                     voltage = cur.fetchone()[0]
-                    ptc = { 'object_type': remove_object_type, 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    ptc = { 'object_type': 'PTC', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_cirobj_label( ptc )
 
                 if remove_object_type == 'Device':
