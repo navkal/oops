@@ -51,25 +51,27 @@ def make_device_label( name=None, room_id=None, loc_new='', loc_old='', loc_desc
 def make_cirobj_label( o ):
     label = ''
 
-    if o.object_type in ( 'Panel', 'Transformer' ):
+    print( o['object_type'] )
+
+    if o['object_type'] in ( 'Panel', 'Transformer' ):
 
         # Concatenate label fragments
-        if o.source:
-            label += ' <span class="glyphicon glyphicon-arrow-up"></span>' + o.source
+        if o['source']:
+            label += ' <span class="glyphicon glyphicon-arrow-up"></span>' + o['source']
 
-        if o.voltage:
-            label += ' <span class="glyphicon glyphicon-flash"></span>' + o.voltage
+        if o['voltage']:
+            label += ' <span class="glyphicon glyphicon-flash"></span>' + o['voltage']
 
-        if o.loc_new or o.loc_old or o.loc_descr:
+        if o['loc_new'] or o['loc_old'] or o['loc_descr']:
             label += ' <span class="glyphicon glyphicon-map-marker"></span>'
-            label += dbCommon.format_location( o.loc_new, o.loc_old, o.loc_descr );
+            label += dbCommon.format_location( o['loc_new'], o['loc_old'], o['loc_descr']);
 
     else:
         # Circuit - show description
-        label = o.description
+        label = o['description']
 
     # Prepend name
-    name = o.path.split( '.' )[-1]
+    name = o['path'].split( '.' )[-1]
     label = label.strip()
 
     if label:
@@ -324,7 +326,7 @@ class cirobj:
         self.loc_descr = room[4]
 
         # Generate label
-        self.label = make_cirobj_label( self )
+        self.label = make_cirobj_label( self.__dict__ )
 
         # Add image filename
         filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
@@ -530,8 +532,8 @@ class sortableTable:
 
                     cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
                     voltage = cur.fetchone()[0]
-                    ptc_obj = { 'object_type': remove_object_type, 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
-                    origin = make_cirobj_label( ptc_obj )
+                    ptc = { 'object_type': remove_object_type, 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    origin = make_cirobj_label( ptc )
 
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
