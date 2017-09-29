@@ -1548,7 +1548,7 @@ class imageFilename:
 
 
 class restoreRemovedObject:
-    def __init__(self, by, id, parent_id, room_id, enterprise, facility):
+    def __init__(self, by, id, parent_id, tail, room_id, enterprise, facility):
 
         open_database( enterprise )
 
@@ -1556,14 +1556,15 @@ class restoreRemovedObject:
         recycle_table = facility + '_Recycle'
         cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
         recycle_row = cur.fetchone()
-        restore_object_type = recycle_row[2]
+        remove_object_type = recycle_row[2]
 
-        # Handle according to object type
-        if ( restore_object_type == 'Panel' ) or ( restore_object_type == 'Transformer' ) or ( restore_object_type == 'Circuit' ):
-            self.restore_circuit_object( by, id, parent_id, room_id, facility )
-        elif restore_object_type == 'Device':
+        # Handle according to removed object type
+        if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ):
+            remove_object_id = recycle_row[8]
+            self.restore_circuit_object( by, id, remove_object_id, parent_id, tail, room_id, facility )
+        elif remove_object_type == 'Device':
             self.restore_device( by, id, parent_id, room_id, facility )
-        elif restore_object_type == 'Location':
+        elif remove_object_type == 'Location':
             self.restore_location( by, id, facility )
 
         # Clean up recyle bin
@@ -1571,12 +1572,35 @@ class restoreRemovedObject:
 
         #################################conn.commit()
 
+        self.debug = tail
         self.success = True
 
 
-    def restore_circuit_object( self, by, id, parent_id, room_id, facility ):
+    def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
         source_table = facility + '_Removed_CircuitObject'
         target_table = facility + '_CircuitObject'
+
+        # Get path of parent-to-be
+        cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
+        parent_path = cur.fetchone()[0]
+
+        # Format new path of root
+        path = parent_path + '.' + tail
+
+        # Get root object from source table
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
+        root_row = cur.fetchone()
+        root_row = list( root_row )
+        root_row.pop()
+
+        # Overwrite root values
+        root_row[1] = room_id
+        root_row[7] = parent_id
+
+
+        description = make_device_description( name, room_id, facility )
+
+
         # ????? Then what ?????
         self.messages = ['mooooooo']
 
