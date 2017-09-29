@@ -1598,7 +1598,7 @@ class restoreRemovedObject:
         cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
         voltage = cur.fetchone()[0]
 
-        cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
+        cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
         loc = cur.fetchone()
         location = loc[0]
         location_old = loc[1]
@@ -1618,6 +1618,13 @@ class restoreRemovedObject:
         restore_root_row[8] = tail
         restore_root_row[9] = search_result
         restore_root_row[10] = source
+
+        # Restore root object at original ID
+        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_root_row[0],restore_root_row[1],restore_root_row[2],restore_root_row[3],restore_root_row[4],restore_root_row[5],restore_root_row[6],restore_root_row[7],restore_root_row[8],restore_root_row[9],restore_root_row[10]))
+
+
+
 
         self.debug = search_result
         # ????? Then what ?????
