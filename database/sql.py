@@ -973,24 +973,40 @@ class updateCircuitObject:
             if path != original_path:
 
                 # Retrieve all descendants of the target object
-                cur.execute( 'SELECT id, path FROM ' + target_table + ' WHERE path LIKE "' + original_path + '.%"' )
+                cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + original_path + '.%"' )
                 descendants = cur.fetchall()
 
-                # Update paths of all descendants
+                # Update path, search result, and source of all descendants
                 for desc in descendants:
                     desc_id = desc[0]
-                    desc_path = desc[1]
+                    desc_room_id = desc[1]
+                    desc_path = desc[2]
+                    desc_voltage_id = desc[4]
+                    desc_object_type = desc[5]
+                    desc_description = desc[6]
+                    desc_tail = desc[8]
+
+                    cur.execute('SELECT description FROM Voltage WHERE id = ?',(desc_voltage_id,))
+                    desc_voltage = cur.fetchone()[0]
+
+                    cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (desc_room_id,))
+                    desc_loc = cur.fetchone()
+                    desc_loc_new = desc_loc[0]
+                    desc_loc_old = desc_loc[1]
+                    desc_loc_descr = desc_loc[2]
+
                     new_desc_path = desc_path.replace( original_path, path, 1 )
                     new_desc_source = new_desc_path.split( '.' )[-2]
+                    desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
 
                     # Update descendant row in database
-                    cur.execute( 'UPDATE ' + target_table + ' SET path=?, source=? WHERE id=? ' , ( new_desc_path, new_desc_source, desc_id ) )
+                    cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
             # Get fragments of search result text
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
             voltage = cur.fetchone()[0]
 
-            cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
+            cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
             loc = cur.fetchone()
             location = loc[0]
             location_old = loc[1]
