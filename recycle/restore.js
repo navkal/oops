@@ -326,14 +326,23 @@ function onSubmitRestoreDialog()
 {
   if ( validateInput() )
   {
-    if( ['Panel','Transformer','Circuit'].includes( g_tRow.remove_object_type ) ){alert( 'Restore operation not available.' );  return;}
-
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( 'id', g_sRestoreId );
 
     switch( g_tRow.remove_object_type )
     {
+      case 'Panel':
+      case 'Transformer':
+      case 'Circuit':
+
+        var sNumber = $( '#number' ).val();
+        var sName = $( '#name' ).val();
+        var sHyphen = ( sNumber && sName ) ? '-' : '';
+        tPostData.append( 'tail', sNumber + sHyphen + sName );
+
+        // NO BREAK !!!  Continue into 'Device' case...
+
       case 'Device':
         tPostData.append( 'parent_id', $( '#' + g_sParentIdId ).val() );
         var sLocVal = $( '#room_id' ).val();
