@@ -221,7 +221,7 @@ function makeDropdowns()
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#' + g_sParentIdId ).select2( { placeholder: 'Circuit' } );
+  $( '#' + g_sParentIdId ).select2( { placeholder: ( g_tRow.remove_object_type == 'Device' ) ? 'Circuit' : 'Parent' } );
   $( '#room_id' ).select2( { placeholder: 'Location' } );
 }
 
@@ -480,5 +480,6 @@ function validateInput()
 
 function restoreDone( tRsp, sStatus, tJqXhr )
 {
+  alert( JSON.stringify( tRsp ) );
   location.reload();
 }
