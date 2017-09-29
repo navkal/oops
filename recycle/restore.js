@@ -209,7 +209,7 @@ function makeDropdowns()
 
 
   // Generate location dropdown
-  var sHtmlLocation = '<option value="0" >[none]</option>';
+  var sHtmlLocation = ( g_tRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';
   var aLocations = g_tDropdowns.locations;
   for ( var iLoc in aLocations )
   {
@@ -326,6 +326,8 @@ function onSubmitRestoreDialog()
 {
   if ( validateInput() )
   {
+    if( ['Panel','Transformer','Circuit'].includes( g_tRow.remove_object_type ) ){alert( 'Restore operation not available.' );  return;}
+
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( 'id', g_sRestoreId );
@@ -363,8 +365,19 @@ function validateInput()
   clearMessages();
   var aMessages = [];
 
+  // Require parent
   switch( g_tRow.remove_object_type )
   {
+    case 'Panel':
+    case 'Transformer':
+    case 'Circuit':
+      if ( $( '#' + g_sParentIdId ).val() == null )
+      {
+        aMessages.push( 'Parent is required' );
+        $( '#' + g_sParentIdId ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+      break;
+
     case 'Device':
       if ( $( '#' + g_sParentIdId ).val() == null )
       {
@@ -374,6 +387,80 @@ function validateInput()
       break;
 
     case 'Location':
+    default:
+      // Do nothing
+      break;
+  }
+
+  // Require elements of tail
+  var sNumber = $( '#number' ).val();
+  var sName = $( '#name' ).val();
+  switch( g_tRow.remove_object_type )
+  {
+    case 'Panel':
+    case 'Transformer':
+        if ( ! sName )
+        {
+          aMessages.push( 'Name is required' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+      break;
+
+    case 'Circuit':
+        if ( ! sNumber && ! sName )
+        {
+          aMessages.push( 'Number or Name is required' );
+          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+      break;
+
+    case 'Device':
+    case 'Location':
+    default:
+      // Do nothing
+      break;
+  }
+
+  // Check tail syntax and require location
+  switch( g_tRow.remove_object_type )
+  {
+    case 'Panel':
+    case 'Transformer':
+    case 'Circuit':
+
+      if ( sNumber.length > 0 )
+      {
+        if ( ! sNumber.match( /^\d+$/ ) )
+        {
+          aMessages.push( 'Number can contain only digits.' );
+          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+
+        if ( parseInt( sNumber ) == 0 )
+        {
+          aMessages.push( 'Number must be an integer value between 1 and 9999.' );
+          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+      }
+
+      if ( ( sName.length > 0 ) && ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
+      {
+        aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
+        $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+
+      if ( $( '#room_id' ).val() == null )
+      {
+        aMessages.push( 'Location is required' );
+        $( '#room_id' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+
+      break;
+
+    case 'Device':
+    case 'Location':
+    default:
       // Do nothing
       break;
   }
