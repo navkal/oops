@@ -1624,8 +1624,11 @@ class restoreRemovedObject:
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
              VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_root_row[0],restore_root_row[1],restore_root_row[2],restore_root_row[3],restore_root_row[4],restore_root_row[5],restore_root_row[6],restore_root_row[7],restore_root_row[8],restore_root_row[9],restore_root_row[10]))
 
-
-
+        # Get CircuitObject descendants
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
+        ptc_rows = cur.fetchall()
+        for ptc_row in ptc_rows:
+            self.last_path = ptc_row[2]
 
         self.removed_path = removed_path
         self.restore_path = restore_path
