@@ -977,13 +977,14 @@ class updateCircuitObject:
                 descendants = cur.fetchall()
 
                 # Update paths of all descendants
-                for descendant in descendants:
-                    descendant_id = descendant[0]
-                    descendant_path = descendant[1]
-                    new_descendant_path = descendant_path.replace( original_path, path, 1 )
+                for desc in descendants:
+                    desc_id = desc[0]
+                    desc_path = desc[1]
+                    new_desc_path = desc_path.replace( original_path, path, 1 )
+                    new_desc_source = new_desc_path.split( '.' )[-2]
 
                     # Update descendant row in database
-                    cur.execute( 'UPDATE ' + target_table + ' SET path=? WHERE id=? ' , ( new_descendant_path, descendant_id ) )
+                    cur.execute( 'UPDATE ' + target_table + ' SET path=?, source=? WHERE id=? ' , ( new_desc_path, new_desc_source, desc_id ) )
 
             # Get fragments of search result text
             cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
