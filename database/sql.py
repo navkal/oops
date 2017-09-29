@@ -23,7 +23,7 @@ def open_database( enterprise ):
             cur = conn.cursor()
 
 
-def make_device_label( name, room_id, facility ):
+def make_device_label( name=None, room_id=None, loc_new='', loc_old='', loc_descr='', facility=None ):
 
     # Get location details
     if room_id:
@@ -33,9 +33,9 @@ def make_device_label( name, room_id, facility ):
         location_old = room[1]
         location_descr = room[2]
     else:
-        location = ''
-        location_old = ''
-        location_descr = ''
+        location = loc_new
+        location_old = loc_old
+        location_descr = loc_descr
 
     # Generate label
     label = name
@@ -228,7 +228,7 @@ class device:
         self.name = row[4]
         self.parent_path = row[5] # For tree structure
         self.source_path = row[5] # For properties display and table
-        self.label = make_device_label( self.name, self.room_id, facility )
+        self.label = make_device_label( name=self.name, room_id=self.room_id, facility=facility )
 
         #gets room where device is located
         if str( self.room_id ).isdigit():
@@ -505,18 +505,33 @@ class sortableTable:
 
             for obj in objects:
 
+                recycle_id = obj[0]
+                timestamp = obj[1]
                 remove_object_type = obj[2]
-                remove_object_id = obj[5]
+                parent_path = obj[3]
+                loc_new = obj[4]
+                loc_old = obj[5]
+                loc_descr = obj[6]
+                remove_comment = obj[7]
+                remove_object_id = obj[8]
 
                 if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
                     cur.execute('SELECT * FROM ' + facility + '_Removed_CircuitObject WHERE id = ?', (remove_object_id,))
                     ptc_row = cur.fetchone()
                     room_id = ptc_row[1]
                     voltage_id = ptc_row[4]
+                    description = ptc_row[6]
                     parent_id = ptc_row[7]
                     tail = ptc_row[8]
+                    path = parent_path + '.' + tail
                     ( number, name ) = tailToNumberName( tail )
+
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
+
+                    cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
+                    voltage = cur.fetchone()[0]
+                    ptc_obj = { 'object_type': remove_object_type, 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    origin = make_cirobj_label( ptc_obj )
 
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
@@ -524,6 +539,7 @@ class sortableTable:
                     room_id = device_row[1]
                     parent_id = device_row[2]
                     name = device_row[5]
+                    origin = make_device_label( name=name, loc_new=loc_new, loc_old=loc_old, loc_descr=loc_descr, facility=facility )
 
                     fields = { 'name': name, 'parent_id': parent_id, 'room_id': room_id }
 
@@ -531,8 +547,9 @@ class sortableTable:
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
                     room = cur.fetchone()
                     fields = { 'loc_new': room[1], 'loc_old': room[2], 'loc_descr': room[4] }
+                    origin = '<span class="glyphicon glyphicon-map-marker"></span>' + dbCommon.format_location( loc_new, loc_old, loc_descr )
 
-                row = { 'id': obj[0], 'timestamp': obj[1], 'remove_object_type': remove_object_type, 'remove_object_origin': obj[3], 'remove_comment': obj[4], 'remove_object_id': remove_object_id, 'restore_object': obj[0], 'fields': fields }
+                row = { 'id': recycle_id, 'timestamp': timestamp, 'remove_object_type': remove_object_type, 'remove_object_origin': origin, 'remove_comment': remove_comment, 'remove_object_id': remove_object_id, 'restore_object': recycle_id, 'fields': fields }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -1147,26 +1164,26 @@ class removeCircuitObject:
         search_result = row[9]
         source = row[10]
 
-        # Format origin text
+        # Get parent path
+        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
+        parent_path = cur.fetchone()[0]
+
+        # Get location
         if room_id != '':
             cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
             room_row = cur.fetchone()
             loc_new = room_row[1]
             loc_old = room_row[2]
             loc_descr = room_row[4]
-            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
-            where = ' <span class="glyphicon glyphicon-map-marker"></span>' + formatted_location
         else:
-            where = ''
-
-        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-        source = cur.fetchone()[0]
-        origin = tail + ' <span class="glyphicon glyphicon-arrow-up"></span>' + source + where
+            loc_new = ''
+            loc_old = ''
+            loc_descr = ''
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, object_type, origin, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
@@ -1234,27 +1251,27 @@ class removeDevice:
         description = row[3]
         name = row[5]
 
-        # Format origin text
+        # Get parent path
         cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-        circuit = cur.fetchone()[0]
+        parent_path = cur.fetchone()[0]
 
+        # Get location
         if room_id != '':
             cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
             room_row = cur.fetchone()
             loc_new = room_row[1]
             loc_old = room_row[2]
             loc_descr = room_row[4]
-            formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
-            where = ' <span class="glyphicon glyphicon-map-marker"></span>' + formatted_location
         else:
-            where = ''
-
-        origin = name + ' <span class="glyphicon glyphicon-arrow-up"></span>' + circuit + where
+            loc_new = ''
+            loc_old = ''
+            loc_descr = ''
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, 'Device', origin, comment, id ) )
+        object_type = 'Device'
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
@@ -1282,17 +1299,16 @@ class removeLocation:
         target_table = facility + '_Room'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
-
-        # Format location
         loc_new = row[1]
         loc_old = row[2]
         loc_descr = row[4]
-        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
 
         # Create entry in Recycle Bin
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, remove_object_origin, remove_comment, remove_object_id ) VALUES(?,?,?,?,?) ', ( timestamp, 'Location', formatted_location, comment, id ) )
+        object_type = 'Location'
+        parent_path = ''
+        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
@@ -1308,6 +1324,7 @@ class removeLocation:
         else:
             target_column = 'old_num'
 
+        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( timestamp, by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
