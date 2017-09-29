@@ -63,7 +63,7 @@ def make_cirobj_label( o ):
 
     print( o['object_type'] )
 
-    if o['object_type'] in ( 'Panel', 'Transformer', 'PTC' ):
+    if o['object_type'] in ( 'Panel', 'Transformer', 'GenericCircuitObject' ):
 
         # Concatenate label fragments
         if o['source']:
@@ -542,7 +542,7 @@ class sortableTable:
 
                     cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
                     voltage = cur.fetchone()[0]
-                    ptc = { 'object_type': 'PTC', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    ptc = { 'object_type': 'GenericCircuitObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_cirobj_label( ptc )
 
                 if remove_object_type == 'Device':
@@ -1560,11 +1560,7 @@ class restoreRemovedObject:
 
         # Handle according to object type
         if ( restore_object_type == 'Panel' ) or ( restore_object_type == 'Transformer' ) or ( restore_object_type == 'Circuit' ):
-
-            source_table = facility + '_Removed_CircuitObject'
-            target_table = facility + '_CircuitObject'
-            # ????? Then what ?????
-
+            self.restore_circuit_object( by, id, parent_id, room_id, facility )
         elif restore_object_type == 'Device':
             self.restore_device( by, id, parent_id, room_id, facility )
         elif restore_object_type == 'Location':
@@ -1576,6 +1572,13 @@ class restoreRemovedObject:
         conn.commit()
 
         self.success = True
+
+
+    def restore_circuit_object( self, by, id, parent_id, room_id, facility ):
+        source_table = facility + '_Removed_CircuitObject'
+        target_table = facility + '_CircuitObject'
+        # ????? Then what ?????
+        self.messages = ['mooooooo']
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
