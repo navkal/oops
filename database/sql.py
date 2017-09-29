@@ -1572,37 +1572,55 @@ class restoreRemovedObject:
 
         #################################conn.commit()
 
-        self.debug = tail
         self.success = True
 
 
     def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
+
         source_table = facility + '_Removed_CircuitObject'
         target_table = facility + '_CircuitObject'
 
-        # Get path of parent-to-be
-        cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
-        parent_path = cur.fetchone()[0]
-
-        # Format new path of root
-        path = parent_path + '.' + tail
-
         # Get root object from source table
         cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
-        root_row = cur.fetchone()
-        root_row = list( root_row )
-        root_row.pop()
+        removed_root_row = cur.fetchone()
+        removed_root_row = list( removed_root_row )
+        removed_root_row.pop()
 
-        # Overwrite root values
-        root_row[1] = room_id
-        root_row[7] = parent_id
+        # Format new path of root
+        cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
+        parent_path = cur.fetchone()[0]
+        path = parent_path + '.' + tail
 
+        # Collect fragments of new search result text
+        source = parent_path.split( '.' )[-1]
 
-        description = make_device_description( name, room_id, facility )
+        voltage_id = removed_root_row[4]
+        cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
+        voltage = cur.fetchone()[0]
 
+        cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
+        loc = cur.fetchone()
+        location = loc[0]
+        location_old = loc[1]
+        location_descr = loc[2]
 
+        object_type = removed_root_row[5]
+        description = removed_root_row[6]
+
+        # Generate search result text
+        search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
+
+        # Overwrite original values with new values in root row
+        restore_root_row = removed_root_row
+        restore_root_row[1] = room_id
+        restore_root_row[2] = path
+        restore_root_row[7] = parent_id
+        restore_root_row[8] = tail
+        restore_root_row[9] = search_result
+        restore_root_row[10] = source
+
+        self.debug = search_result
         # ????? Then what ?????
-        self.messages = ['mooooooo']
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
