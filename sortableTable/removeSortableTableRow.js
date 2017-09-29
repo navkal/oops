@@ -22,7 +22,8 @@ function initRemoveDialog( sRemoveId )
   // Set dialog 'shown' handler
   $( '#removeDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRemoveDialogFocus );
 
-  // Optionally show comment field
+  // Clear and optionally show comment field
+  $( '#remove_comment' ).val( '' );
   if ( g_bShowRemoveComment )
   {
     $( '#removeCommentDiv label' ).text( g_tPropertyRules['remove_comment'].label )
