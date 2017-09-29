@@ -23,7 +23,13 @@ def open_database( enterprise ):
             cur = conn.cursor()
 
 
-def make_device_label( name=None, room_id=None, loc_new='', loc_old='', loc_descr='', facility=None ):
+def make_device_label( name=None, parent_path=None, room_id=None, loc_new='', loc_old='', loc_descr='', facility=None ):
+
+    label = ''
+
+    # Concatenate path
+    if parent_path:
+        label += ' <span class="glyphicon glyphicon-arrow-up"></span>' + parent_path
 
     # Get location details
     if room_id:
@@ -37,14 +43,18 @@ def make_device_label( name=None, room_id=None, loc_new='', loc_old='', loc_desc
         location_old = loc_old
         location_descr = loc_descr
 
-    # Generate label
-    label = name
-
+    # Concatenate location
     if location or location_old or location_descr:
-        label += ': <span class="glyphicon glyphicon-map-marker"></span>'
+        label += ' <span class="glyphicon glyphicon-map-marker"></span>'
         label += dbCommon.format_location( location, location_old, location_descr )
 
+    # Prepend name
     label = label.strip()
+    if label:
+        label = name + ': ' + label
+    else:
+        label = name
+
     return label
 
 
@@ -541,7 +551,7 @@ class sortableTable:
                     room_id = device_row[1]
                     parent_id = device_row[2]
                     name = device_row[5]
-                    origin = make_device_label( name=name, loc_new=loc_new, loc_old=loc_old, loc_descr=loc_descr, facility=facility )
+                    origin = make_device_label( name=name, parent_path=parent_path, loc_new=loc_new, loc_old=loc_old, loc_descr=loc_descr, facility=facility )
 
                     fields = { 'name': name, 'parent_id': parent_id, 'room_id': room_id }
 
