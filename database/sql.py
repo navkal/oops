@@ -1627,8 +1627,11 @@ class restoreRemovedObject:
         # Get CircuitObject descendants
         cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
         ptc_rows = cur.fetchall()
+        self.paths=[]
         for ptc_row in ptc_rows:
-            self.last_path = ptc_row[2]
+            ptc_path = ptc_row[2]
+
+            self.paths.append( ptc_path )
 
         self.removed_path = removed_path
         self.restore_path = restore_path
