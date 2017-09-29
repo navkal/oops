@@ -1585,11 +1585,12 @@ class restoreRemovedObject:
         removed_root_row = cur.fetchone()
         removed_root_row = list( removed_root_row )
         removed_root_row.pop()
+        removed_path = removed_root_row[2]
 
         # Format new path of root
         cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
         parent_path = cur.fetchone()[0]
-        path = parent_path + '.' + tail
+        restore_path = parent_path + '.' + tail
 
         # Collect fragments of new search result text
         source = parent_path.split( '.' )[-1]
@@ -1613,7 +1614,7 @@ class restoreRemovedObject:
         # Overwrite original values with new values in root row
         restore_root_row = removed_root_row
         restore_root_row[1] = room_id
-        restore_root_row[2] = path
+        restore_root_row[2] = restore_path
         restore_root_row[7] = parent_id
         restore_root_row[8] = tail
         restore_root_row[9] = search_result
@@ -1626,7 +1627,8 @@ class restoreRemovedObject:
 
 
 
-        self.debug = search_result
+        self.removed_path = removed_path
+        self.restore_path = restore_path
         # ????? Then what ?????
 
 
