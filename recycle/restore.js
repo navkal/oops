@@ -324,12 +324,6 @@ function onChangeControl( tEvent )
 
 function onSubmitRestoreDialog()
 {
-  if( ['Panel','Transformer','Circuit'].includes( g_tRow.remove_object_type ) ){alert( 'Restore operation not available.' );  return;}
-
-
-
-
-
   if ( validateInput() )
   {
     // Post request to server

@@ -1569,7 +1569,7 @@ class restoreRemovedObject:
         # Clean up recyle bin
         cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
 
-        conn.commit()
+        #################################conn.commit()
 
         self.success = True
 
