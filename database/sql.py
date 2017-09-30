@@ -1018,17 +1018,10 @@ class updateCircuitObject:
                     # Update descendant row in database
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
-            # Get fragments of search result text
-            voltage = get_voltage( voltage_id )
-
-            cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-            loc = cur.fetchone()
-            location = loc[0]
-            location_old = loc[1]
-            location_descr = loc[2]
-
             # Generate search result text
-            search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
+            voltage = get_voltage( voltage_id )
+            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Update target object
             cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, zone=?, voltage_id=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
