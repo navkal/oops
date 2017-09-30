@@ -991,8 +991,7 @@ class updateCircuitObject:
                     desc_description = desc[6]
                     desc_tail = desc[8]
 
-                    cur.execute('SELECT description FROM Voltage WHERE id = ?',(desc_voltage_id,))
-                    desc_voltage = cur.fetchone()[0]
+                    desc_voltage = get_voltage( desc_voltage_id )
 
                     cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (desc_room_id,))
                     desc_loc = cur.fetchone()
