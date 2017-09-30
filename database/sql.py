@@ -1516,7 +1516,7 @@ class restoreRemovedObject:
         # Clean up recyle bin
         cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
 
-        #################################conn.commit()
+        conn.commit()
 
         self.success = True
 
@@ -1561,13 +1561,13 @@ class restoreRemovedObject:
 
             # Restore root object at original ID
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_root_row[0],restore_root_row[1],restore_root_row[2],restore_root_row[3],restore_root_row[4],restore_root_row[5],restore_root_row[6],restore_root_row[7],restore_root_row[8],restore_root_row[9],restore_root_row[10]))
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
             # Get CircuitObject descendants
             cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
             descendants = cur.fetchall()
 
-            # Update path, search result, and source of all descendants
+            # Update path, search result, and source of all descendants; restore at original IDs
             for desc in descendants:
                 desc_room_id = desc[1]
                 desc_path = desc[2]
@@ -1583,12 +1583,33 @@ class restoreRemovedObject:
 
                 # Restore descendant object at original ID, with updated path, search result, and source
                 restore_desc_row = list( desc )
+                restore_desc_row.pop()
                 restore_desc_row[2] = restore_desc_path
                 restore_desc_row[9] = restore_desc_search_result
                 restore_desc_row[10] = restore_desc_source
                 cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
-                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_desc_row[0],restore_desc_row[1],restore_desc_row[2],restore_desc_row[3],restore_desc_row[4],restore_desc_row[5],restore_desc_row[6],restore_desc_row[7],restore_desc_row[8],restore_desc_row[9],restore_desc_row[10]))
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_desc_row ) )
 
+            # Get descendant devices
+            source_device_table = facility + '_Removed_Device'
+            target_device_table = facility + '_Device'
+            cur.execute( 'SELECT * FROM ' + source_device_table + ' WHERE remove_id=?', ( id ) )
+            devices = cur.fetchall()
+
+            # Restore devices at original IDs
+            for dev in devices:
+                restore_dev_row = list( dev )
+                restore_dev_row.pop()
+                cur.execute( 'INSERT INTO ' + target_device_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_dev_row ) )
+
+            # Clean up restored objects from _Removed_ tables
+            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+            cur.execute( 'DELETE FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) );
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restore' + object_type ], target_table, 'path', restore_path, 'Restore ' + object_type + ' [' + restore_path + ']', facility_id ) )
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
