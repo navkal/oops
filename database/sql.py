@@ -216,11 +216,18 @@ def get_voltage( voltage_id ):
 
 
 def get_location( room_id, facility ):
-    cur.execute( 'SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,) )
-    loc = cur.fetchone()
-    loc_new = loc[0]
-    loc_old = loc[1]
-    loc_descr = loc[2]
+
+    if room_id != '':
+        cur.execute( 'SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,) )
+        loc = cur.fetchone()
+        loc_new = loc[0]
+        loc_old = loc[1]
+        loc_descr = loc[2]
+    else:
+        loc_new = ''
+        loc_old = ''
+        loc_descr = ''
+
     return ( loc_new, loc_old, loc_descr )
 
 
@@ -1205,16 +1212,7 @@ class removeCircuitObject:
         parent_path = cur.fetchone()[0]
 
         # Get location
-        if room_id != '':
-            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-            room_row = cur.fetchone()
-            loc_new = room_row[1]
-            loc_old = room_row[2]
-            loc_descr = room_row[4]
-        else:
-            loc_new = ''
-            loc_old = ''
-            loc_descr = ''
+        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
 
         # Create entry in Recycle Bin
         timestamp = time.time()
@@ -1292,12 +1290,7 @@ class removeDevice:
         parent_path = cur.fetchone()[0]
 
         # Get location
-        if room_id != '':
-            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-        else:
-            loc_new = ''
-            loc_old = ''
-            loc_descr = ''
+        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
 
         # Create entry in Recycle Bin
         timestamp = time.time()
