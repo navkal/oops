@@ -1565,11 +1565,30 @@ class restoreRemovedObject:
 
             # Get CircuitObject descendants
             cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
-            ptc_rows = cur.fetchall()
-            self.paths=[]
-            for ptc_row in ptc_rows:
-                ptc_path = ptc_row[2]
-                # ????? Then what ?????
+            descendants = cur.fetchall()
+
+            # Update path, search result, and source of all descendants
+            for desc in descendants:
+                desc_room_id = desc[1]
+                desc_path = desc[2]
+                desc_voltage = get_voltage( desc[4] )
+                desc_object_type = desc[5]
+                desc_description = desc[6]
+                desc_tail = desc[8]
+                ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
+                restore_desc_path = desc_path.replace( removed_path, restore_path, 1 )
+                restore_desc_source = restore_desc_path.split( '.' )[-2]
+
+                restore_desc_search_result = dbCommon.make_search_result( restore_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
+
+                # Restore descendant object at original ID, with updated path, search result, and source
+                restore_desc_row = list( desc )
+                restore_desc_row[2] = restore_desc_path
+                restore_desc_row[9] = restore_desc_search_result
+                restore_desc_row[10] = restore_desc_source
+                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_desc_row[0],restore_desc_row[1],restore_desc_row[2],restore_desc_row[3],restore_desc_row[4],restore_desc_row[5],restore_desc_row[6],restore_desc_row[7],restore_desc_row[8],restore_desc_row[9],restore_desc_row[10]))
+
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
