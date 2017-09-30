@@ -33,20 +33,12 @@ def make_device_label( name=None, parent_path=None, room_id=None, loc_new='', lo
 
     # Get location details
     if room_id:
-        cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
-        room = cur.fetchone()
-        location = room[0]
-        location_old = room[1]
-        location_descr = room[2]
-    else:
-        location = loc_new
-        location_old = loc_old
-        location_descr = loc_descr
+        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
 
     # Concatenate location
-    if location or location_old or location_descr:
+    if loc_new or loc_old or loc_descr:
         label += ' <span class="glyphicon glyphicon-map-marker"></span>'
-        label += dbCommon.format_location( location, location_old, location_descr )
+        label += dbCommon.format_location( loc_new, loc_old, loc_descr )
 
     # Prepend name
     label = label.strip()
