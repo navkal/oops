@@ -215,6 +215,15 @@ def get_voltage( voltage_id ):
     return voltage
 
 
+def get_location( room_id, facility ):
+    cur.execute( 'SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,) )
+    loc = cur.fetchone()
+    loc_new = loc[0]
+    loc_old = loc[1]
+    loc_descr = loc[2]
+    return ( loc_new, loc_old, loc_descr )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -1607,23 +1616,13 @@ class restoreRemovedObject:
         parent_path = cur.fetchone()[0]
         restore_path = parent_path + '.' + tail
 
-        # Collect fragments of new search result text
+        # Generate search result text
         source = parent_path.split( '.' )[-1]
-
-        voltage_id = removed_root_row[4]
-        voltage = get_voltage( voltage_id )
-
-        cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-        loc = cur.fetchone()
-        location = loc[0]
-        location_old = loc[1]
-        location_descr = loc[2]
-
+        voltage = get_voltage( removed_root_row[4] )
+        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
         object_type = removed_root_row[5]
         description = removed_root_row[6]
-
-        # Generate search result text
-        search_result = dbCommon.make_search_result( source, voltage, location, location_old, location_descr, object_type, description, tail )
+        search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
         # Overwrite original values with new values in root row
         restore_root_row = removed_root_row
