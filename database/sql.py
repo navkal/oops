@@ -306,13 +306,10 @@ class cirobj:
 
         #initialize circuitObject properties
         row = cur.fetchone()
-        cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
-        voltage = cur.fetchone()
-
         self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
-        self.voltage = voltage[1]
+        self.voltage = get_voltage( row[4] )
         self.object_type = row[5].title()
         self.description = row[6]
         self.parent_id = row[7]
