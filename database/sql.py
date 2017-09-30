@@ -546,8 +546,7 @@ class sortableTable:
 
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
-                    cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
-                    voltage = cur.fetchone()[0]
+                    voltage = get_voltage( voltage_id )
                     ptc = { 'object_type': 'GenericCircuitObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_cirobj_label( ptc )
 
