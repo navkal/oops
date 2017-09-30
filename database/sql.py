@@ -912,8 +912,7 @@ class addCircuitObject:
             # Path is not in use; okay to add
 
             # Get fragments of search result text
-            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
-            voltage = cur.fetchone()[0]
+            voltage = get_voltage( voltage_id )
 
             cur.execute('''SELECT room_num, old_num, description FROM ''' + facility + '''_Room WHERE id = ?''', (room_id,))
             loc = cur.fetchone()
