@@ -34,10 +34,7 @@
 
   // If there is an error message, indicate which dialog box fields to highlight.
   // Include the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
-  if ( ! empty( $aMessages ) )
-  {
-    $aSelectors = [ '#parent_path', '#number', '#name' ];
-  }
+  $aSelectors = empty( $aMessages ) ? [] : [ '#parent_path', '#number', '#name' ];
 
   $tRsp =
   [
