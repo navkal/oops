@@ -1570,8 +1570,6 @@ class restoreRemovedObject:
             self.paths=[]
             for ptc_row in ptc_rows:
                 ptc_path = ptc_row[2]
-
-                self.messages.append( ptc_path )
                 # ????? Then what ?????
 
 

@@ -311,6 +311,20 @@ function onChangeControl( tEvent )
     var sId = tControl.attr( 'id' );
     var sVal = tControl.val();
 
+    // Special handling for PTC Name field
+    switch( g_tRow.remove_object_type )
+    {
+      case 'Panel':
+      case 'Transformer':
+      case 'Circuit':
+        if ( sId == 'name' )
+        {
+          // Convert to uppercase
+          tControl.val( sVal.toUpperCase() );
+        }
+        break;
+    }
+
     // Special handling for select2 objects
     if ( tControl.prop( 'tagName' ).toLowerCase() == 'select' )
     {
@@ -480,6 +494,21 @@ function validateInput()
 
 function restoreDone( tRsp, sStatus, tJqXhr )
 {
-  alert( JSON.stringify( tRsp ) );
-  location.reload();
+  if ( tRsp.messages.length )
+  {
+    // Show error messages
+    showMessages( tRsp.messages );
+
+    // Highlight pertinent fields
+    var aSelectors = tRsp.selectors;
+    for ( var iSelector in aSelectors )
+    {
+      var sSelector = aSelectors[iSelector];
+      $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+  }
+  else
+  {
+    location.reload();
+  }
 }

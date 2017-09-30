@@ -36,7 +36,7 @@
   // Include the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
   if ( ! empty( $aMessages ) )
   {
-    $aSelectors = [ '#parent_path_container .selection', '#number', '#name' ];
+    $aSelectors = [ '#parent_path', '#number', '#name' ];
   }
 
   $tRsp =
