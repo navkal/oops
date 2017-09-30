@@ -1008,8 +1008,7 @@ class updateCircuitObject:
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
             # Get fragments of search result text
-            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
-            voltage = cur.fetchone()[0]
+            voltage = get_voltage( voltage_id )
 
             cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
             loc = cur.fetchone()
