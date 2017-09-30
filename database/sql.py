@@ -1539,8 +1539,7 @@ class restoreRemovedObject:
 
             # Get root object from source table
             cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
-            removed_root_row = cur.fetchone()
-            removed_root_row = list( removed_root_row )
+            removed_root_row = list( cur.fetchone() )
             removed_root_row.pop()
             removed_path = removed_root_row[2]
 
