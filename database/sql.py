@@ -1293,11 +1293,7 @@ class removeDevice:
 
         # Get location
         if room_id != '':
-            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-            room_row = cur.fetchone()
-            loc_new = room_row[1]
-            loc_old = room_row[2]
-            loc_descr = room_row[4]
+            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
         else:
             loc_new = ''
             loc_old = ''
