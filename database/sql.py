@@ -998,24 +998,14 @@ class updateCircuitObject:
                     desc_id = desc[0]
                     desc_room_id = desc[1]
                     desc_path = desc[2]
-                    desc_voltage_id = desc[4]
+                    desc_voltage = get_voltage( desc[4] )
                     desc_object_type = desc[5]
                     desc_description = desc[6]
                     desc_tail = desc[8]
-
-                    desc_voltage = get_voltage( desc_voltage_id )
-
-                    cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (desc_room_id,))
-                    desc_loc = cur.fetchone()
-                    desc_loc_new = desc_loc[0]
-                    desc_loc_old = desc_loc[1]
-                    desc_loc_descr = desc_loc[2]
-
+                    ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                     new_desc_path = desc_path.replace( original_path, path, 1 )
                     new_desc_source = new_desc_path.split( '.' )[-2]
                     desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
-
-                    # Update descendant row in database
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
             # Generate search result text
