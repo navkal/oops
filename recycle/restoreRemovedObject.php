@@ -25,7 +25,28 @@
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
-  // Echo status
+  // Extract result status
   $sStatus = $output[ count( $output ) - 1 ];
-  echo $sStatus;
+
+  // Decode result status
+  $tStatus = json_decode( $sStatus );
+  $aMessages = $tStatus->messages;
+
+  // If there is an error message, indicate which dialog box fields to highlight.
+  // Include the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
+  if ( ! empty( $aMessages ) )
+  {
+    $aSelectors = [ '#parent_path_container .selection', '#number', '#name' ];
+  }
+
+  $tRsp =
+  [
+    'messages' => $aMessages,
+    'selectors' => $aSelectors
+  ];
+
+  $sRsp = json_encode( $tRsp );
+
+  // Echo status
+  echo $sRsp;
 ?>

@@ -725,7 +725,7 @@ class sortableTableRow:
         self.voltage_id = voltage[0]
         self.voltage = voltage[1]
 
-        ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( room_id, facility )
+        ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
         # Add image filename
@@ -1523,54 +1523,56 @@ class restoreRemovedObject:
 
     def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
 
+        self.messages = []
+
         source_table = facility + '_Removed_CircuitObject'
         target_table = facility + '_CircuitObject'
 
-        # Get root object from source table
-        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
-        removed_root_row = cur.fetchone()
-        removed_root_row = list( removed_root_row )
-        removed_root_row.pop()
-        removed_path = removed_root_row[2]
+        # Determine whether requested path is available
+        ( test_id, restore_path, source ) = test_path_availability( target_table, parent_id, tail )
 
-        # Format new path of root
-        cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
-        parent_path = cur.fetchone()[0]
-        restore_path = parent_path + '.' + tail
+        if test_id:
+            # Path already in use
+            self.messages.append( "Path '" + restore_path + "' is not available." )
 
-        # Generate search result text
-        source = parent_path.split( '.' )[-1]
-        voltage = get_voltage( removed_root_row[4] )
-        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-        object_type = removed_root_row[5]
-        description = removed_root_row[6]
-        search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+        else:
 
-        # Overwrite original values with new values in root row
-        restore_root_row = removed_root_row
-        restore_root_row[1] = room_id
-        restore_root_row[2] = restore_path
-        restore_root_row[7] = parent_id
-        restore_root_row[8] = tail
-        restore_root_row[9] = search_result
-        restore_root_row[10] = source
+            # Get root object from source table
+            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
+            removed_root_row = cur.fetchone()
+            removed_root_row = list( removed_root_row )
+            removed_root_row.pop()
+            removed_path = removed_root_row[2]
 
-        # Restore root object at original ID
-        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
-             VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_root_row[0],restore_root_row[1],restore_root_row[2],restore_root_row[3],restore_root_row[4],restore_root_row[5],restore_root_row[6],restore_root_row[7],restore_root_row[8],restore_root_row[9],restore_root_row[10]))
+            # Generate search result text
+            voltage = get_voltage( removed_root_row[4] )
+            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
+            object_type = removed_root_row[5]
+            description = removed_root_row[6]
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
-        # Get CircuitObject descendants
-        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
-        ptc_rows = cur.fetchall()
-        self.paths=[]
-        for ptc_row in ptc_rows:
-            ptc_path = ptc_row[2]
+            # Overwrite original values with new values in root row
+            restore_root_row = removed_root_row
+            restore_root_row[1] = room_id
+            restore_root_row[2] = restore_path
+            restore_root_row[7] = parent_id
+            restore_root_row[8] = tail
+            restore_root_row[9] = search_result
+            restore_root_row[10] = source
 
-            self.paths.append( ptc_path )
+            # Restore root object at original ID
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (restore_root_row[0],restore_root_row[1],restore_root_row[2],restore_root_row[3],restore_root_row[4],restore_root_row[5],restore_root_row[6],restore_root_row[7],restore_root_row[8],restore_root_row[9],restore_root_row[10]))
 
-        self.removed_path = removed_path
-        self.restore_path = restore_path
-        # ????? Then what ?????
+            # Get CircuitObject descendants
+            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
+            ptc_rows = cur.fetchall()
+            self.paths=[]
+            for ptc_row in ptc_rows:
+                ptc_path = ptc_row[2]
+
+                self.messages.append( ptc_path )
+                # ????? Then what ?????
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
