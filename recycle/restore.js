@@ -266,6 +266,9 @@ function finishInit()
   $( '.form-group>label', '#restoreDialogForm' ).removeClass().addClass( 'control-label' ).addClass( 'col-sm-' + nLabelColumnWidth );
   $( '.form-group>div', '#restoreDialogForm' ).removeClass().addClass( 'col-sm-' + ( 12 - nLabelColumnWidth ) );
 
+  // Turn off autocomplete
+  $( 'input', '#restoreDialogForm' ).attr( 'autocomplete', 'off' );
+
   // Set change handler
   resetChangeHandler();
 
