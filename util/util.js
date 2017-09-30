@@ -195,13 +195,6 @@ var g_tPropertyRules =
     columnType: 'text', // Controls text-align
     displayIndex: displayIndex ++
   },
-  loc_type:
-  {
-    label: "Location Type",
-    showInPropertiesWindow: true,
-    showInSortableTable: true,
-    displayIndex: displayIndex ++
-  },
   loc_descr:
   {
     label: "Location Description",

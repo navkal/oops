@@ -217,7 +217,7 @@ def get_voltage( voltage_id ):
 
 def get_location( room_id, facility ):
 
-    if room_id != '':
+    if str( room_id ).isdigit():
         cur.execute( 'SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,) )
         loc = cur.fetchone()
         loc_new = loc[0]
@@ -265,20 +265,8 @@ class device:
         self.label = make_device_label( name=self.name, room_id=self.room_id, facility=facility )
 
         #gets room where device is located
-        if str( self.room_id ).isdigit():
-            cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
-            room = cur.fetchone()
-            self.loc_new = room[1]
-            self.loc_old = room[2]
-            self.loc_type = room[3]
-            self.loc_descr = room[4]
-            formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
-        else:
-            self.loc_new = ''
-            self.loc_old = ''
-            self.loc_type = ''
-            self.loc_descr = ''
-            formatted_location = ''
+        ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
+        formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
         cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
         self.events = cur.fetchall()
@@ -351,7 +339,6 @@ class cirobj:
         room = cur.fetchone()
         self.loc_new = room[1]
         self.loc_old = room[2]
-        self.loc_type = room[3]
         self.loc_descr = room[4]
 
         # Generate label
@@ -717,7 +704,6 @@ class location:
         self.id = row[0]
         self.loc_new = row[1]
         self.loc_old = row[2]
-        self.loc_type = row[3]
         self.loc_descr = row[4]
 
         cur.execute('SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (self.id,))
@@ -763,12 +749,7 @@ class sortableTableRow:
         self.voltage_id = voltage[0]
         self.voltage = voltage[1]
 
-        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
-        room = cur.fetchone()
-        self.loc_new = room[1]
-        self.loc_old = room[2]
-        self.loc_type = room[3]
-        self.loc_descr = room[4]
+        ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( room_id, facility )
         self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
         # Add image filename
