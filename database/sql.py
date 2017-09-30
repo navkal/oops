@@ -189,7 +189,7 @@ def test_path_availability( target_table, parent_id, tail ):
     return ( test_id, path, source )
 
 
-def tailToNumberName( tail ):
+def tail_to_number_name( tail ):
 
     aTail = tail.split( '-', maxsplit=1 )
 
@@ -207,6 +207,12 @@ def tailToNumberName( tail ):
         name = tail
 
     return ( number, name )
+
+
+def get_voltage( voltage_id ):
+    cur.execute( 'SELECT description FROM Voltage WHERE id = ?', (voltage_id,) )
+    voltage = cur.fetchone()[0]
+    return voltage
 
 
 class device:
@@ -536,7 +542,7 @@ class sortableTable:
                     parent_id = ptc_row[7]
                     tail = ptc_row[8]
                     path = parent_path + '.' + tail
-                    ( number, name ) = tailToNumberName( tail )
+                    ( number, name ) = tail_to_number_name( tail )
 
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
@@ -738,7 +744,7 @@ class sortableTableRow:
 
         # Extract number and name from path tail
         tail = self.path.split('.')[-1]
-        ( self.number, self.name ) = tailToNumberName( tail )
+        ( self.number, self.name ) = tail_to_number_name( tail )
 
         cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
         voltage = cur.fetchone()
