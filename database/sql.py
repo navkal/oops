@@ -1125,8 +1125,7 @@ class updateLocation:
             source = row[10]
 
             voltage_id = row[4]
-            cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
-            voltage = cur.fetchone()[0]
+            voltage = get_voltage( voltage_id )
 
             object_type = row[5]
             object_descr = row[6]
@@ -1618,8 +1617,7 @@ class restoreRemovedObject:
         source = parent_path.split( '.' )[-1]
 
         voltage_id = removed_root_row[4]
-        cur.execute('SELECT description FROM Voltage WHERE id = ?',(voltage_id,))
-        voltage = cur.fetchone()[0]
+        voltage = get_voltage( voltage_id )
 
         cur.execute('SELECT room_num, old_num, description FROM ' + facility + '_Room WHERE id = ?', (room_id,))
         loc = cur.fetchone()
