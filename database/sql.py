@@ -323,11 +323,7 @@ class cirobj:
             self.parent_path = ''
 
         # Get room information
-        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (self.room_id,))
-        room = cur.fetchone()
-        self.loc_new = room[1]
-        self.loc_old = room[2]
-        self.loc_descr = room[4]
+        ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
 
         # Generate label
         self.label = make_cirobj_label( self.__dict__ )
