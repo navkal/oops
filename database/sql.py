@@ -93,20 +93,8 @@ def make_cirobj_label( o ):
 
 
 def make_device_description( name, room_id, facility ):
-
-    if room_id.isdigit():
-        cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (room_id,))
-        room = cur.fetchone()
-        loc_new = room[1]
-        loc_old = room[2]
-        loc_descr = room[4]
-    else:
-        loc_new = ''
-        loc_old = ''
-        loc_descr = ''
-
+    ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
     description = dbCommon.format_device_description( name, loc_new, loc_old, loc_descr )
-
     return description
 
 
