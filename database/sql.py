@@ -188,6 +188,20 @@ def tail_to_number_name( tail ):
 
     return ( number, name )
 
+def get_facility( facility_id ):
+
+    facility_name = ''
+    facility_fullname = ''
+
+    if facility_id:
+        cur.execute('SELECT facility_name, facility_fullname FROM Facility WHERE id = ?', (facility_id,))
+        row = cur.fetchone()
+        if row:
+            facility_name = row[0]
+            facility_fullname = row[1]
+
+    return ( facility_name, facility_fullname )
+
 
 def get_voltage( voltage_id ):
     cur.execute( 'SELECT description FROM Voltage WHERE id = ?', (voltage_id,) )
@@ -558,6 +572,8 @@ class sortableTable:
                 target_table = obj[4]
                 target_column = obj[5]
                 target_value = obj[6]
+                facility_id = obj[8]
+                ( facility, facility_fullname ) = get_facility( facility_id )
 
                 if ( target_table == facility + '_Device' ) and ( target_column == 'id' ):
                     # Target is in Device table.  Enhance text representing event target.
@@ -567,12 +583,6 @@ class sortableTable:
                     name = device_row[1]
                     cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
                     target_value = cur.fetchone()[0] + " '" + name + "'"
-
-                facility_fullname = ''
-                facility_id = obj[8]
-                if facility_id:
-                    cur.execute('SELECT facility_fullname FROM Facility WHERE id = ?', (facility_id,))
-                    facility_fullname = cur.fetchone()[0]
 
                 row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'facility_fullname': facility_fullname, 'event_target': target_value, 'event_description': obj[7] }
                 self.rows.append( row )
