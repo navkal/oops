@@ -1609,7 +1609,7 @@ class restoreRemovedObject:
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restore' + object_type ], target_table, 'path', restore_path, 'Restore ' + object_type + ' [' + restore_path + ']', facility_id ) )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restore' + object_type ], target_table, 'path', restore_path, 'Restore ' + object_type.lower() + ' [' + restore_path + ']', facility_id ) )
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
