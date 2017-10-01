@@ -1498,6 +1498,8 @@ class restoreRemovedObject:
 
         open_database( enterprise )
 
+        self.messages = []
+
         # Get values representing object to be restored
         recycle_table = facility + '_Recycle'
         cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
@@ -1522,8 +1524,6 @@ class restoreRemovedObject:
 
 
     def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
-
-        self.messages = []
 
         source_table = facility + '_Removed_CircuitObject'
         target_table = facility + '_CircuitObject'
