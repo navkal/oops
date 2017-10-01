@@ -121,7 +121,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'update':
                 sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
@@ -129,7 +129,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'remove':
                 sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
@@ -137,7 +137,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
               case 'restore':
                 sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="initRestoreDialog('+"'"+sCellValue+"'"+')" data-target="#restoreDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRestoreDialog('+"'"+sCellValue+"'"+')" data-target="#restoreDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
                 sCell += '<span class="glyphicon glyphicon-plus" style="font-size:18px;" ></span>';
                 sCell += '</button>';
                 sCell += '</a>';
@@ -348,9 +348,14 @@ function renumberIndex()
 
 function openImageWindowEtc( tEvent )
 {
+  highlightRow( tEvent );
+  openImageWindow( tEvent );
+}
+
+function highlightRow( tEvent )
+{
   $( '#sortableTableBody' ).find( '.text-primary' ).removeClass( 'text-primary' );
   $( tEvent.target ).closest( 'tr' ).addClass( 'text-primary' );
-  openImageWindow( tEvent );
 }
 
 function closeChildWindows()
