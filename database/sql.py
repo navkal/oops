@@ -237,6 +237,16 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
+def format_where( parent_id, room_id, facility ):
+    circuit = get_path( parent_id, facility )
+    loc = dbCommon.format_location( *get_location( room_id, facility ) )
+    where = circuit
+    if loc:
+        where += ', ' + loc
+    where = '[' + where + ']'
+    return where
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -1635,29 +1645,31 @@ class restoreRemovedObject:
         # Get fields from source table
         cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
         source_row = cur.fetchone()
-        source_row = list( source_row )
-        name = source_row[5]
-        description = make_device_description( name, room_id, facility )
 
-        # Overwrite fields with updated values
-        source_row[1] = room_id
-        source_row[2] = parent_id
-        source_row[3] = description
-
-        # Restore object into target table
-        restore_row = source_row
+        # Copy source row and overwrite fields with updated values
+        restore_row = list( source_row )
         restore_row.pop()
-        restore_row = tuple( restore_row )
+        restore_row[1] = room_id
+        restore_row[2] = parent_id
+        name = restore_row[5]
+        restore_row[3] = make_device_description( name, room_id, facility )
         cur.execute( 'INSERT INTO ' + target_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_row ) )
 
         # Clean up removed object
         cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
 
         # Log activity
-        name = restore_row[5]
+        source_from = format_where( source_row[2], source_row[1], facility )
+        restore_to = format_where( restore_row[2], restore_row[1],  facility )
+
+        from_to = ' to ' + restore_to
+        if source_from != restore_to:
+            from_to = ', previously removed from ' + source_from + ', ' + from_to
+
         facility_id = facility_name_to_id( facility )
+
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreDevice'], target_table, 'name', name, "Restore device [" + description + "]", facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreDevice'], target_table, 'name', name, "Restore device '" + name + "'" + from_to, facility_id ) )
 
 
     def restore_location( self, by, id, facility ):
@@ -1695,3 +1707,4 @@ class restoreRemovedObject:
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreLocation'], target_table, target_column, formatted_location, 'Restore location [' + formatted_location + ']', facility_id ) )
+
