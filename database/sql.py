@@ -587,22 +587,10 @@ class sortableTable:
             # Make table rows
             self.rows = []
             for obj in objects:
-                target_table = obj[4]
-                target_column = obj[5]
-                target_value = obj[6]
-                facility_id = obj[8]
+                facility_id = obj[4]
                 ( facility, facility_fullname ) = get_facility( facility_id )
 
-                if ( target_table == facility + '_Device' ) and ( target_column == 'id' ):
-                    # Target is in Device table.  Enhance text representing event target.
-                    cur.execute('SELECT parent_id, name FROM ' + facility + '_Device WHERE id = ?', (target_value,))
-                    device_row = cur.fetchone()
-                    parent_id = device_row[0]
-                    name = device_row[1]
-                    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-                    target_value = cur.fetchone()[0] + " '" + name + "'"
-
-                row = { 'timestamp': obj[1], 'event_trigger': obj[2], 'event_type': obj[3], 'facility_fullname': facility_fullname, 'event_target': target_value, 'event_description': obj[7] }
+                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_description': obj[5] }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -815,8 +803,9 @@ class saveNotes:
         # Map facility name to facility ID
         facility_id = facility_name_to_id( args.facility );
 
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), args.username, dbCommon.dcEventTypes['notes'], args.facility + '_' + args.targetTable, args.targetColumn, args.targetValue, args.notes, facility_id ) )
+        object_descr = 'FAKE'
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
+            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['notes'], args.username, facility_id, args.notes, '', '', args.object_type, args.id, object_descr ) )
 
         conn.commit()
 
