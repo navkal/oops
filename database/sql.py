@@ -209,6 +209,18 @@ def get_voltage( voltage_id ):
     return voltage
 
 
+def get_path( id, facility ):
+
+    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    path_row = cur.fetchone()
+
+    if path_row:
+        path = path_row[0]
+    else:
+        path = ''
+    return path
+
+
 def get_location( room_id, facility ):
 
     if str( room_id ).isdigit():
@@ -321,12 +333,7 @@ class cirobj:
             self.transformer_descr = self.description
 
         # Retrieve parent path
-        cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (self.parent_id,))
-        path_row = cur.fetchone()
-        if path_row:
-            self.parent_path = path_row[0]
-        else:
-            self.parent_path = ''
+        self.parent_path = get_path( self.parent_id, facility )
 
         # Get room information
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
@@ -943,8 +950,7 @@ class updateCircuitObject:
                 shutil.copy2( filename, target );
 
             # Get original path of target element
-            cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id = ?', (id,) )
-            original_path = cur.fetchone()[0]
+            original_path = get_path( id, facility )
 
             # If path of target object is to change, update paths of all descendants
             if path != original_path:
@@ -1151,8 +1157,7 @@ class removeCircuitObject:
         source = row[10]
 
         # Get parent path
-        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-        parent_path = cur.fetchone()[0]
+        parent_path = get_path( parent_id, facility )
 
         # Get location
         ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
@@ -1229,8 +1234,7 @@ class removeDevice:
         name = row[5]
 
         # Get parent path
-        cur.execute( 'SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (parent_id,))
-        parent_path = cur.fetchone()[0]
+        parent_path = get_path( parent_id, facility )
 
         # Get location
         ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
