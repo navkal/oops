@@ -1568,8 +1568,6 @@ class restoreRemovedObject:
             removed_root_row = cur.fetchone()
             removed_room_id = removed_root_row[1]
             removed_path = removed_root_row[2]
-            removed_from = format_where( id, removed_room_id, facility, path=removed_path )
-            restore_to = format_where( id, room_id, facility, path=restore_path )
 
             # Generate search result text
             voltage = get_voltage( removed_root_row[4] )
@@ -1636,6 +1634,8 @@ class restoreRemovedObject:
             cur.execute( 'DELETE FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) );
 
             # Log activity
+            removed_from = format_where( id, removed_room_id, facility, path=removed_path )
+            restore_to = format_where( id, room_id, facility, path=restore_path )
             from_to = ' ' + restore_to
             if removed_from != restore_to:
                 from_to = ', previously ' + removed_from + ', to' + from_to
