@@ -237,10 +237,11 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
-def format_where( parent_id, room_id, facility ):
-    circuit = get_path( parent_id, facility )
+def format_where( object_id, room_id, facility, path=None ):
+    if path == None:
+        path = get_path( object_id, facility )
     loc = dbCommon.format_location( *get_location( room_id, facility ) )
-    where = circuit
+    where = path
     if loc:
         where += ', ' + loc
     where = '[' + where + ']'
@@ -1165,6 +1166,7 @@ class removeCircuitObject:
         tail = row[8]
         search_result = row[9]
         source = row[10]
+        from_where = format_where( id, room_id, facility )
 
         # Get parent path
         parent_path = get_path( parent_id, facility )
@@ -1222,7 +1224,6 @@ class removeCircuitObject:
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
         # Log activity
-        from_where = format_where( parent_id, room_id, facility )
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, 'Remove ' + object_type.lower() + ' ' + from_where, facility_id ) )
@@ -1564,9 +1565,11 @@ class restoreRemovedObject:
 
             # Get root object from source table
             cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
-            removed_root_row = list( cur.fetchone() )
-            removed_root_row.pop()
+            removed_root_row = cur.fetchone()
+            removed_room_id = removed_root_row[1]
             removed_path = removed_root_row[2]
+            removed_from = format_where( id, removed_room_id, facility, path=removed_path )
+            restore_to = format_where( id, room_id, facility, path=restore_path )
 
             # Generate search result text
             voltage = get_voltage( removed_root_row[4] )
@@ -1576,7 +1579,8 @@ class restoreRemovedObject:
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Overwrite original values with new values in root row
-            restore_root_row = removed_root_row
+            restore_root_row = list( removed_root_row )
+            restore_root_row.pop()
             restore_root_row[1] = room_id
             restore_root_row[2] = restore_path
             restore_root_row[7] = parent_id
@@ -1632,9 +1636,13 @@ class restoreRemovedObject:
             cur.execute( 'DELETE FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) );
 
             # Log activity
+            from_to = ' ' + restore_to
+            if removed_from != restore_to:
+                from_to = ', previously ' + removed_from + ', to' + from_to
+
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restore' + object_type ], target_table, 'path', restore_path, 'Restore ' + object_type.lower() + ' [' + restore_path + ']', facility_id ) )
+                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restore' + object_type ], target_table, 'path', restore_path, 'Restore ' + object_type.lower() + from_to, facility_id ) )
 
 
     def restore_device( self, by, id, parent_id, room_id, facility ):
@@ -1661,7 +1669,7 @@ class restoreRemovedObject:
 
         # Log activity
         source_from = format_where( source_row[2], source_row[1], facility )
-        restore_to = format_where( restore_row[2], restore_row[1],  facility )
+        restore_to = format_where( restore_row[2], restore_row[1], facility )
 
         from_to = ' to ' + restore_to
         if source_from != restore_to:
