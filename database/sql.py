@@ -1240,7 +1240,6 @@ class removeDevice:
         row = cur.fetchone()
         room_id = row[1]
         parent_id = row[2]
-        description = row[3]
         name = row[5]
 
         # Get parent path
@@ -1264,9 +1263,10 @@ class removeDevice:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
 
         # Log activity
+        from_where = format_where( parent_id, room_id, facility )
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeDevice'], target_table, 'name', name, "Remove device [" + description + "]", facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeDevice'], target_table, 'name', name, "Remove device '" + name + "' from " + from_where, facility_id ) )
 
         conn.commit()
 
@@ -1707,4 +1707,3 @@ class restoreRemovedObject:
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreLocation'], target_table, target_column, formatted_location, 'Restore location [' + formatted_location + ']', facility_id ) )
-
