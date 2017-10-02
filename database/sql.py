@@ -1222,9 +1222,10 @@ class removeCircuitObject:
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
         # Log activity
+        from_where = format_where( parent_id, room_id, facility )
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, "Remove " + object_type.lower() + " [" + path + "]", facility_id ) )
+            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, 'Remove ' + object_type.lower() + ' ' + from_where, facility_id ) )
 
         conn.commit()
         self.success = True
