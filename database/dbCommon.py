@@ -49,7 +49,7 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
         cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description, force_change_password, enabled, first_name, last_name, email_address, organization, facility_ids )
         VALUES (?,?,?,?,?,?,?,?,?,?,? )''', (username, hash(password), role_id, description, force_change_password, enabled, first_name, last_name, email_address, organization, facility_ids) )
 
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, event_object_type, event_object_id )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', "Added user '" + username + "'", '', ''  ) )
 
         conn.commit()
