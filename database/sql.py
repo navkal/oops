@@ -1062,6 +1062,7 @@ class addLocation:
         target_table = facility + '_Room'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_num, old_num, location_type, description)
             VALUES (?,?,?,?)''', (location, old_location, '', description) )
+        loc_id = cur.lastrowid
 
         # Log activity
         if location != '':
@@ -1073,7 +1074,7 @@ class addLocation:
 
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
-            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', '', summarize_object( 'Location', id, facility ), '', '', '',  ) )
+            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', '', summarize_object( 'Location', loc_id, facility ), '', '', '',  ) )
 
         conn.commit()
 
