@@ -303,7 +303,7 @@ class device:
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_Device' AND target_column = 'id' AND target_value = ?", (self.id,) )
+        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE affected_object_type = ? AND affected_object_id = ?", (self.object_type, self.id,) )
         self.events = cur.fetchall()
 
         if user_role == 'Technician':
