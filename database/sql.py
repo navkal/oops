@@ -1072,8 +1072,8 @@ class addLocation:
         formatted_location = dbCommon.format_location( location, old_location, description )
 
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addLocation'], target_table, target_column, formatted_location, 'Add location [' + formatted_location + ']', facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
+            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', '', summarize_object( 'Location', id, facility ), '', '', '',  ) )
 
         conn.commit()
 
