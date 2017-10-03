@@ -250,18 +250,20 @@ def format_where( object_id, room_id, facility, path=None ):
 
 def summarize_object( type, id, facility ):
 
+    id = str( id )
+
     if type == 'Panel':
-        summary = 'it is a panel'
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
     elif type == 'Transformer':
-        summary = 'it is a transformer'
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
     elif type == 'Circuit':
-        summary = 'it is a circuit'
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
     elif type == 'Device':
-        summary = 'it is a device'
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
     elif type == 'Location':
         summary = dbCommon.format_location( *get_location( id, facility ) )
     else:
-        summary = 'Unknown object type: ' + type
+        summary = "unknown type '" + type + "' in " + facility + ' at id ' + id
 
     return summary
 
@@ -1020,11 +1022,12 @@ class addDevice:
         target_table = facility + '_Device'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
              VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
+        target_object_id = cur.lastrowid
 
         # Log activity
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['addDevice'], target_table, 'name', name, "Add device [" + description + "]", facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
 
         conn.commit()
 
@@ -1061,12 +1064,12 @@ class addLocation:
         target_table = facility + '_Room'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_num, old_num, location_type, description)
             VALUES (?,?,?,?)''', (location, old_location, '', description) )
-        loc_id = cur.lastrowid
+        target_object_id = cur.lastrowid
 
         # Log activity
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', loc_id, facility ), '', ''  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', target_object_id, facility ), 'Location', target_object_id  ) )
 
         conn.commit()
 
