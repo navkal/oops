@@ -1037,6 +1037,9 @@ class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
+        # Get state of object before update, for Activity log
+        before_summary = summarize_object( 'Device', id, facility )
+
         # Generate new description
         description = make_device_description( name, room_id, facility )
 
@@ -1047,8 +1050,8 @@ class updateDevice:
 
         # Log activity
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateDevice'], target_table, 'name', name, "Update device [" + description + "]", facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, summarize_object( 'Device', id, facility ), 'Device', id  ) )
 
         conn.commit()
 
