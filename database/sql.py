@@ -248,6 +248,24 @@ def format_where( object_id, room_id, facility, path=None ):
     return where
 
 
+def summarize_object( type, id, facility ):
+
+    if type == 'Panel':
+        summary = 'it is a panel'
+    elif type == 'Transformer':
+        summary = 'it is a transformer'
+    elif type == 'Circuit':
+        summary = 'it is a circuit'
+    elif type == 'Device':
+        summary = 'it is a device'
+    elif type == 'Location':
+        summary = dbCommon.format_location( *get_location( id, facility ) )
+    else:
+        summary = 'Unknown object type: ' + type
+
+    return summary
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -399,7 +417,7 @@ class cirobj:
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE target_table = '" + facility + "_CircuitObject' AND target_column = 'path' AND target_value = ?", (self.path,) )
+        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE affected_object_type = ? AND affected_object_id = ?", (self.object_type, self.id,) )
         self.events = cur.fetchall()
 
 
@@ -589,7 +607,6 @@ class sortableTable:
             for obj in objects:
                 facility_id = obj[4]
                 ( facility, facility_fullname ) = get_facility( facility_id )
-
                 row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_description': obj[5] }
                 self.rows.append( row )
 
@@ -804,6 +821,8 @@ class saveNotes:
         facility_id = facility_name_to_id( args.facility );
 
         object_descr = 'FAKE'
+        args.object_type = 'FAKE'
+        args.id = 'FAKE'
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
             VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['notes'], args.username, facility_id, args.notes, '', '', args.object_type, args.id, object_descr ) )
 
