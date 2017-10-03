@@ -925,8 +925,7 @@ class addCircuitObject:
             # Add new object
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
-
-            conn.commit()
+            target_object_id = cur.lastrowid
 
             # Copy uploaded image file
             if filename:
@@ -936,8 +935,8 @@ class addCircuitObject:
 
             # Log activity
             facility_id = facility_name_to_id( facility )
-            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['add' + object_type], target_table, 'tail', tail, "Add " + object_type.lower() + ' ' + path, facility_id ) )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['add' + object_type], by, facility_id, '', summarize_object( object_type, target_object_id, facility ), object_type, target_object_id  ) )
 
             conn.commit()
 
