@@ -9,7 +9,7 @@ def hash( text ):
 
 dcEventTypes = {
     'database': 'Database',
-    'notes': 'Notes',
+    'notes': 'Add Notes',
     'addCircuit': 'Add Circuit',
     'updateCircuit': 'Update Circuit',
     'removeCircuit': 'Remove Circuit',

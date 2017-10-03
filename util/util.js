@@ -68,9 +68,9 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  event_description:
+  event_result:
   {
-    label: "Description",
+    label: "Result",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++

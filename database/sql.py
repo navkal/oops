@@ -303,7 +303,7 @@ class device:
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE affected_object_type = ? AND affected_object_id = ?", (self.object_type, self.id,) )
+        cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE target_object_type = ? AND target_object_id = ?", (self.object_type, self.id,) )
         self.events = cur.fetchall()
 
         if user_role == 'Technician':
@@ -417,7 +417,7 @@ class cirobj:
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
-        cur.execute( "SELECT timestamp, username, event_type, description FROM Activity WHERE affected_object_type = ? AND affected_object_id = ?", (self.object_type, self.id,) )
+        cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE target_object_type = ? AND target_object_id = ?", (self.object_type, self.id,) )
         self.events = cur.fetchall()
 
 
@@ -605,9 +605,8 @@ class sortableTable:
             # Make table rows
             self.rows = []
             for obj in objects:
-                facility_id = obj[4]
-                ( facility, facility_fullname ) = get_facility( facility_id )
-                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_description': obj[5] }
+                ( facility, facility_fullname ) = get_facility( obj[4] )
+                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': obj[5], 'event_result': obj[6] }
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -823,7 +822,7 @@ class saveNotes:
         object_descr = 'FAKE'
         args.object_type = 'FAKE'
         args.id = 'FAKE'
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, target_object_type, target_object_id, target_object_description )
             VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['notes'], args.username, facility_id, args.notes, '', '', args.object_type, args.id, object_descr ) )
 
         conn.commit()
@@ -1073,7 +1072,7 @@ class addLocation:
         formatted_location = dbCommon.format_location( location, old_location, description )
 
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, affected_object_type, affected_object_id, affected_object_description )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, target_object_type, target_object_id, target_object_description )
             VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', '', summarize_object( 'Location', loc_id, facility ), '', '', '',  ) )
 
         conn.commit()
