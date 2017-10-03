@@ -40,6 +40,13 @@ var g_tPropertyRules =
     columnType: 'timestamp',
     displayIndex: displayIndex ++
   },
+  facility_fullname:
+  {
+    label: "Facility",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   event_type:
   {
     label: "Event",
@@ -50,13 +57,6 @@ var g_tPropertyRules =
   event_trigger:
   {
     label: "Triggered By",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    displayIndex: displayIndex ++
-  },
-  facility_fullname:
-  {
-    label: "Facility",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++

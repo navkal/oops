@@ -1064,16 +1064,9 @@ class addLocation:
         loc_id = cur.lastrowid
 
         # Log activity
-        if location != '':
-            target_column = 'room_num'
-        else:
-            target_column = 'old_num'
-
-        formatted_location = dbCommon.format_location( location, old_location, description )
-
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, target_object_type, target_object_id, target_object_description )
-            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', '', summarize_object( 'Location', loc_id, facility ), '', '', '',  ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', loc_id, facility ), '', ''  ) )
 
         conn.commit()
 
