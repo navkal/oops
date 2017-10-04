@@ -827,18 +827,13 @@ class saveNotes:
 
         open_database( args.enterprise )
 
-        # Map facility name to facility ID
-        facility_id = facility_name_to_id( args.facility );
-
-        object_descr = 'FAKE'
-        args.object_type = 'FAKE'
-        args.id = 'FAKE'
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, description, event_before, event_after, target_object_type, target_object_id, target_object_description )
-            VALUES (?,?,?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['notes'], args.username, facility_id, args.notes, '', '', args.object_type, args.id, object_descr ) )
+        # Save notes in Activity log
+        facility_id = facility_name_to_id( args.facility )
+        object_type = args.object_type.title()
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['saveNotes'], args.username, facility_id, summarize_object( object_type, args.object_id, args.facility ), args.notes, object_type, args.object_id  ) )
 
         conn.commit()
-
-        self.status = 'success'
 
 
 class signInUser:

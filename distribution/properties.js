@@ -218,9 +218,8 @@ function saveNotes( tEvent )
   {
     // Post request to server
     var tPostData = new FormData();
-    tPostData.append( "targetTable", ( ( g_sType == 'device' ) ? "Device" : "CircuitObject" ) );
-    tPostData.append( "targetColumn", ( ( g_sType == 'device' ) ? "id" : "path" ) );
-    tPostData.append( "targetValue", ( ( g_sType == 'device' ) ? g_sOid : g_sPath ) );
+    tPostData.append( 'object_type', g_sType );
+    tPostData.append( 'object_id', g_sOid )
     tPostData.append( "notes", sNotes );
 
     $.ajax(
