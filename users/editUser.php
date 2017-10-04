@@ -133,7 +133,6 @@
   function initUpdateDialog()
   {
     g_sAction = 'update';
-    g_sUsername = g_sUpdateTarget;
     formatLabels( 4 );
 
     g_sSubmitLabel = 'Update User';
@@ -142,6 +141,7 @@
     var tRow = findSortableTableRow( g_sUpdateTarget );
 
     // Load fields from the row
+    g_sUsername = tRow.username;
     g_sRole = tRow.role;
     g_sStatus = tRow.status;
     g_sFirstName = tRow.first_name;

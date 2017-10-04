@@ -463,9 +463,10 @@ var g_tPropertyRules =
     columnType: 'control',
     controlType: 'update',
     customizeButton:
-      function( sUsername )
+      function( sId )
       {
-        return ' title="Update [' + sUsername + ']" ';
+        var tRow = findSortableTableRow( sId );
+        return ' title="Update [' + tRow.username + ']" ';
       },
     displayIndex: displayIndex ++
   },

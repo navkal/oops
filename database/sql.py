@@ -654,7 +654,7 @@ class sortableTable:
                     else:
                         sStatus = 'Disabled'
 
-                    row = { 'id': id, 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': username, 'remove_user': remove_id, 'remove_what': remove_what, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
+                    row = { 'id': id, 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': id, 'remove_user': remove_id, 'remove_what': remove_what, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
                     self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
