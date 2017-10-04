@@ -296,7 +296,7 @@ def summarize_object( type, id, facility='' ):
     elif type == 'Location':
         summary = dbCommon.format_location( *get_location( id, facility ) )
     elif type == 'User':
-        summary = dbCommon.summarize_user( id )
+        summary = dbCommon.summarize_user( cur, id )
     else:
         summary = "unknown type '" + type + "' in " + facility + ' at id ' + id
 

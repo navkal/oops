@@ -51,7 +51,7 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
         target_object_id = cur.lastrowid
 
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_user( target_object_id ), 'User', target_object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_user( cur, target_object_id ), 'User', target_object_id  ) )
 
         conn.commit()
 
@@ -128,6 +128,54 @@ def path_to_id( cur, path, sFacility='' ):
     return str( index[0] )
 
 
-def summarize_user( id ):
+def get_role( cur, role_id ):
+    cur.execute( 'SELECT role FROM Role WHERE id = ?', (role_id,))
+    return cur.fetchone()[0]
+
+
+def summarize_user( cur, id ):
     id = str( id )
-    return 'user at id=' + id
+    cur.execute( 'SELECT * FROM User WHERE id = ?', (id,))
+    row = cur.fetchone()
+    username = row[1]
+    role_id = row[3]
+    description = row[4]
+    enabled = row[6]
+    first_name = row[7]
+    last_name = row[8]
+    email_address = row[9]
+    organization = row[10]
+    facility_ids = row[11]
+
+    username = "'" + username + "'"
+
+    role = ' ' + get_role( cur, role_id )
+
+    facility_ids = facility_ids.split( ',' )
+    facilities = []
+    for facility_id in facility_ids:
+        cur.execute('SELECT facility_fullname FROM Facility WHERE id = ?', (facility_id,))
+        facilities.append( cur.fetchone()[0] )
+    facilities = ' [' + ','.join( facilities ) + ']'
+
+    if enabled:
+        enabled = ' Enabled'
+    else:
+        enabled = ' Disabled'
+
+    full_name = ( first_name + ' ' + last_name ).strip()
+    if full_name:
+        full_name = " '" + full_name + "'"
+
+    if email_address:
+        email_address = ' ' + email_address
+
+    if organization:
+        organization = ' "' + organization + '"'
+
+    if description:
+        description = ' "' + description + '"'
+
+    summary = username + role + facilities + enabled + full_name + email_address + organization + description
+
+    return summary
