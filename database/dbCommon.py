@@ -47,10 +47,11 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
         cur.execute( '''SELECT id FROM Role WHERE role = ?''', (role,))
         role_id = cur.fetchone()[0]
         cur.execute( '''INSERT OR IGNORE INTO User ( username, password, role_id, description, force_change_password, enabled, first_name, last_name, email_address, organization, facility_ids )
-        VALUES (?,?,?,?,?,?,?,?,?,?,? )''', (username, hash(password), role_id, description, force_change_password, enabled, first_name, last_name, email_address, organization, facility_ids) )
+            VALUES (?,?,?,?,?,?,?,?,?,?,? )''', (username, hash(password), role_id, description, force_change_password, enabled, first_name, last_name, email_address, organization, facility_ids) )
+        target_object_id = cur.lastrowid
 
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', "Added user '" + username + "'", '', ''  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_object( 'User', target_object_id ), 'User', target_object_id  ) )
 
         conn.commit()
 
@@ -127,7 +128,7 @@ def path_to_id( cur, path, sFacility='' ):
     return str( index[0] )
 
 
-def summarize_object( type, id, facility ):
+def summarize_object( type, id, facility='' ):
 
     id = str( id )
 
