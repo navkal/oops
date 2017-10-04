@@ -945,6 +945,9 @@ class updateCircuitObject:
     def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
+        # Get state of object before update, for Activity log
+        before_summary = summarize_object( object_type, id, facility )
+
         self.messages = []
         target_table = facility + '_CircuitObject'
 
@@ -1004,8 +1007,8 @@ class updateCircuitObject:
 
             # Log activity
             facility_id = facility_name_to_id( facility )
-            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-                VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['update' + object_type], target_table, 'tail', tail, "Update " + object_type.lower() + ' ' + path, facility_id ) )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['update' + object_type], by, facility_id, before_summary, summarize_object( object_type, id, facility ), object_type, id  ) )
 
             conn.commit()
 
@@ -1030,8 +1033,6 @@ class addDevice:
 
         conn.commit()
 
-        self.success = True
-
 
 class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
@@ -1055,8 +1056,6 @@ class updateDevice:
 
         conn.commit()
 
-        self.success = True
-
 
 class addLocation:
     def __init__( self, by, location, old_location, description, enterprise, facility ):
@@ -1074,8 +1073,6 @@ class addLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', target_object_id, facility ), 'Location', target_object_id  ) )
 
         conn.commit()
-
-        self.success = True
 
 
 class updateLocation:
@@ -1145,8 +1142,6 @@ class updateLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, summarize_object( 'Location', id, facility ), 'Location', id  ) )
 
         conn.commit()
-
-        self.success = True
 
 
 class removeCircuitObject:
@@ -1228,7 +1223,6 @@ class removeCircuitObject:
             VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, 'Remove ' + object_type.lower() + ' ' + from_where, facility_id ) )
 
         conn.commit()
-        self.success = True
 
 
 class removeDevice:
@@ -1271,8 +1265,6 @@ class removeDevice:
 
         conn.commit()
 
-        self.success = True
-
 
 class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
@@ -1313,8 +1305,6 @@ class removeLocation:
             VALUES (?,?,?,?,?,?,?,? )''', ( timestamp, by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
 
         conn.commit()
-
-        self.success = True
 
 
 class addUser:
