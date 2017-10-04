@@ -1163,15 +1163,11 @@ class removeCircuitObject:
         row = cur.fetchone()
         room_id = row[1]
         path = row[2]
-        zone = row[3]
-        voltage_id = row[4]
         object_type = row[5]
-        description = row[6]
         parent_id = row[7]
-        tail = row[8]
-        search_result = row[9]
-        source = row[10]
-        from_where = format_where( id, room_id, facility )
+
+        # Get initial state of object for Activity log
+        before_summary = summarize_object( object_type, id, facility )
 
         # Get parent path
         parent_path = get_path( parent_id, facility )
@@ -1228,8 +1224,8 @@ class removeCircuitObject:
 
         # Log activity
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['remove'+object_type], target_table, 'path', path, 'Remove ' + object_type.lower() + ' ' + from_where, facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
 
         conn.commit()
 
