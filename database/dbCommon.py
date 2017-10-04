@@ -125,3 +125,26 @@ def path_to_id( cur, path, sFacility='' ):
     cur.execute('SELECT id FROM ' + sFacility + '_CircuitObject WHERE path = ?', ( path, ))
     index = cur.fetchone()
     return str( index[0] )
+
+
+def summarize_object( type, id, facility ):
+
+    id = str( id )
+
+    if type == 'Panel':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Transformer':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Circuit':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Device':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Location':
+        summary = dbCommon.format_location( *get_location( id, facility ) )
+    elif type == 'User':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    else:
+        summary = "unknown type '" + type + "' in " + facility + ' at id ' + id
+
+    return summary
+
