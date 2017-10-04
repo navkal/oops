@@ -243,18 +243,41 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
-def summarize_circuit_object( type, id, facility ):
+def summarize_circuit_object( id, facility ):
 
-    cur.execute('SELECT path, voltage_id, room_id FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    cur.execute('SELECT path, room_id, description FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
     row = cur.fetchone()
     path = row[0]
-    voltage_id = row[1]
-    room_id = row[2]
+    room_id = row[1]
+    descr = row[2]
 
-    voltage = get_voltage( voltage_id )
-    formatted_location = dbCommon.format_location( *get_location( room_id, facility ) )
+    loc = dbCommon.format_location( *get_location( room_id, facility ) )
+    if loc:
+        loc = ' [' + loc + ']'
 
-    summary = type + '[' + id + ']: ' + path + ', ' + voltage + ', ' + formatted_location
+    if descr:
+        descr = ' "' + descr + '"'
+
+    summary = path + loc + descr
+
+    return summary
+
+
+def summarize_device( id, facility ):
+
+    cur.execute('SELECT room_id, parent_id, name FROM ' + facility + '_Device WHERE id = ?', (id,))
+    row = cur.fetchone()
+    room_id = row[0]
+    parent_id = row[1]
+    name = row[2]
+
+    circuit = get_path( parent_id, facility )
+
+    loc = dbCommon.format_location( *get_location( room_id, facility ) )
+    if loc:
+        loc = ' [' + loc + ']'
+
+    summary = "'" + name + "'" + ' on ' + circuit + loc
     return summary
 
 
@@ -263,9 +286,9 @@ def summarize_object( type, id, facility='' ):
     id = str( id )
 
     if type == 'Panel' or type == 'Transformer' or type == 'Circuit' :
-        summary = summarize_circuit_object( type, id, facility )
+        summary = summarize_circuit_object( id, facility )
     elif type == 'Device':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+        summary = summarize_device( id, facility )
     elif type == 'Location':
         summary = dbCommon.format_location( *get_location( id, facility ) )
     elif type == 'User':
