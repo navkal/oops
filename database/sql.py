@@ -1386,6 +1386,9 @@ class removeUser:
     def __init__(self, by, id, enterprise):
         open_database( enterprise )
 
+        # Get state of object before removal, for Activity log
+        before_summary = summarize_object( 'User', id )
+
         # Get username for reporting
         cur.execute( 'SELECT username FROM User WHERE id=?', ( id, ) )
         username = cur.fetchone()[0]
@@ -1394,11 +1397,12 @@ class removeUser:
         # Delete the user
         cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
 
-        # Report
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-            VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeUser'], 'User', 'username', username, "Remove user '" + username + "'" ) )
+        # Log activity
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeUser'], by, '', before_summary, '', 'User', id  ) )
 
         conn.commit()
+
 
 class authFacilities:
     def __init__(self, username, enterprise):
