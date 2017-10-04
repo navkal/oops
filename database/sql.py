@@ -245,20 +245,24 @@ def get_location( room_id, facility ):
 
 def summarize_circuit_object( id, facility ):
 
-    cur.execute('SELECT path, room_id, description FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    cur.execute('SELECT path, room_id, voltage_id, description FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
     row = cur.fetchone()
     path = row[0]
     room_id = row[1]
-    descr = row[2]
+    voltage_id = row[2]
+    description = row[3]
 
     loc = dbCommon.format_location( *get_location( room_id, facility ) )
     if loc:
         loc = ' [' + loc + ']'
 
-    if descr:
-        descr = ' "' + descr + '"'
+    voltage = get_voltage( voltage_id )
+    voltage = ' ' + voltage
 
-    summary = path + loc + descr
+    if description:
+        description = ' "' + description + '"'
+
+    summary = path + voltage + loc + description
 
     return summary
 
