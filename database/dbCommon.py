@@ -51,7 +51,7 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
         target_object_id = cur.lastrowid
 
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_object( 'User', target_object_id ), 'User', target_object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_user( target_object_id ), 'User', target_object_id  ) )
 
         conn.commit()
 
@@ -128,24 +128,6 @@ def path_to_id( cur, path, sFacility='' ):
     return str( index[0] )
 
 
-def summarize_object( type, id, facility='' ):
-
+def summarize_user( id ):
     id = str( id )
-
-    if type == 'Panel':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Transformer':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Circuit':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Device':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Location':
-        summary = dbCommon.format_location( *get_location( id, facility ) )
-    elif type == 'User':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    else:
-        summary = "unknown type '" + type + "' in " + facility + ' at id ' + id
-
-    return summary
-
+    return 'user at id=' + id

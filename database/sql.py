@@ -254,6 +254,29 @@ def format_where( object_id, room_id, facility, path=None ):
     return where
 
 
+def summarize_object( type, id, facility='' ):
+
+    id = str( id )
+
+    if type == 'Panel':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Transformer':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Circuit':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Device':
+        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    elif type == 'Location':
+        summary = dbCommon.format_location( *get_location( id, facility ) )
+    elif type == 'User':
+        summary = dbCommon.summarize_user( id )
+    else:
+        summary = "unknown type '" + type + "' in " + facility + ' at id ' + id
+
+    return summary
+
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -922,7 +945,7 @@ class addCircuitObject:
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['add' + object_type], by, facility_id, '', dbCommon.summarize_object( object_type, target_object_id, facility ), object_type, target_object_id  ) )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['add' + object_type], by, facility_id, '', summarize_object( object_type, target_object_id, facility ), object_type, target_object_id  ) )
 
             conn.commit()
 
@@ -932,7 +955,7 @@ class updateCircuitObject:
         open_database( enterprise )
 
         # Get state of object before update, for Activity log
-        before_summary = dbCommon.summarize_object( object_type, id, facility )
+        before_summary = summarize_object( object_type, id, facility )
 
         self.messages = []
         target_table = facility + '_CircuitObject'
@@ -994,7 +1017,7 @@ class updateCircuitObject:
             # Log activity
             facility_id = facility_name_to_id( facility )
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['update' + object_type], by, facility_id, before_summary, dbCommon.summarize_object( object_type, id, facility ), object_type, id  ) )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['update' + object_type], by, facility_id, before_summary, summarize_object( object_type, id, facility ), object_type, id  ) )
 
             conn.commit()
 
@@ -1015,7 +1038,7 @@ class addDevice:
         # Log activity
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', dbCommon.summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
 
         conn.commit()
 
@@ -1025,7 +1048,7 @@ class updateDevice:
         open_database( enterprise )
 
         # Get state of object before update, for Activity log
-        before_summary = dbCommon.summarize_object( 'Device', id, facility )
+        before_summary = summarize_object( 'Device', id, facility )
 
         # Generate new description
         description = make_device_description( name, room_id, facility )
@@ -1038,7 +1061,7 @@ class updateDevice:
         # Log activity
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, dbCommon.summarize_object( 'Device', id, facility ), 'Device', id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, summarize_object( 'Device', id, facility ), 'Device', id  ) )
 
         conn.commit()
 
@@ -1056,7 +1079,7 @@ class addLocation:
         # Log activity
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', dbCommon.summarize_object( 'Location', target_object_id, facility ), 'Location', target_object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', target_object_id, facility ), 'Location', target_object_id  ) )
 
         conn.commit()
 
@@ -1066,7 +1089,7 @@ class updateLocation:
         open_database( enterprise )
 
         # Get state of object before update, for Activity log
-        before_summary = dbCommon.summarize_object( 'Location', id, facility )
+        before_summary = summarize_object( 'Location', id, facility )
 
         # Update specified location
         target_table = facility + '_Room'
@@ -1125,7 +1148,7 @@ class updateLocation:
         # Log activity
         facility_id = facility_name_to_id( facility )
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, dbCommon.summarize_object( 'Location', id, facility ), 'Location', id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, summarize_object( 'Location', id, facility ), 'Location', id  ) )
 
         conn.commit()
 
@@ -1307,7 +1330,7 @@ class updateUser:
 
         # Get state of object before update, for Activity log
         target_object_id = username_to_id( username )
-        before_summary = dbCommon.summarize_object( 'User', target_object_id )
+        before_summary = summarize_object( 'User', target_object_id )
 
         self.messages = []
 
@@ -1334,7 +1357,7 @@ class updateUser:
 
             # Log activity
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateUser'], by, '', before_summary, dbCommon.summarize_object( 'User', target_object_id ), 'User', target_object_id  ) )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateUser'], by, '', before_summary, summarize_object( 'User', target_object_id ), 'User', target_object_id  ) )
 
             conn.commit()
 
