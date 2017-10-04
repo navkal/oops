@@ -314,15 +314,16 @@ class device:
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
-        facility_id = facility_name_to_id( facility )
-        cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
-        self.events = cur.fetchall()
-
         if user_role == 'Technician':
+            facility_id = facility_name_to_id( facility )
+            cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
+            self.events = cur.fetchall()
             self.update_device = self.id
             self.remove_device = self.id
             self.remove_what = 'name'
             self.formatted_location = formatted_location
+        else:
+            self.events = []
 
 
     def properties(self):
@@ -345,7 +346,7 @@ class device:
 
 class cirobj:
 
-    def __init__(self,id=None,path=None,getkids=True,enterprise=None,facility=None):
+    def __init__(self,id=None,path=None,getkids=True,user_role=None,enterprise=None,facility=None):
         open_database( enterprise )
 
         if id:
@@ -429,9 +430,12 @@ class cirobj:
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
-        facility_id = facility_name_to_id( facility )
-        cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
-        self.events = cur.fetchall()
+        if user_role == 'Technician':
+            facility_id = facility_name_to_id( facility )
+            cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
+            self.events = cur.fetchall()
+        else:
+            self.events = []
 
 
 

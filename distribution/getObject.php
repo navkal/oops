@@ -40,7 +40,7 @@
   }
 
 
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postTable . $selector . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postTable . $selector  . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
