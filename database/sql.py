@@ -954,7 +954,7 @@ class updateCircuitObject:
     def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
-        # Get state of object before update, for Activity log
+        # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
 
         self.messages = []
@@ -1047,7 +1047,7 @@ class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
-        # Get state of object before update, for Activity log
+        # Get initial state of object for Activity log
         before_summary = summarize_object( 'Device', id, facility )
 
         # Generate new description
@@ -1088,7 +1088,7 @@ class updateLocation:
     def __init__( self, by, id, location, old_location, description, enterprise, facility ):
         open_database( enterprise )
 
-        # Get state of object before update, for Activity log
+        # Get initial state of object for Activity log
         before_summary = summarize_object( 'Location', id, facility )
 
         # Update specified location
@@ -1279,6 +1279,9 @@ class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
+        # Get initial state of object for Activity log
+        before_summary = summarize_object( 'Location', id, facility )
+
         # Get row to be deleted
         target_table = facility + '_Room'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
@@ -1303,15 +1306,9 @@ class removeLocation:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
 
         # Log activity
-        if loc_new != '':
-            target_column = 'room_num'
-        else:
-            target_column = 'old_num'
-
-        formatted_location = dbCommon.format_location( loc_new, loc_old, loc_descr )
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( timestamp, by, dbCommon.dcEventTypes['removeLocation'], target_table, target_column, formatted_location, 'Remove location [' + formatted_location + ']', facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeLocation'], by, facility_id, before_summary, comment, 'Location', id  ) )
 
         conn.commit()
 
@@ -1328,7 +1325,7 @@ class updateUser:
     def __init__(self, by, username, oldPassword, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
 
-        # Get state of object before update, for Activity log
+        # Get initial state of object for Activity log
         target_object_id = username_to_id( username )
         before_summary = summarize_object( 'User', target_object_id )
 
@@ -1386,7 +1383,7 @@ class removeUser:
     def __init__(self, by, id, enterprise):
         open_database( enterprise )
 
-        # Get state of object before removal, for Activity log
+        # Get initial state of object for Activity log
         before_summary = summarize_object( 'User', id )
 
         # Get username for reporting
