@@ -243,27 +243,27 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
-def format_where( object_id, room_id, facility, path=None ):
-    if path == None:
-        path = get_path( object_id, facility )
-    loc = dbCommon.format_location( *get_location( room_id, facility ) )
-    where = path
-    if loc:
-        where += ', ' + loc
-    where = '[' + where + ']'
-    return where
+def summarize_circuit_object( type, id, facility ):
+
+    cur.execute('SELECT path, voltage_id, room_id FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    row = cur.fetchone()
+    path = row[0]
+    voltage_id = row[1]
+    room_id = row[2]
+
+    voltage = get_voltage( voltage_id )
+    formatted_location = dbCommon.format_location( *get_location( room_id, facility ) )
+
+    summary = type + '[' + id + ']: ' + path + ', ' + voltage + ', ' + formatted_location
+    return summary
 
 
 def summarize_object( type, id, facility='' ):
 
     id = str( id )
 
-    if type == 'Panel':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Transformer':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
-    elif type == 'Circuit':
-        summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
+    if type == 'Panel' or type == 'Transformer' or type == 'Circuit' :
+        summary = summarize_circuit_object( type, id, facility )
     elif type == 'Device':
         summary = 'it is a ' + type + ' in ' + facility + ' at ' + id
     elif type == 'Location':
