@@ -1238,13 +1238,15 @@ class removeDevice:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
+        # Get initial state of object for Activity log
+        before_summary = summarize_object( 'Device', id, facility )
+
         # Get row to be deleted
         target_table = facility + '_Device'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
         room_id = row[1]
         parent_id = row[2]
-        name = row[5]
 
         # Get parent path
         parent_path = get_path( parent_id, facility )
@@ -1256,7 +1258,8 @@ class removeDevice:
         timestamp = time.time()
         recycle_table = facility + '_Recycle'
         object_type = 'Device'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
+        cur.execute( 'INSERT INTO ' + recycle_table + ''' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id )
+            VALUES(?,?,?,?,?,?,?,?) ''',( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
@@ -1267,10 +1270,9 @@ class removeDevice:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
 
         # Log activity
-        from_where = format_where( parent_id, room_id, facility )
         facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['removeDevice'], target_table, 'name', name, "Remove device '" + name + "' from " + from_where, facility_id ) )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeDevice'], by, facility_id, before_summary, comment, 'Device', id  ) )
 
         conn.commit()
 
