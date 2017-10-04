@@ -96,6 +96,12 @@ def facility_name_to_id( facility_name ):
     return str( facility_id )
 
 
+def username_to_id( username ):
+    cur.execute( 'SELECT id FROM User WHERE lower( username )=?', ( username.lower(), ) )
+    id = cur.fetchone()[0]
+    return id
+
+
 def facility_names_to_ids( name_csv ):
 
     if name_csv != '':
@@ -1299,6 +1305,10 @@ class updateUser:
     def __init__(self, by, username, oldPassword, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
 
+        # Get state of object before update, for Activity log
+        target_object_id = username_to_id( username )
+        before_summary = dbCommon.summarize_object( 'User', target_object_id )
+
         self.messages = []
 
         if password != None:
@@ -1314,6 +1324,7 @@ class updateUser:
 
 
         if len( self.messages ) == 0:
+
             cur.execute( 'SELECT id FROM Role WHERE role = ?', (role,))
             role_id = cur.fetchone()[0]
             facility_id_csv = facility_names_to_ids( auth_facilities )
@@ -1321,8 +1332,9 @@ class updateUser:
             cur.execute( '''UPDATE User SET role_id=?, facility_ids=?, enabled=?, first_name=?, last_name=?, email_address=?, organization=?, description=? WHERE lower(username)=?''',
                 ( role_id, facility_id_csv, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, username.lower() ) )
 
-            cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description )
-                VALUES (?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['updateUser'], 'User', 'username', username, "Update user '" + username + "'" ) )
+            # Log activity
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateUser'], by, '', before_summary, dbCommon.summarize_object( 'User', target_object_id ), 'User', target_object_id  ) )
 
             conn.commit()
 
