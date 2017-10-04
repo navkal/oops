@@ -147,7 +147,7 @@ def summarize_user( cur, id ):
     organization = row[10]
     facility_ids = row[11]
 
-    username = "'" + username + "'"
+    username = username + ':'
 
     role = ' ' + get_role( cur, role_id )
 
@@ -157,7 +157,7 @@ def summarize_user( cur, id ):
         for facility_id in facility_ids:
             cur.execute('SELECT facility_fullname FROM Facility WHERE id = ?', (facility_id,))
             facilities.append( cur.fetchone()[0] )
-        facilities = ' [' + ','.join( facilities ) + ']'
+        facilities = ' [' + ', '.join( facilities ) + ']'
     else:
         facilities = ''
 
@@ -174,10 +174,10 @@ def summarize_user( cur, id ):
         email_address = ' ' + email_address
 
     if organization:
-        organization = ' "' + organization + '"'
+        organization = ' [' + organization + ']'
 
     if description:
-        description = ' "' + description + '"'
+        description = ' [' + description + ']'
 
     summary = username + role + facilities + enabled + full_name + email_address + organization + description
 
