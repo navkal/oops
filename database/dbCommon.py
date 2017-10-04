@@ -151,12 +151,15 @@ def summarize_user( cur, id ):
 
     role = ' ' + get_role( cur, role_id )
 
-    facility_ids = facility_ids.split( ',' )
-    facilities = []
-    for facility_id in facility_ids:
-        cur.execute('SELECT facility_fullname FROM Facility WHERE id = ?', (facility_id,))
-        facilities.append( cur.fetchone()[0] )
-    facilities = ' [' + ','.join( facilities ) + ']'
+    if facility_ids:
+        facility_ids = facility_ids.split( ',' )
+        facilities = []
+        for facility_id in facility_ids:
+            cur.execute('SELECT facility_fullname FROM Facility WHERE id = ?', (facility_id,))
+            facilities.append( cur.fetchone()[0] )
+        facilities = ' [' + ','.join( facilities ) + ']'
+    else:
+        facilities = ''
 
     if enabled:
         enabled = ' Enabled'
