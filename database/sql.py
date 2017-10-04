@@ -1670,17 +1670,10 @@ class restoreRemovedObject:
         cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
 
         # Log activity
-        source_from = format_where( source_row[2], source_row[1], facility )
-        restore_to = format_where( restore_row[2], restore_row[1], facility )
-
-        from_to = ' to ' + restore_to
-        if source_from != restore_to:
-            from_to = ', previously removed from ' + source_from + ', ' + from_to
-
         facility_id = facility_name_to_id( facility )
-
-        cur.execute('''INSERT INTO Activity ( timestamp, username, event_type, target_table, target_column, target_value, description, facility_id )
-            VALUES (?,?,?,?,?,?,?,? )''', ( time.time(), by, dbCommon.dcEventTypes['restoreDevice'], target_table, 'name', name, "Restore device '" + name + "'" + from_to, facility_id ) )
+        object_id = restore_row[0]
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreDevice'], by, facility_id, '', summarize_object( 'Device', object_id, facility ), 'Device', object_id  ) )
 
 
     def restore_location( self, by, id, facility ):
