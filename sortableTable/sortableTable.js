@@ -80,80 +80,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           };
         }
 
-        // If the cell is an array, replace with array length
-        var sCell = tRow[sKey];
-        if ( Array.isArray( sCell ) )
-        {
-          sCell = sCell.length;
-        }
-
-        // Convert to trimmed string
-        sCell = sCell.toString().trim();
-
-        if ( sCell != '' )
-        {
-          // Add value to map
-          g_tColumnMap[sLabel].valMap[sCell] = '';
-
-          // Track min and max lengths
-          g_tColumnMap[sLabel].minLength = Math.min( g_tColumnMap[sLabel].minLength, sCell.length );
-          g_tColumnMap[sLabel].maxLength = Math.max( g_tColumnMap[sLabel].maxLength, sCell.length );
-
-          // Clear column-is-empty flag
-          g_tColumnMap[sLabel].empty = false;
-
-          // If column contains non-digit character, change the default alignment
-          if ( ! /^\d+$/.test( sCell ) )
-          {
-            g_tColumnMap[sLabel].align = '';
-          }
-
-          if ( tRule.columnType == 'control' )
-          {
-            // Save the original cell value
-            var sCellValue = sCell;
-
-            // Perform special cell rendering for UI controls
-            switch ( tRule.controlType )
-            {
-              case 'image':
-                sCell = '<a path="' + sCell + '">';
-                sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
-                sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
-                sCell += '</button>';
-                sCell += '</a>';
-                break;
-
-              case 'update':
-                sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
-                sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
-                sCell += '</button>';
-                sCell += '</a>';
-                break;
-
-              case 'remove':
-                sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
-                sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
-                sCell += '</button>';
-                sCell += '</a>';
-                break;
-
-              case 'restore':
-                sCell = '<a>';
-                sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRestoreDialog('+"'"+sCellValue+"'"+')" data-target="#restoreDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
-                sCell += '<span class="glyphicon glyphicon-plus" style="font-size:18px;" ></span>';
-                sCell += '</button>';
-                sCell += '</a>';
-                break;
-            }
-          }
-          else if ( tRule.columnType == 'timestamp' )
-          {
-            sCell = formatTimestamp( sCell );
-          }
-        }
+        var sCell = makeTableCell( tRow[sKey], sLabel, tRule );
 
         // Append current cell to the column
         g_tColumnMap[sLabel].cells.push( sCell );
@@ -256,6 +183,86 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Style the table
   styleTable( 'sortableTable', aHeaders, tSortState, tFilterState );
+}
+
+
+function makeTableCell( sCell, sLabel, tRule )
+{
+  // If the cell is an array, replace with array length
+  if ( Array.isArray( sCell ) )
+  {
+    sCell = sCell.length;
+  }
+
+  // Convert to trimmed string
+  sCell = sCell.toString().trim();
+
+  if ( sCell != '' )
+  {
+    // Add value to map
+    g_tColumnMap[sLabel].valMap[sCell] = '';
+
+    // Track min and max lengths
+    g_tColumnMap[sLabel].minLength = Math.min( g_tColumnMap[sLabel].minLength, sCell.length );
+    g_tColumnMap[sLabel].maxLength = Math.max( g_tColumnMap[sLabel].maxLength, sCell.length );
+
+    // Clear column-is-empty flag
+    g_tColumnMap[sLabel].empty = false;
+
+    // If column contains non-digit character, change the default alignment
+    if ( ! /^\d+$/.test( sCell ) )
+    {
+      g_tColumnMap[sLabel].align = '';
+    }
+
+    if ( tRule.columnType == 'control' )
+    {
+      // Save the original cell value
+      var sCellValue = sCell;
+
+      // Perform special cell rendering for UI controls
+      switch ( tRule.controlType )
+      {
+        case 'image':
+          sCell = '<a path="' + sCell + '">';
+          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
+          sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+          break;
+
+        case 'update':
+          sCell = '<a>';
+          sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+          sCell += '<span class="glyphicon glyphicon-pencil" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+          break;
+
+        case 'remove':
+          sCell = '<a>';
+          sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRemoveDialog('+"'"+sCellValue+"'"+')" data-target="#removeDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+          sCell += '<span class="glyphicon glyphicon-remove" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+          break;
+
+        case 'restore':
+          sCell = '<a>';
+          sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);initRestoreDialog('+"'"+sCellValue+"'"+')" data-target="#restoreDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
+          sCell += '<span class="glyphicon glyphicon-plus" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+          break;
+      }
+    }
+    else if ( tRule.columnType == 'timestamp' )
+    {
+      sCell = formatTimestamp( sCell );
+    }
+  }
+  
+  return sCell;
 }
 
 
