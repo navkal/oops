@@ -342,6 +342,7 @@ class device:
             facility_id = facility_name_to_id( facility )
             cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
             self.events = cur.fetchall()
+            self.events = natsort.natsorted( self.events, key=lambda x: x[0], reverse=True )
             self.update_device = self.id
             self.remove_device = self.id
             self.remove_what = 'name'
@@ -458,6 +459,7 @@ class cirobj:
             facility_id = facility_name_to_id( facility )
             cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
             self.events = cur.fetchall()
+            self.events = natsort.natsorted( self.events, key=lambda x: x[0], reverse=True )
         else:
             self.events = []
 

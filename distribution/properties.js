@@ -173,8 +173,6 @@ function showHistory()
   }
   else
   {
-    aEvents.sort( compareEventTimestamps );
-
     var sTbody = '';
     for ( var iEvent in aEvents )
     {
@@ -197,11 +195,6 @@ function showHistory()
     $( '#historyTable' ).show();
     $( '#historyNone' ).hide();
   }
-}
-
-function compareEventTimestamps( aEvent1, aEvent2 )
-{
-  return aEvent2[0] - aEvent1[0];
 }
 
 function handlePostError( tJqXhr, sStatus, sErrorThrown )
