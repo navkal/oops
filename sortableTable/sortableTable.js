@@ -5,6 +5,7 @@ var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
 var g_tColumnMap = null;
+var g_aSortedHeaders = null;
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -96,14 +97,14 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Format table head/foot HTML, and construct sorter array
   g_sPropertySortContext = g_tPropertySortContexts.sortableTable;
-  var aSortedHeaders = Object.keys( g_tColumnMap ).sort( comparePropertyIndex );
+  g_aSortedHeaders = Object.keys( g_tColumnMap ).sort( comparePropertyIndex );
   var sHtml = '';
   var aHeaders = [];
   var iColumn = 0;
 
-  for ( var iHeader in aSortedHeaders )
+  for ( var iHeader in g_aSortedHeaders )
   {
-    var sLabel = aSortedHeaders[iHeader];
+    var sLabel = g_aSortedHeaders[iHeader];
     var tColumn = g_tColumnMap[sLabel];
 
     if ( ! tColumn.empty )
@@ -142,32 +143,17 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    sHtml = '';
+    var sHtml = '';
     var bDone = false;
     var nRow = 0;
+
     while ( ! bDone )
     {
-      sHtml += '<tr>';
-      for ( var iHeader in aSortedHeaders )
-      {
-        var sHeader = aSortedHeaders[iHeader];
-        var tColumn = g_tColumnMap[sHeader];
-        if ( ! tColumn.empty )
-        {
-          var sCell = tColumn.cells[nRow];
-          if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
-          {
-            tColumn.align = 'center';
-          }
-          var sAlign = 'text-align:' + tColumn.align;
-          sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
-        }
-        bDone = ( nRow == tColumn.cells.length - 1 );
-      }
-      sHtml += '</tr>';
-
-      nRow ++;
+      var tRow = makeTableRow( nRow ++ );
+      sHtml += tRow.html;
+      bDone = tRow.done;
     }
+
     $( '#sortableTableBody' ).html( sHtml );
   }
 
@@ -261,10 +247,44 @@ function makeTableCell( sCell, sLabel, tRule )
       sCell = formatTimestamp( sCell );
     }
   }
-  
+
   return sCell;
 }
 
+function makeTableRow( nRow )
+{
+  var bDone = false;
+
+  var sHtml = '<tr>';
+  for ( var iHeader in g_aSortedHeaders )
+  {
+    var sHeader = g_aSortedHeaders[iHeader];
+    var tColumn = g_tColumnMap[sHeader];
+
+    if ( typeof nRow == 'undefined' )
+    {
+      nRow = tColumn.cells.length;
+    }
+
+    if ( ! tColumn.empty )
+    {
+      var sCell = tColumn.cells[nRow];
+      if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
+      {
+        tColumn.align = 'center';
+      }
+      var sAlign = 'text-align:' + tColumn.align;
+      sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
+    }
+
+    bDone = ( nRow == tColumn.cells.length - 1 );
+  }
+  sHtml += '</tr>';
+
+  var tRow = { html: sHtml, done: bDone };
+
+  return tRow;
+}
 
 // Parser for tablesorter, to sort hexadecimal unit IDs
 var g_tHexParser =
