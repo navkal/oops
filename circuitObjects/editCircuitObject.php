@@ -503,6 +503,57 @@
     }
     else
     {
+      switch( g_sAction )
+      {
+        case 'add':
+          showAddedRow( tRsp.row )
+          break;
+
+        case 'update':
+          location.reload();
+          break;
+      }
+    }
+  }
+
+  function showAddedRow( tRow )
+  {
+    $('#editDialog').modal('hide');
+
+    // Determine whether current table has all the columns needed to render the new row
+    var bTableHasAllColumns = true;
+    var aKeys = Object.keys( tRow );
+    var iCol = 0;
+    for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
+    {
+      var sKey = aKeys[iCol];
+      var tRule =  g_tPropertyRules[sKey];
+      var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+      if ( sLabel != null )
+      {
+        var sCell = tRow[sKey];
+        var bColumnEmpty = g_tColumnMap[sLabel].empty;
+
+        // If we got a cell that does not have a corresponding column in the table, then reload the table
+        if ( sCell && bColumnEmpty )
+        {
+          bTableHasAllColumns = false;
+        }
+      }
+    }
+
+    if ( bTableHasAllColumns )
+    {
+      // Render new row in existing table
+      var sHtml = '<tr class="text-success"><td>1</td><td><b>MOOOOOOOOOO</b></td><td></td><td>MOOOOOOOOOO</td><td></td><td>277/480</td><td></td><td>1069</td><td>Delivery Area/ Corridor</td><td>0</td><td>9</td><td></td></tr>';
+      $( '#sortableTableBody' ).prepend( sHtml );
+      $( '#sortableTable' ).trigger( 'update', [true] );
+      renumberIndex();
+    }
+    else
+    {
+      // Reload page
       location.reload();
     }
   }

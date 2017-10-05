@@ -4,6 +4,7 @@ var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
+var g_tColumnMap = null;
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -44,7 +45,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   g_aSortableTableRows = tRsp['rows'];
 
   // Build map of columns from list of rows
-  var tColumnMap = {};
+  g_tColumnMap = {};
   for ( var iRow in g_aSortableTableRows )
   {
     // Get next row
@@ -62,10 +63,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
       if ( sLabel != null )
       {
-        if ( ! tColumnMap[sLabel] )
+        if ( ! g_tColumnMap[sLabel] )
         {
           // Insert first column map entry for this label
-          tColumnMap[sLabel] =
+          g_tColumnMap[sLabel] =
           {
             key: sKey,
             label: sLabel,
@@ -92,19 +93,19 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         if ( sCell != '' )
         {
           // Add value to map
-          tColumnMap[sLabel].valMap[sCell] = '';
+          g_tColumnMap[sLabel].valMap[sCell] = '';
 
           // Track min and max lengths
-          tColumnMap[sLabel].minLength = Math.min( tColumnMap[sLabel].minLength, sCell.length );
-          tColumnMap[sLabel].maxLength = Math.max( tColumnMap[sLabel].maxLength, sCell.length );
+          g_tColumnMap[sLabel].minLength = Math.min( g_tColumnMap[sLabel].minLength, sCell.length );
+          g_tColumnMap[sLabel].maxLength = Math.max( g_tColumnMap[sLabel].maxLength, sCell.length );
 
           // Clear column-is-empty flag
-          tColumnMap[sLabel].empty = false;
+          g_tColumnMap[sLabel].empty = false;
 
           // If column contains non-digit character, change the default alignment
           if ( ! /^\d+$/.test( sCell ) )
           {
-            tColumnMap[sLabel].align = '';
+            g_tColumnMap[sLabel].align = '';
           }
 
           if ( tRule.columnType == 'control' )
@@ -155,7 +156,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         }
 
         // Append current cell to the column
-        tColumnMap[sLabel].cells.push( sCell );
+        g_tColumnMap[sLabel].cells.push( sCell );
       }
     }
   }
@@ -168,7 +169,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
   // Format table head/foot HTML, and construct sorter array
   g_sPropertySortContext = g_tPropertySortContexts.sortableTable;
-  var aSortedHeaders = Object.keys( tColumnMap ).sort( comparePropertyIndex );
+  var aSortedHeaders = Object.keys( g_tColumnMap ).sort( comparePropertyIndex );
   var sHtml = '';
   var aHeaders = [];
   var iColumn = 0;
@@ -176,7 +177,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   for ( var iHeader in aSortedHeaders )
   {
     var sLabel = aSortedHeaders[iHeader];
-    var tColumn = tColumnMap[sLabel];
+    var tColumn = g_tColumnMap[sLabel];
 
     if ( ! tColumn.empty )
     {
@@ -223,7 +224,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       for ( var iHeader in aSortedHeaders )
       {
         var sHeader = aSortedHeaders[iHeader];
-        var tColumn = tColumnMap[sHeader];
+        var tColumn = g_tColumnMap[sHeader];
         if ( ! tColumn.empty )
         {
           var sCell = tColumn.cells[nRow];
@@ -233,8 +234,8 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           }
           var sAlign = 'text-align:' + tColumn.align;
           sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
-          bDone = ( nRow == tColumn.cells.length - 1 );
         }
+        bDone = ( nRow == tColumn.cells.length - 1 );
       }
       sHtml += '</tr>';
 

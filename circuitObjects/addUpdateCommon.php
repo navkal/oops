@@ -77,7 +77,8 @@
   $tRsp =
   [
     'messages' => $aMessages,
-    'selectors' => $aSelectors
+    'selectors' => $aSelectors,
+    'row' => $tStatus->row
   ];
 
   $sRsp = json_encode( $tRsp );

@@ -102,6 +102,14 @@ def username_to_id( username ):
     return id
 
 
+def username_to_role( username ):
+    cur.execute( 'SELECT role_id FROM User WHERE lower( username )=?', ( username.lower(), ) )
+    role_id = cur.fetchone()[0]
+    cur.execute( 'SELECT role FROM Role WHERE id=?', ( role_id, ) )
+    role = cur.fetchone()[0]
+    return role
+
+
 def facility_names_to_ids( name_csv ):
 
     if name_csv != '':
@@ -941,6 +949,7 @@ class addCircuitObject:
         open_database( enterprise )
 
         self.messages = []
+        self.row = {}
         target_table = facility + '_CircuitObject'
 
         # Determine whether path is available
@@ -976,6 +985,12 @@ class addCircuitObject:
 
             conn.commit()
 
+            # Return row
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (target_object_id,))
+            obj = cur.fetchone()
+            row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )
+            self.row = row.__dict__
+
 
 class updateCircuitObject:
     def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
@@ -985,6 +1000,7 @@ class updateCircuitObject:
         before_summary = summarize_object( object_type, id, facility )
 
         self.messages = []
+        self.row = {}
         target_table = facility + '_CircuitObject'
 
         # Determine whether path is available
