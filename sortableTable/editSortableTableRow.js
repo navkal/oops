@@ -1,7 +1,8 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-function showSpinner()
+function showSpinner( bLow )
 {
+  $( '#spinner' ).removeClass().addClass( bLow ? 'low-spinner' : 'spinner' );
   $( '#spinner' ).css( 'display', 'block' );
 }
 
