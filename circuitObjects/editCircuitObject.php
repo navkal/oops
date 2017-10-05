@@ -546,7 +546,27 @@
     if ( bTableHasAllColumns )
     {
       // Render new row in existing table
-      var sHtml = '<tr class="text-success"><td>1</td><td><b>MOOOOOOOOOO</b></td><td></td><td>MOOOOOOOOOO</td><td></td><td>277/480</td><td></td><td>1069</td><td>Delivery Area/ Corridor</td><td>0</td><td>9</td><td></td></tr>';
+
+      // Add the row to the list
+      g_aSortableTableRows.push( tRow );
+
+      // Insert artificial index cell
+      tRow['index'] = 0;
+
+      // Traverse fields of the current row
+      for ( sKey in tRow )
+      {
+        // Map key to label
+        var tRule =  g_tPropertyRules[sKey];
+        var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+        if ( sLabel != null )
+        {
+          makeTableCell( tRow[sKey], sLabel, tRule );
+        }
+      }
+
+      var sHtml = makeHtmlRow().html;
       $( '#sortableTableBody' ).prepend( sHtml );
       $( '#sortableTable' ).trigger( 'update', [true] );
       renumberIndex();

@@ -81,10 +81,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           };
         }
 
-        var sCell = makeTableCell( tRow[sKey], sLabel, tRule );
-
-        // Append current cell to the column
-        g_tColumnMap[sLabel].cells.push( sCell );
+        makeTableCell( tRow[sKey], sLabel, tRule );
       }
     }
   }
@@ -149,9 +146,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
     while ( ! bDone )
     {
-      var tRow = makeTableRow( nRow ++ );
-      sHtml += tRow.html;
-      bDone = tRow.done;
+      var tHtmlRow = makeHtmlRow( nRow ++ );
+      sHtml += tHtmlRow.html;
+      bDone = tHtmlRow.done;
     }
 
     $( '#sortableTableBody' ).html( sHtml );
@@ -248,14 +245,17 @@ function makeTableCell( sCell, sLabel, tRule )
     }
   }
 
-  return sCell;
+  // Append cell to the column
+  g_tColumnMap[sLabel].cells.push( sCell );
 }
 
-function makeTableRow( nRow )
+function makeHtmlRow( nRow )
 {
   var bDone = false;
 
-  var sHtml = '<tr>';
+  var sClass = ( typeof nRow == 'undefined' ) ? ' class="text-success" ' : '';
+  var sHtml = '<tr ' + sClass + ' >';
+
   for ( var iHeader in g_aSortedHeaders )
   {
     var sHeader = g_aSortedHeaders[iHeader];
@@ -263,7 +263,7 @@ function makeTableRow( nRow )
 
     if ( typeof nRow == 'undefined' )
     {
-      nRow = tColumn.cells.length;
+      nRow = tColumn.cells.length - 1;
     }
 
     if ( ! tColumn.empty )
