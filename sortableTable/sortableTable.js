@@ -334,6 +334,9 @@ function onSortableTableReady( tEvent )
   // Clear the wait cursor
   clearWaitCursor();
 
+  // Trigger update to enable hover shading
+  $( '#sortableTable' ).trigger( 'update', [true] );
+
   console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
 
