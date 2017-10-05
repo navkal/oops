@@ -535,25 +535,24 @@
         var sCell = tRow[sKey];
         var bColumnEmpty = g_tColumnMap[sLabel].empty;
 
-        // If we got a cell that does not have a corresponding column in the table, then reload the table
         if ( sCell && bColumnEmpty )
         {
+          // This cell does not have a corresponding column in the table
           bTableHasAllColumns = false;
         }
       }
     }
 
+    // If table has all required columns, render row in the existing table; otherwise, reload page
     if ( bTableHasAllColumns )
     {
-      // Render new row in existing table
-
-      // Add the row to the list
+      // Add row to the global list
       g_aSortableTableRows.push( tRow );
 
       // Insert artificial index cell
       tRow['index'] = 0;
 
-      // Traverse fields of the current row
+      // Traverse fields
       for ( sKey in tRow )
       {
         // Map key to label
@@ -562,13 +561,21 @@
 
         if ( sLabel != null )
         {
+          // Add cell to column map
           makeTableCell( tRow[sKey], sLabel, tRule );
         }
       }
 
+      // Create the HTML row
       var sHtml = makeHtmlRow().html;
+
+      // Insert the row at the top of the table
       $( '#sortableTableBody' ).prepend( sHtml );
+
+      // Update the table
       $( '#sortableTable' ).trigger( 'update', [true] );
+
+      // Renumber the index column
       renumberIndex();
     }
     else
