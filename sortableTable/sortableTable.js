@@ -6,6 +6,7 @@ var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
 
 // Retrieve sortable table from backend
+var g_iStartRetrievalTime = null;
 function getSortableTable()
 {
   // Set handler to close any child windows
@@ -17,6 +18,8 @@ function getSortableTable()
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "object_type", g_sSortableTableType );
+
+  g_iStartRetrievalTime = Date.now();
 
   $.ajax(
     'sortableTable/getSortableTable.php',
@@ -36,6 +39,7 @@ function getSortableTable()
 var g_iStartRenderingTime = null;
 function loadSortableTable( tRsp, sStatus, tJqXhr )
 {
+  console.log( '=> Time to retrieve sortable table: ' + ( Date.now() - g_iStartRetrievalTime ) + ' ms' );
   g_iStartRenderingTime = Date.now();
   g_aSortableTableRows = tRsp['rows'];
 
