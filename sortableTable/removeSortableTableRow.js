@@ -73,7 +73,7 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
-  if ( Object.keys( tRsp ).length )
+  if ( Object.keys( tRsp ).length && tRsp.removed_object_id )
   {
     alert( JSON.stringify( tRsp ) );
     $( '#removeDialog' ).modal( 'hide' );

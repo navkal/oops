@@ -1475,11 +1475,6 @@ class removeUser:
         # Get initial state of object for Activity log
         before_summary = summarize_object( 'User', id )
 
-        # Get username for reporting
-        cur.execute( 'SELECT username FROM User WHERE id=?', ( id, ) )
-        username = cur.fetchone()[0]
-        self.username = username
-
         # Delete the user
         cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
 
@@ -1488,6 +1483,8 @@ class removeUser:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeUser'], by, '', before_summary, '', 'User', id  ) )
 
         conn.commit()
+
+        self.removed_object_id = id
 
 
 class authFacilities:
