@@ -1004,6 +1004,7 @@ class updateCircuitObject:
         self.messages = []
         self.row = {}
         target_table = facility + '_CircuitObject'
+        return_updated_row = True
 
         # Determine whether path is available
         if parent_id:
@@ -1042,6 +1043,9 @@ class updateCircuitObject:
                     desc_path = desc[2]
                     desc_voltage = get_voltage( desc[4] )
                     desc_object_type = desc[5]
+                    if object_type == desc_object_type:
+                        # A descendent of same object type is affected; suppress return of row, so that GUI will update entire table
+                        return_updated_row = False
                     desc_description = desc[6]
                     desc_tail = desc[8]
                     ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
@@ -1049,8 +1053,7 @@ class updateCircuitObject:
                     new_desc_source = new_desc_path.split( '.' )[-2]
                     desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
-            else:
-                descendants = None
+
 
             # Generate search result text
             voltage = get_voltage( voltage_id )
@@ -1068,8 +1071,8 @@ class updateCircuitObject:
 
             conn.commit()
 
-            # If no descendants were affected, load updated row
-            if descendants == None:
+            # Optionally return updated row
+            if return_updated_row:
                 cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
                 obj = cur.fetchone()
                 row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )

@@ -84,8 +84,8 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    alert( JSON.stringify( tRsp.row ) );
-    if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row) )
+    alert( JSON.stringify( tRsp.row ) + ' num keys=' + Object.keys( tRsp.row ).length );
+    if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row ) )
     {
       $('#editDialog').modal('hide');
 
