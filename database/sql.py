@@ -1157,7 +1157,7 @@ class addLocation:
 
 
 class updateLocation:
-    def __init__( self, by, id, location, old_location, description, enterprise, facility ):
+    def __init__( self, by, id, loc_new, loc_old, loc_descr, enterprise, facility ):
         open_database( enterprise )
 
         # Get initial state of object for Activity log
@@ -1166,7 +1166,7 @@ class updateLocation:
         # Update specified location
         target_table = facility + '_Room'
         cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
-            ( location, old_location, description, id ) )
+            ( loc_new, loc_old, loc_descr, id ) )
 
 
         # Update search results of circuit objects that refer to this location
@@ -1188,7 +1188,7 @@ class updateLocation:
             tail = row[8]
 
             # Generate the search result
-            search_result = dbCommon.make_search_result( source, voltage, location, old_location, description, object_type, object_descr, tail )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, object_descr, tail )
 
             # Save the new search result
             ptc_id = row[0]
@@ -1207,7 +1207,7 @@ class updateLocation:
             name = row[5]
 
             # Generate device description
-            desc = dbCommon.append_location( '', location, old_location, description, '' )
+            desc = dbCommon.append_location( '', loc_new, loc_old, loc_descr, '' )
             if desc:
                 desc = name + ':' + desc
             else:
@@ -1224,7 +1224,9 @@ class updateLocation:
 
         conn.commit()
 
-        self.row = {}
+        # Return row
+        row = location( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        self.row = row.__dict__
         self.messages = []
 
 
