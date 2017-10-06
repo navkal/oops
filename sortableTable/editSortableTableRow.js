@@ -87,42 +87,22 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
     switch( g_sAction )
     {
       case 'add':
-        showAddedRow( tRsp.row )
+        addRow( tRsp.row )
         break;
 
       case 'update':
-        location.reload();
+        updateRow( tRsp.row )
         break;
     }
   }
 }
 
-function showAddedRow( tRow )
+function addRow( tRow )
 {
   $('#editDialog').modal('hide');
 
   // Determine whether current table has all the columns needed to render the new row
-  var bTableHasAllColumns = true;
-  var aKeys = Object.keys( tRow );
-  var iCol = 0;
-  for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
-  {
-    var sKey = aKeys[iCol];
-    var tRule =  g_tPropertyRules[sKey];
-    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
-
-    if ( sLabel != null )
-    {
-      var sCell = tRow[sKey];
-      var bColumnEmpty = g_tColumnMap[sLabel].empty;
-
-      if ( sCell && bColumnEmpty )
-      {
-        // This cell does not have a corresponding column in the table
-        bTableHasAllColumns = false;
-      }
-    }
-  }
+  var bTableHasAllColumns = tableHasAllColumns( tRow );
 
   // If table has all required columns, render row in the existing table; otherwise, reload page
   if ( bTableHasAllColumns )
@@ -166,3 +146,34 @@ function showAddedRow( tRow )
   }
 }
 
+function updateRow( tRow )
+{
+  location.reload();
+}
+
+function tableHasAllColumns( tRow )
+{
+  var bTableHasAllColumns = true;
+  var aKeys = Object.keys( tRow );
+  var iCol = 0;
+  for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
+  {
+    var sKey = aKeys[iCol];
+    var tRule =  g_tPropertyRules[sKey];
+    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+    if ( sLabel != null )
+    {
+      var sCell = tRow[sKey];
+      var bColumnEmpty = g_tColumnMap[sLabel].empty;
+
+      if ( sCell && bColumnEmpty )
+      {
+        // This cell does not have a corresponding column in the table
+        bTableHasAllColumns = false;
+      }
+    }
+  }
+
+  return bTableHasAllColumns;
+}
