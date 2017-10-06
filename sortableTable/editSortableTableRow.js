@@ -84,7 +84,6 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    alert( JSON.stringify( tRsp.row ) + ' num keys=' + Object.keys( tRsp.row ).length );
     if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row ) )
     {
       $('#editDialog').modal('hide');
@@ -112,6 +111,9 @@ function addRow( tRow )
   // Add row to the global list
   g_aSortableTableRows.push( tRow );
 
+  // Map ID to row number
+  g_tRowMap[tRow.id] = g_aSortableTableRows.length - 1;
+
   // Insert artificial index cell
   tRow['index'] = 0;
 
@@ -130,7 +132,8 @@ function addRow( tRow )
   }
 
   // Create the HTML row
-  var sHtml = makeHtmlRow().html;
+  $( '#sortableTableBody tr' ).removeClass();
+  var sHtml = makeHtmlRow( -1, 'text-add' ).html;
 
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
@@ -160,7 +163,12 @@ function updateRow( tRspRow )
     }
   }
 
-  $( '#sortableTable' ).trigger( 'update', [true] );
+  // Create the HTML row
+  $( '#sortableTableBody tr' ).removeClass();
+  var sHtml = makeHtmlRow( iRow, 'text-update' ).html;
+
+  // Replace existing row with new HTML
+  $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
 }
 
 // Determine whether current table has all the columns needed to render the new row

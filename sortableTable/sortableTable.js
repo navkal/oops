@@ -264,21 +264,25 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
   }
 }
 
-function makeHtmlRow( nRow )
+function makeHtmlRow( nRow, sCssClass )
 {
   var bDone = false;
 
-  var sClass = ( typeof nRow == 'undefined' ) ? ' class="text-add" ' : '';
-  var sHtml = '<tr ' + sClass + ' >';
+  var sObjectId = ( nRow == -1 ) ? '' : ' object_id="' + g_aSortableTableRows[nRow].id + '"';
+
+  var sClass = sCssClass ? ( ' class="' + sCssClass + '" ' ) : '';
+
+  var sHtml = '';
 
   for ( var iHeader in g_aSortedHeaders )
   {
     var sHeader = g_aSortedHeaders[iHeader];
     var tColumn = g_tColumnMap[sHeader];
 
-    if ( typeof nRow == 'undefined' )
+    if ( nRow == -1 )
     {
       nRow = tColumn.cells.length - 1;
+      sObjectId = ' object_id="' + g_aSortableTableRows[nRow].id + '"';
     }
 
     if ( ! tColumn.empty )
@@ -295,6 +299,9 @@ function makeHtmlRow( nRow )
     bDone = ( nRow == tColumn.cells.length - 1 );
   }
   sHtml += '</tr>';
+
+  // Prepend table row tag
+  sHtml = '<tr ' + sObjectId + sClass + ' >' + sHtml;
 
   var tRow = { html: sHtml, done: bDone };
 
@@ -404,7 +411,7 @@ function openImageWindowEtc( tEvent )
 
 function highlightRow( tEvent )
 {
-  $( '#sortableTableBody' ).find( '.text-primary' ).removeClass( 'text-primary' );
+  $( '#sortableTableBody tr' ).removeClass();
   $( tEvent.target ).closest( 'tr' ).addClass( 'text-primary' );
 }
 
