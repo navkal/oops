@@ -6,6 +6,7 @@ var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
+var g_tRowMap = {};
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -51,6 +52,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   {
     // Get next row
     var tRow = g_aSortableTableRows[iRow];
+
+    // Map ID to row number
+    g_tRowMap[tRow.id] = iRow;
 
     // Insert artificial index cell
     tRow['index'] = parseInt( iRow ) + 1;
@@ -169,7 +173,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 }
 
 
-function makeTableCell( sCell, sLabel, tRule )
+function makeTableCell( sCell, sLabel, tRule, iRow )
 {
   // If the cell is an array, replace with array length
   if ( Array.isArray( sCell ) )
@@ -246,7 +250,18 @@ function makeTableCell( sCell, sLabel, tRule )
   }
 
   // Append cell to the column
-  g_tColumnMap[sLabel].cells.push( sCell );
+  if ( typeof iRow == 'undefined' )
+  {
+    g_tColumnMap[sLabel].cells.push( sCell );
+  }
+  else
+  {
+    if ( g_tColumnMap[sLabel].cells[iRow] != sCell )
+    {
+      console.log( '=========> REPLACING ' + g_tColumnMap[sLabel].cells[iRow] + ' WITH ' + sCell );
+      g_tColumnMap[sLabel].cells[iRow] = sCell;
+    }
+  }
 }
 
 function makeHtmlRow( nRow )
@@ -400,15 +415,8 @@ function closeChildWindows()
 
 function findSortableTableRow( sId )
 {
-  var iRow = 0;
-  var tRow = null;
-  do
-  {
-    tRow = g_aSortableTableRows[iRow];
-    iRow ++
-  }
-  while( ( iRow < g_aSortableTableRows.length ) && ( tRow.id != sId ) );
-
+  var iRow = g_tRowMap[sId];
+  var tRow = g_aSortableTableRows[iRow];
   return tRow;
 }
 

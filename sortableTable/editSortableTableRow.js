@@ -84,7 +84,8 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    if ( tableHasAllColumns( tRsp.row) )
+    alert( JSON.stringify( tRsp.row ) );
+    if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row) )
     {
       $('#editDialog').modal('hide');
 
@@ -143,8 +144,22 @@ function addRow( tRow )
 
 function updateRow( tRspRow )
 {
-  var tTableRow = findSortableTableRow( tRspRow.id );
-  tTableRow = tRspRow;
+  var iRow = g_tRowMap[tRspRow.id];
+
+  // Traverse fields
+  for ( sKey in tRspRow )
+  {
+    // Map key to label
+    var tRule =  g_tPropertyRules[sKey];
+    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+    if ( sLabel != null )
+    {
+      // Add cell to column map
+      makeTableCell( tRspRow[sKey], sLabel, tRule, iRow );
+    }
+  }
+
   $( '#sortableTable' ).trigger( 'update', [true] );
 }
 
