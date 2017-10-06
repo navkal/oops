@@ -1044,7 +1044,7 @@ class updateCircuitObject:
                     desc_voltage = get_voltage( desc[4] )
                     desc_object_type = desc[5]
                     if object_type == desc_object_type:
-                        # A descendent of same object type is affected; suppress return of row, so that GUI will update entire table
+                        # A descendent of same object type is affected; suppress return of row, so that GUI will reload table
                         return_updated_row = False
                     desc_description = desc[6]
                     desc_tail = desc[8]
@@ -1234,6 +1234,8 @@ class removeCircuitObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
+        return_object_id = True
+
         # Get row to be deleted
         target_table = facility + '_CircuitObject'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
@@ -1284,6 +1286,11 @@ class removeCircuitObject:
         # Move all descendants and their respective attached devices to 'Removed' tables
         for desc in descendants:
             descendant_id = desc[0]
+            desc_object_type = desc[5]
+
+            if object_type == desc_object_type:
+                # A descendent of same object type is affected; suppress return of row, so that GUI will reload table
+                return_object_id = False
 
             # Move current descendant to 'Removed' table
             cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *desc, remove_id ) )
@@ -1305,6 +1312,9 @@ class removeCircuitObject:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
 
         conn.commit()
+
+        if return_object_id:
+            self.removed_object_id = id
 
 
 class removeDevice:
@@ -1349,6 +1359,8 @@ class removeDevice:
 
         conn.commit()
 
+        self.removed_object_id = id
+
 
 class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
@@ -1386,6 +1398,8 @@ class removeLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeLocation'], by, facility_id, before_summary, comment, 'Location', id  ) )
 
         conn.commit()
+
+        self.removed_object_id = id
 
 
 class addUser:

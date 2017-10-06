@@ -86,7 +86,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
     if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row ) )
     {
-      $('#editDialog').modal('hide');
+      $( '#editDialog' ).modal( 'hide' );
 
       switch( g_sAction )
       {

@@ -73,5 +73,41 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
-  location.reload();
+  if ( Object.keys( tRsp ).length )
+  {
+    alert( JSON.stringify( tRsp ) );
+    $( '#removeDialog' ).modal( 'hide' );
+    removeRow( tRsp.removed_object_id );
+  }
+  else
+  {
+    location.reload();
+  }
+}
+
+function removeRow( sId )
+{
+  var iRow = g_tRowMap[sId];
+
+  console.log( '========> REMOVING row id=' + sId + ' row=' + iRow );
+
+  // Purge row from data structures
+  console.log( '===> bf g_aSortableTableRows[iRow]=' + JSON.stringify( g_aSortableTableRows[iRow] ) );
+  g_aSortableTableRows[iRow] = { id: null };
+  console.log( '===> af g_aSortableTableRows[iRow]=' + JSON.stringify( g_aSortableTableRows[iRow] ) );
+
+  for ( sLabel in g_tColumnMap )
+  {
+    console.log( '===> bf g_tColumnMap[sLabel].cells[iRow]=' + g_tColumnMap[sLabel].cells[iRow] );
+    g_tColumnMap[sLabel].cells[iRow] = '';
+    console.log( '===> af g_tColumnMap[sLabel].cells[iRow]=' + g_tColumnMap[sLabel].cells[iRow] );
+  }
+
+  delete g_tRowMap[sId];
+
+  // Remove row from display
+  $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();
+
+  // Update the table
+  $( '#sortableTable' ).trigger( 'update', [true] );
 }
