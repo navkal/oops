@@ -1066,6 +1066,12 @@ class updateCircuitObject:
 
             conn.commit()
 
+            # Return row
+            cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+            obj = cur.fetchone()
+            row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )
+            self.row = row.__dict__
+
 
 class addDevice:
     def __init__( self, by, parent_id, name, room_id, enterprise, facility ):

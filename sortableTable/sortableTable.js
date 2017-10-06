@@ -253,7 +253,7 @@ function makeHtmlRow( nRow )
 {
   var bDone = false;
 
-  var sClass = ( typeof nRow == 'undefined' ) ? ' class="text-success" ' : '';
+  var sClass = ( typeof nRow == 'undefined' ) ? ' class="text-add" ' : '';
   var sHtml = '<tr ' + sClass + ' >';
 
   for ( var iHeader in g_aSortedHeaders )

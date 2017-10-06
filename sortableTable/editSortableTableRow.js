@@ -141,9 +141,11 @@ function addRow( tRow )
   renumberIndex();
 }
 
-function updateRow( tRow )
+function updateRow( tRspRow )
 {
-  location.reload();
+  var tTableRow = findSortableTableRow( tRspRow.id );
+  tTableRow = tRspRow;
+  $( '#sortableTable' ).trigger( 'update', [true] );
 }
 
 // Determine whether current table has all the columns needed to render the new row
