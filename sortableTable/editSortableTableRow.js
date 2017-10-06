@@ -169,6 +169,9 @@ function updateRow( tRspRow )
 
   // Replace existing row with new HTML
   $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
+
+  // Update the table
+  $( '#sortableTable' ).trigger( 'update', [true] );
 }
 
 // Determine whether current table has all the columns needed to render the new row

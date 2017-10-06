@@ -1127,7 +1127,9 @@ class updateDevice:
 
         conn.commit()
 
-        self.row = {}
+        # Return row
+        row = device( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        self.row = row.__dict__
         self.messages = []
 
 
