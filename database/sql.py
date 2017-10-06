@@ -755,7 +755,9 @@ class sortableTable:
 
 
 class location:
-    def __init__(self, id=None, row=None, facility=None, user_role=None):
+    def __init__(self, id=None, row=None, enterprise=None, facility=None, user_role=None):
+        open_database( enterprise )
+
         if not row:
             cur.execute('SELECT * FROM ' + facility + '_Room WHERE id = ?', (id,))
             row = cur.fetchone()
@@ -1072,9 +1074,8 @@ class addDevice:
         # Generate new description
         description = make_device_description( name, room_id, facility )
 
-        target_table = facility + '_Device'
-
         # Add new object
+        target_table = facility + '_Device'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
              VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
         target_object_id = cur.lastrowid
@@ -1119,13 +1120,13 @@ class updateDevice:
 
 
 class addLocation:
-    def __init__( self, by, location, old_location, description, enterprise, facility ):
+    def __init__( self, by, loc_new, loc_old, loc_descr, enterprise, facility ):
         open_database( enterprise )
 
         # Add new location
         target_table = facility + '_Room'
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_num, old_num, location_type, description)
-            VALUES (?,?,?,?)''', (location, old_location, '', description) )
+            VALUES (?,?,?,?)''', (loc_new, loc_old, '', loc_descr) )
         target_object_id = cur.lastrowid
 
         # Log activity
@@ -1134,6 +1135,11 @@ class addLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addLocation'], by, facility_id, '', summarize_object( 'Location', target_object_id, facility ), 'Location', target_object_id  ) )
 
         conn.commit()
+
+        # Return row
+        row = location( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        self.row = row.__dict__
+        self.messages = []
 
 
 class updateLocation:
@@ -1203,6 +1209,9 @@ class updateLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, summarize_object( 'Location', id, facility ), 'Location', id  ) )
 
         conn.commit()
+
+        self.row = {}
+        self.messages = []
 
 
 class removeCircuitObject:
