@@ -84,66 +84,61 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    switch( g_sAction )
+    if ( tableHasAllColumns( tRsp.row) )
     {
-      case 'add':
-        addRow( tRsp.row )
-        break;
+      $('#editDialog').modal('hide');
 
-      case 'update':
-        updateRow( tRsp.row )
-        break;
+      switch( g_sAction )
+      {
+        case 'add':
+          addRow( tRsp.row )
+          break;
+
+        case 'update':
+          updateRow( tRsp.row )
+          break;
+      }
+    }
+    else
+    {
+      location.reload();
     }
   }
 }
 
 function addRow( tRow )
 {
-  $('#editDialog').modal('hide');
+  // Add row to the global list
+  g_aSortableTableRows.push( tRow );
 
-  // Determine whether current table has all the columns needed to render the new row
-  var bTableHasAllColumns = tableHasAllColumns( tRow );
+  // Insert artificial index cell
+  tRow['index'] = 0;
 
-  // If table has all required columns, render row in the existing table; otherwise, reload page
-  if ( bTableHasAllColumns )
+  // Traverse fields
+  for ( sKey in tRow )
   {
-    // Add row to the global list
-    g_aSortableTableRows.push( tRow );
+    // Map key to label
+    var tRule =  g_tPropertyRules[sKey];
+    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
 
-    // Insert artificial index cell
-    tRow['index'] = 0;
-
-    // Traverse fields
-    for ( sKey in tRow )
+    if ( sLabel != null )
     {
-      // Map key to label
-      var tRule =  g_tPropertyRules[sKey];
-      var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
-
-      if ( sLabel != null )
-      {
-        // Add cell to column map
-        makeTableCell( tRow[sKey], sLabel, tRule );
-      }
+      // Add cell to column map
+      makeTableCell( tRow[sKey], sLabel, tRule );
     }
-
-    // Create the HTML row
-    var sHtml = makeHtmlRow().html;
-
-    // Insert the row at the top of the table
-    $( '#sortableTableBody' ).prepend( sHtml );
-
-    // Update the table
-    $( '#sortableTable' ).trigger( 'update', [true] );
-
-    // Renumber the index column
-    renumberIndex();
   }
-  else
-  {
-    // Reload page
-    location.reload();
-  }
+
+  // Create the HTML row
+  var sHtml = makeHtmlRow().html;
+
+  // Insert the row at the top of the table
+  $( '#sortableTableBody' ).prepend( sHtml );
+
+  // Update the table
+  $( '#sortableTable' ).trigger( 'update', [true] );
+
+  // Renumber the index column
+  renumberIndex();
 }
 
 function updateRow( tRow )
@@ -151,11 +146,13 @@ function updateRow( tRow )
   location.reload();
 }
 
+// Determine whether current table has all the columns needed to render the new row
 function tableHasAllColumns( tRow )
 {
   var bTableHasAllColumns = true;
   var aKeys = Object.keys( tRow );
   var iCol = 0;
+
   for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
   {
     var sKey = aKeys[iCol];
