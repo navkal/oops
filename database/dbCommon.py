@@ -54,8 +54,10 @@ def add_interactive_user( cur, conn, by, username, password, role, force_change_
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dcEventTypes['addUser'], by, '', '', summarize_user( cur, target_object_id ), 'User', target_object_id  ) )
 
         conn.commit()
+    else:
+        target_object_id = None
 
-    return bUnique
+    return target_object_id
 
 
 def format_location( location, location_old, location_descr ):

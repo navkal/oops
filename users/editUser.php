@@ -125,7 +125,7 @@
 
     g_bUsernameDisabled = false;
     g_bDoValidation = true;
-    g_fnSubmitUserDone = addUserDone;
+    g_fnSubmitUserDone = submitEditDialogDone;
 
     getAllFacilities();
   }
@@ -167,19 +167,6 @@
   function onShownEditDialog()
   {
     $( '#' + g_sFocusId ).focus();
-  }
-
-  function addUserDone( tRsp, sStatus, tJqXhr )
-  {
-    if ( tRsp.unique )
-    {
-      location.reload();
-    }
-    else
-    {
-      var aMessages = [ "Username '" + tRsp.username + "' is not available." ];
-      showMessages( aMessages );
-    }
   }
 
   function updateUserDone( tRsp, sStatus, tJqXhr )

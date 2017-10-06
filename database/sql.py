@@ -672,30 +672,8 @@ class sortableTable:
             for obj in objects:
                 role_id = obj[3]
                 if role_id:
-                    cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
-                    role = cur.fetchone()[0]
-
-                    id = obj[0]
-                    username = obj[1]
-
-                    if role == 'Administrator':
-                        remove_id = ''
-                        remove_what = ''
-                    else:
-                        remove_id = id
-                        remove_what = 'username'
-
-                    facilities = authFacilities( username, enterprise )
-                    auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
-                    facilities_maps = facilities.__dict__
-
-                    if obj[6]:
-                        sStatus = 'Enabled'
-                    else:
-                        sStatus = 'Disabled'
-
-                    row = { 'id': id, 'username': username, 'role': role, 'auth_facilities': auth_facilities, 'facilities_maps': facilities_maps, 'update_user': id, 'remove_user': remove_id, 'remove_what': remove_what, 'status': sStatus, 'first_name': obj[7], 'last_name': obj[8], 'email_address': obj[9], 'organization': obj[10], 'user_description': obj[4] }
-                    self.rows.append( row )
+                    row = user( row=obj, enterprise=enterprise )
+                    self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
 
@@ -752,6 +730,53 @@ class sortableTable:
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
 
         print('found ' + str(len(self.rows)) + ' rows' )
+
+
+class user:
+    def __init__(self, user_id=None, row=None, enterprise=None):
+        open_database( enterprise )
+
+        if not row:
+            cur.execute('SELECT * FROM User WHERE id = ?', (user_id,))
+            row = cur.fetchone()
+
+        role_id = row[3]
+        cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+        role = cur.fetchone()[0]
+
+        id = row[0]
+        username = row[1]
+
+        if role == 'Administrator':
+            remove_id = ''
+            remove_what = ''
+        else:
+            remove_id = id
+            remove_what = 'username'
+
+        facilities = authFacilities( username, enterprise )
+        auth_facilities = '<br/>'.join( facilities.sorted_fullnames )
+        facilities_maps = facilities.__dict__
+
+        if row[6]:
+            sStatus = 'Enabled'
+        else:
+            sStatus = 'Disabled'
+
+        self.id = id
+        self.username = username
+        self.role = role
+        self.auth_facilities = auth_facilities
+        self.facilities_maps = facilities_maps
+        self.update_user = id
+        self.remove_user = remove_id
+        self.remove_what = remove_what
+        self.status = sStatus
+        self.first_name = row[7]
+        self.last_name = row[8]
+        self.email_address = row[9]
+        self.organization = row[10]
+        self.user_description = row[4]
 
 
 class location:
@@ -1406,8 +1431,16 @@ class addUser:
     def __init__(self, by, username, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
         facility_id_csv = facility_names_to_ids( auth_facilities )
-        self.unique = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, facility_id_csv )
-        self.username = username
+        new_user_id = dbCommon.add_interactive_user( cur, conn, by, username, password, role, True, ( status == 'Enabled' ), first_name, last_name, email_address, organization, description, facility_id_csv )
+
+        self.messages = []
+        self.selectors = []
+
+        if new_user_id:
+            self.row = user( user_id=new_user_id, enterprise=enterprise ).__dict__
+        else:
+            self.messages.append( "Username '" + username + "' is not available." )
+            self.selectors.append( '#username' )
 
 
 class updateUser:
