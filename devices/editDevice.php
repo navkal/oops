@@ -240,6 +240,8 @@
       var sLocVal = $( '#room_id' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
+      showSpinner( true );
+
       // Post request to server
       $.ajax(
         'devices/' + g_sAction + 'Device.php',

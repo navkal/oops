@@ -408,7 +408,7 @@
           data: tPostData
         }
       )
-      .done( editCircuitObjectDone )
+      .done( submitEditDialogDone )
       .fail( handleAjaxError );
     }
   }
@@ -486,107 +486,6 @@
 
     showMessages( aMessages );
     return ( aMessages.length == 0 );
-  }
-
-  function editCircuitObjectDone( tRsp, sStatus, tJqXhr )
-  {
-    hideSpinner();
-
-    if ( tRsp.messages.length )
-    {
-      // Show error messages
-      showMessages( tRsp.messages );
-
-      // Highlight pertinent fields
-      var aSelectors = tRsp.selectors;
-      for ( var iSelector in aSelectors )
-      {
-        var sSelector = aSelectors[iSelector];
-        $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-    }
-    else
-    {
-      switch( g_sAction )
-      {
-        case 'add':
-          showAddedRow( tRsp.row )
-          break;
-
-        case 'update':
-          location.reload();
-          break;
-      }
-    }
-  }
-
-  function showAddedRow( tRow )
-  {
-    $('#editDialog').modal('hide');
-
-    // Determine whether current table has all the columns needed to render the new row
-    var bTableHasAllColumns = true;
-    var aKeys = Object.keys( tRow );
-    var iCol = 0;
-    for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
-    {
-      var sKey = aKeys[iCol];
-      var tRule =  g_tPropertyRules[sKey];
-      var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
-
-      if ( sLabel != null )
-      {
-        var sCell = tRow[sKey];
-        var bColumnEmpty = g_tColumnMap[sLabel].empty;
-
-        if ( sCell && bColumnEmpty )
-        {
-          // This cell does not have a corresponding column in the table
-          bTableHasAllColumns = false;
-        }
-      }
-    }
-
-    // If table has all required columns, render row in the existing table; otherwise, reload page
-    if ( bTableHasAllColumns )
-    {
-      // Add row to the global list
-      g_aSortableTableRows.push( tRow );
-
-      // Insert artificial index cell
-      tRow['index'] = 0;
-
-      // Traverse fields
-      for ( sKey in tRow )
-      {
-        // Map key to label
-        var tRule =  g_tPropertyRules[sKey];
-        var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
-
-        if ( sLabel != null )
-        {
-          // Add cell to column map
-          makeTableCell( tRow[sKey], sLabel, tRule );
-        }
-      }
-
-      // Create the HTML row
-      var sHtml = makeHtmlRow().html;
-
-      // Insert the row at the top of the table
-      $( '#sortableTableBody' ).prepend( sHtml );
-
-      // Update the table
-      $( '#sortableTable' ).trigger( 'update', [true] );
-
-      // Renumber the index column
-      renumberIndex();
-    }
-    else
-    {
-      // Reload page
-      location.reload();
-    }
   }
 </script>
 

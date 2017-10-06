@@ -986,7 +986,7 @@ class addCircuitObject:
             conn.commit()
 
             # Return row
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (target_object_id,))
+            cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (target_object_id,))
             obj = cur.fetchone()
             row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )
             self.row = row.__dict__
@@ -1072,8 +1072,9 @@ class addDevice:
         # Generate new description
         description = make_device_description( name, room_id, facility )
 
-        # Add new object
         target_table = facility + '_Device'
+
+        # Add new object
         cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
              VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
         target_object_id = cur.lastrowid
@@ -1084,6 +1085,11 @@ class addDevice:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
 
         conn.commit()
+
+        # Return row
+        row = device( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        self.row = row.__dict__
+        self.messages = []
 
 
 class updateDevice:
@@ -1107,6 +1113,9 @@ class updateDevice:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, summarize_object( 'Device', id, facility ), 'Device', id  ) )
 
         conn.commit()
+
+        self.row = {}
+        self.messages = []
 
 
 class addLocation:
