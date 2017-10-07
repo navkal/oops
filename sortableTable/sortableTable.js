@@ -258,7 +258,6 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
   {
     if ( g_tColumnMap[sLabel].cells[iRow] != sCell )
     {
-      console.log( '=========> REPLACING ' + g_tColumnMap[sLabel].cells[iRow] + ' WITH ' + sCell );
       g_tColumnMap[sLabel].cells[iRow] = sCell;
     }
   }
