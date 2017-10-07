@@ -84,7 +84,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
           break;
 
         case 'update':
-          updateRow( tRsp.row )
+          updateRow( tRsp.row, tRsp.descendant_rows )
           break;
       }
     }
@@ -134,7 +134,7 @@ function addRow( tRow )
   renumberIndex();
 }
 
-function updateRow( tRspRow )
+function updateRow( tRspRow, aRspDescendants )
 {
   var iRow = g_tRowMap[tRspRow.id];
 

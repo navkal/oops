@@ -1031,7 +1031,10 @@ class updateCircuitObject:
         before_summary = summarize_object( object_type, id, facility )
 
         self.messages = []
+        self.selectors = []
         self.row = {}
+        self.descendant_rows = []
+
         target_table = facility + '_CircuitObject'
         return_updated_row = True
 
@@ -1130,6 +1133,7 @@ class addDevice:
         row = device( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
         self.messages = []
+        self.descendant_rows = []
 
 
 class updateDevice:
@@ -1155,9 +1159,11 @@ class updateDevice:
         conn.commit()
 
         # Return row
+        self.messages = []
+        self.selectors = []
+        self.descendant_rows = []
         row = device( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
-        self.messages = []
 
 
 class addLocation:
@@ -1252,9 +1258,12 @@ class updateLocation:
         conn.commit()
 
         # Return row
+        self.messages = []
+        self.selectors = []
+        self.descendant_rows = []
         row = location( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
-        self.messages = []
+
 
 
 class removeCircuitObject:
@@ -1433,6 +1442,8 @@ class addUser:
 
         self.messages = []
         self.selectors = []
+        self.descendant_rows = []
+        self.row = {}
 
         if new_user_id:
             self.row = userTableRow( user_id=new_user_id, enterprise=enterprise ).__dict__
