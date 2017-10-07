@@ -1259,7 +1259,6 @@ class removeCircuitObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
-        return_object_id = True
 
         # Get row to be deleted
         target_table = facility + '_CircuitObject'
@@ -1291,6 +1290,7 @@ class removeCircuitObject:
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+        self.removed_object_ids = [id]
 
         # Retrieve all devices attached to removed object
         dev_table = facility + '_Device'
@@ -1315,7 +1315,7 @@ class removeCircuitObject:
 
             if object_type == desc_object_type:
                 # A descendent of same object type is affected; suppress return of row, so that GUI will reload table
-                return_object_id = False
+                self.removed_object_ids.append( descendant_id )
 
             # Move current descendant to 'Removed' table
             cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *desc, remove_id ) )
@@ -1337,9 +1337,6 @@ class removeCircuitObject:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
 
         conn.commit()
-
-        if return_object_id:
-            self.removed_object_id = id
 
 
 class removeDevice:
@@ -1376,6 +1373,7 @@ class removeDevice:
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+        self.removed_object_ids = [id]
 
         # Log activity
         facility_id = facility_name_to_id( facility )
@@ -1384,7 +1382,6 @@ class removeDevice:
 
         conn.commit()
 
-        self.removed_object_id = id
 
 
 class removeLocation:
@@ -1416,6 +1413,7 @@ class removeLocation:
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+        self.removed_object_ids = [id]
 
         # Log activity
         facility_id = facility_name_to_id( facility )
@@ -1423,8 +1421,6 @@ class removeLocation:
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeLocation'], by, facility_id, before_summary, comment, 'Location', id  ) )
 
         conn.commit()
-
-        self.removed_object_id = id
 
 
 class addUser:
@@ -1516,14 +1512,13 @@ class removeUser:
 
         # Delete the user
         cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
+        self.removed_object_ids = [id]
 
         # Log activity
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeUser'], by, '', before_summary, '', 'User', id  ) )
 
         conn.commit()
-
-        self.removed_object_id = id
 
 
 class authFacilities:

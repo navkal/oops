@@ -73,15 +73,13 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
-  if ( Object.keys( tRsp ).length && tRsp.removed_object_id )
+  $( '#removeDialog' ).modal( 'hide' );
+
+  var aIds = tRsp.removed_object_ids;
+  for ( var iIndex in aIds )
   {
-    alert( JSON.stringify( tRsp ) );
-    $( '#removeDialog' ).modal( 'hide' );
-    removeRow( tRsp.removed_object_id );
-  }
-  else
-  {
-    location.reload();
+    sId = aIds[iIndex];
+    removeRow( sId );
   }
 }
 
