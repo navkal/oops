@@ -125,7 +125,7 @@ function addRow( tRow )
 
   // Create the HTML row
   $( '#sortableTableBody tr' ).removeClass();
-  var sHtml = makeHtmlRow( -1, 'text-add' ).html;
+  var sHtml = makeHtmlRow( -1, 'text-primary' ).html;
 
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
@@ -166,7 +166,7 @@ function updateRow( tRspRow, aRspDescendants )
     }
 
     // Create the HTML row
-    var sHtml = makeHtmlRow( iRowIndex, 'text-update' ).html;
+    var sHtml = makeHtmlRow( iRowIndex, 'text-primary' ).html;
 
     // Replace existing row with new HTML
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );

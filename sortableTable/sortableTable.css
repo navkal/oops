@@ -1,12 +1,14 @@
 /*  Copyright 2017 Panel Spy.  All rights reserved. */
 
+/******************************** /
 .text-add
 {
   font-style: italic;
-  color: #e600e6;
+  color: #428bca;
 }
 
 .text-update
 {
-  color: #08b214;
+  color: #428bca;
 }
+/********************************/
