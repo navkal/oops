@@ -136,28 +136,37 @@ function addRow( tRow )
 
 function updateRow( tRspRow, aRspDescendants )
 {
-  var iRow = g_tRowMap[tRspRow.id];
+  var aRows = [ tRspRow ].concat( aRspDescendants );
 
-  // Traverse fields
-  for ( sKey in tRspRow )
+  for ( var iRow = 0; iRow < aRows.length; iRow ++ )
   {
-    // Map key to label
-    var tRule =  g_tPropertyRules[sKey];
-    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+    // Get next row
+    var tRspRow = aRows[iRow];
 
-    if ( sLabel != null )
+    // Map row ID to row index in column map
+    var iRowIndex = g_tRowMap[tRspRow.id];
+
+    // Traverse fields
+    for ( sKey in tRspRow )
     {
-      // Add cell to column map
-      makeTableCell( tRspRow[sKey], sLabel, tRule, iRow );
+      // Map key to label
+      var tRule =  g_tPropertyRules[sKey];
+      var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+      if ( sLabel != null )
+      {
+        // Add cell to column map
+        makeTableCell( tRspRow[sKey], sLabel, tRule, iRowIndex );
+      }
     }
+
+    // Create the HTML row
+    $( '#sortableTableBody tr' ).removeClass();
+    var sHtml = makeHtmlRow( iRowIndex, 'text-update' ).html;
+
+    // Replace existing row with new HTML
+    $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
   }
-
-  // Create the HTML row
-  $( '#sortableTableBody tr' ).removeClass();
-  var sHtml = makeHtmlRow( iRow, 'text-update' ).html;
-
-  // Replace existing row with new HTML
-  $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
 
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
