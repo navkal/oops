@@ -716,3 +716,13 @@ function clearWaitCursor()
   $( '#content' ).css( 'display', 'block' );
 }
 
+function showSpinner( bLow )
+{
+  $( '#spinner' ).removeClass().addClass( bLow ? 'low-spinner' : 'spinner' );
+  $( '#spinner' ).css( 'display', 'block' );
+}
+
+function hideSpinner()
+{
+  $( '#spinner' ).css( 'display', 'none' );
+}

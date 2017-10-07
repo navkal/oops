@@ -1,16 +1,5 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-function showSpinner( bLow )
-{
-  $( '#spinner' ).removeClass().addClass( bLow ? 'low-spinner' : 'spinner' );
-  $( '#spinner' ).css( 'display', 'block' );
-}
-
-function hideSpinner()
-{
-  $( '#spinner' ).css( 'display', 'none' );
-}
-
 var g_sAction = null;
 var g_sSubmitLabel = null;
 function initEditDialog( nLabelColumnWidth )

@@ -167,6 +167,7 @@ function submitUser()
   }
   tPostData.append( "auth_facilities", aAuth.join() );
 
+  showSpinner();
 
   // Post request to server
   $.ajax(

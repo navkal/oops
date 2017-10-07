@@ -137,6 +137,8 @@
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
+    hideSpinner();
+
     if ( tRsp.messages.length == 0 )
     {
       // Update persistent copy of signed-in user
