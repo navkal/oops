@@ -73,10 +73,10 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
+    $( '#editDialog' ).modal( 'hide' );
+
     if ( tableHasAllColumns( tRsp.row ) )
     {
-      $( '#editDialog' ).modal( 'hide' );
-
       switch( g_sAction )
       {
         case 'add':
@@ -90,7 +90,10 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
     }
     else
     {
-      location.reload();
+      $( '#sortableTableSuccessDialog' ).off();
+      $( '#sortableTableSuccessDialog' ).on( 'shown.bs.modal', onShownSortableTableSuccessDialog );
+      $( '#sortableTableSuccessDialog' ).on( 'hide.bs.modal', onOkSortableTableSuccessDialog );
+      $( '#sortableTableSuccessDialog' ).modal( { backdrop:'static' } )
     }
   }
 }
@@ -200,4 +203,14 @@ function tableHasAllColumns( tRow )
   }
 
   return bTableHasAllColumns;
+}
+
+function onShownSortableTableSuccessDialog()
+{
+  $( '#dummyInput' ).focus();
+}
+
+function onOkSortableTableSuccessDialog()
+{
+  location.reload();
 }

@@ -73,3 +73,27 @@
 
   </div>
 </div>
+
+<div class="modal fade" id="sortableTableSuccessDialog" tabindex="-1" role="dialog" aria-labelledby="sortableTableSuccessLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-success" id="sortableTableSuccessLabel">Success</h4>
+      </div>
+      <div class="modal-body bg-success">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p class="text-success" ><b>Your settings have been saved.</b></p>
+            <p class="text-success" ><b>Reloading table to render new columns.</b></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form submit="return false;">
+          <input type="text" id="dummyInput" style="width:0px; height:0px; opacity:0%; border:none">
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" >OK</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
