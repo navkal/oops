@@ -724,7 +724,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = sortableTableRow( obj, user_role, enterprise, facility )
+                row = circuitObjectTableRow( obj, user_role, enterprise, facility )
                 self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
@@ -814,7 +814,7 @@ class location:
                 self.remove_location = ''
 
 
-class sortableTableRow:
+class circuitObjectTableRow:
 
     def __init__( self, row, user_role, enterprise, facility ):
 
@@ -1015,7 +1015,7 @@ class addCircuitObject:
             # Return row
             cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (target_object_id,))
             obj = cur.fetchone()
-            row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )
+            row = circuitObjectTableRow( obj, username_to_role( by ), enterprise, facility )
             self.row = row.__dict__
 
 
@@ -1100,7 +1100,7 @@ class updateCircuitObject:
             if return_updated_row:
                 cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
                 obj = cur.fetchone()
-                row = sortableTableRow( obj, username_to_role( by ), enterprise, facility )
+                row = circuitObjectTableRow( obj, username_to_role( by ), enterprise, facility )
                 self.row = row.__dict__
 
 
