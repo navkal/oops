@@ -36,12 +36,14 @@
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
+
   $sUser = $output[ count( $output ) - 1 ];
-  $aUser = (array) json_decode( $sUser );
+  $tUser = json_decode( $sUser );
 
   // If signed-in user is same as updated user, update fields returned by update operation
   if ( $sUsername == $_SESSION['panelSpy']['user']['username'] )
   {
+    $aUser = (array) $tUser->user;
     foreach( $aUser as $sKey => $sVal )
     {
       $_SESSION['panelSpy']['user'][$sKey] = $sVal;
@@ -50,9 +52,10 @@
   else
   {
     // Signed-in user is not same as updated user.  Report status without changing other user fields.
-    $_SESSION['panelSpy']['user']['messages'] = $aUser['messages'];
+    $aMessages = (array) $tUser->messages;
+    $_SESSION['panelSpy']['user']['messages'] = $aMessages;
   }
 
   // Echo session data
-  echo json_encode( $_SESSION['panelSpy'] );
+  echo $sUser;
 ?>

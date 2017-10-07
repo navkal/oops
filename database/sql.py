@@ -672,7 +672,7 @@ class sortableTable:
             for obj in objects:
                 role_id = obj[3]
                 if role_id:
-                    row = user( row=obj, enterprise=enterprise )
+                    row = userTableRow( row=obj, enterprise=enterprise )
                     self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
@@ -732,7 +732,7 @@ class sortableTable:
         print('found ' + str(len(self.rows)) + ' rows' )
 
 
-class user:
+class userTableRow:
     def __init__(self, user_id=None, row=None, enterprise=None):
         open_database( enterprise )
 
@@ -1437,7 +1437,7 @@ class addUser:
         self.selectors = []
 
         if new_user_id:
-            self.row = user( user_id=new_user_id, enterprise=enterprise ).__dict__
+            self.row = userTableRow( user_id=new_user_id, enterprise=enterprise ).__dict__
         else:
             self.messages.append( "Username '" + username + "' is not available." )
             self.selectors.append( '#username' )
@@ -1452,6 +1452,9 @@ class updateUser:
         before_summary = summarize_object( 'User', target_object_id )
 
         self.messages = []
+        self.selectors = []
+        self.user = {}
+        self.row = {}
 
         if password != None:
             if oldPassword != None:
@@ -1459,6 +1462,7 @@ class updateUser:
                 user = changePassword( by, username, oldPassword, password )
                 if user.signInId == '':
                     self.messages.append( 'Old Password not valid.' )
+                    self.selectors.append( '#oldPassword' )
             else:
                 # Change password without authentication
                 cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
@@ -1486,19 +1490,21 @@ class updateUser:
 
             # If we got a user row, load remaining user fields
             if user_row:
-                self.username = user_row[1]
+                self.user['username'] = user_row[1]
                 role_id = user_row[3]
                 cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
-                self.role = cur.fetchone()[0]
-                self.user_description = user_row[4]
+                self.user['role'] = cur.fetchone()[0]
+                self.user['user_description'] = user_row[4]
                 if user_row[6]:
-                    self.status = 'Enabled'
+                    self.user['status'] = 'Enabled'
                 else:
-                    self.status = 'Disabled'
-                self.first_name = user_row[7]
-                self.last_name = user_row[8]
-                self.email_address = user_row[9]
-                self.organization = user_row[10]
+                    self.user['status'] = 'Disabled'
+                self.user['first_name'] = user_row[7]
+                self.user['last_name'] = user_row[8]
+                self.user['email_address'] = user_row[9]
+                self.user['organization'] = user_row[10]
+
+                self.row = userTableRow( row=user_row, enterprise=enterprise ).__dict__
 
 
 class removeUser:

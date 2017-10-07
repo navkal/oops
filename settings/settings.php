@@ -137,12 +137,10 @@
 
   function settingsDone( tRsp, sStatus, tJqXhr )
   {
-    var tUser = tRsp.user;
-    if ( tUser.messages.length == 0 )
+    if ( tRsp.messages.length == 0 )
     {
-      delete tUser.messages;
-
       // Update persistent copy of signed-in user
+      var tUser = tRsp.user;
       var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
       for ( var sKey in tUser )
       {
@@ -155,10 +153,15 @@
     else
     {
       // Show error messages
-      showMessages( tUser.messages );
+      showMessages( tRsp.messages );
 
-      // Highlight Old Password, since (for now) that's the only thing that can produce an error in this operation
-      $( '#oldPassword' ).closest( '.form-group' ).addClass( 'has-error' );
+      // Highlight pertinent fields
+      var aSelectors = tRsp.selectors;
+      for ( var iSelector in aSelectors )
+      {
+        var sSelector = aSelectors[iSelector];
+        $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
+      }
     }
   }
 
