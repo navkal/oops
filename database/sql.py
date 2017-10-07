@@ -1030,13 +1030,14 @@ class updateCircuitObject:
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
 
+        # Initialize return values
         self.messages = []
         self.selectors = []
         self.row = {}
         self.descendant_rows = []
 
         target_table = facility + '_CircuitObject'
-        return_updated_row = True
+        user_role = username_to_role( by )
 
         # Determine whether path is available
         if parent_id:
@@ -1049,6 +1050,7 @@ class updateCircuitObject:
         if ( test_id != None ) and ( test_id != id ):
             # Path is neither available nor original
             self.messages.append( "Path '" + path + "' is not available." )
+            self.selectors = [ '#parent_path_container .selection', '#number', '#name' ]
 
         else:
             # Path is either available or original; okay to update
@@ -1075,9 +1077,6 @@ class updateCircuitObject:
                     desc_path = desc[2]
                     desc_voltage = get_voltage( desc[4] )
                     desc_object_type = desc[5]
-                    if object_type == desc_object_type:
-                        # A descendent of same object type is affected; suppress return of row, so that GUI will reload table
-                        return_updated_row = False
                     desc_description = desc[6]
                     desc_tail = desc[8]
                     ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
@@ -1086,6 +1085,10 @@ class updateCircuitObject:
                     desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
+                    # If path is affected in descendant of same object type, return descendant row, so that GUI will update in table
+                    if ( object_type == desc_object_type ) and ( desc_path != new_desc_path ):
+                        desc_row = circuitObjectTableRow( id=desc_id, user_role=user_role, enterprise=enterprise, facility=facility )
+                        self.descendant_rows.append( desc_row.__dict__ )
 
             # Generate search result text
             voltage = get_voltage( voltage_id )
@@ -1103,10 +1106,9 @@ class updateCircuitObject:
 
             conn.commit()
 
-            # Optionally return updated row
-            if return_updated_row:
-                row = circuitObjectTableRow( id=id, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
-                self.row = row.__dict__
+            # Return updated row
+            row = circuitObjectTableRow( id=id, user_role=user_role, enterprise=enterprise, facility=facility )
+            self.row = row.__dict__
 
 
 class addDevice:
@@ -1263,7 +1265,6 @@ class updateLocation:
         self.descendant_rows = []
         row = location( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
-
 
 
 class removeCircuitObject:
@@ -1462,8 +1463,9 @@ class updateUser:
 
         self.messages = []
         self.selectors = []
-        self.user = {}
+        self.descendant_rows = []
         self.row = {}
+        self.user = {}
 
         if password != None:
             if oldPassword != None:

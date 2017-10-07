@@ -73,7 +73,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    if ( Object.keys( tRsp.row ).length && tableHasAllColumns( tRsp.row ) )
+    if ( tableHasAllColumns( tRsp.row ) )
     {
       $( '#editDialog' ).modal( 'hide' );
 
@@ -138,6 +138,8 @@ function updateRow( tRspRow, aRspDescendants )
 {
   var aRows = [ tRspRow ].concat( aRspDescendants );
 
+  $( '#sortableTableBody tr' ).removeClass();
+
   for ( var iRow = 0; iRow < aRows.length; iRow ++ )
   {
     // Get next row
@@ -161,7 +163,6 @@ function updateRow( tRspRow, aRspDescendants )
     }
 
     // Create the HTML row
-    $( '#sortableTableBody tr' ).removeClass();
     var sHtml = makeHtmlRow( iRowIndex, 'text-update' ).html;
 
     // Replace existing row with new HTML

@@ -20,7 +20,6 @@
   // Handle image upload, if any
   $sFilename = '';
   $aMessages = [];
-  $aSelectors = [];
 
   if ( isset( $_FILES['panel_photo_file'] ) )
   {
@@ -34,8 +33,18 @@
     else
     {
       // File is too big; reject
-      array_push( $aMessages, 'Panel Photo (' . number_format( $_FILES['panel_photo_file']['size'] / 1000 ) . ' KB) exceeds maximum size of ' . number_format( UPLOAD_MAX_KB ) . ' KB' );
+      $aMessages = [ 'Panel Photo (' . number_format( $_FILES['panel_photo_file']['size'] / 1000 ) . ' KB) exceeds maximum size of ' . number_format( UPLOAD_MAX_KB ) . ' KB' ];
       $aSelectors = [ '#panel_photo_file' ];
+
+      $aStatus =
+      [
+        'messages' => $aMessages,
+        'selectors' => $aSelectors,
+        'row' => [],
+        'descendant_rows' => []
+      ];
+
+      $sStatus = json_encode( $aStatus );
     }
   }
   $sFilename = quote( $sFilename );
@@ -61,28 +70,8 @@
 
     // Extract result status
     $sStatus = $output[ count( $output ) - 1 ];
-
-    // Decode result status
-    $tStatus = json_decode( $sStatus );
-    $aMessages = $tStatus->messages;
-
-    // If there is an error message, indicate which dialog box fields to highlight.
-    // Include the fields that make up the path, since (for now) those are the elements that can produce an error in this operation
-    if ( ! empty( $aMessages ) )
-    {
-      $aSelectors = [ '#parent_path_container .selection', '#number', '#name' ];
-    }
   }
 
-  $tRsp =
-  [
-    'messages' => $aMessages,
-    'selectors' => $aSelectors,
-    'row' => $tStatus->row
-  ];
-
-  $sRsp = json_encode( $tRsp );
-
   // Echo status
-  echo $sRsp;
+  echo $sStatus;
 ?>
