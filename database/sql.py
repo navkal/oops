@@ -818,6 +818,12 @@ class circuitObjectTableRow:
 
     def __init__( self, row=None, id=None, user_role=None, enterprise=None, facility=None ):
 
+        open_database( enterprise )
+
+        if not row:
+            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+            row = cur.fetchone()
+
         self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
@@ -1013,9 +1019,7 @@ class addCircuitObject:
             conn.commit()
 
             # Return row
-            cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (target_object_id,))
-            obj = cur.fetchone()
-            row = circuitObjectTableRow( row=obj, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
+            row = circuitObjectTableRow( id=target_object_id, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
             self.row = row.__dict__
 
 
@@ -1098,9 +1102,7 @@ class updateCircuitObject:
 
             # Optionally return updated row
             if return_updated_row:
-                cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
-                obj = cur.fetchone()
-                row = circuitObjectTableRow( row=obj, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
+                row = circuitObjectTableRow( id=id, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
                 self.row = row.__dict__
 
 
