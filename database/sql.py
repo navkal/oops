@@ -724,7 +724,7 @@ class sortableTable:
             # Add other fields to each row
             self.rows = []
             for obj in objects:
-                row = circuitObjectTableRow( obj, user_role, enterprise, facility )
+                row = circuitObjectTableRow( row=obj, user_role=user_role, enterprise=enterprise, facility=facility )
                 self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
@@ -816,7 +816,7 @@ class location:
 
 class circuitObjectTableRow:
 
-    def __init__( self, row, user_role, enterprise, facility ):
+    def __init__( self, row=None, id=None, user_role=None, enterprise=None, facility=None ):
 
         self.id = str( row[0] )
         self.room_id = row[1]
@@ -1015,7 +1015,7 @@ class addCircuitObject:
             # Return row
             cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (target_object_id,))
             obj = cur.fetchone()
-            row = circuitObjectTableRow( obj, username_to_role( by ), enterprise, facility )
+            row = circuitObjectTableRow( row=obj, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
             self.row = row.__dict__
 
 
@@ -1100,7 +1100,7 @@ class updateCircuitObject:
             if return_updated_row:
                 cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
                 obj = cur.fetchone()
-                row = circuitObjectTableRow( obj, username_to_role( by ), enterprise, facility )
+                row = circuitObjectTableRow( row=obj, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
                 self.row = row.__dict__
 
 
