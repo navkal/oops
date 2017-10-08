@@ -221,7 +221,7 @@
       var sLocVal = $( '#room_id' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
 
-      showSpinner( true );
+      showSpinner();
 
       // Post request to server
       $.ajax(

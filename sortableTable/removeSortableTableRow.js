@@ -57,7 +57,7 @@ function removeObject()
   tPostData.append( "id", g_sRemoveId );
   tPostData.append( 'comment', $( '#remove_comment' ).val() );
 
-  showSpinner( true );
+  showSpinner();
 
   $.ajax(
     g_sRemoveCodeFolder + '/remove' + g_sSortableTableEditWhat + '.php',

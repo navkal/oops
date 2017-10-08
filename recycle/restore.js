@@ -371,7 +371,7 @@ function onSubmitRestoreDialog()
         break;
     }
 
-    showSpinner( true );
+    showSpinner();
 
     $.ajax(
       'recycle/restoreRemovedObject.php',

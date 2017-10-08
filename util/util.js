@@ -716,9 +716,8 @@ function clearWaitCursor()
   $( '#content' ).css( 'display', 'block' );
 }
 
-function showSpinner( bLow )
+function showSpinner()
 {
-  $( '#spinner' ).removeClass().addClass( bLow ? 'low-spinner' : 'spinner' );
   $( '#spinner' ).css( 'display', 'block' );
 }
 

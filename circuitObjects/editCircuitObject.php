@@ -385,7 +385,7 @@
         tPostData.append( 'panel_photo_file', $( '#panel_photo_file' ).prop( 'files' )[0] );
       }
 
-      showSpinner( true );
+      showSpinner();
 
       // Post request to server
       $.ajax(
