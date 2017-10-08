@@ -151,6 +151,9 @@ function updateRow( tRspRow, aRspDescendants )
     // Map row ID to row index in column map
     var iRowIndex = g_tRowMap[tRspRow.id];
 
+    // Replace the row in the list
+    g_aSortableTableRows[iRowIndex] = tRspRow;
+
     // Traverse fields
     for ( sKey in tRspRow )
     {
