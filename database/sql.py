@@ -982,6 +982,7 @@ class addCircuitObject:
         open_database( enterprise )
 
         self.messages = []
+        self.selectors = []
         self.row = {}
         target_table = facility + '_CircuitObject'
 
@@ -991,7 +992,7 @@ class addCircuitObject:
         if test_id:
             # Path already in use
             self.messages.append( "Path '" + path + "' is not available." )
-            self.selectors = [ '#parent_path_container .selection', '#number', '#name' ]
+            self.selectors = [ '#parent_path', '#number', '#name' ];
 
         else:
             # Path is not in use; okay to add
@@ -1051,7 +1052,7 @@ class updateCircuitObject:
         if ( test_id != None ) and ( test_id != id ):
             # Path is neither available nor original
             self.messages.append( "Path '" + path + "' is not available." )
-            self.selectors = [ '#parent_path_container .selection', '#number', '#name' ]
+            self.selectors = [ '#parent_path', '#number', '#name' ];
 
         else:
             # Path is either available or original; okay to update
@@ -1666,6 +1667,7 @@ class restoreRemovedObject:
         open_database( enterprise )
 
         self.messages = []
+        self.selectors = []
 
         # Get values representing object to be restored
         recycle_table = facility + '_Recycle'
@@ -1685,6 +1687,7 @@ class restoreRemovedObject:
         if len( self.messages ) == 0:
             # Clean up recyle bin
             cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
+            self.id = id
 
             conn.commit()
 
@@ -1700,6 +1703,7 @@ class restoreRemovedObject:
         if test_id:
             # Path already in use
             self.messages.append( "Path '" + restore_path + "' is not available." )
+            self.selectors = [ '#parent_path', '#number', '#name' ];
 
         else:
 

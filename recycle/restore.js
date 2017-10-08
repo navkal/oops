@@ -512,6 +512,7 @@ function restoreDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
+    alert( JSON.stringify( tRsp ) );
     location.reload();
   }
 }
