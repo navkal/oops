@@ -137,6 +137,8 @@
       tPostData.append( "loc_old", $( '#loc_old' ).val() );
       tPostData.append( "loc_descr", $( '#loc_descr' ).val() );
 
+      showSpinner( true );
+
       // Post request to server
       $.ajax(
         "locations/" + g_sAction + "Location.php",
