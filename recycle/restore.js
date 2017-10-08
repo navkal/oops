@@ -512,7 +512,17 @@ function restoreDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    alert( JSON.stringify( tRsp ) );
-    location.reload();
+    // Hide the dialog
+    $( '#restoreDialog' ).modal( 'hide' );
+
+    // Remove the row from the table
+    removeRow( tRsp.id );
+
+    // If table is empty, show empty message
+    if ( $( '#sortableTableBody tr' ).length == 0 )
+    {
+      $( '#sortableTable' ).hide();
+      $( '#sortableTableIsEmpty' ).show();
+    }
   }
 }
