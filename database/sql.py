@@ -592,11 +592,12 @@ class sortableTable:
     def __init__(self, object_type, user_role, enterprise, facility):
         open_database( enterprise )
 
+        self.rows = []
+        
         if object_type == 'recycle':
             recycle_table = facility + '_Recycle'
             cur.execute( 'SELECT * FROM ' + recycle_table )
             objects = cur.fetchall()
-            self.rows = []
 
             for obj in objects:
 
@@ -654,7 +655,6 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Make table rows
-            self.rows = []
             for obj in objects:
                 ( facility, facility_fullname ) = get_facility( obj[4] )
                 row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': obj[5], 'event_result': obj[6] }
@@ -668,7 +668,6 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Make table rows
-            self.rows = []
             for obj in objects:
                 role_id = obj[3]
                 if role_id:
@@ -696,7 +695,6 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Add other fields to each row
-            self.rows = []
             for obj in objects:
                 row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
@@ -709,7 +707,6 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Add other fields to each row
-            self.rows = []
             for obj in objects:
                 row = location( row=obj, facility=facility, user_role=user_role )
                 self.rows.append( row.__dict__ )
@@ -722,7 +719,6 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Add other fields to each row
-            self.rows = []
             for obj in objects:
                 row = circuitObjectTableRow( row=obj, user_role=user_role, enterprise=enterprise, facility=facility )
                 self.rows.append( row.__dict__ )

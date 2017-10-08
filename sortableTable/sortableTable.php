@@ -6,18 +6,18 @@
 ?>
 
 <!-- Utility scripts -->
-<script src="sortableTable/sortableTable.js?version=<?=$iVersion?>"></script>
-<script src="sortableTable/editSortableTableRow.js?version=<?=$iVersion?>"></script>
-<script src="sortableTable/removeSortableTableRow.js?version=<?=$iVersion?>"></script>
-<link rel="stylesheet" href="util/spinner.css?version=<?=$iVersion?>">
-<link rel="stylesheet" href="sortableTable/sortableTable.css?version=<?=$iVersion?>">
+<script src="/sortableTable/sortableTable.js?version=<?=$iVersion?>"></script>
+<script src="/sortableTable/editSortableTableRow.js?version=<?=$iVersion?>"></script>
+<script src="/sortableTable/removeSortableTableRow.js?version=<?=$iVersion?>"></script>
+<link rel="stylesheet" href="/util/spinner.css?version=<?=$iVersion?>">
+<link rel="stylesheet" href="/sortableTable/sortableTable.css?version=<?=$iVersion?>">
 
 <!-- tablesorter Bootstrap theme -->
-<link rel="stylesheet" href="../lib/tablesorter/theme.bootstrap_3.css">
+<link rel="stylesheet" href="/lib/tablesorter/theme.bootstrap_3.css">
 
 <!-- tablesorter basic libraries -->
-<script type="text/javascript" src="../lib/tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="../lib/tablesorter/jquery.tablesorter.widgets.js"></script>
+<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.widgets.js"></script>
 
 
 <style>
