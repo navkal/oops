@@ -355,6 +355,7 @@ class device:
             self.remove_device = self.id
             self.remove_what = 'name'
             self.formatted_location = formatted_location
+            self.activity_log = self.id
         else:
             self.events = []
 
@@ -593,7 +594,7 @@ class sortableTable:
         open_database( enterprise )
 
         self.rows = []
-        
+
         if object_type == 'recycle':
             recycle_table = facility + '_Recycle'
             cur.execute( 'SELECT * FROM ' + recycle_table )
@@ -801,6 +802,7 @@ class location:
         self.circuits = cur.fetchone()[0]
 
         if user_role == 'Technician':
+            self.activity_log = self.id
             self.update_location = self.id
             self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
             self.remove_what = 'formatted_location'
@@ -872,6 +874,7 @@ class circuitObjectTableRow:
             self.transformer_descr = self.description
 
         if user_role == 'Technician':
+            self.activity_log = self.id
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
                 self.remove_circuit = self.id

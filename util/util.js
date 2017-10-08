@@ -319,22 +319,6 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  remove_circuit:
-  {
-    label: "Remove Circuit",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    columnType: 'control',
-    controlType: 'remove',
-    customizeButton:
-      function( sId )
-      {
-        var tRow = findSortableTableRow( sId );
-        var aPath = tRow.path.split( '.' );
-        return ' title="Remove [' + aPath[aPath.length-2] + '.' + aPath[aPath.length-1] + ']" ';
-      },
-    displayIndex: displayIndex ++
-  },
   update_panel:
   {
     label: "Update Panel",
@@ -347,21 +331,6 @@ var g_tPropertyRules =
       {
         var tRow = findSortableTableRow( sId );
         return ' title="Update [' + tRow.name + ']" ';
-      },
-    displayIndex: displayIndex ++
-  },
-  remove_panel:
-  {
-    label: "Remove Panel",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    columnType: 'control',
-    controlType: 'remove',
-    customizeButton:
-      function( sId )
-      {
-        var tRow = findSortableTableRow( sId );
-        return ' title="Remove [' + tRow.name + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -380,21 +349,6 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  remove_transformer:
-  {
-    label: "Remove Transformer",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    columnType: 'control',
-    controlType: 'remove',
-    customizeButton:
-      function( sId )
-      {
-        var tRow = findSortableTableRow( sId );
-        return ' title="Remove [' + tRow.name + ']" ';
-      },
-    displayIndex: displayIndex ++
-  },
   update_device:
   {
     label: "Update Device",
@@ -410,21 +364,6 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  remove_device:
-  {
-    label: "Remove Device",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    columnType: 'control',
-    controlType: 'remove',
-    customizeButton:
-      function( sId )
-      {
-        var tRow = findSortableTableRow( sId );
-        return ' title="Remove [' + tRow.description + ']" ';
-      },
-    displayIndex: displayIndex ++
-  },
   update_location:
   {
     label: "Update Location",
@@ -437,6 +376,76 @@ var g_tPropertyRules =
       {
         var tRow = findSortableTableRow( sId );
         return ' title="Update [' + tRow.formatted_location + ']" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  activity_log:
+  {
+    label: "Activity Log",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'activity_log',
+    displayIndex: displayIndex ++
+  },
+  remove_circuit:
+  {
+    label: "Remove Circuit",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'remove',
+    customizeButton:
+      function( sId )
+      {
+        var tRow = findSortableTableRow( sId );
+        var aPath = tRow.path.split( '.' );
+        return ' title="Remove [' + aPath[aPath.length-2] + '.' + aPath[aPath.length-1] + ']" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  remove_panel:
+  {
+    label: "Remove Panel",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'remove',
+    customizeButton:
+      function( sId )
+      {
+        var tRow = findSortableTableRow( sId );
+        return ' title="Remove [' + tRow.name + ']" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  remove_transformer:
+  {
+    label: "Remove Transformer",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'remove',
+    customizeButton:
+      function( sId )
+      {
+        var tRow = findSortableTableRow( sId );
+        return ' title="Remove [' + tRow.name + ']" ';
+      },
+    displayIndex: displayIndex ++
+  },
+  remove_device:
+  {
+    label: "Remove Device",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'remove',
+    customizeButton:
+      function( sId )
+      {
+        var tRow = findSortableTableRow( sId );
+        return ' title="Remove [' + tRow.description + ']" ';
       },
     displayIndex: displayIndex ++
   },
@@ -567,6 +576,21 @@ function openImageWindow( tEvent )
   var nDefaultHeight = nDefaultWidth / nDefaultAspect;
 
   return childWindowOpen( tEvent, g_aImageWindows, sUrl, "Image", sPath, nDefaultWidth, nDefaultHeight, false );
+}
+
+var g_aActivityLogWindows = [];
+
+function openActivityLogWindow( tEvent )
+{
+  var tAnchor = $( tEvent.target ).closest( "a" );
+  var sObjectId = tAnchor.attr( "activity_log_id" );
+  var sUrl = '/log/log.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
+
+  var nDefaultWidth = 800;
+  var nDefaultAspect = 2550 / 3300;
+  var nDefaultHeight = nDefaultWidth / nDefaultAspect;
+
+  return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, nDefaultWidth, nDefaultHeight, false );
 }
 
 

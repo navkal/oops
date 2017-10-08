@@ -218,6 +218,14 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
           sCell += '</a>';
           break;
 
+        case 'activity_log':
+          sCell = '<a activity_log_id="' + sCellValue + '">';
+          sCell += '<button class="btn btn-link btn-xs" onclick="openActivityLogWindowEtc(event)" title="Activity Log" >';
+          sCell += '<span class="glyphicon glyphicon-book" style="font-size:18px;" ></span>';
+          sCell += '</button>';
+          sCell += '</a>';
+          break;
+
         case 'update':
           sCell = '<a>';
           sCell += '<button class="btn btn-link btn-xs" onclick="highlightRow(event);g_sAction=' +"'update'" + '; g_sUpdateTarget='+"'"+sCellValue+"'"+'" data-target="#editDialog" data-toggle="modal" ' + tRule.customizeButton( sCellValue ) + '>';
@@ -408,6 +416,12 @@ function openImageWindowEtc( tEvent )
   openImageWindow( tEvent );
 }
 
+function openActivityLogWindowEtc( tEvent )
+{
+  highlightRow( tEvent );
+  openActivityLogWindow( tEvent );
+}
+
 function highlightRow( tEvent )
 {
   $( '#sortableTableBody tr.text-primary' ).removeClass( 'text-primary' );
@@ -417,6 +431,7 @@ function highlightRow( tEvent )
 function closeChildWindows()
 {
   childWindowsClose( g_aImageWindows );
+  childWindowsClose( g_aActivityLogWindows );
 }
 
 function findSortableTableRow( sId )
