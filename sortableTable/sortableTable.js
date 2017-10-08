@@ -219,7 +219,7 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
           break;
 
         case 'activity_log':
-          sCell = '<a activity_log_id="' + sCellValue + '">';
+          sCell = '<a object_id="' + sCellValue + '">';
           sCell += '<button class="btn btn-link btn-xs" onclick="openActivityLogWindowEtc(event)" title="Activity Log" >';
           sCell += '<span class="glyphicon glyphicon-book" style="font-size:18px;" ></span>';
           sCell += '</button>';

@@ -583,7 +583,7 @@ var g_aActivityLogWindows = [];
 function openActivityLogWindow( tEvent )
 {
   var tAnchor = $( tEvent.target ).closest( "a" );
-  var sObjectId = tAnchor.attr( "activity_log_id" );
+  var sObjectId = tAnchor.attr( "object_id" );
   var sUrl = '/log/log.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
 
   var nDefaultWidth = 800;
