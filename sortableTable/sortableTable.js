@@ -25,7 +25,7 @@ function getSortableTable()
   g_iStartRetrievalTime = Date.now();
 
   $.ajax(
-    'sortableTable/getSortableTable.php',
+    '/sortableTable/getSortableTable.php',
     {
       type: 'POST',
       processData: false,
