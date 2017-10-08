@@ -371,6 +371,8 @@ function onSubmitRestoreDialog()
         break;
     }
 
+    showSpinner( true );
+
     $.ajax(
       'recycle/restoreRemovedObject.php',
       {
@@ -497,6 +499,8 @@ function validateInput()
 
 function restoreDone( tRsp, sStatus, tJqXhr )
 {
+  hideSpinner();
+
   if ( tRsp.messages.length )
   {
     // Show error messages

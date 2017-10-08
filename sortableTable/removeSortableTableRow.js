@@ -57,6 +57,8 @@ function removeObject()
   tPostData.append( "id", g_sRemoveId );
   tPostData.append( 'comment', $( '#remove_comment' ).val() );
 
+  showSpinner( true );
+
   $.ajax(
     g_sRemoveCodeFolder + '/remove' + g_sSortableTableEditWhat + '.php',
     {
@@ -73,6 +75,8 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
+  hideSpinner();
+
   $( '#removeDialog' ).modal( 'hide' );
 
   var aIds = tRsp.removed_object_ids;
