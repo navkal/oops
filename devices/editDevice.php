@@ -60,8 +60,6 @@
   var g_sName = null;
   var g_sLocationId = null;
 
-  var g_bGotDropdowns = false;
-  var g_tRsp = null;
 
   function onShowEditDialog()
   {
@@ -70,15 +68,7 @@
     $( '#source_path_container' ).html( '<select id="source_path" class="form-control" style="width: 100%" ></select>' );
     $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
-    if ( ! g_bGotDropdowns )
-    {
-      g_bGotDropdowns = true;
-      getDropdowns();
-    }
-    else
-    {
-      makeDropdowns();
-    }
+    getDropdowns();
   }
 
   function getDropdowns()
@@ -103,15 +93,6 @@
 
   function makeDropdowns( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp )
-    {
-      g_tRsp = tRsp;
-    }
-    else
-    {
-      tRsp = g_tRsp;
-    }
-
     var sHtmlSourcePath = '';
     var aSources = tRsp.sources;
     for ( var iSource in aSources )
