@@ -991,6 +991,7 @@ class addCircuitObject:
         if test_id:
             # Path already in use
             self.messages.append( "Path '" + path + "' is not available." )
+            self.selectors = [ '#parent_path_container .selection', '#number', '#name' ]
 
         else:
             # Path is not in use; okay to add

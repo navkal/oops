@@ -106,14 +106,7 @@
     $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
     $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
-    if ( ! g_tDropdowns )
-    {
-      getDropdowns();
-    }
-    else
-    {
-      loadEditDialog();
-    }
+    getDropdowns();
   }
 
   function getDropdowns()
@@ -138,12 +131,9 @@
 
   function loadEditDialog( tRsp, sStatus, tJqXhr )
   {
-    if ( tRsp )
-    {
-      g_tDropdowns = tRsp;
-    }
+    g_tDropdowns = tRsp;
 
-   // Customize ID of description field
+    // Customize ID of description field
     var sDescrId = g_sSortableTableEditWhat.toLowerCase() + '_descr';
     $( '#description textarea' ).attr( 'id', sDescrId );
     $( '#description label' ).attr( 'for', sDescrId );
