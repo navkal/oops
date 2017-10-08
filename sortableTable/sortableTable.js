@@ -410,7 +410,7 @@ function openImageWindowEtc( tEvent )
 
 function highlightRow( tEvent )
 {
-  $( '#sortableTableBody tr' ).removeClass();
+  $( '#sortableTableBody tr.text-primary' ).removeClass( 'text-primary' );
   $( tEvent.target ).closest( 'tr' ).addClass( 'text-primary' );
 }
 
