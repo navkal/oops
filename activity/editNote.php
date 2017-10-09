@@ -110,11 +110,10 @@
 
     var aMessages = [];
 
-    if ( ( $( '#loc_new' ).val() == '' ) && ( $( '#loc_old' ).val() == '' ) )
+    if ( $( '#note' ).val() == '' )
     {
-      aMessages.push( 'Location and Old Location cannot both be empty.' );
-      $( '#loc_new' ).closest( '.form-group' ).addClass( 'has-error' );
-      $( '#loc_old' ).closest( '.form-group' ).addClass( 'has-error' );
+      aMessages.push( 'Note cannot be empty.' );
+      $( '#note' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );
