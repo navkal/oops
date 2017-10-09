@@ -78,19 +78,13 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
-      if ( g_sLocationId )
-      {
-        tPostData.append( "id", g_sLocationId );
-      }
-      tPostData.append( "loc_new", $( '#loc_new' ).val() );
-      tPostData.append( "loc_old", $( '#loc_old' ).val() );
-      tPostData.append( "loc_descr", $( '#loc_descr' ).val() );
+      tPostData.append( "note", $( '#note' ).val() );
 
       showSpinner();
 
       // Post request to server
       $.ajax(
-        "locations/" + g_sAction + "Location.php",
+        "activity/" + g_sAction + "Note.php",
         {
           type: 'POST',
           processData: false,
