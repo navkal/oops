@@ -19,11 +19,14 @@
 
     <?php
       require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
+      require_once $_SERVER['DOCUMENT_ROOT'] . '/log/editNote.php';
     ?>
 
     <script>
       g_sSortableTableTitle = 'Activity Log';
       g_sSortableTableType = 'activity';
+      g_sSortableTableEditWhat = 'Note';
+
       $( document ).ready( getSortableTable );
       g_sSortableTableParams =
         {
