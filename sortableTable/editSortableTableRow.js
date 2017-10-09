@@ -1,15 +1,14 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
 var g_sAction = null;
-var g_sSubmitLabel = null;
 function initEditDialog( nLabelColumnWidth )
 {
   g_bChanged = false;
 
   // Label dialog and submit button
-  g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + g_sSortableTableEditWhat;
-  $( '#editDialogTitle' ).text( g_sSubmitLabel );
-  $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
+  var sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + g_sSortableTableEditWhat;
+  $( '#editDialogTitle' ).text( sSubmitLabel );
+  $( '#editDialogFormSubmitProxy' ).text( sSubmitLabel );
 
   makeFieldLabels( $( '.form-control,.input-group', '#editDialogForm' ) );
 
