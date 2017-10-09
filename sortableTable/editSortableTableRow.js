@@ -78,7 +78,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
     $( '#editDialog' ).modal( 'hide' );
 
-    if ( tableHasAllColumns( tRsp.row ) )
+    if ( g_aSortableTableRows.length && tableHasAllColumns( tRsp.row ) )
     {
       switch( g_sAction )
       {
@@ -125,10 +125,6 @@ function addRow( tRow )
       makeTableCell( tRow[sKey], sLabel, tRule );
     }
   }
-
-  // Make sure the table is showing
-  $( '#sortableTable' ).show();
-  $( '#sortableTableIsEmpty' ).hide();
 
   // Create the HTML row
   $( '#sortableTableBody tr.text-primary' ).removeClass( 'text-primary' );

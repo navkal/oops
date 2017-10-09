@@ -83,8 +83,7 @@
       <div class="modal-body bg-success">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <p class="text-success" ><b>Your settings have been saved.</b></p>
-            <p class="text-success" ><b>Reloading table to render new columns.</b></p>
+            <p class="text-success" ><b>The table must be reloaded to render your changes.</b></p>
           </div>
         </div>
       </div>
