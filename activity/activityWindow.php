@@ -23,6 +23,7 @@
 
     <script>
       g_sSortableTableTitle = 'Activity Log';
+      g_sSortableTableSubtitle = '<?=$_REQUEST["type"]?>: <?=$_REQUEST["subtitle"]?>';
       g_sSortableTableType = 'activity';
       g_sSortableTableEditWhat = 'Note';
 

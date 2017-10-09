@@ -591,7 +591,23 @@ function openActivityLogWindow( tEvent )
 {
   var tAnchor = $( tEvent.target ).closest( "a" );
   var sObjectId = tAnchor.attr( "object_id" );
-  var sUrl = '/activity/activityWindow.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
+
+  var sSubtitle = '';
+  var tRow = findSortableTableRow( sObjectId );
+  switch( g_sSortableTableEditWhat )
+  {
+    case 'Panel':
+    case 'Transformer':
+    case 'Device':
+      sSubtitle = tRow.name;
+      break;
+
+    case 'Circuit':
+      sSubtitle = tRow.circuit_decription;
+      break;
+  }
+
+  var sUrl = '/activity/activityWindow.php?subtitle=' + sSubtitle + '&type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
 
   return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, 800, 900, false );
 }

@@ -2,6 +2,7 @@
 
 var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
+var g_sSortableTableSubtitle = null;
 var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
 var g_tColumnMap = null;
@@ -99,7 +100,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   // Set title
   $( '#sortableTableTitle' ).text( g_sSortableTableTitle );
   var tSession = JSON.parse( localStorage.getItem( 'panelSpy.session' ) );
-  var sSubtitle = tSession['context']['facilityFullname'] ? tSession['context']['facilityFullname'] : tSession['context']['enterpriseFullname'];
+  var sSubtitle = g_sSortableTableSubtitle || tSession['context']['facilityFullname'] || tSession['context']['enterpriseFullname'];
   $( '#sortableTableSubtitle' ).text( sSubtitle );
 
   // Format table head/foot HTML, and construct sorter array
