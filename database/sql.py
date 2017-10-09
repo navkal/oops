@@ -667,7 +667,7 @@ class sortableTable:
                 else:
                     ( facility, facility_fullname ) = get_facility( obj[4] )
                     event_target = obj[5]
-                    
+
                 row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
 
                 self.rows.append( row )
@@ -915,6 +915,22 @@ class saveNotes:
         object_type = args.object_type.title()
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addNote'], args.username, facility_id, summarize_object( object_type, args.object_id, args.facility ), args.notes, object_type, args.object_id  ) )
+
+        conn.commit()
+
+
+class addNote:
+    def __init__(self, args):
+
+        open_database( args.enterprise )
+
+        # Add note to Activity log
+        facility_id = facility_name_to_id( args.facility )
+        object_type = args.object_type
+        object_id = args.object_id
+        note = args.note
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addNote'], args.username, facility_id, summarize_object( object_type, object_id, args.facility ), note, object_type, object_id  ) )
 
         conn.commit()
 

@@ -45,11 +45,6 @@
 
 
 <script>
-  var g_sLocationId = null;
-  var g_sLocation = null;
-  var g_sOldLocation = null;
-  var g_sDescription = null;
-
   function onShowEditDialog()
   {
     initEditDialog( 1 );
@@ -78,13 +73,15 @@
     if ( g_bChanged && validateInput() )
     {
       var tPostData = new FormData();
-      tPostData.append( "note", $( '#note' ).val() );
+      tPostData.append( 'object_type', g_sSortableTableParams['target_object_type'] );
+      tPostData.append( 'object_id', g_sSortableTableParams['target_object_id'] );
+      tPostData.append( 'note', $( '#note' ).val() );
 
       showSpinner();
 
       // Post request to server
       $.ajax(
-        "activity/" + g_sAction + "Note.php",
+        '/activity/addNote.php',
         {
           type: 'POST',
           processData: false,

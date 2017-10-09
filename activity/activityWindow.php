@@ -29,10 +29,10 @@
 
       $( document ).ready( getSortableTable );
       g_sSortableTableParams =
-        {
-          target_object_type: '<?=$_REQUEST["type"]?>',
-          target_object_id: '<?=$_REQUEST["id"]?>'
-        };
+      {
+        target_object_type: '<?=$_REQUEST["type"]?>',
+        target_object_id: '<?=$_REQUEST["id"]?>'
+      };
     </script>
 
  	</body>
