@@ -7,6 +7,7 @@ var g_sSortableTableEditWhat = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
 var g_tRowMap = {};
+var g_sSortableTableParams = {};
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -21,6 +22,11 @@ function getSortableTable()
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "object_type", g_sSortableTableType );
+
+  for ( var sParamName in g_sSortableTableParams )
+  {
+    tPostData.append( sParamName, g_sSortableTableParams[sParamName] );
+  }
 
   g_iStartRetrievalTime = Date.now();
 

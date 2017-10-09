@@ -590,7 +590,7 @@ class search:
 
 
 class sortableTable:
-    def __init__(self, object_type, user_role, enterprise, facility):
+    def __init__(self, object_type=None, user_role=None, target_object_type=None, target_object_id=None, enterprise=None, facility=None):
         open_database( enterprise )
 
         self.rows = []
@@ -652,13 +652,24 @@ class sortableTable:
 
         elif object_type == 'activity':
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM Activity')
+            if target_object_type and target_object_id:
+                where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
+            else:
+                where = ''
+            cur.execute('SELECT * FROM Activity' + where)
             objects = cur.fetchall()
 
             # Make table rows
             for obj in objects:
-                ( facility, facility_fullname ) = get_facility( obj[4] )
-                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': obj[5], 'event_result': obj[6] }
+                if target_object_type and target_object_id:
+                    facility_fullname = ''
+                    event_target = ''
+                else:
+                    ( facility, facility_fullname ) = get_facility( obj[4] )
+                    event_target = obj[5]
+                    
+                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
+
                 self.rows.append( row )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
@@ -903,7 +914,7 @@ class saveNotes:
         facility_id = facility_name_to_id( args.facility )
         object_type = args.object_type.title()
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['saveNotes'], args.username, facility_id, summarize_object( object_type, args.object_id, args.facility ), args.notes, object_type, args.object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addNote'], args.username, facility_id, summarize_object( object_type, args.object_id, args.facility ), args.notes, object_type, args.object_id  ) )
 
         conn.commit()
 

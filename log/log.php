@@ -7,7 +7,7 @@
   <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/../common/head.php";
     require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
-    if ( ! isset( $_REQUEST["type"], $_REQUEST["id"] ) )
+    if ( ! isset( $_REQUEST['type'], $_REQUEST['id'] ) )
     {
       abort();
     }
@@ -25,11 +25,15 @@
       g_sSortableTableTitle = 'Activity Log';
       g_sSortableTableType = 'activity';
       $( document ).ready( getSortableTable );
+      g_sSortableTableParams =
+        {
+          target_object_type: '<?=$_REQUEST["type"]?>',
+          target_object_id: '<?=$_REQUEST["id"]?>'
+        };
     </script>
 
  	</body>
 </html>
-
 
 
 <?php
