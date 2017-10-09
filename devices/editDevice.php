@@ -140,10 +140,6 @@
     $( '#source_path' ).select2( { placeholder: 'Circuit' } );
     $( '#room_id' ).select2( { placeholder: 'Location' } );
 
-    // Label dialog and submit button
-    $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
-
     // Set change handler
     resetChangeHandler();
 

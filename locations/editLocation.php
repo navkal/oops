@@ -82,10 +82,6 @@
     $( '#loc_old' ).val( g_sOldLocation );
     $( '#loc_descr' ).val( g_sDescription );
 
-    // Label dialog and submit button
-    $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
-
     // Clear messages
     clearMessages();
   }

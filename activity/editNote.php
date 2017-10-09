@@ -54,52 +54,13 @@
   {
     initEditDialog( 1 );
 
-    switch( g_sAction )
-    {
-      case 'add':
-        initAddDialog();
-        break;
-
-      case 'update':
-        initUpdateDialog();
-        break;
-    }
-
-    // Initialize input fields
-    $( '#loc_new' ).val( g_sLocation );
-    $( '#loc_old' ).val( g_sOldLocation );
-    $( '#loc_descr' ).val( g_sDescription );
-
-    // Label dialog and submit button
-    $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
-
     // Clear messages
     clearMessages();
   }
 
-  function initAddDialog()
-  {
-    g_sLocation = '';
-    g_sOldLocation = '';
-    g_sDescription = '';
-  }
-
-  function initUpdateDialog()
-  {
-    // Find the selected row
-    var tRow = findSortableTableRow( g_sUpdateTarget );
-
-    // Save values of selected row
-    g_sLocationId = tRow.id;
-    g_sLocation = tRow.loc_new;
-    g_sOldLocation = tRow.loc_old;
-    g_sDescription = tRow.loc_descr;
-  }
-
   function onShownEditDialog()
   {
-    $( '#loc_new' ).focus();
+    $( '#note' ).focus();
   }
 
   function onChangeControl( tEvent )

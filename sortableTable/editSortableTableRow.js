@@ -5,7 +5,11 @@ var g_sSubmitLabel = null;
 function initEditDialog( nLabelColumnWidth )
 {
   g_bChanged = false;
+
+  // Label dialog and submit button
   g_sSubmitLabel = g_sAction.charAt(0).toUpperCase() + g_sAction.slice(1) + ' ' + g_sSortableTableEditWhat;
+  $( '#editDialogTitle' ).text( g_sSubmitLabel );
+  $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
 
   makeFieldLabels( $( '.form-control,.input-group', '#editDialogForm' ) );
 

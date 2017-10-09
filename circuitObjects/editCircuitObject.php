@@ -171,10 +171,6 @@
     // Optionally show control for uploading Panel picture
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
 
-    // Label dialog and submit button
-    $( '#editDialogTitle' ).text( g_sSubmitLabel );
-    $( '#editDialogFormSubmitProxy' ).text( g_sSubmitLabel );
-
     // Set change handler
     resetChangeHandler();
 
