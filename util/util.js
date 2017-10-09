@@ -584,7 +584,7 @@ function openActivityLogWindow( tEvent )
 {
   var tAnchor = $( tEvent.target ).closest( "a" );
   var sObjectId = tAnchor.attr( "object_id" );
-  var sUrl = '/log/log.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
+  var sUrl = '/activity/activityWindow.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
 
   var nDefaultWidth = 800;
   var nDefaultAspect = 2550 / 3300;
