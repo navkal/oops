@@ -668,7 +668,7 @@ class sortableTable:
                     ( facility, facility_fullname ) = get_facility( obj[4] )
                     event_target = obj[5]
 
-                row = { 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
+                row = { 'id': obj[0], 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
 
                 self.rows.append( row )
 
@@ -931,8 +931,15 @@ class addNote:
         note = args.note
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addNote'], args.username, facility_id, summarize_object( object_type, object_id, args.facility ), note, object_type, object_id  ) )
+        note_id = cur.lastrowid
 
         conn.commit()
+
+        # Return row
+        cur.execute( 'SELECT * FROM Activity WHERE id=?', ( note_id, ) )
+        row = cur.fetchone()
+        self.row = { 'id': row[0], 'timestamp': row[1], 'event_type': row[2], 'event_trigger': row[3], 'facility_fullname': '', 'event_target': '', 'event_result': row[6] }
+        self.messages = []
 
 
 class signInUser:

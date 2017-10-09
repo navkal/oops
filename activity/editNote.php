@@ -49,6 +49,8 @@
   {
     initEditDialog( 1 );
 
+    $( '#note' ).val('');
+
     // Clear messages
     clearMessages();
   }
