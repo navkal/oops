@@ -126,6 +126,10 @@ function addRow( tRow )
     }
   }
 
+  // Make sure the table is showing
+  $( '#sortableTable' ).show();
+  $( '#sortableTableIsEmpty' ).hide();
+
   // Create the HTML row
   $( '#sortableTableBody tr.text-primary' ).removeClass( 'text-primary' );
   var sHtml = makeHtmlRow( -1, 'text-primary' ).html;

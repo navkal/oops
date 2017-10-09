@@ -106,4 +106,11 @@ function removeRow( sId )
 
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
+
+  // If table is empty, show empty message
+  if ( $( '#sortableTableBody tr' ).length == 0 )
+  {
+    $( '#sortableTable' ).hide();
+    $( '#sortableTableIsEmpty' ).show();
+  }
 }
