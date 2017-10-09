@@ -42,51 +42,6 @@
         </div>
       </div>
 
-      <!-- Collapsible "History" section -->
-      <div id="historyArea">
-        <div class="panel-group" role="tablist" >
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="historyHeading">
-              <span class="panel-title">
-                <a role="button" data-toggle="collapse" href="#historyCollapse" aria-expanded="true" aria-controls="historyCollapse">
-                  <span class="glyphicon glyphicon-list-alt">&nbsp;</span>History
-                  <span class="glyphicon glyphicon-plus pull-right"></span>
-                </a>
-              </span>
-            </div>
-            <div id="historyCollapse" class="panel-collapse collapse" style="overflow-x:auto" role="tabpanel" aria-labelledby="historyHeading">
-
-              <table id="historyTable" class="table table-responsive">
-                <thead>
-                  <tr>
-                    <th>Timestamp</th>
-                    <th>User</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody id="historyTableBody" >
-                </tbody>
-              </table>
-              <div id="historyNone">
-                <p class="h5 text-center" >None</p>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="notesEditor">
-        <div class="form-group">
-          <label for="notes">Notes</label>
-          <textarea id="notes" class="form-control" maxlength="1000" autofocus ></textarea>
-        </div>
-        <div style="text-align:center;" >
-          <button class="btn btn-primary btn-xs" onclick="saveNotes(event)" >Save</button>
-          <button class="btn btn-default btn-xs" onclick="clearNotes(event)" >Clear</button>
-        </div>
-      </div>
     </div>
  	</body>
 </html>
@@ -106,7 +61,6 @@
   var g_sPath = '<?=$_REQUEST["path"]?>';
   var g_sType = '<?=$_REQUEST["type"]?>';
   var g_sOid = '<?=$_REQUEST["oid"]?>';
-  var g_sRole = '<?=$_SESSION['panelSpy']['user']['role']?>';
 
   $( document ).ready( init )
   function init()

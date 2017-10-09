@@ -6,17 +6,6 @@ $( document ).ready( loadProperties );
 
 function loadProperties()
 {
-  // Set handler to toggle plus and minus icons on collapse panel head
-  $( ".collapse" ).on( "shown.bs.collapse hidden.bs.collapse", collapseToggle );
-
-  // Show/hide Notes Editor
-  var bEdit = ( g_sRole == 'Technician' );
-  $( '#notesEditor,#historyArea' ).css( 'display', bEdit ? 'initial' : 'none' );
-  if ( bEdit )
-  {
-    $( '#notes' ).on( 'keyup paste drop', setOnBeforeUnload );
-  }
-
   if ( g_tProperties )
   {
     showProperties();
@@ -45,7 +34,7 @@ function getProperties()
     }
   )
   .done( saveProperties )
-  .fail( handlePostError );
+  .fail( handleAjaxError );
 }
 
 function saveProperties( tRsp, sStatus, tJqXhr )
@@ -136,9 +125,6 @@ function showProperties()
 
   // Display properties
   $( "#objectLayout" ).html( sTbody );
-
-  // Display history
-  showHistory();
 }
 
 function goUp()
@@ -155,119 +141,4 @@ function goDown()
   var tButton = window.opener.$( '#circuitTree a[path="' +  sPath + '"] .propertiesButton' );
   tButton.addClass( 'btnDown' );
   tButton.click();
-}
-
-function collapseToggle()
-{
-  $( this ).parent().find( ".glyphicon-plus,.glyphicon-minus" ).toggleClass( "glyphicon-plus" ).toggleClass( "glyphicon-minus" );
-}
-
-function showHistory()
-{
-  var aEvents = g_tProperties.events;
-
-  if ( aEvents.length == 0 )
-  {
-    $( '#historyTable' ).hide();
-    $( '#historyNone' ).show();
-  }
-  else
-  {
-    var sTbody = '';
-    for ( var iEvent in aEvents )
-    {
-      var aCells = aEvents[iEvent];
-
-      sTbody += '<tr>';
-      for( var iCell in aCells )
-      {
-        var sCell = aCells[iCell];
-        if ( iCell == 0 )
-        {
-          sCell = new Date( Math.floor( sCell * 1000 ) ).toLocaleString();
-        }
-        sTbody += '<td>' + sCell + '</td>';
-      }
-      sTbody += '</tr>';
-    }
-    $( '#historyTableBody' ).html( sTbody );
-
-    $( '#historyTable' ).show();
-    $( '#historyNone' ).hide();
-  }
-}
-
-function handlePostError( tJqXhr, sStatus, sErrorThrown )
-{
-  console.log( "=> ERROR=" + sStatus + " " + sErrorThrown );
-  console.log( "=> HEADER=" + JSON.stringify( tJqXhr ) );
-}
-
-function saveNotes( tEvent )
-{
-  var sNotes = $( '#notes' ).val().trim();
-  $( '#notes' ).val( sNotes );
-  if ( sNotes != '' )
-  {
-    // Post request to server
-    var tPostData = new FormData();
-    tPostData.append( 'object_type', g_sType );
-    tPostData.append( 'object_id', g_sOid )
-    tPostData.append( "notes", sNotes );
-
-    $.ajax(
-      "saveNotes.php",
-      {
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        dataType : 'json',
-        data: tPostData
-      }
-    )
-    .done( saveNotesCompletion )
-    .fail( handlePostError );
-  }
-}
-
-function saveNotesCompletion( tRsp, sStatus, tJqXhr )
-{
-  clearNotes( { type: 'click' } );
-  getProperties();
-}
-
-function clearNotes( tEvent )
-{
-  $( '#notes' ).val( '' );
-  $( '#notes' ).focus();
-  setOnBeforeUnload( tEvent );
-}
-
-// Set or clear handler for onbeforeunload event
-function setOnBeforeUnload( tEvent )
-{
-  switch( tEvent.type )
-  {
-    case 'paste':
-    case 'drop':
-      // Don't know what was pasted or dropped; set artificial value
-      sVal = 'unknown';
-      break;
-
-    default:
-      // Get current value of text area
-      sVal = $( '#notes' ).val().trim();
-      break;
-  }
-
-  // Set/clear handler based on value
-  window.onbeforeunload = ( sVal == '' ) ? null : onBeforeUnload;
-}
-
-// Handle onbeforeunload event
-function onBeforeUnload( tEvent )
-{
-  var sMsg = 'Changes you made will not be saved.';
-  tEvent.returnValue = sMsg;
-  return sMsg;
 }

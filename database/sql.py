@@ -905,20 +905,6 @@ class circuitObjectTableRow:
                 self.remove_what = 'path'
 
 
-class saveNotes:
-    def __init__(self, args):
-
-        open_database( args.enterprise )
-
-        # Save notes in Activity log
-        facility_id = facility_name_to_id( args.facility )
-        object_type = args.object_type.title()
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addNote'], args.username, facility_id, summarize_object( object_type, args.object_id, args.facility ), args.notes, object_type, args.object_id  ) )
-
-        conn.commit()
-
-
 class addNote:
     def __init__(self, args):
 
