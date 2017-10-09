@@ -133,6 +133,9 @@ function addRow( tRow )
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
 
+  // Update column filters
+  updateColumnFilters();
+
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
 
@@ -178,6 +181,9 @@ function updateRow( tRspRow, aRspDescendants )
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
   }
 
+  // Update column filters
+  updateColumnFilters();
+
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
 }
@@ -209,6 +215,33 @@ function tableHasAllColumns( tRow )
   }
 
   return bTableHasAllColumns;
+}
+
+function updateColumnFilters()
+{
+  if ( g_aSortableTableRows.length > 2 )
+  {
+    for( var sLabel in g_tColumnMap )
+    {
+      var tColumn = g_tColumnMap[sLabel];
+      var bEmpty = tColumn.empty;
+      var sKey = tColumn.key;
+      var sColumnType = g_tPropertyRules[sKey].columnType;
+
+      if ( ! bEmpty && ( sColumnType != 'index' ) && ( sColumnType != 'control' ) )
+      {
+        var nDistinctVals = Object.keys( tColumn.valMap ).length;
+
+        console.log( '======> column ' + sKey + ' has ' + nDistinctVals + ' distinct values.' );
+
+        if ( nDistinctVals > 2 )
+        {
+          tHead = $( 'th[key="' + sKey + '"]' );
+          tHead.removeClass( 'filter-select filter-exact' );
+        }
+      }
+    }
+  }
 }
 
 function onShownSortableTableSuccessDialog()
