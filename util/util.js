@@ -528,6 +528,13 @@ var g_tPropertyRules =
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++
+  },
+  note:
+  {
+    label: "Note",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
   }
 };
 

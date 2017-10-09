@@ -4,7 +4,7 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
 ?>
 
-<!-- Edit Location dialog -->
+<!-- Edit Note dialog -->
 <div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogTitle">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -17,21 +17,9 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
               <div class="form-group">
-                <label for="loc_new"></label>
+                <label for="note" ></label>
                 <div>
-                  <input type="text" class="form-control" id="loc_new" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="loc_old"></label>
-                <div>
-                  <input type="text" class="form-control" id="loc_old" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="loc_descr" ></label>
-                <div>
-                  <textarea class="form-control" id="loc_descr" maxlength="50" ></textarea>
+                  <textarea class="form-control" id="note" maxlength="500" ></textarea>
                 </div>
               </div>
               <button id="editDialogFormSubmitButton" type="submit" style="display:none" ></button>
@@ -64,7 +52,7 @@
 
   function onShowEditDialog()
   {
-    initEditDialog();
+    initEditDialog( 1 );
 
     switch( g_sAction )
     {
