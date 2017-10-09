@@ -2,7 +2,7 @@ Panel Spy,,
 &copy; 2017 Panel Spy. All rights reserved.,,
 panelSpy@gmail.com,,
 users,Users,users/users.php
-activity,Activity,activity/activity.php
+activity,Activity Log,activity/activity.php
 about,About,about/about.php
 contact,Contact,contact/contact.php
 php,PHP Information,pi/pi.php

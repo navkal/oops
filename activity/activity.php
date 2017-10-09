@@ -5,7 +5,7 @@
 ?>
 
 <script>
-  g_sSortableTableTitle = 'Activity';
+  g_sSortableTableTitle = 'Activity Log';
   g_sSortableTableType = 'activity';
   $( document ).ready( getSortableTable );
 </script>
