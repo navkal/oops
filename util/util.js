@@ -593,11 +593,7 @@ function openActivityLogWindow( tEvent )
   var sObjectId = tAnchor.attr( "object_id" );
   var sUrl = '/activity/activityWindow.php?type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
 
-  var nDefaultWidth = 800;
-  var nDefaultAspect = 2550 / 3300;
-  var nDefaultHeight = nDefaultWidth / nDefaultAspect;
-
-  return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, nDefaultWidth, nDefaultHeight, false );
+  return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, 800, 900, false );
 }
 
 
