@@ -94,7 +94,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
           };
         }
 
-        makeTableCell( tRow[sKey], sLabel, tRule );
+        makeTableCell( tRow[sKey], sLabel, tRule, iRow );
       }
     }
   }
@@ -219,9 +219,9 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
       // Perform special cell rendering for UI controls
       switch ( tRule.controlType )
       {
-        case 'image':
+        case 'image_by_path':
           sCell = '<a path="' + sCell + '">';
-          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" >';
+          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="' + g_aSortableTableRows[iRow].object_type + ' Image" >';
           sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
           sCell += '</button>';
           sCell += '</a>';
@@ -266,18 +266,8 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
     }
   }
 
-  // Append cell to the column
-  if ( typeof iRow == 'undefined' )
-  {
-    g_tColumnMap[sLabel].cells.push( sCell );
-  }
-  else
-  {
-    if ( g_tColumnMap[sLabel].cells[iRow] != sCell )
-    {
-      g_tColumnMap[sLabel].cells[iRow] = sCell;
-    }
-  }
+  // Insert cell in column
+  g_tColumnMap[sLabel].cells[iRow] = sCell;
 }
 
 function makeHtmlRow( nRow, sCssClass )

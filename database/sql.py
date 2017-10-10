@@ -420,9 +420,9 @@ class cirobj:
         # Add image filename
         filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
         if os.path.isfile( filename ):
-            self.image_file = filename
+            self.panel_image = filename
         else:
-            self.image_file = ''
+            self.panel_image = ''
 
 
         if getkids:
@@ -856,9 +856,9 @@ class circuitObjectTableRow:
         # Add image filename
         filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
         if os.path.isfile( filename ):
-            self.image_file = self.path
+            self.panel_image = self.path
         else:
-            self.image_file = ''
+            self.panel_image = ''
 
         cur.execute('SELECT COUNT(id) FROM ' + facility + '_CircuitObject WHERE parent_id = ?', (self.id,))
         self.children = cur.fetchone()[0]

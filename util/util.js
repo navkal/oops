@@ -294,13 +294,13 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
-  image_file:
+  panel_image:
   {
-    label: "Image",
+    label: "Panel Image",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     columnType: 'control',
-    controlType: 'image',
+    controlType: 'image_by_path',
     displayIndex: displayIndex ++
   },
   activity_log:

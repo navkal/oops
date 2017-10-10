@@ -102,9 +102,10 @@ function addRow( tRow )
 {
   // Add row to the global list
   g_aSortableTableRows.push( tRow );
+  var iRow = g_aSortableTableRows.length - 1;
 
   // Map ID to row number
-  g_tRowMap[tRow.id] = g_aSortableTableRows.length - 1;
+  g_tRowMap[tRow.id] = iRow;
 
   // Insert artificial index cell
   tRow['index'] = 0;
@@ -119,7 +120,7 @@ function addRow( tRow )
     if ( sLabel != null )
     {
       // Add cell to column map
-      makeTableCell( tRow[sKey], sLabel, tRule );
+      makeTableCell( tRow[sKey], sLabel, tRule, iRow );
     }
   }
 

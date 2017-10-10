@@ -2,7 +2,7 @@
 
 var g_aPropertiesWindows = [];
 var g_tTreeMap = {};
-var g_sImageButton = '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Image" ><span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span></button>';
+var g_sImageButton = '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Panel Image" ><span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span></button>';
 var g_sPropertiesButton = '<button class="btn btn-link btn-xs propertiesButton" onclick="openPropertiesWindow(event)" title="Properties" ><span class="glyphicon glyphicon-info-sign" style="font-size:18px;" ></span></button>';
 var g_sSearchTargetPath = '';
 var g_aPropertiesTrail = null;
@@ -65,7 +65,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   sNode += '<i class="glyphicon glyphicon-chevron-down toggle"></i>';
   sNode += sLabel;
   sNode += '<span class="pull-right">';
-  sNode += tRsp.image_file ? g_sImageButton : '';
+  sNode += tRsp.panel_image ? g_sImageButton : '';
   sNode += g_sPropertiesButton;
   sNode += '</span>';
   sNode += '</a>';
@@ -84,7 +84,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
     var sChildLabel = aChildren[iChild][2];
     var sChildType = aChildren[iChild][3];
     var sChildImage = aChildren[iChild][4];
-    aChildInfo.push( { oid: sChildOid, path: sChildPath, label: sChildLabel, type: sChildType, image_file: sChildImage } );
+    aChildInfo.push( { oid: sChildOid, path: sChildPath, label: sChildLabel, type: sChildType, panel_image: sChildImage } );
   }
   aChildInfo.sort( compareNodes );
   for ( var iChild = 0; iChild < aChildInfo.length; iChild ++ )
@@ -93,7 +93,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
     sCollapse += '<i class="glyphicon glyphicon-chevron-right toggle"></i>';
     sCollapse += aChildInfo[iChild].label;
     sCollapse += '<span class="pull-right">';
-    sCollapse += aChildInfo[iChild].image_file ? g_sImageButton : '';
+    sCollapse += aChildInfo[iChild].panel_image ? g_sImageButton : '';
     sCollapse += g_sPropertiesButton;
     sCollapse += '</span>';
     sCollapse += '</a>';
