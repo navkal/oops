@@ -130,8 +130,8 @@ function addRow( tRow )
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
 
-  // Update column filters
-  updateColumnFilters();
+  // Check column filters
+  validateColumnFilters();
 
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
@@ -178,8 +178,8 @@ function updateRow( tRspRow, aRspDescendants )
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
   }
 
-  // Update column filters
-  updateColumnFilters();
+  // Check column filters
+  validateColumnFilters();
 
   // Update the table
   $( '#sortableTable' ).trigger( 'update', [true] );
@@ -214,21 +214,33 @@ function tableHasAllColumns( tRow )
   return bTableHasAllColumns;
 }
 
-function updateColumnFilters()
+function validateColumnFilters()
 {
-  if ( g_aSortableTableRows.length > 2 )
+  // Ensure proper column filter controls
+  // - If the column has up to <max> distinct values, filter should be select control
+  // - Otherwise, filter should be text input control
+
+  // If the table contains more than <max> rows...
+  if ( g_aSortableTableRows.length > FILTER_SELECT_MAX )
   {
+    // Check each column
     for( var sLabel in g_tColumnMap )
     {
+      // Determine whether the column needs a filter
       var tColumn = g_tColumnMap[sLabel];
       var bEmpty = tColumn.empty;
       var sKey = tColumn.key;
       var sColumnType = g_tPropertyRules[sKey].columnType;
+      var bFilter = ! bEmpty && ( sColumnType != 'index' ) && ( sColumnType != 'control' )
 
-      if ( ! bEmpty && ( sColumnType != 'index' ) && ( sColumnType != 'control' ) )
+      // If the column needs a filter...
+      if ( bFilter )
       {
-        if ( Object.keys( tColumn.valMap ).length > 2 )
+        // If the column has more than <max> distinct values...
+        if ( Object.keys( tColumn.valMap ).length > FILTER_SELECT_MAX )
         {
+          // This column should be filtered by a text input control
+
           // Find the column head
           var tColumnHead = $( '#sortableTable th[key="' + sKey + '"]' );
           var iCol = tColumnHead.attr( 'data-column' );

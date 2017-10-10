@@ -1,5 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
+var FILTER_SELECT_MAX = 2;
+
 var g_aSortableTableRows = null;
 var g_sSortableTableTitle = null;
 var g_sSortableTableSubtitle = null;
@@ -130,7 +132,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
       else
       {
         // If column has few values, use dropdown for filtering
-        if ( Object.keys( tColumn.valMap ).length <= 2 )
+        if ( Object.keys( tColumn.valMap ).length <= FILTER_SELECT_MAX )
         {
           sFilter = ' class="filter-select filter-exact" ';
         }
