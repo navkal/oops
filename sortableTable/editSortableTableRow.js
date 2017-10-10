@@ -93,10 +93,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
     }
     else
     {
-      $( '#sortableTableSuccessDialog' ).off();
-      $( '#sortableTableSuccessDialog' ).on( 'shown.bs.modal', onShownSortableTableSuccessDialog );
-      $( '#sortableTableSuccessDialog' ).on( 'hide.bs.modal', onOkSortableTableSuccessDialog );
-      $( '#sortableTableSuccessDialog' ).modal( { backdrop:'static' } )
+      location.reload();
     }
   }
 }
@@ -242,14 +239,4 @@ function updateColumnFilters()
       }
     }
   }
-}
-
-function onShownSortableTableSuccessDialog()
-{
-  $( '#dummyInput' ).focus();
-}
-
-function onOkSortableTableSuccessDialog()
-{
-  location.reload();
 }
