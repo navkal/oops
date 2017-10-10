@@ -1783,7 +1783,7 @@ class restoreRemovedObject:
             # Get descendant devices
             source_device_table = facility + '_Removed_Device'
             target_device_table = facility + '_Device'
-            cur.execute( 'SELECT * FROM ' + source_device_table + ' WHERE remove_id=?', ( id ) )
+            cur.execute( 'SELECT * FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) )
             devices = cur.fetchall()
 
             # Restore devices at original IDs
