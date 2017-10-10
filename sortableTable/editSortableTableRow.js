@@ -227,14 +227,18 @@ function updateColumnFilters()
 
       if ( ! bEmpty && ( sColumnType != 'index' ) && ( sColumnType != 'control' ) )
       {
-        var nDistinctVals = Object.keys( tColumn.valMap ).length;
-
-        console.log( '======> column ' + sKey + ' has ' + nDistinctVals + ' distinct values.' );
-
-        if ( nDistinctVals > 2 )
+        if ( Object.keys( tColumn.valMap ).length > 2 )
         {
-          tHead = $( 'th[key="' + sKey + '"]' );
-          tHead.removeClass( 'filter-select filter-exact' );
+          // Find the column head
+          var tColumnHead = $( '#sortableTable th[key="' + sKey + '"]' );
+          var iCol = tColumnHead.attr( 'data-column' );
+
+          // If this column is filtered by a select control, reload the page
+          var tFilterSelect = $( '#sortableTable thead .tablesorter-filter-row td[data-column="' + iCol + '"] select' );
+          if ( tFilterSelect.length )
+          {
+            location.reload();
+          }
         }
       }
     }
