@@ -380,6 +380,14 @@ class device:
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
+        # Get panel image
+        ( panel_id, panel_path ) = get_nearest_panel( self.object_type, self.id, facility )
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
+        if os.path.isfile( filename ):
+            self.panel_image = panel_path
+        else:
+            self.panel_image = ''
+
         if user_role == 'Technician':
             facility_id = facility_name_to_id( facility )
             cur.execute( "SELECT timestamp, username, event_type, event_result FROM Activity WHERE facility_id = ? AND target_object_type = ? AND target_object_id = ?", (facility_id, self.object_type, self.id,) )
