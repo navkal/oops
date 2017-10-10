@@ -309,6 +309,40 @@ def summarize_object( type, id, facility='' ):
     return summary
 
 
+def get_nearest_panel( type, id, facility ):
+
+    if type == 'Panel':
+        panel_id = id
+        panel_path = get_path( id, facility )
+    else:
+        ptc_table = facility + '_CircuitObject'
+        device_table = facility + '_Device'
+
+        if ( type == 'Device' ):
+            initial_table = device_table
+        else:
+            initial_table = ptc_table
+
+        # Get parent_id of initial object
+        cur.execute( 'SELECT parent_id from ' + initial_table + ' WHERE id=?', ( id, ) )
+        parent_id = cur.fetchone()[0]
+
+        # Traverse source hierarchy to nearest ancestor panel
+        object_type = ''
+        panel_id = ''
+        panel_path = ''
+
+        while object_type != 'Panel':
+            cur.execute( 'SELECT object_type, parent_id, id, path from ' + ptc_table + ' WHERE id=?', ( parent_id, ) );
+            row = cur.fetchone()
+            object_type = row[0]
+            parent_id = row[1]
+            panel_id = row[2]
+            panel_path = row[3]
+
+    return ( str( panel_id ), panel_path )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -854,9 +888,10 @@ class circuitObjectTableRow:
         self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
 
         # Add image filename
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
+        ( panel_id, panel_path ) = get_nearest_panel( self.object_type, self.id, facility )
+        filename = '../database/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
         if os.path.isfile( filename ):
-            self.panel_image = self.path
+            self.panel_image = panel_path
         else:
             self.panel_image = ''
 

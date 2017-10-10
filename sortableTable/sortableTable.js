@@ -221,7 +221,7 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
       {
         case 'image_by_path':
           sCell = '<a path="' + sCell + '">';
-          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="' + g_aSortableTableRows[iRow].object_type + ' Image" >';
+          sCell += '<button class="btn btn-link btn-xs" onclick="openImageWindowEtc(event)" title="Panel Image" >';
           sCell += '<span class="glyphicon glyphicon-picture" style="font-size:18px;" ></span>';
           sCell += '</button>';
           sCell += '</a>';
