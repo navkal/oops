@@ -303,6 +303,15 @@ var g_tPropertyRules =
     controlType: 'image',
     displayIndex: displayIndex ++
   },
+  activity_log:
+  {
+    label: "Activity Log",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    columnType: 'control',
+    controlType: 'activity_log',
+    displayIndex: displayIndex ++
+  },
   update_circuit:
   {
     label: "Update Circuit",
@@ -377,15 +386,6 @@ var g_tPropertyRules =
         var tRow = findSortableTableRow( sId );
         return ' title="Update [' + tRow.formatted_location + ']" ';
       },
-    displayIndex: displayIndex ++
-  },
-  activity_log:
-  {
-    label: "Activity Log",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
-    columnType: 'control',
-    controlType: 'activity_log',
     displayIndex: displayIndex ++
   },
   remove_circuit:
