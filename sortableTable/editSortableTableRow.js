@@ -93,7 +93,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
     }
     else
     {
-      location.reload();
+      reloadSortableTable();
     }
   }
 }
@@ -249,10 +249,17 @@ function validateColumnFilters()
           var tFilterSelect = $( '#sortableTable thead .tablesorter-filter-row td[data-column="' + iCol + '"] select' );
           if ( tFilterSelect.length )
           {
-            location.reload();
+            reloadSortableTable();
           }
         }
       }
     }
   }
+}
+
+function reloadSortableTable()
+{
+  // This is an iterim solution that reloads the entire page.
+  // A prefereable solution would rebuild the table from g_aSortableTableRows.
+  location.reload();
 }
