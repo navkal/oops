@@ -152,23 +152,3 @@ function removeRow( sId )
     reloadSortableTable();
   }
 }
-
-function allColumnsHaveValues()
-{
-  var bAllHaveValues = true;
-
-  for ( var sLabel in g_tColumnMap )
-  {
-    // Get array of non-empty values
-    var aValues = g_tColumnMap[sLabel].cells.filter(
-      function( sCellValue )
-      {
-        return ( sCellValue != null ) && ( sCellValue != '' );
-      }
-    );
-
-    bAllHaveValues = bAllHaveValues && ( aValues.length > 0 );
-  }
-
-  return bAllHaveValues;
-}

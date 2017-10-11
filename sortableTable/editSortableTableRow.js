@@ -107,11 +107,8 @@ function updateSortableTable( tRsp )
       break;
   }
 
-  // Determine whether column filters are valid
-  var bColumnFiltersValid = columnFiltersValid();
-
   // Determine how to update the display
-  if ( bTableHasAllColumns && bColumnFiltersValid )
+  if ( bTableHasAllColumns && columnFiltersValid() && allColumnsHaveValues() )
   {
     // Update the table
     $( '#sortableTable' ).trigger( 'update', [true] );

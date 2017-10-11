@@ -499,6 +499,27 @@ function tableHasAllColumns( tRow )
   return bTableHasAllColumns;
 }
 
+// Determine whether all columns in the table have values
+function allColumnsHaveValues()
+{
+  var bAllHaveValues = true;
+
+  for ( var sLabel in g_tColumnMap )
+  {
+    // Get array of non-empty values
+    var aValues = g_tColumnMap[sLabel].cells.filter(
+      function( sCellValue )
+      {
+        return ( sCellValue != null ) && ( sCellValue != '' );
+      }
+    );
+
+    bAllHaveValues = bAllHaveValues && ( aValues.length > 0 );
+  }
+
+  return bAllHaveValues;
+}
+
 function columnFiltersValid()
 {
   // Check for proper column filter controls
