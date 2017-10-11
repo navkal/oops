@@ -76,25 +76,53 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    $( '#editDialog' ).modal( 'hide' );
-
-    if ( g_aSortableTableRows.length && tableHasAllColumns( tRsp.row ) )
+    if ( g_aSortableTableRows.length == 0 )
     {
-      switch( g_sAction )
-      {
-        case 'add':
-          addRow( tRsp.row )
-          break;
-
-        case 'update':
-          updateRow( tRsp.row, tRsp.descendant_rows )
-          break;
-      }
+      // Table is empty; reload page to initialize
+      location.reload();
     }
     else
     {
-      reloadSortableTable();
+      // Table is not empty; update on existing page
+      $( '#editDialog' ).modal( 'hide' );
+      updateSortableTable( tRsp );
     }
+  }
+}
+
+function updateSortableTable( tRsp )
+{
+  // Determine whether table has all columns in added/updated row
+  var bTableHasAllColumns = tableHasAllColumns( tRsp.row );
+
+  // Add or update the row
+  switch( g_sAction )
+  {
+    case 'add':
+      addRow( tRsp.row )
+      break;
+
+    case 'update':
+      updateRow( tRsp.row, tRsp.descendant_rows )
+      break;
+  }
+
+  // Determine whether column filters are valid
+  var bColumnFiltersValid = columnFiltersValid();
+
+  // Determine how to update the display
+  if ( bTableHasAllColumns && bColumnFiltersValid )
+  {
+    // Update the table
+    $( '#sortableTable' ).trigger( 'update', [true] );
+
+    // Renumber the index column
+    renumberIndex();
+  }
+  else
+  {
+    // Reload table from internal data structures
+    reloadSortableTable();
   }
 }
 
@@ -130,15 +158,6 @@ function addRow( tRow )
 
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
-
-  // Check column filters
-  validateColumnFilters();
-
-  // Update the table
-  $( '#sortableTable' ).trigger( 'update', [true] );
-
-  // Renumber the index column
-  renumberIndex();
 }
 
 function updateRow( tRspRow, aRspDescendants )
@@ -178,12 +197,6 @@ function updateRow( tRspRow, aRspDescendants )
     // Replace existing row with new HTML
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
   }
-
-  // Check column filters
-  validateColumnFilters();
-
-  // Update the table
-  $( '#sortableTable' ).trigger( 'update', [true] );
 }
 
 // Determine whether current table has all the columns needed to render the new row
@@ -215,11 +228,13 @@ function tableHasAllColumns( tRow )
   return bTableHasAllColumns;
 }
 
-function validateColumnFilters()
+function columnFiltersValid()
 {
   // Ensure proper column filter controls
   // - If the column has up to <max> distinct values, filter should be select control
   // - Otherwise, filter should be text input control
+
+  var bValid = true;
 
   // If the table contains more than <max> rows...
   if ( g_aSortableTableRows.length > FILTER_SELECT_MAX )
@@ -250,17 +265,59 @@ function validateColumnFilters()
           var tFilterSelect = $( '#sortableTable thead .tablesorter-filter-row td[data-column="' + iCol + '"] select' );
           if ( tFilterSelect.length )
           {
-            reloadSortableTable();
+            bValid = false;
           }
         }
       }
     }
   }
+
+  return bValid;
 }
 
 function reloadSortableTable()
 {
-  // This is an iterim solution that reloads the entire page.
-  // A prefereable solution would rebuild the table from g_aSortableTableRows.
-  location.reload();
+  g_tRowMap = {};
+  g_iStartRetrievalTime = null;
+  $( '#sortableTable ').trigger( 'destroy', [false, destroySortableTableDone]);
+}
+
+function destroySortableTableDone()
+{
+  g_aSortableTableRows.sort( compareSortableTableRows );
+  loadSortableTable( { rows: g_aSortableTableRows } );
+}
+
+function compareSortableTableRows( tRow1, tRow2 )
+{
+  var s1 = '';
+  var s2 = '';
+
+  if ( tRow1.path )             // PTC
+  {
+    s1 = tRow1.path;
+    s2 = tRow2.path;
+  }
+  else if ( tRow1.source_path )  // Device
+  {
+    s1 = tRow1.source_path;
+    s2 = tRow2.source_path;
+  }
+  else if ( tRow1.loc_new )      // Location
+  {
+    s1 = tRow1.loc_new;
+    s2 = tRow2.loc_new;
+  }
+  else if ( tRow1.timestamp )    // Recycle Bin, Activity Log
+  {
+    s2 = tRow1.timestamp.toString();
+    s1 = tRow2.timestamp.toString();
+  }
+  else if ( tRow1.username )     // User
+  {
+    s1 = tRow1.username;
+    s2 = tRow2.username;
+  }
+
+  return s1.localeCompare( s2, 'kn', { numeric: true } );
 }

@@ -2,15 +2,18 @@
 
 var FILTER_SELECT_MAX = 2;
 
-var g_aSortableTableRows = null;
+// Sortable table options
 var g_sSortableTableTitle = null;
 var g_sSortableTableSubtitle = null;
 var g_sSortableTableType = null;
 var g_sSortableTableEditWhat = null;
+var g_sSortableTableParams = {};
+
+// Sortable table data structures
+var g_aSortableTableRows = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
 var g_tRowMap = {};
-var g_sSortableTableParams = {};
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -51,9 +54,29 @@ function getSortableTable()
 var g_iStartRenderingTime = null;
 function loadSortableTable( tRsp, sStatus, tJqXhr )
 {
-  console.log( '=> Time to retrieve sortable table: ' + ( Date.now() - g_iStartRetrievalTime ) + ' ms' );
+  if ( g_iStartRetrievalTime )
+  {
+    console.log( '=> Time to retrieve sortable table: ' + ( Date.now() - g_iStartRetrievalTime ) + ' ms' );
+  }
+
   g_iStartRenderingTime = Date.now();
+
   g_aSortableTableRows = tRsp['rows'];
+
+  // Initialize empty table HTML
+  var sHtml =
+    '<thead>' +
+      '<tr id="sortableTableHead">' +
+      '</tr>' +
+    '</thead>' +
+    '<tfoot>' +
+      '<tr id="sortableTableFoot">' +
+      '</tr>' +
+    '</tfoot>' +
+    '<tbody id="sortableTableBody" >' +
+    '</tbody>';
+
+  $( '#sortableTable' ).html( sHtml );
 
   // Build map of columns from list of rows
   g_tColumnMap = {};
@@ -384,9 +407,8 @@ function onSortableTableReady( tEvent )
     tEditDialog.on( 'shown.bs.modal', onShownEditDialog );
 
     // Customize and show the Add button
-    var tAddButton = $( '#sortableTableAddButton' );
-    tAddButton.append( g_sSortableTableEditWhat );
-    tAddButton.show();
+    $( '#sortableTableAddButtonText' ).text( 'Add ' + g_sSortableTableEditWhat );
+    $( '#sortableTableAddButton' ).show();
 
     resetChangeHandler();
   }

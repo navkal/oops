@@ -35,7 +35,8 @@
 
     <!-- Add button -->
     <button id="sortableTableAddButton" class="btn btn-default btn-sm pull-right" onclick="g_sAction='add'" data-toggle="modal" data-target="#editDialog" style="display:none" >
-      <span class="glyphicon glyphicon-plus"></span> Add
+      <span class="glyphicon glyphicon-plus"></span>
+      <span id="sortableTableAddButtonText" ></span>
     </button>
     <br/>
 
@@ -49,20 +50,6 @@
   <div id="content" class="panel panel-default">
 
     <table id="sortableTable" >
-
-      <thead>
-        <tr id="sortableTableHead">
-        </tr>
-      </thead>
-
-      <tfoot>
-        <tr id="sortableTableFoot">
-        </tr>
-      </tfoot>
-
-      <tbody id="sortableTableBody" >
-      </tbody>
-
     </table>
 
     <div id="sortableTableIsEmpty" class="panel-heading" style="display:none;text-align:center" >
