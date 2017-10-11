@@ -76,7 +76,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
-    if ( g_aSortableTableRows.length == 0 )
+    if ( countSortableTableRows() == 0 )
     {
       // Table is empty; reload page to initialize
       location.reload();

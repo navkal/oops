@@ -170,7 +170,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
   // Format table body HTML
-  if ( g_aSortableTableRows.length == 0 )
+  if ( countSortableTableRows() == 0 )
   {
     $( '#sortableTableIsEmpty' ).show();
   }
@@ -538,13 +538,15 @@ function columnFiltersValid()
 
 function reloadSortableTable()
 {
-  g_tRowMap = {};
-  g_iStartRetrievalTime = null;
   $( '#sortableTable ').trigger( 'destroy', [false, destroySortableTableDone]);
 }
 
 function destroySortableTableDone()
 {
+  // Clear some variables
+  g_tRowMap = {};
+  g_iStartRetrievalTime = null;
+
   // Get list of rows that have not been removed
   var aValidRows = g_aSortableTableRows.filter(
     function( tRow )
@@ -553,7 +555,10 @@ function destroySortableTableDone()
     }
   );
 
+  // Sort rows on default key
   aValidRows.sort( compareSortableTableRows );
+
+  // Load the table
   loadSortableTable( { rows: aValidRows } );
 }
 
@@ -562,28 +567,33 @@ function compareSortableTableRows( tRow1, tRow2 )
   var s1 = '';
   var s2 = '';
 
-  if ( tRow1.path )             // PTC
+  if ( tRow1.path )
   {
+    // PTC
     s1 = tRow1.path;
     s2 = tRow2.path;
   }
-  else if ( tRow1.source_path )  // Device
+  else if ( tRow1.source_path )
   {
+    // Device
     s1 = tRow1.source_path;
     s2 = tRow2.source_path;
   }
-  else if ( tRow1.loc_new )      // Location
+  else if ( tRow1.loc_new )
   {
+    // Location
     s1 = tRow1.loc_new;
     s2 = tRow2.loc_new;
   }
-  else if ( tRow1.timestamp )    // Recycle Bin, Activity Log
+  else if ( tRow1.timestamp )
   {
+    // Recycle Bin, Activity Log
     s2 = tRow1.timestamp.toString();
     s1 = tRow2.timestamp.toString();
   }
-  else if ( tRow1.username )     // User
+  else if ( tRow1.username )
   {
+    // User
     s1 = tRow1.username;
     s2 = tRow2.username;
   }
