@@ -14,6 +14,10 @@ var g_aSortableTableRows = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
 var g_tRowMap = {};
+var g_tSortState =
+{
+  aSortState: []
+};
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -191,17 +195,13 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   }
 
   // Track sort and filter states
-  var tSortState =
-  {
-    aSortState: []
-  };
   var tFilterState =
   {
     aFilterState: Array( aHeaders.length ).fill( '' )
   };
 
   // Style the table
-  styleTable( 'sortableTable', aHeaders, tSortState, tFilterState );
+  styleTable( 'sortableTable', aHeaders, tFilterState );
 }
 
 
@@ -347,7 +347,7 @@ var g_tHexParser =
 };
 
 // Style table to support sort, filter, and dynamic update
-function styleTable( sId, tHeaders, tSortState, tFilterState )
+function styleTable( sId, tHeaders, tFilterState )
 {
   var tTable =  sId ? $( "#" + sId ) : $( 'table' );
   if ( tTable.length > 0 )
@@ -370,7 +370,7 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
         filter_cssFilter: "form-control"
       },
       headers: tHeaders,
-      sortList: tSortState.aSortState
+      sortList: g_tSortState.aSortState
     };
 
     tTable.tablesorter( tSorter );
@@ -384,7 +384,7 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
     // Set sort completion handler
-    tTable.on( "sortEnd", function( event ){ renumberIndex(); tSortState.aSortState = event.target.config.sortList;} );
+    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_tSortState.aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
