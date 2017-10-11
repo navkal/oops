@@ -99,11 +99,11 @@ function removeRow( sId )
   g_aSortableTableRows[iRow] = null;
 
   // Update maps of distinct column values
-  for ( sLabel in g_tColumnMap )
+  for ( var sLabel in g_tColumnMap )
   {
     // Get cell value for this column
     var sCell = g_tColumnMap[sLabel].cells[iRow];
-    
+
     // Get instances of this value in the column
     var aInstances = g_tColumnMap[sLabel].cells.filter(
       function( sCellValue )
@@ -129,7 +129,7 @@ function removeRow( sId )
   //
 
   // Determine how to update the display
-  if ( columnFiltersValid() )
+  if ( columnFiltersValid() && allColumnsHaveValues() )
   {
     // Remove row from display
     $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();
@@ -151,4 +151,24 @@ function removeRow( sId )
     // Reload table from internal data structures
     reloadSortableTable();
   }
+}
+
+function allColumnsHaveValues()
+{
+  var bAllHaveValues = true;
+
+  for ( var sLabel in g_tColumnMap )
+  {
+    // Get array of non-empty values
+    var aValues = g_tColumnMap[sLabel].cells.filter(
+      function( sCellValue )
+      {
+        return ( sCellValue != null ) && ( sCellValue != '' );
+      }
+    );
+
+    bAllHaveValues = bAllHaveValues && ( aValues.length > 0 );
+  }
+
+  return bAllHaveValues;
 }
