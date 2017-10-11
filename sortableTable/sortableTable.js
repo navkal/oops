@@ -14,10 +14,8 @@ var g_aSortableTableRows = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
 var g_tRowMap = {};
-var g_tSortState =
-{
-  aSortState: []
-};
+var g_aSortState = [];
+
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -370,7 +368,7 @@ function styleTable( sId, tHeaders, tFilterState )
         filter_cssFilter: "form-control"
       },
       headers: tHeaders,
-      sortList: g_tSortState.aSortState
+      sortList: g_aSortState
     };
 
     tTable.tablesorter( tSorter );
@@ -384,7 +382,7 @@ function styleTable( sId, tHeaders, tFilterState )
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
     // Set sort completion handler
-    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_tSortState.aSortState = event.target.config.sortList;} );
+    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
