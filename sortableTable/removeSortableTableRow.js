@@ -92,7 +92,7 @@ function removeRow( sId )
   var iRow = g_tRowMap[sId];
 
   // Purge row from data structures
-  g_aSortableTableRows[iRow] = { id: null };
+  g_aSortableTableRows[iRow] = null;
 
   for ( sLabel in g_tColumnMap )
   {

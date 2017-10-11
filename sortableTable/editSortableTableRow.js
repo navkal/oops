@@ -237,7 +237,7 @@ function columnFiltersValid()
   var bValid = true;
 
   // If the table contains more than <max> rows...
-  if ( g_aSortableTableRows.length > FILTER_SELECT_MAX )
+  if ( countSortableTableRows() > FILTER_SELECT_MAX )
   {
     // Check each column
     for( var sLabel in g_tColumnMap )
@@ -320,4 +320,21 @@ function compareSortableTableRows( tRow1, tRow2 )
   }
 
   return s1.localeCompare( s2, 'kn', { numeric: true } );
+}
+
+function countSortableTableRows()
+{
+  var aRemovedRows = g_aSortableTableRows.filter(
+    function( tRow )
+    {
+      return tRow == null;
+    }
+  );
+
+  var nRows = g_aSortableTableRows.length - aRemovedRows.length;
+
+  console.log( '=========> num removed rows=' + aRemovedRows.length );
+  console.log( '=========> countSortableTableRows() found ' + nRows + ' rows' );
+
+  return nRows;
 }
