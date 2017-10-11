@@ -91,28 +91,64 @@ function removeRow( sId )
 {
   var iRow = g_tRowMap[sId];
 
-  // Purge row from data structures
+  //
+  // Update internal data structures
+  //
+
+  // Set row as removed
   g_aSortableTableRows[iRow] = null;
 
+  // Update maps of distinct column values
   for ( sLabel in g_tColumnMap )
   {
-    g_tColumnMap[sLabel].cells[iRow] = '';
+    // Get cell value for this column
+    var sCell = g_tColumnMap[sLabel].cells[iRow];
+    
+    // Get instances of this value in the column
+    var aInstances = g_tColumnMap[sLabel].cells.filter(
+      function( sCellValue )
+      {
+        return sCellValue == sCell
+      }
+    );
+
+    if ( aInstances.length <= 1 )
+    {
+      // Remove from map of distinct values
+      delete g_tColumnMap[sLabel].valMap[sCell];
+    }
+
+    // Clear cell value
+    g_tColumnMap[sLabel].cells[iRow] = null;
   }
 
   delete g_tRowMap[sId];
 
-  // Remove row from display
-  $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();
+  //
+  // Update display
+  //
 
-  // Update the table
-  $( '#sortableTable' ).trigger( 'update', [true] );
-
-  // If table is empty, show empty message
-  if ( $( '#sortableTableBody tr' ).length == 0 )
+  // Determine how to update the display
+  if ( columnFiltersValid() )
   {
-    $( '#sortableTable' ).hide();
-    $( '#sortableTableIsEmpty' ).show();
+    // Remove row from display
+    $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();
+
+    // Update the table
+    $( '#sortableTable' ).trigger( 'update', [true] );
+
+    // If table is empty, show empty message
+    if ( $( '#sortableTableBody tr' ).length == 0 )
+    {
+      $( '#sortableTable' ).hide();
+      $( '#sortableTableIsEmpty' ).show();
+    }
+
+    renumberIndex();
   }
-  
-  renumberIndex();
+  else
+  {
+    // Reload table from internal data structures
+    reloadSortableTable();
+  }
 }

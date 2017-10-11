@@ -466,3 +466,143 @@ function formatTimestamp( sTimestamp )
 {
   return new Date( Math.floor( sTimestamp * 1000 ) ).toLocaleString();
 }
+
+
+// --> --> --> Dynamic update of table --> --> -->
+
+// Determine whether current table has all the columns needed to render the new row
+function tableHasAllColumns( tRow )
+{
+  var bTableHasAllColumns = true;
+  var aKeys = Object.keys( tRow );
+  var iCol = 0;
+
+  for ( var iCol = 0; ( iCol < aKeys.length ) && bTableHasAllColumns; iCol ++ )
+  {
+    var sKey = aKeys[iCol];
+    var tRule =  g_tPropertyRules[sKey];
+    var sLabel = ( tRule && tRule.showInSortableTable ) ? tRule.label : null;
+
+    if ( sLabel != null )
+    {
+      var sCell = tRow[sKey];
+      var bColumnEmpty = g_tColumnMap[sLabel].empty;
+
+      if ( sCell && bColumnEmpty )
+      {
+        // This cell does not have a corresponding column in the table
+        bTableHasAllColumns = false;
+      }
+    }
+  }
+
+  return bTableHasAllColumns;
+}
+
+function columnFiltersValid()
+{
+  // Check for proper column filter controls
+  // - If the column has up to <max> distinct values, filter should be select control
+  // - Otherwise, filter should be text input control
+
+  var bValid = true;
+
+  // Check each column
+  for( var sLabel in g_tColumnMap )
+  {
+    // Determine whether the column needs a filter
+    var tColumn = g_tColumnMap[sLabel];
+    var bEmpty = tColumn.empty;
+    var sKey = tColumn.key;
+    var sColumnType = g_tPropertyRules[sKey].columnType;
+    var bFilter = ! bEmpty && ( sColumnType != 'index' ) && ( sColumnType != 'control' )
+
+    if ( bFilter )
+    {
+      // Determine whether filter should be a select
+      var bExpectSelect = Object.keys( tColumn.valMap ).length <= FILTER_SELECT_MAX;
+
+      // Determine whether filter is a select
+      var tColumnHead = $( '#sortableTable th[key="' + sKey + '"]' );
+      var iCol = tColumnHead.attr( 'data-column' );
+      var tFilterSelect = $( '#sortableTable thead .tablesorter-filter-row td[data-column="' + iCol + '"] select' );
+      var bIsSelect = tFilterSelect.length > 0;
+
+      // Determine whether expectation matches reality
+      bValid = bValid && ( bExpectSelect == bIsSelect );
+    }
+  }
+
+  return bValid;
+}
+
+function reloadSortableTable()
+{
+  g_tRowMap = {};
+  g_iStartRetrievalTime = null;
+  $( '#sortableTable ').trigger( 'destroy', [false, destroySortableTableDone]);
+}
+
+function destroySortableTableDone()
+{
+  // Get list of rows that have not been removed
+  var aValidRows = g_aSortableTableRows.filter(
+    function( tRow )
+    {
+      return tRow != null;
+    }
+  );
+
+  aValidRows.sort( compareSortableTableRows );
+  loadSortableTable( { rows: aValidRows } );
+}
+
+function compareSortableTableRows( tRow1, tRow2 )
+{
+  var s1 = '';
+  var s2 = '';
+
+  if ( tRow1.path )             // PTC
+  {
+    s1 = tRow1.path;
+    s2 = tRow2.path;
+  }
+  else if ( tRow1.source_path )  // Device
+  {
+    s1 = tRow1.source_path;
+    s2 = tRow2.source_path;
+  }
+  else if ( tRow1.loc_new )      // Location
+  {
+    s1 = tRow1.loc_new;
+    s2 = tRow2.loc_new;
+  }
+  else if ( tRow1.timestamp )    // Recycle Bin, Activity Log
+  {
+    s2 = tRow1.timestamp.toString();
+    s1 = tRow2.timestamp.toString();
+  }
+  else if ( tRow1.username )     // User
+  {
+    s1 = tRow1.username;
+    s2 = tRow2.username;
+  }
+
+  return s1.localeCompare( s2, 'kn', { numeric: true } );
+}
+
+function countSortableTableRows()
+{
+  var aRemovedRows = g_aSortableTableRows.filter(
+    function( tRow )
+    {
+      return tRow == null;
+    }
+  );
+
+  var nRows = g_aSortableTableRows.length - aRemovedRows.length;
+
+  return nRows;
+}
+
+// <-- <-- <-- Dynamic update of table <-- <-- <--
