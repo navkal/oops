@@ -113,4 +113,6 @@ function removeRow( sId )
     $( '#sortableTable' ).hide();
     $( '#sortableTableIsEmpty' ).show();
   }
+  
+  renumberIndex();
 }
