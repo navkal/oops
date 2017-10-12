@@ -500,24 +500,31 @@ function tableHasAllColumns( tRow )
 }
 
 // Determine whether all columns in the table have values
-function allColumnsHaveValues()
+function updateEmptyColumns()
 {
-  var bAllHaveValues = true;
+  var bFoundEmpty = false;
 
   for ( var sLabel in g_tColumnMap )
   {
-    // Get array of non-empty values
-    var aValues = g_tColumnMap[sLabel].cells.filter(
-      function( sCellValue )
-      {
-        return ( sCellValue != null ) && ( sCellValue != '' );
-      }
-    );
+    if ( ! g_tColumnMap[sLabel].empty )
+    {
+      // Get array of non-empty values
+      var aValues = g_tColumnMap[sLabel].cells.filter(
+        function( sCellValue )
+        {
+          return ( sCellValue != null ) && ( sCellValue != '' );
+        }
+      );
 
-    bAllHaveValues = bAllHaveValues && ( aValues.length > 0 );
+      if ( aValues.length == 0 )
+      {
+        bFoundEmpty = true;
+        g_tColumnMap[sLabel].empty = true;
+      }
+    }
   }
 
-  return bAllHaveValues;
+  return bFoundEmpty;
 }
 
 function columnFiltersValid()

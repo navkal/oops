@@ -129,7 +129,7 @@ function removeRow( sId )
   //
 
   // Determine how to update the display
-  if ( columnFiltersValid() && allColumnsHaveValues() )
+  if ( columnFiltersValid() && ! updateEmptyColumns() )
   {
     // Remove row from display
     $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();

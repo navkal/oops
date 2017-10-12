@@ -108,7 +108,7 @@ function updateSortableTable( tRsp )
   }
 
   // Determine how to update the display
-  if ( bTableHasAllColumns && columnFiltersValid() && allColumnsHaveValues() )
+  if ( bTableHasAllColumns && columnFiltersValid() && ! updateEmptyColumns() )
   {
     // Update the table
     $( '#sortableTable' ).trigger( 'update', [true] );
