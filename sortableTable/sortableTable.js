@@ -296,31 +296,29 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
 
 function makeHtmlRow( nRow, bHighlight )
 {
+  // If supplied row number is -1, then use the last row
+  if ( nRow == -1 )
+  {
+    nRow = g_aSortableTableRows.length - 1;
+  }
+
+  // Determine the ID of the row
   var iRowId = g_aSortableTableRows[nRow].id;
 
+  // Determine whether to highlight the row
   if ( typeof bHighlight == 'undefined' )
   {
     bHighlight = g_tHighlightedRows[iRowId];
   }
 
-  var bDone = false;
-
-  var sObjectId = ( nRow == -1 ) ? '' : ' object_id="' + iRowId + '"';
-
-  var sClass = bHighlight ? ( ' class="text-primary" ' ) : '';
-
+  // Build the HTML row
   var sHtml = '';
+  var bDone = false;
 
   for ( var iHeader in g_aSortedHeaders )
   {
     var sHeader = g_aSortedHeaders[iHeader];
     var tColumn = g_tColumnMap[sHeader];
-
-    if ( nRow == -1 )
-    {
-      nRow = tColumn.cells.length - 1;
-      sObjectId = ' object_id="' + iRowId + '"';
-    }
 
     if ( ! tColumn.empty )
     {
@@ -338,6 +336,8 @@ function makeHtmlRow( nRow, bHighlight )
   sHtml += '</tr>';
 
   // Prepend table row tag
+  var sObjectId = ' object_id="' + iRowId + '"';
+  var sClass = bHighlight ? ( ' class="text-primary" ' ) : '';
   sHtml = '<tr ' + sObjectId + sClass + ' >' + sHtml;
 
   var tRow = { html: sHtml, done: bDone };
