@@ -76,18 +76,27 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   }
   else
   {
+    $( '#editDialog' ).modal( 'hide' );
+
     if ( countSortableTableRows() == 0 )
     {
-      // Table is empty; reload page to initialize
-      location.reload();
+      // Table is empty
+      addFirstSortableTableRow( tRsp );
     }
     else
     {
-      // Table is not empty; update on existing page
-      $( '#editDialog' ).modal( 'hide' );
+      // Table is not empty
       updateSortableTable( tRsp );
     }
   }
+}
+
+function addFirstSortableTableRow( tRsp )
+{
+  $( '#sortableTable' ).show();
+  $( '#sortableTableIsEmpty' ).hide();
+  g_aSortableTableRows.push( tRsp.row );
+  reloadSortableTable();
 }
 
 function updateSortableTable( tRsp )
