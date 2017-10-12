@@ -296,15 +296,16 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
 
 function makeHtmlRow( nRow, bHighlight )
 {
+  var iRowId = g_aSortableTableRows[nRow].id;
+
   if ( typeof bHighlight == 'undefined' )
   {
-    var iRowId = g_aSortableTableRows[nRow].id;
     bHighlight = g_tHighlightedRows[iRowId];
   }
 
   var bDone = false;
 
-  var sObjectId = ( nRow == -1 ) ? '' : ' object_id="' + g_aSortableTableRows[nRow].id + '"';
+  var sObjectId = ( nRow == -1 ) ? '' : ' object_id="' + iRowId + '"';
 
   var sClass = bHighlight ? ( ' class="text-primary" ' ) : '';
 
@@ -318,7 +319,7 @@ function makeHtmlRow( nRow, bHighlight )
     if ( nRow == -1 )
     {
       nRow = tColumn.cells.length - 1;
-      sObjectId = ' object_id="' + g_aSortableTableRows[nRow].id + '"';
+      sObjectId = ' object_id="' + iRowId + '"';
     }
 
     if ( ! tColumn.empty )
