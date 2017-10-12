@@ -92,6 +92,9 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
 
 function updateSortableTable( tRsp )
 {
+  // Clear list of rows to be highlighted
+  g_tHighlightedRows = {};
+
   // Determine whether table has all columns in added/updated row
   var bTableHasAllColumns = tableHasAllColumns( tRsp.row );
 
@@ -125,6 +128,9 @@ function updateSortableTable( tRsp )
 
 function addRow( tRow )
 {
+  // Add ID to list of highlighted rows
+  g_tHighlightedRows[tRow.id] = true;
+
   // Add row to the global list
   g_aSortableTableRows.push( tRow );
   var iRow = g_aSortableTableRows.length - 1;
@@ -151,7 +157,7 @@ function addRow( tRow )
 
   // Create the HTML row
   $( '#sortableTableBody tr.text-primary' ).removeClass( 'text-primary' );
-  var sHtml = makeHtmlRow( -1, 'text-primary' ).html;
+  var sHtml = makeHtmlRow( -1, true ).html;
 
   // Insert the row at the top of the table
   $( '#sortableTableBody' ).prepend( sHtml );
@@ -167,6 +173,9 @@ function updateRow( tRspRow, aRspDescendants )
   {
     // Get next row
     var tRspRow = aRows[iRow];
+
+    // Add ID to list of highlighted rows
+    g_tHighlightedRows[tRspRow.id] = true;
 
     // Map row ID to row index in column map
     var iRowIndex = g_tRowMap[tRspRow.id];
@@ -189,7 +198,7 @@ function updateRow( tRspRow, aRspDescendants )
     }
 
     // Create the HTML row
-    var sHtml = makeHtmlRow( iRowIndex, 'text-primary' ).html;
+    var sHtml = makeHtmlRow( iRowIndex, true ).html;
 
     // Replace existing row with new HTML
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );

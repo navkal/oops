@@ -14,6 +14,7 @@ var g_aSortableTableRows = null;
 var g_tColumnMap = null;
 var g_aSortedHeaders = null;
 var g_tRowMap = {};
+var g_tHighlightedRows = {};
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -293,13 +294,19 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
   g_tColumnMap[sLabel].cells[iRow] = sCell;
 }
 
-function makeHtmlRow( nRow, sCssClass )
+function makeHtmlRow( nRow, bHighlight )
 {
+  if ( typeof bHighlight == 'undefined' )
+  {
+    var iRowId = g_aSortableTableRows[nRow].id;
+    bHighlight = g_tHighlightedRows[iRowId];
+  }
+
   var bDone = false;
 
   var sObjectId = ( nRow == -1 ) ? '' : ' object_id="' + g_aSortableTableRows[nRow].id + '"';
 
-  var sClass = sCssClass ? ( ' class="' + sCssClass + '" ' ) : '';
+  var sClass = bHighlight ? ( ' class="text-primary" ' ) : '';
 
   var sHtml = '';
 
