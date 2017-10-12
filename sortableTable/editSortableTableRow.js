@@ -93,7 +93,6 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
 
 function addFirstSortableTableRow( tRsp )
 {
-  $( '#sortableTable' ).show();
   $( '#sortableTableIsEmpty' ).hide();
   g_aSortableTableRows.push( tRsp.row );
   reloadSortableTable();
