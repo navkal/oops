@@ -109,7 +109,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
             key: sKey,
             label: sLabel,
             align: ( tRule.columnType == 'text' ) ? '' : 'right',
-            sortable: ! ( ( tRule.columnType == 'control' ) || ( tRule.columnType == 'index' ) ),
+            sorter: ( tRule.columnType == 'control' ) ? 'controlParser' : ( tRule.columnType != 'index' ),
             empty: true,
             cells: [],
             minLength: Number.MAX_SAFE_INTEGER,
@@ -164,7 +164,9 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
       // Format the header HTML
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sLabel + '</th>';
-      aHeaders[iColumn++] = tColumn.sortable ? {} : { sorter: false };
+
+      // Save the sorter for current column
+      aHeaders[iColumn++] = { sorter: tColumn.sorter };
     }
   }
 
@@ -328,7 +330,8 @@ function makeHtmlRow( nRow, bHighlight )
         tColumn.align = 'center';
       }
       var sAlign = 'text-align:' + tColumn.align;
-      sHtml += '<td style="' + sAlign + '" >' + sCell + '</td>';
+      var sControlData = ( tColumn.sorter == 'controlParser' ) ? ( 'control-data="' + ( sCell ? 0 : 1 ) + '"' ) : '';
+      sHtml += '<td style="' + sAlign + '" ' + sControlData + ' >' + sCell + '</td>';
     }
 
     bDone = ( nRow == tColumn.cells.length - 1 );
@@ -345,12 +348,12 @@ function makeHtmlRow( nRow, bHighlight )
   return tRow;
 }
 
-// Parser for tablesorter, to sort hexadecimal unit IDs
-var g_tHexParser =
+// Parser for tablesorter, to sort columns containing controls
+var g_tControlParser =
 {
-    id: 'unitId',
+    id: 'controlParser',
     is: function(s){ return false; },
-    format: function(s) { return parseInt( s, 16 ); },
+    format: function( s, table, cell, cellIndex ){ return $( cell ).attr( 'control-data' ); },
     type: 'numeric'
 };
 
@@ -360,8 +363,8 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
   var tTable =  sId ? $( "#" + sId ) : $( 'table' );
   if ( tTable.length > 0 )
   {
-    // Add parser to sort hex unit IDs
-    $.tablesorter.addParser( g_tHexParser );
+    // Add parser to sort columns containing controls
+    $.tablesorter.addParser( g_tControlParser );
 
     // Initialize the tablesorter
     var tSorter =
