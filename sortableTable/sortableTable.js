@@ -12,7 +12,7 @@ var g_sSortableTableParams = {};
 // Sortable table data structures
 var g_aSortableTableRows = null;
 var g_tColumnMap = null;
-var g_aSortedHeaders = null;
+var g_aColumns = [];
 var g_tRowMap = {};
 var g_tHighlightedRows = {};
 
@@ -129,20 +129,23 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   var sSubtitle = g_sSortableTableSubtitle || tSession['context']['facilityFullname'] || tSession['context']['enterpriseFullname'];
   $( '#sortableTableSubtitle' ).text( sSubtitle );
 
-  // Format table head/foot HTML, and construct sorter array
+  // Format table head/foot HTML and build list of columns
   g_sPropertySortContext = g_tPropertySortContexts.sortableTable;
-  g_aSortedHeaders = Object.keys( g_tColumnMap ).sort( comparePropertyIndex );
+  var aSortedLabels = Object.keys( g_tColumnMap ).sort( comparePropertyIndex );
   var sHtml = '';
-  var aHeaders = [];
-  var iColumn = 0;
+  var aPrevColumns = g_aColumns;
+  g_aColumns = [];
 
-  for ( var iHeader in g_aSortedHeaders )
+  for ( var iHeader in aSortedLabels )
   {
-    var sLabel = g_aSortedHeaders[iHeader];
+    var sLabel = aSortedLabels[iHeader];
     var tColumn = g_tColumnMap[sLabel];
 
     if ( ! tColumn.empty )
     {
+      // Append current column to list
+      g_aColumns.push( tColumn );
+
       // Configure column header attributes
       var sColumnType = g_tPropertyRules[tColumn.key].columnType;
       var bBlankHeader = ( sColumnType == 'index' || sColumnType == 'control' );
@@ -164,11 +167,11 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 
       // Format the header HTML
       sHtml += '<th key="' + tColumn.key + '"' + sFilter + '>' + sLabel + '</th>';
-
-      // Save the sorter for current column
-      aHeaders[iColumn++] = { sorter: tColumn.sorter };
     }
   }
+
+  // Preserve sort state preceding reload
+  preserveSortState( aPrevColumns );
 
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
@@ -194,19 +197,41 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   }
 
   // Track sort and filter states
-  var tSortState =
-  {
-    aSortState: []
-  };
   var tFilterState =
   {
-    aFilterState: Array( aHeaders.length ).fill( '' )
+    aFilterState: Array( g_aColumns.length ).fill( '' )
   };
 
   // Style the table
-  styleTable( 'sortableTable', aHeaders, tSortState, tFilterState );
+  styleTable( 'sortableTable', tFilterState );
 }
 
+// Preserve sort state in reloaded table
+function preserveSortState( aPrevColumns )
+{
+  console.log( '=======> BF sort=' + JSON.stringify( g_tSortState ) );
+  for ( var iState in g_tSortState.aSortState )
+  {
+    var aColState = g_tSortState.aSortState[iState];
+    var iSortedColIndex = aColState[0];
+    var sSortedColLabel = aPrevColumns[iSortedColIndex].label;
+    var iNewColIndex = g_aColumns.findIndex(
+      function( tColumn )
+      {
+        return tColumn.label == sSortedColLabel;
+      }
+    );
+    if ( iNewColIndex != -1 )
+    {
+      g_tSortState.aSortState[iState][0] = iNewColIndex;
+    }
+    else
+    {
+      g_tSortState.aSortState.splice( iState, 1 );
+    }
+  }
+  console.log( '=======> AF sort=' + JSON.stringify( g_tSortState ) );
+}
 
 function makeTableCell( sCell, sLabel, tRule, iRow )
 {
@@ -317,22 +342,19 @@ function makeHtmlRow( nRow, bHighlight )
   var sHtml = '';
   var bDone = false;
 
-  for ( var iHeader in g_aSortedHeaders )
+  for ( var iHeader in g_aColumns )
   {
-    var sHeader = g_aSortedHeaders[iHeader];
-    var tColumn = g_tColumnMap[sHeader];
+    var tColumn = g_aColumns[iHeader];
+    var sHeader = tColumn.label;
 
-    if ( ! tColumn.empty )
+    var sCell = tColumn.cells[nRow];
+    if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
     {
-      var sCell = tColumn.cells[nRow];
-      if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
-      {
-        tColumn.align = 'center';
-      }
-      var sAlign = 'text-align:' + tColumn.align;
-      var sControlData = ( tColumn.sorter == 'controlParser' ) ? ( 'control-data="' + ( sCell ? 0 : 1 ) + '"' ) : '';
-      sHtml += '<td style="' + sAlign + '" ' + sControlData + ' >' + sCell + '</td>';
+      tColumn.align = 'center';
     }
+    var sAlign = 'text-align:' + tColumn.align;
+    var sControlData = ( tColumn.sorter == 'controlParser' ) ? ( 'control-data="' + ( sCell ? 0 : 1 ) + '"' ) : '';
+    sHtml += '<td style="' + sAlign + '" ' + sControlData + ' >' + sCell + '</td>';
 
     bDone = ( nRow == tColumn.cells.length - 1 );
   }
@@ -357,8 +379,13 @@ var g_tControlParser =
     type: 'numeric'
 };
 
+var g_tSortState =
+{
+  aSortState: []
+};
+
 // Style table to support sort, filter, and dynamic update
-function styleTable( sId, tHeaders, tSortState, tFilterState )
+function styleTable( sId, tFilterState )
 {
   var tTable =  sId ? $( "#" + sId ) : $( 'table' );
   if ( tTable.length > 0 )
@@ -380,8 +407,8 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
         filter_reset : ".reset",
         filter_cssFilter: "form-control"
       },
-      headers: tHeaders,
-      sortList: tSortState.aSortState
+      headers: g_aColumns,
+      sortList: g_tSortState.aSortState
     };
 
     tTable.tablesorter( tSorter );
@@ -395,7 +422,7 @@ function styleTable( sId, tHeaders, tSortState, tFilterState )
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
     // Set sort completion handler
-    tTable.on( "sortEnd", function( event ){ renumberIndex(); tSortState.aSortState = event.target.config.sortList;} );
+    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_tSortState.aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
