@@ -344,10 +344,9 @@ function makeHtmlRow( nRow, bHighlight )
   var sHtml = '';
   var bDone = false;
 
-  for ( var iHeader in g_aColumns )
+  for ( var iColumn in g_aColumns )
   {
-    var tColumn = g_aColumns[iHeader];
-    var sHeader = tColumn.label;
+    var tColumn = g_aColumns[iColumn];
 
     var sCell = tColumn.cells[nRow];
     if ( ( tColumn.align == '' ) && ( ( tColumn.maxLength - tColumn.minLength ) < 10 ) )
