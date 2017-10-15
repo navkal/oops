@@ -15,6 +15,8 @@ var g_tColumnMap = null;
 var g_aColumns = [];
 var g_tRowMap = {};
 var g_tHighlightedRows = {};
+var g_aSortState = [];
+
 
 // Retrieve sortable table from backend
 var g_iStartRetrievalTime = null;
@@ -170,7 +172,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     }
   }
 
-  // Preserve sort state preceding reload
+  // Preserve sort state from table preceding reload
   preserveSortState( aPrevColumns );
 
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
@@ -209,10 +211,10 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 // Preserve sort state in reloaded table
 function preserveSortState( aPrevColumns )
 {
-  console.log( '=======> BF sort=' + JSON.stringify( g_tSortState ) );
-  for ( var iState in g_tSortState.aSortState )
+  console.log( '=======> BF sort=' + JSON.stringify( g_aSortState ) );
+  for ( var iState in g_aSortState )
   {
-    var aColState = g_tSortState.aSortState[iState];
+    var aColState = g_aSortState[iState];
     var iSortedColIndex = aColState[0];
     var sSortedColLabel = aPrevColumns[iSortedColIndex].label;
     var iNewColIndex = g_aColumns.findIndex(
@@ -223,14 +225,14 @@ function preserveSortState( aPrevColumns )
     );
     if ( iNewColIndex != -1 )
     {
-      g_tSortState.aSortState[iState][0] = iNewColIndex;
+      g_aSortState[iState][0] = iNewColIndex;
     }
     else
     {
-      g_tSortState.aSortState.splice( iState, 1 );
+      g_aSortState.splice( iState, 1 );
     }
   }
-  console.log( '=======> AF sort=' + JSON.stringify( g_tSortState ) );
+  console.log( '=======> AF sort=' + JSON.stringify( g_aSortState ) );
 }
 
 function makeTableCell( sCell, sLabel, tRule, iRow )
@@ -379,10 +381,6 @@ var g_tControlParser =
     type: 'numeric'
 };
 
-var g_tSortState =
-{
-  aSortState: []
-};
 
 // Style table to support sort, filter, and dynamic update
 function styleTable( sId, tFilterState )
@@ -408,7 +406,7 @@ function styleTable( sId, tFilterState )
         filter_cssFilter: "form-control"
       },
       headers: g_aColumns,
-      sortList: g_tSortState.aSortState
+      sortList: g_aSortState
     };
 
     tTable.tablesorter( tSorter );
@@ -422,7 +420,7 @@ function styleTable( sId, tFilterState )
     tTable.on( 'tablesorter-ready', onSortableTableReady );
 
     // Set sort completion handler
-    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_tSortState.aSortState = event.target.config.sortList;} );
+    tTable.on( "sortEnd", function( event ){ renumberIndex(); g_aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
