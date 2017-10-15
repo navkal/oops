@@ -211,8 +211,6 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
 // Preserve sort state when table is reloaded
 function preserveSortState( aPrevColumns )
 {
-  console.log( '=======> BF sort=' + JSON.stringify( g_aSortState ) );
-
   // Make copy of previous sort state
   var aPrevSortState = g_aSortState;
 
@@ -239,7 +237,6 @@ function preserveSortState( aPrevColumns )
       g_aSortState.push( [ iSortedCol, aColState[1] ] );
     }
   }
-  console.log( '=======> AF sort=' + JSON.stringify( g_aSortState ) );
 }
 
 function makeTableCell( sCell, sLabel, tRule, iRow )
