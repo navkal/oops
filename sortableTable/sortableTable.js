@@ -208,28 +208,35 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
   styleTable( 'sortableTable', tFilterState );
 }
 
-// Preserve sort state in reloaded table
+// Preserve sort state when table is reloaded
 function preserveSortState( aPrevColumns )
 {
   console.log( '=======> BF sort=' + JSON.stringify( g_aSortState ) );
-  for ( var iState in g_aSortState )
+
+  // Make copy of previous sort state
+  var aPrevSortState = g_aSortState;
+
+  // Clear sort state
+  g_aSortState = [];
+
+  for ( var iState in aPrevSortState )
   {
-    var aColState = g_aSortState[iState];
-    var iSortedColIndex = aColState[0];
-    var sSortedColLabel = aPrevColumns[iSortedColIndex].label;
-    var iNewColIndex = g_aColumns.findIndex(
+    // Get label of next sorted column
+    var aColState = aPrevSortState[iState];
+    var sSortedColLabel = aPrevColumns[aColState[0]].label;
+
+    // Find index of label in current column array
+    var iSortedCol = g_aColumns.findIndex(
       function( tColumn )
       {
         return tColumn.label == sSortedColLabel;
       }
     );
-    if ( iNewColIndex != -1 )
+
+    // If label was found, add it to the sort state array
+    if ( iSortedCol >= 0 )
     {
-      g_aSortState[iState][0] = iNewColIndex;
-    }
-    else
-    {
-      g_aSortState.splice( iState, 1 );
+      g_aSortState.push( [ iSortedCol, aColState[1] ] );
     }
   }
   console.log( '=======> AF sort=' + JSON.stringify( g_aSortState ) );
