@@ -16,6 +16,7 @@ var g_aColumns = [];
 var g_tRowMap = {};
 var g_tHighlightedRows = {};
 var g_aSortState = [];
+var g_aFilterState = [];
 
 
 // Retrieve sortable table from backend
@@ -172,8 +173,11 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     }
   }
 
-  // Preserve sort state from table preceding reload
+  // Preserve sort state in reloaded table
   preserveSortState( aPrevColumns );
+
+  // Preserve filter state in reloaded table
+  preserveFilterState( aPrevColumns );
 
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
@@ -198,17 +202,17 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     $( '#sortableTableBody' ).html( sHtml );
   }
 
-  // Track sort and filter states
-  var tFilterState =
+  if ( ! tRsp.reload )
   {
-    aFilterState: Array( g_aColumns.length ).fill( '' )
-  };
+    // Initialize filter state
+    g_aFilterState = Array( g_aColumns.length ).fill( '' );
+  }
 
   // Style the table
-  styleTable( 'sortableTable', tFilterState );
+  styleTable( 'sortableTable' );
 }
 
-// Preserve sort state when table is reloaded
+// Preserve sort state in reloaded table
 function preserveSortState( aPrevColumns )
 {
   // Make copy of previous sort state
@@ -235,6 +239,36 @@ function preserveSortState( aPrevColumns )
     if ( iSortedCol >= 0 )
     {
       g_aSortState.push( [ iSortedCol, aColState[1] ] );
+    }
+  }
+}
+
+// Preserve filter state in reloaded table
+function preserveFilterState( aPrevColumns )
+{
+  // Make copy of previous filter state
+  var aPrevFilterState = g_aFilterState;
+
+  // Clear filter state
+  g_aFilterState = Array( g_aColumns.length ).fill( '' );
+
+  for ( var iState in aPrevFilterState )
+  {
+    // Get next column label
+    var sColLabel = aPrevColumns[iState].label;
+
+    // Find label in current column array
+    var iFilteredCol = g_aColumns.findIndex(
+      function( tColumn )
+      {
+        return tColumn.label == sColLabel;
+      }
+    );
+
+    // If label was found, set filter in array
+    if ( iFilteredCol >= 0 )
+    {
+      g_aFilterState[iFilteredCol] = aPrevFilterState[iState];
     }
   }
 }
@@ -386,7 +420,7 @@ var g_tControlParser =
 
 
 // Style table to support sort, filter, and dynamic update
-function styleTable( sId, tFilterState )
+function styleTable( sId )
 {
   var tTable =  sId ? $( "#" + sId ) : $( 'table' );
   if ( tTable.length > 0 )
@@ -414,7 +448,7 @@ function styleTable( sId, tFilterState )
 
     tTable.tablesorter( tSorter );
 
-    $.tablesorter.setFilters( tTable, tFilterState.aFilterState, true );
+    $.tablesorter.setFilters( tTable, g_aFilterState, true );
 
     // Restore default column widths
     tTable.trigger( 'resizableReset' );
@@ -426,7 +460,7 @@ function styleTable( sId, tFilterState )
     tTable.on( "sortEnd", function( event ){ renumberIndex(); g_aSortState = event.target.config.sortList;} );
 
     // Set filter completion handler
-    tTable.on( "filterEnd", function( event ){ renumberIndex(); tFilterState.aFilterState = $.tablesorter.getFilters( tTable ); } );
+    tTable.on( "filterEnd", function( event ){ renumberIndex(); g_aFilterState = $.tablesorter.getFilters( tTable ); } );
   }
 
   $( '#' + sId ).addClass( 'table-condensed' );
@@ -457,6 +491,9 @@ function onSortableTableReady( tEvent )
 
   // Trigger update to enable hover shading
   $( '#sortableTable' ).trigger( 'update', [true] );
+
+  // Trigger search to preserve filtering across table reloads
+  $( '#sortableTable' ).trigger( 'search', true );
 
   console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
@@ -626,7 +663,7 @@ function destroySortableTableDone()
   aValidRows.sort( compareSortableTableRows );
 
   // Load the table
-  loadSortableTable( { rows: aValidRows } );
+  loadSortableTable( { rows: aValidRows, reload: true } );
 }
 
 function compareSortableTableRows( tRow1, tRow2 )
