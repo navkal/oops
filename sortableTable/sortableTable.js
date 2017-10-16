@@ -202,9 +202,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     preserveSortState( aPrevColumns );
 
     // Preserve filter state in reloaded table
-    console.log( '======> BF g_aFilterState=' + JSON.stringify( g_aFilterState ) );
     preserveFilterState( aPrevColumns );
-    console.log( '======> AF g_aFilterState=' + JSON.stringify( g_aFilterState ) );
   }
   else
   {
@@ -495,9 +493,15 @@ function onSortableTableReady( tEvent )
   clearWaitCursor();
 
   // Trigger update to enable hover shading, and complete with search to preserve filters
-  tTable.on( 'tablesorter-ready', function(){ tTable.trigger( 'search', true ); } );
+  tTable.on(
+    'tablesorter-ready',
+    function()
+    {
+      tTable.trigger( 'search', true );
+      tTable.off( 'tablesorter-ready' );
+    }
+  );
   tTable.trigger( 'update', [true] );
-  tTable.off( 'tablesorter-ready' );
 
   console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
