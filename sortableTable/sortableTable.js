@@ -473,7 +473,8 @@ function styleTable( sId )
 function onSortableTableReady( tEvent )
 {
   // Suppress further handling of this event
-  $( tEvent.target ).off( 'tablesorter-ready' );
+  tTable = $( tEvent.target );
+  tTable.off( 'tablesorter-ready' );
 
   // Initialize optional editing
   if ( g_sSortableTableEditWhat )
@@ -493,11 +494,10 @@ function onSortableTableReady( tEvent )
   // Clear the wait cursor
   clearWaitCursor();
 
-  // Trigger update to enable hover shading
-  $( '#sortableTable' ).trigger( 'update', [true] );
-
-  // Trigger search to preserve filtering across table reloads
-  $( '#sortableTable' ).trigger( 'search', true );
+  // Trigger update to enable hover shading, and complete with search to preserve filters
+  tTable.on( 'tablesorter-ready', function(){ tTable.trigger( 'search', true ); } );
+  tTable.trigger( 'update', [true] );
+  tTable.off( 'tablesorter-ready' );
 
   console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
 }
