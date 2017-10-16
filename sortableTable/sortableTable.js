@@ -173,12 +173,6 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     }
   }
 
-  // Preserve sort state in reloaded table
-  preserveSortState( aPrevColumns );
-
-  // Preserve filter state in reloaded table
-  preserveFilterState( aPrevColumns );
-
   $( '#sortableTableHead,#sortableTableFoot' ).html( sHtml );
 
   // Format table body HTML
@@ -202,7 +196,17 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     $( '#sortableTableBody' ).html( sHtml );
   }
 
-  if ( ! tRsp.reload )
+  if ( tRsp.reload )
+  {
+    // Preserve sort state in reloaded table
+    preserveSortState( aPrevColumns );
+
+    // Preserve filter state in reloaded table
+    console.log( '======> BF g_aFilterState=' + JSON.stringify( g_aFilterState ) );
+    preserveFilterState( aPrevColumns );
+    console.log( '======> AF g_aFilterState=' + JSON.stringify( g_aFilterState ) );
+  }
+  else
   {
     // Initialize filter state
     g_aFilterState = Array( g_aColumns.length ).fill( '' );
