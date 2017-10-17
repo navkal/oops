@@ -7,7 +7,7 @@
   $iVersion = time();
 ?>
 
-<script src="circuitObjects/circuitObject.js?version=<?=$iVersion?>"></script>
+<script src="circuitObjects/distributionObject.js?version=<?=$iVersion?>"></script>
 
 <script>
   g_sSortableTableTitle = 'Panels';
