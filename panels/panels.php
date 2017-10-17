@@ -2,12 +2,12 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
-  require_once $_SERVER["DOCUMENT_ROOT"]."/circuitObjects/editDistributionObject.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/distributionObjects/editDistributionObject.php";
   require_once $_SERVER['DOCUMENT_ROOT'] . '/sortableTable/confirmRemove.php';
   $iVersion = time();
 ?>
 
-<script src="circuitObjects/distributionObject.js?version=<?=$iVersion?>"></script>
+<script src="distributionObjects/distributionObject.js?version=<?=$iVersion?>"></script>
 
 <script>
   g_sSortableTableTitle = 'Panels';

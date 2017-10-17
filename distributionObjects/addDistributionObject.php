@@ -7,9 +7,8 @@
   error_log( '==> post=' . print_r( $_POST, true ) );
   error_log( '==> files=' . print_r( $_FILES, true ) );
 
-  $sId = quote( $_POST['id'] );
-  $sIdParam = ' -i ' . $sId;
-  $sOperation = 'update';
+  $sIdParam = '';
+  $sOperation = 'add';
 
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/circuitObjects/addUpdateCommon.php';
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/distributionObjects/addUpdateCommon.php';
 ?>
