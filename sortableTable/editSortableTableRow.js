@@ -59,6 +59,8 @@ function getSelect2Text( tControl )
 
 function submitEditDialogDone( tRsp, sStatus, tJqXhr )
 {
+  closeChildWindows();
+
   hideSpinner();
 
   if ( tRsp.messages.length )

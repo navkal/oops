@@ -75,6 +75,8 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
+  closeChildWindows();
+
   hideSpinner();
 
   $( '#removeDialog' ).modal( 'hide' );
