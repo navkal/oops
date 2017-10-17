@@ -10,12 +10,17 @@ import sql
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='retrieve object from Panel Spy database' )
-    parser.add_argument( '-t', '--table', dest='table', help='object table' )
+    parser.add_argument( '-t', '--type', dest='type', help='object type' )
     parser.add_argument( '-i', '--id', dest='id',  help='object id' )
     parser.add_argument( '-p', '--path', dest='path',  help='object path' )
     parser.add_argument( '-r', '--user_role', dest='user_role', help='user role' )
     parser = context.add_context_args( parser )
     args = parser.parse_args()
+
+    if args.type == 'Device':
+        object_class = 'device'
+    else:
+        object_class = 'distributionObject'
 
     if args.path:
       sArgs = 'path="' + args.path + '", '
@@ -29,9 +34,9 @@ if __name__ == '__main__':
     sArgs += 'facility="' + args.facility + '"'
 
     try:
-      object = eval( 'sql.' + args.table + '( ' + sArgs + ' )' )
+      object = eval( 'sql.' + object_class + '( ' + sArgs + ' )' )
     except:
-      dict = { 'Error': 'Could not retrieve [' + sArgs + '] from [' + args.table + '] table' }
+      dict = { 'Error': 'Could not retrieve [' + object_class + '] with attributes [' + sArgs + ']' }
     else:
       dict = object.__dict__
 

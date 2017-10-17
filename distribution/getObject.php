@@ -8,14 +8,20 @@
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   // Get posted values
-  $postTable = $_POST['objectTable'];
+  $postType = $_POST['objectType'];
   $postSelector = $_POST['objectSelector'];
 
   // Determine query selector argument
   $selector = '';
-  if ( $postTable == "cirobj" )
+  if ( $postType == "Device" )
   {
-    // Object is a circuit
+    // Device object
+
+    $selector = ' -i ' . ( ( $postSelector == '' ) ? '1' : $postSelector );
+  }
+  else
+  {
+    // Distribution object
 
     if ( $postSelector != '' )
     {
@@ -33,14 +39,9 @@
       $selector .= $postSelector;
     }
   }
-  else
-  {
-    // Object is not a circuit
-    $selector = ' -i ' . ( ( $postSelector == '' ) ? '1' : $postSelector );
-  }
 
 
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postTable . $selector  . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postType . $selector  . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );

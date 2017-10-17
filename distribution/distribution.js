@@ -27,7 +27,7 @@ function getTreeNode( sPath )
 {
   // Post request to server
   var tPostData = new FormData();
-  tPostData.append( "objectTable", "cirobj" );
+  tPostData.append( "objectType", "GenericDistributionObject" );
   tPostData.append( "objectSelector", sPath );
 
   $.ajax(
@@ -54,14 +54,13 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   var sLabel = ( tRsp.error ? tRsp.error : tRsp.label );
   var sPadNode = "" + ( nDepth * 15 ) + "px";
   var sPadCollapse = "" + ( ( nDepth + 1 ) * 15 ) + "px";
-  var sTitleType = tRsp.object_type;
-  var sType = sTitleType.toLowerCase();
+  var sType = tRsp.object_type;
   var sOid = tRsp.id;
   var sErrorStyle =  tRsp.error ? 'color:red;' : '';
 
   // Display tree node
   var sNode = "";
-  sNode += '<a href="#' + sEncode + '" class="list-group-item clearfix" data-toggle="collapse" onclick="toggleFolder(event);" ondblclick="toggleFolder(event);" path="' + sPath + '" type="' + sType + '" oid="' + sOid + '" title="' + sTitleType + ' ' + sPath + '" style="padding-left:' + sPadNode + ';' + sErrorStyle + '" >';
+  sNode += '<a href="#' + sEncode + '" class="list-group-item clearfix" data-toggle="collapse" onclick="toggleFolder(event);" ondblclick="toggleFolder(event);" path="' + sPath + '" type="' + sType + '" oid="' + sOid + '" title="' + sType + ' ' + sPath + '" style="padding-left:' + sPadNode + ';' + sErrorStyle + '" >';
   sNode += '<i class="glyphicon glyphicon-chevron-down toggle"></i>';
   sNode += sLabel;
   sNode += '<span class="pull-right">';
@@ -89,7 +88,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   aChildInfo.sort( compareNodes );
   for ( var iChild = 0; iChild < aChildInfo.length; iChild ++ )
   {
-    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix collapsed" data-toggle="collapse" onclick="toggleFolder(event);"  ondblclick="toggleFolder(event);"path="' + aChildInfo[iChild].path + '" type="' + aChildInfo[iChild].type.toLowerCase() + '" oid="' + aChildInfo[iChild].oid + '" title="' + aChildInfo[iChild].type + ' ' + aChildInfo[iChild].path + '" style="padding-left:' + sPadCollapse + '" >';
+    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix collapsed" data-toggle="collapse" onclick="toggleFolder(event);"  ondblclick="toggleFolder(event);"path="' + aChildInfo[iChild].path + '" type="' + aChildInfo[iChild].type + '" oid="' + aChildInfo[iChild].oid + '" title="' + aChildInfo[iChild].type + ' ' + aChildInfo[iChild].path + '" style="padding-left:' + sPadCollapse + '" >';
     sCollapse += '<i class="glyphicon glyphicon-chevron-right toggle"></i>';
     sCollapse += aChildInfo[iChild].label;
     sCollapse += '<span class="pull-right">';
@@ -113,7 +112,7 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   aDeviceInfo.sort( compareNodes );
   for ( var iDevice = 0; iDevice < aDeviceInfo.length; iDevice ++ )
   {
-    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix" path="' + aDeviceInfo[iDevice].path + '" type="device" oid="' + aDeviceInfo[iDevice].oid + '" title="Device on ' + sPath + '" style="padding-left:' + sPadCollapse + '" >';
+    sCollapse += '<a href="javascript:void(null)" class="list-group-item clearfix" path="' + aDeviceInfo[iDevice].path + '" type="Device" oid="' + aDeviceInfo[iDevice].oid + '" title="Device on ' + sPath + '" style="padding-left:' + sPadCollapse + '" >';
     sCollapse += aDeviceInfo[iDevice].label;
     sCollapse += '<span class="pull-right">';
     sCollapse += g_sPropertiesButton;

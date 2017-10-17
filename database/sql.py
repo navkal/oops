@@ -420,7 +420,7 @@ class device:
                 'Location Old': self.loc_old}
 
 
-class cirobj:
+class distributionObject:
 
     def __init__(self,id=None,path=None,getkids=True,user_role=None,enterprise=None,facility=None):
         open_database( enterprise )
@@ -477,7 +477,7 @@ class cirobj:
             for i in range( len( child_paths ) ):
                 child_id = str( child_paths[i][0] )
                 child_path = child_paths[i][1]
-                child = cirobj( path=child_path, getkids=False, enterprise=enterprise, facility=facility )
+                child = distributionObject( path=child_path, getkids=False, enterprise=enterprise, facility=facility )
                 filename = '../database/' + enterprise + '/' + facility + '/images/' + child_id + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
