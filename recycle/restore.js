@@ -70,7 +70,7 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
     case 'Transformer':
     case 'Circuit':
       g_sParentIdId = 'parent_path';
-      initCircuitObjectFields();
+      initDistributionObjectFields();
       makeDropdowns();
       break;
 
@@ -88,7 +88,7 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
   finishInit();
 }
 
-function initCircuitObjectFields()
+function initDistributionObjectFields()
 {
   var tFields = g_tRow.fields;
 

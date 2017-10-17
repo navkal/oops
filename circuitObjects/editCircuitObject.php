@@ -433,7 +433,7 @@
         break;
 
       default:
-        aMessages.push( "Unrecognized Circuit Object type '" + g_sSortableTableEditWhat + "'" );
+        aMessages.push( "Unrecognized Distribution Object type '" + g_sSortableTableEditWhat + "'" );
         break;
     }
 

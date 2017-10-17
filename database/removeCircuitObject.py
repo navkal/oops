@@ -9,7 +9,7 @@ printctl.off()
 import sql
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser( description='remove circuit object' )
+    parser = argparse.ArgumentParser( description='remove distribution object' )
     parser.add_argument( '-b', '--by', dest='by', help='requested by username' )
     parser.add_argument( '-i', '--id', dest='id', help='object id' )
     parser.add_argument( '-c', '--comment', dest='comment', help='remove comment' )
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     try:
         status = sql.removeDistributionObject( args.by, args.id, args.comment, args.enterprise, args.facility )
     except:
-        dict = { 'Error': 'Failed to remove circuit object' }
+        dict = { 'Error': 'Failed to remove distribution object' }
     else:
         dict = status.__dict__
 
