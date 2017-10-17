@@ -52,7 +52,7 @@
   if ( empty( $aMessages ) )
   {
     // Format command
-    $command = quote( getenv( 'PYTHON' ) ) . ' ../database/' . $sOperation . 'CircuitObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
+    $command = quote( getenv( 'PYTHON' ) ) . ' ../database/' . $sOperation . 'DistributionObject.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']
       . $sIdParam
       . ' -o ' . $sObjectType
       . ' -p ' . $sParentId
