@@ -55,7 +55,7 @@ def make_cirobj_label( o ):
 
     print( o['object_type'] )
 
-    if o['object_type'] in ( 'Panel', 'Transformer', 'GenericCircuitObject' ):
+    if o['object_type'] in ( 'Panel', 'Transformer', 'GenericDistributionObject' ):
 
         # Concatenate label fragments
         if o['source']:
@@ -142,7 +142,7 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_circuit_object_dropdown( facility, sTypes ):
+def get_distribution_dropdown( facility, sTypes ):
 
     cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + '_Distribution WHERE object_type IN (' + sTypes + ')'  )
     rows = cur.fetchall()
@@ -251,7 +251,7 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
-def summarize_circuit_object( id, facility ):
+def summarize_distribution_object( id, facility ):
 
     cur.execute('SELECT path, room_id, voltage_id, description FROM ' + facility + '_Distribution WHERE id = ?', (id,))
     row = cur.fetchone()
@@ -298,7 +298,7 @@ def summarize_object( type, id, facility='' ):
     id = str( id )
 
     if type == 'Panel' or type == 'Transformer' or type == 'Circuit' :
-        summary = summarize_circuit_object( id, facility )
+        summary = summarize_distribution_object( id, facility )
     elif type == 'Device':
         summary = summarize_device( id, facility )
     elif type == 'Location':
@@ -537,7 +537,7 @@ class search:
         else:
             aTargets = ['All']
 
-        # Search CircuitObject paths
+        # Search Distribution paths
         if ( 'All' in aTargets ) or ( 'Path' in aTargets ):
             cur.execute('SELECT path, path FROM ' + facility + '_Distribution WHERE tail LIKE "%' + searchText + '%"')
             pathRows = cur.fetchall()
@@ -545,7 +545,7 @@ class search:
             pathRows = []
 
 
-        # Search CircuitObject objects
+        # Search Distribution objects
         if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ) or ( 'Panel' in aTargets ) or ( 'Transformer' in aTargets ):
 
             # Generate condition to select requested object types
@@ -655,7 +655,7 @@ class sortableTable:
                 remove_object_id = obj[8]
 
                 if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
-                    cur.execute('SELECT * FROM ' + facility + '_Removed_CircuitObject WHERE id = ?', (remove_object_id,))
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_Distribution WHERE id = ?', (remove_object_id,))
                     ptc_row = cur.fetchone()
                     room_id = ptc_row[1]
                     voltage_id = ptc_row[4]
@@ -668,7 +668,7 @@ class sortableTable:
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
                     voltage = get_voltage( voltage_id )
-                    ptc = { 'object_type': 'GenericCircuitObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    ptc = { 'object_type': 'GenericDistributionObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_cirobj_label( ptc )
 
                 if remove_object_type == 'Device':
@@ -1361,7 +1361,7 @@ class removeCircuitObject:
         remove_id = cur.lastrowid
 
         # Insert target object in table of removed objects
-        removed_table = facility + '_Removed_CircuitObject'
+        removed_table = facility + '_Removed_Distribution'
         cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
         # Delete target object
@@ -1672,10 +1672,10 @@ class restoreDropdowns:
         self.locations = get_location_dropdown( facility )
 
         # Get parents
-        self.device_parents = get_circuit_object_dropdown( facility, '"Circuit"' )
-        self.circuit_parents = get_circuit_object_dropdown( facility, '"Panel"' )
-        self.transformer_parents = get_circuit_object_dropdown( facility, '"Panel"' )
-        self.panel_parents = get_circuit_object_dropdown( facility, '"Panel","Transformer"' )
+        self.device_parents = get_distribution_dropdown( facility, '"Circuit"' )
+        self.circuit_parents = get_distribution_dropdown( facility, '"Panel"' )
+        self.transformer_parents = get_distribution_dropdown( facility, '"Panel"' )
+        self.panel_parents = get_distribution_dropdown( facility, '"Panel","Transformer"' )
 
 
 class deviceDropdowns:
@@ -1684,7 +1684,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_circuit_object_dropdown( facility, '"Circuit"' )
+        self.sources = get_distribution_dropdown( facility, '"Circuit"' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -1699,7 +1699,7 @@ class circuitObjectDropdowns:
         sTypes = '"Panel"'
         if object_type == 'panel':
             sTypes += ',"Transformer"'
-        self.parents = get_circuit_object_dropdown( facility, sTypes )
+        self.parents = get_distribution_dropdown( facility, sTypes )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -1756,7 +1756,7 @@ class restoreRemovedObject:
 
     def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
 
-        source_table = facility + '_Removed_CircuitObject'
+        source_table = facility + '_Removed_Distribution'
         target_table = facility + '_Distribution'
 
         # Determine whether requested path is available
@@ -1796,7 +1796,7 @@ class restoreRemovedObject:
             cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
-            # Get CircuitObject descendants
+            # Get Distribution descendants
             cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
             descendants = cur.fetchall()
 
