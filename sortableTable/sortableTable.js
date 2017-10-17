@@ -535,7 +535,6 @@ function highlightRow( tEvent )
 
 function closeChildWindows()
 {
-  alert( ' closing ' + g_aImageWindows.length + ' + ' + g_aActivityLogWindows.length + ' windows' );
   childWindowsClose( g_aImageWindows );
   childWindowsClose( g_aActivityLogWindows );
 }
