@@ -144,7 +144,7 @@ def get_location_dropdown( facility ):
 
 def get_circuit_object_dropdown( facility, sTypes ):
 
-    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + '_CircuitObject WHERE object_type IN (' + sTypes + ')'  )
+    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + '_Distribution WHERE object_type IN (' + sTypes + ')'  )
     rows = cur.fetchall()
 
     testId = 0
@@ -225,7 +225,7 @@ def get_voltage( voltage_id ):
 
 def get_path( id, facility ):
 
-    cur.execute('SELECT path FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    cur.execute('SELECT path FROM ' + facility + '_Distribution WHERE id = ?', (id,))
     path_row = cur.fetchone()
 
     if path_row:
@@ -253,7 +253,7 @@ def get_location( room_id, facility ):
 
 def summarize_circuit_object( id, facility ):
 
-    cur.execute('SELECT path, room_id, voltage_id, description FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+    cur.execute('SELECT path, room_id, voltage_id, description FROM ' + facility + '_Distribution WHERE id = ?', (id,))
     row = cur.fetchone()
     path = row[0]
     room_id = row[1]
@@ -315,7 +315,7 @@ def get_nearest_panel( type, id, facility ):
         panel_id = id
         panel_path = get_path( id, facility )
     else:
-        ptc_table = facility + '_CircuitObject'
+        ptc_table = facility + '_Distribution'
         device_table = facility + '_Device'
 
         if ( type == 'Device' ):
@@ -357,10 +357,10 @@ class device:
                         ''' + facility + '''_Device.parent_id,
                         ''' + facility + '''_Device.description,
                         ''' + facility + '''_Device.name,
-                        ''' + facility + '''_CircuitObject.path,
-                        ''' + facility + '''_CircuitObject.id
+                        ''' + facility + '''_Distribution.path,
+                        ''' + facility + '''_Distribution.id
                     FROM ''' + facility + '''_Device
-                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
+                        LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)
                   WHERE
                       id = ?''', (id,) )
 
@@ -426,11 +426,11 @@ class cirobj:
         open_database( enterprise )
 
         if id:
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE id = ?', (id,))
         elif path:
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE upper(path) = ?', (path.upper(),))
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE upper(path) = ?', (path.upper(),))
         else:
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE path NOT LIKE "%.%"' )
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE path NOT LIKE "%.%"' )
 
         #initialize circuitObject properties
         row = cur.fetchone()
@@ -470,7 +470,7 @@ class cirobj:
         if getkids:
 
             # Retrieve children
-            cur.execute('SELECT id, path FROM ' + facility + '_CircuitObject WHERE parent_id = ?', (self.id,))
+            cur.execute('SELECT id, path FROM ' + facility + '_Distribution WHERE parent_id = ?', (self.id,))
             child_paths = cur.fetchall()
             self.children = []
 
@@ -492,10 +492,10 @@ class cirobj:
                         (SELECT
                             ''' + facility + '''_Device.id AS device_id,
                             ''' + facility + '''_Device.parent_id,
-                            ''' + facility + '''_CircuitObject.id,
-                            ''' + facility + '''_CircuitObject.path
+                            ''' + facility + '''_Distribution.id,
+                            ''' + facility + '''_Distribution.path
                         FROM ''' + facility + '''_Device
-                            LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
+                            LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)
                         WHERE path = ?''', (self.path,) )
 
             dev_ids = cur.fetchall()
@@ -539,7 +539,7 @@ class search:
 
         # Search CircuitObject paths
         if ( 'All' in aTargets ) or ( 'Path' in aTargets ):
-            cur.execute('SELECT path, path FROM ' + facility + '_CircuitObject WHERE tail LIKE "%' + searchText + '%"')
+            cur.execute('SELECT path, path FROM ' + facility + '_Distribution WHERE tail LIKE "%' + searchText + '%"')
             pathRows = cur.fetchall()
         else:
             pathRows = []
@@ -554,11 +554,11 @@ class search:
             else:
                 aWhere = []
                 if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ):
-                    aWhere.append( facility + '_CircuitObject.object_type = "Circuit"' )
+                    aWhere.append( facility + '_Distribution.object_type = "Circuit"' )
                 if ( 'All' in aTargets ) or ( 'Panel' in aTargets ):
-                    aWhere.append( facility + '_CircuitObject.object_type = "Panel"' )
+                    aWhere.append( facility + '_Distribution.object_type = "Panel"' )
                 if ( 'All' in aTargets ) or ( 'Transformer' in aTargets ):
-                    aWhere.append( facility + '_CircuitObject.object_type = "Transformer"' )
+                    aWhere.append( facility + '_Distribution.object_type = "Transformer"' )
 
                 sWhere = 'WHERE '
 
@@ -571,19 +571,19 @@ class search:
               '''SELECT path, search_result
                   FROM
                     (SELECT
-                        ''' + facility + '''_CircuitObject.path,
-                        ''' + facility + '''_CircuitObject.search_result,
-                        ''' + facility + '''_CircuitObject.object_type,
-                        ''' + facility + '''_CircuitObject.tail AS tail,
-                        ''' + facility + '''_CircuitObject.source AS source,
-                        ''' + facility + '''_CircuitObject.description AS description,
+                        ''' + facility + '''_Distribution.path,
+                        ''' + facility + '''_Distribution.search_result,
+                        ''' + facility + '''_Distribution.object_type,
+                        ''' + facility + '''_Distribution.tail AS tail,
+                        ''' + facility + '''_Distribution.source AS source,
+                        ''' + facility + '''_Distribution.description AS description,
                         Voltage.description AS voltage,
                         ''' + facility + '''_Room.room_num AS location,
                         ''' + facility + '''_Room.old_num AS location_old,
                         ''' + facility + '''_Room.description AS location_descr
-                    FROM ''' + facility + '''_CircuitObject
-                        LEFT JOIN Voltage ON ''' + facility + '''_CircuitObject.voltage_id = Voltage.id
-                        LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_CircuitObject.room_id = ''' + facility + '''_Room.id
+                    FROM ''' + facility + '''_Distribution
+                        LEFT JOIN Voltage ON ''' + facility + '''_Distribution.voltage_id = Voltage.id
+                        LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_Distribution.room_id = ''' + facility + '''_Room.id
                     '''
                     + sWhere +
                     ''')
@@ -607,15 +607,15 @@ class search:
               '''SELECT path, description
                   FROM
                   (SELECT
-                    ''' + facility + '''_CircuitObject.path || "." || ''' + facility + '''_Device.id AS path,
+                    ''' + facility + '''_Distribution.path || "." || ''' + facility + '''_Device.id AS path,
                     ''' + facility + '''_Device.description,
-                    ''' + facility + '''_CircuitObject.id,
+                    ''' + facility + '''_Distribution.id,
                     ''' + facility + '''_Device.name AS name,
                     ''' + facility + '''_Room.room_num AS location,
                     ''' + facility + '''_Room.old_num AS location_old,
                     ''' + facility + '''_Room.description AS location_descr
                   FROM ''' + facility + '''_Device
-                    LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id
+                    LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id
                     LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_Device.room_id = ''' + facility + '''_Room.id)
                   WHERE
                     name LIKE "%''' + searchText + '''%"
@@ -741,10 +741,10 @@ class sortableTable:
                         ''' + facility + '''_Device.parent_id,
                         ''' + facility + '''_Device.description,
                         ''' + facility + '''_Device.name,
-                        ''' + facility + '''_CircuitObject.path,
-                        ''' + facility + '''_CircuitObject.id
+                        ''' + facility + '''_Distribution.path,
+                        ''' + facility + '''_Distribution.id
                     FROM ''' + facility + '''_Device
-                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)''')
+                        LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)''')
 
             objects = cur.fetchall()
 
@@ -769,7 +769,7 @@ class sortableTable:
 
         else:
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE upper(object_type) = ?', (object_type.upper(),))
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE upper(object_type) = ?', (object_type.upper(),))
             objects = cur.fetchall()
 
             # Add other fields to each row
@@ -845,13 +845,13 @@ class location:
         cur.execute('SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (self.id,))
         self.devices = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Panel"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Panel"', (self.id,))
         self.panels = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Transformer"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Transformer"', (self.id,))
         self.transformers = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_CircuitObject WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
         self.circuits = cur.fetchone()[0]
 
         if user_role == 'Technician':
@@ -872,7 +872,7 @@ class circuitObjectTableRow:
         open_database( enterprise )
 
         if not row:
-            cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE id = ?', (id,))
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE id = ?', (id,))
             row = cur.fetchone()
 
         self.id = str( row[0] )
@@ -903,7 +903,7 @@ class circuitObjectTableRow:
         else:
             self.panel_image = ''
 
-        cur.execute('SELECT COUNT(id) FROM ' + facility + '_CircuitObject WHERE parent_id = ?', (self.id,))
+        cur.execute('SELECT COUNT(id) FROM ' + facility + '_Distribution WHERE parent_id = ?', (self.id,))
         self.children = cur.fetchone()[0]
 
         cur.execute(
@@ -912,10 +912,10 @@ class circuitObjectTableRow:
                     (SELECT
                         ''' + facility + '''_Device.id AS device_id,
                         ''' + facility + '''_Device.parent_id,
-                        ''' + facility + '''_CircuitObject.id,
-                        ''' + facility + '''_CircuitObject.path
+                        ''' + facility + '''_Distribution.id,
+                        ''' + facility + '''_Distribution.path
                     FROM ''' + facility + '''_Device
-                        LEFT JOIN ''' + facility + '''_CircuitObject ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_CircuitObject.id)
+                        LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)
                     WHERE path = ?''', (self.path,) )
 
         self.devices = cur.fetchone()[0]
@@ -1046,7 +1046,7 @@ class addCircuitObject:
         self.messages = []
         self.selectors = []
         self.row = {}
-        target_table = facility + '_CircuitObject'
+        target_table = facility + '_Distribution'
 
         # Determine whether path is available
         ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
@@ -1100,7 +1100,7 @@ class updateCircuitObject:
         self.row = {}
         self.descendant_rows = []
 
-        target_table = facility + '_CircuitObject'
+        target_table = facility + '_Distribution'
         user_role = username_to_role( by )
 
         # Determine whether path is available
@@ -1271,7 +1271,7 @@ class updateLocation:
         # Update search results of circuit objects that refer to this location
 
         # Get circuit objects that refer to this location
-        cur.execute('SELECT * FROM ' + facility + '_CircuitObject WHERE room_id = ?', (id,))
+        cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
         rows = cur.fetchall()
 
         # Traverse circuit objects
@@ -1291,7 +1291,7 @@ class updateLocation:
 
             # Save the new search result
             ptc_id = row[0]
-            cur.execute( 'UPDATE ' + facility + '_CircuitObject SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
+            cur.execute( 'UPDATE ' + facility + '_Distribution SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
 
 
         # Update descriptions of devices that refer to this location
@@ -1337,7 +1337,7 @@ class removeCircuitObject:
 
 
         # Get row to be deleted
-        target_table = facility + '_CircuitObject'
+        target_table = facility + '_Distribution'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
         room_id = row[1]
@@ -1757,7 +1757,7 @@ class restoreRemovedObject:
     def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
 
         source_table = facility + '_Removed_CircuitObject'
-        target_table = facility + '_CircuitObject'
+        target_table = facility + '_Distribution'
 
         # Determine whether requested path is available
         ( test_id, restore_path, source ) = test_path_availability( target_table, parent_id, tail )
