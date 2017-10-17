@@ -432,7 +432,7 @@ class cirobj:
         else:
             cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE path NOT LIKE "%.%"' )
 
-        #initialize circuitObject properties
+        #initialize distribution object properties
         row = cur.fetchone()
         self.id = str( row[0] )
         self.room_id = row[1]
@@ -774,7 +774,7 @@ class sortableTable:
 
             # Add other fields to each row
             for obj in objects:
-                row = circuitObjectTableRow( row=obj, user_role=user_role, enterprise=enterprise, facility=facility )
+                row = distributionTableRow( row=obj, user_role=user_role, enterprise=enterprise, facility=facility )
                 self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
@@ -865,7 +865,7 @@ class location:
                 self.remove_location = ''
 
 
-class circuitObjectTableRow:
+class distributionTableRow:
 
     def __init__( self, row=None, id=None, user_role=None, enterprise=None, facility=None ):
 
@@ -1083,7 +1083,7 @@ class addCircuitObject:
             conn.commit()
 
             # Return row
-            row = circuitObjectTableRow( id=target_object_id, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
+            row = distributionTableRow( id=target_object_id, user_role=username_to_role( by ), enterprise=enterprise, facility=facility )
             self.row = row.__dict__
 
 
@@ -1151,7 +1151,7 @@ class updateCircuitObject:
 
                     # If path is affected in descendant of same object type, return descendant row, so that GUI will update in table
                     if ( object_type == desc_object_type ) and ( desc_path != new_desc_path ):
-                        desc_row = circuitObjectTableRow( id=desc_id, user_role=user_role, enterprise=enterprise, facility=facility )
+                        desc_row = distributionTableRow( id=desc_id, user_role=user_role, enterprise=enterprise, facility=facility )
                         self.descendant_rows.append( desc_row.__dict__ )
 
             # Generate search result text
@@ -1171,7 +1171,7 @@ class updateCircuitObject:
             conn.commit()
 
             # Return updated row
-            row = circuitObjectTableRow( id=id, user_role=user_role, enterprise=enterprise, facility=facility )
+            row = distributionTableRow( id=id, user_role=user_role, enterprise=enterprise, facility=facility )
             self.row = row.__dict__
 
 
@@ -1268,13 +1268,13 @@ class updateLocation:
             ( loc_new, loc_old, loc_descr, id ) )
 
 
-        # Update search results of circuit objects that refer to this location
+        # Update search results of distribution objects that refer to this location
 
-        # Get circuit objects that refer to this location
+        # Get distribution objects that refer to this location
         cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
         rows = cur.fetchall()
 
-        # Traverse circuit objects
+        # Traverse distribution objects
         for row in rows:
             # Get search result fragments
             source = row[10]
@@ -1740,7 +1740,7 @@ class restoreRemovedObject:
         # Handle according to removed object type
         if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ):
             remove_object_id = recycle_row[8]
-            self.restore_circuit_object( by, id, remove_object_id, parent_id, tail, room_id, facility )
+            self.restore_distribution_object( by, id, remove_object_id, parent_id, tail, room_id, facility )
         elif remove_object_type == 'Device':
             self.restore_device( by, id, parent_id, room_id, facility )
         elif remove_object_type == 'Location':
@@ -1754,7 +1754,7 @@ class restoreRemovedObject:
             conn.commit()
 
 
-    def restore_circuit_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
+    def restore_distribution_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
 
         source_table = facility + '_Removed_Distribution'
         target_table = facility + '_Distribution'
