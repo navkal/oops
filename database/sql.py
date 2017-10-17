@@ -1039,7 +1039,7 @@ class changePassword:
                 self.organization = user.organization
 
 
-class addCircuitObject:
+class addDistributionObject:
     def __init__( self, by, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
@@ -1087,7 +1087,7 @@ class addCircuitObject:
             self.row = row.__dict__
 
 
-class updateCircuitObject:
+class updateDistributionObject:
     def __init__( self, by, id, object_type, parent_id, tail, voltage_id, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
@@ -1331,7 +1331,7 @@ class updateLocation:
         self.row = row.__dict__
 
 
-class removeCircuitObject:
+class removeDistributionObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
@@ -1690,7 +1690,7 @@ class deviceDropdowns:
         self.locations = get_location_dropdown( facility )
 
 
-class circuitObjectDropdowns:
+class distributionDropdowns:
     def __init__(self, object_type, enterprise, facility):
 
         open_database( enterprise )

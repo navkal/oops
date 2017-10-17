@@ -15,7 +15,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        dropdowns = sql.circuitObjectDropdowns( args.object_type, args.enterprise, args.facility )
+        dropdowns = sql.distributionDropdowns( args.object_type, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to get dropdowns for ' + args.object_type + ' edit dialog in enterprise ' + args.enterprise + ', facility ' + args.facility }
     else:

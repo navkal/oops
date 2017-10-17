@@ -22,7 +22,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.addCircuitObject( args.by, args.object_type, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.filename, args.enterprise, args.facility )
+        status = sql.addDistributionObject( args.by, args.object_type, args.parent_id, args.tail, args.voltage_id, args.room_id, args.description, args.filename, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to add circuit object' }
     else:

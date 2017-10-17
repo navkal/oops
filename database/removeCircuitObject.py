@@ -17,7 +17,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        status = sql.removeCircuitObject( args.by, args.id, args.comment, args.enterprise, args.facility )
+        status = sql.removeDistributionObject( args.by, args.id, args.comment, args.enterprise, args.facility )
     except:
         dict = { 'Error': 'Failed to remove circuit object' }
     else:
