@@ -50,7 +50,7 @@ def make_device_label( name=None, parent_path=None, room_id=None, loc_new='', lo
     return label
 
 
-def make_cirobj_label( o ):
+def make_distribution_object_label( o ):
     label = ''
 
     print( o['object_type'] )
@@ -457,7 +457,7 @@ class cirobj:
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
 
         # Generate label
-        self.label = make_cirobj_label( self.__dict__ )
+        self.label = make_distribution_object_label( self.__dict__ )
 
         # Add image filename
         filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
@@ -596,9 +596,9 @@ class search:
                       OR location_descr LIKE "%''' + searchText + '''%"
                       OR description LIKE "%''' + searchText + '''%"''' )
 
-            cirobjRows = cur.fetchall()
+            distributionRows = cur.fetchall()
         else:
-            cirobjRows = []
+            distributionRows = []
 
 
         # Search devices
@@ -628,7 +628,7 @@ class search:
             devRows = []
 
         # Concatenate all search results
-        self.searchResults = pathRows + cirobjRows + devRows
+        self.searchResults = pathRows + distributionRows + devRows
 
 
 class sortableTable:
@@ -669,7 +669,7 @@ class sortableTable:
 
                     voltage = get_voltage( voltage_id )
                     ptc = { 'object_type': 'GenericDistributionObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
-                    origin = make_cirobj_label( ptc )
+                    origin = make_distribution_object_label( ptc )
 
                 if remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
