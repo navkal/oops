@@ -116,7 +116,7 @@
     tPostData.append( 'object_type', g_sSortableTableType );
 
     $.ajax(
-      "circuitObjects/getCircuitObjectDropdowns.php",
+      "circuitObjects/getDistributionObjectDropdowns.php",
       {
         type: 'POST',
         processData: false,
