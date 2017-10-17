@@ -2,7 +2,7 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/sortableTable/sortableTable.php";
-  require_once $_SERVER["DOCUMENT_ROOT"]."/circuitObjects/editCircuitObject.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/circuitObjects/editDistributionObject.php";
   require_once $_SERVER['DOCUMENT_ROOT'] . '/sortableTable/confirmRemove.php';
   $iVersion = time();
 ?>

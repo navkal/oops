@@ -385,7 +385,7 @@
 
       // Post request to server
       $.ajax(
-        'circuitObjects/' + g_sAction + 'CircuitObject.php',
+        'circuitObjects/' + g_sAction + 'DistributionObject.php',
         {
           type: 'POST',
           processData: false,
