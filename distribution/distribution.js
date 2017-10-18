@@ -153,7 +153,6 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   setToggleTooltips();
 
   // Insert node in tree map
-  console.log( '------> treemap type=' + sType + ' path=' + sPath );
   g_tTreeMap[sOid] = tRsp;
 
   // Handle continuation of navigation to search result
