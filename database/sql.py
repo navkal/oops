@@ -422,13 +422,11 @@ class device:
 
 class distributionObject:
 
-    def __init__(self,id=None,path=None,getkids=True,user_role=None,enterprise=None,facility=None):
+    def __init__(self,id=None,getkids=True,user_role=None,enterprise=None,facility=None):
         open_database( enterprise )
 
         if id:
             cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE id = ?', (id,))
-        elif path:
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE upper(path) = ?', (path.upper(),))
         else:
             cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE parent_id IS NULL' )
 
