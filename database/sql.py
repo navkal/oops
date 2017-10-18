@@ -430,7 +430,7 @@ class distributionObject:
         elif path:
             cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE upper(path) = ?', (path.upper(),))
         else:
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE path NOT LIKE "%.%"' )
+            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE parent_id IS NULL' )
 
         #initialize distribution object properties
         row = cur.fetchone()
@@ -477,7 +477,7 @@ class distributionObject:
             for i in range( len( child_paths ) ):
                 child_id = str( child_paths[i][0] )
                 child_path = child_paths[i][1]
-                child = distributionObject( path=child_path, getkids=False, enterprise=enterprise, facility=facility )
+                child = distributionObject( id=child_id, getkids=False, enterprise=enterprise, facility=facility )
                 filename = '../database/' + enterprise + '/' + facility + '/images/' + child_id + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
