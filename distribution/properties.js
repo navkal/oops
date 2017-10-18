@@ -1,6 +1,6 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_tProperties = window.opener.g_tTreeMap[g_sPath];
+var g_tProperties = window.opener.g_tTreeMap[g_sOid];
 
 $( document ).ready( loadProperties );
 
@@ -40,12 +40,6 @@ function getProperties()
 function saveProperties( tRsp, sStatus, tJqXhr )
 {
   g_tProperties = tRsp;
-
-  // If main window already has this element, update it
-  if ( window.opener.g_tTreeMap[g_tProperties["path"]] )
-  {
-    window.opener.g_tTreeMap[g_tProperties["path"]] = tRsp;
-  }
 
   showProperties();
 }

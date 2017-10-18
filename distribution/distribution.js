@@ -153,7 +153,8 @@ function insertTreeNode( tRsp, sStatus, tJqXhr )
   setToggleTooltips();
 
   // Insert node in tree map
-  g_tTreeMap[sPath] = tRsp;
+  console.log( '------> treemap type=' + sType + ' path=' + sPath );
+  g_tTreeMap[sOid] = tRsp;
 
   // Handle continuation of navigation to search result
   if ( g_sSearchTargetPath )
@@ -257,11 +258,10 @@ function toggleFolder( tEvent )
   // If we haven't already determined that it's a leaf, toggle it
   if ( ! tItem.find( '.toggle' ).hasClass( "no-children" ) )
   {
-    var sPath = $( tItem ).attr( "path" );
-    if ( ! g_tTreeMap[sPath] )
+    var sOid = $( tItem ).attr( "oid" );
+    if ( ! g_tTreeMap[sOid] )
     {
       // Expand for the first time
-      var sOid = $( tItem ).attr( "oid" );
       getTreeNode( sOid );
     }
     else
