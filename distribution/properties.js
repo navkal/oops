@@ -20,8 +20,8 @@ function getProperties()
 {
   // Post request to server
   var tPostData = new FormData();
-  tPostData.append( "objectType", g_sType );
-  tPostData.append( "objectSelector", ( ( g_sType == 'Device' ) ? g_sOid : g_sPath ) );
+  tPostData.append( "object_type", g_sType );
+  tPostData.append( "object_id", g_sOid );
 
   $.ajax(
     "getObject.php",

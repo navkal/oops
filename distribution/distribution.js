@@ -23,12 +23,12 @@ function initView()
   getTreeNode( "" );
 }
 
-function getTreeNode( sPath )
+function getTreeNode( sOid )
 {
   // Post request to server
   var tPostData = new FormData();
-  tPostData.append( "objectType", "GenericDistributionObject" );
-  tPostData.append( "objectSelector", sPath );
+  tPostData.append( "object_type", "Distribution" );
+  tPostData.append( "object_id", sOid );
 
   $.ajax(
     "distribution/getObject.php",
@@ -261,7 +261,8 @@ function toggleFolder( tEvent )
     if ( ! g_tTreeMap[sPath] )
     {
       // Expand for the first time
-      getTreeNode( sPath );
+      var sOid = $( tItem ).attr( "oid" );
+      getTreeNode( sOid );
     }
     else
     {

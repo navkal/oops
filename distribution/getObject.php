@@ -8,40 +8,10 @@
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   // Get posted values
-  $postType = $_POST['objectType'];
-  $postSelector = $_POST['objectSelector'];
+  $postType = $_POST['object_type'];
+  $postSelector = quote( $_POST['object_id'] );
 
-  // Determine query selector argument
-  $selector = '';
-  if ( $postType == "Device" )
-  {
-    // Device object
-
-    $selector = ' -i ' . ( ( $postSelector == '' ) ? '1' : $postSelector );
-  }
-  else
-  {
-    // Distribution object
-
-    if ( $postSelector != '' )
-    {
-      if ( ctype_digit( $postSelector ) )
-      {
-        // All digits: argument is an id
-        $selector = ' -i ';
-      }
-      else
-      {
-        // Not all digits: argument is a path
-        $selector = ' -p ';
-      }
-
-      $selector .= $postSelector;
-    }
-  }
-
-
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postType . $selector  . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . " ../database/getObject.py 2>&1 -t " . $postType . ' -i ' . $postSelector  . ' -r ' . $_SESSION['panelSpy']['user']['role'] . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );

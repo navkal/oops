@@ -55,7 +55,7 @@ def make_distribution_object_label( o ):
 
     print( o['object_type'] )
 
-    if o['object_type'] in ( 'Panel', 'Transformer', 'GenericDistributionObject' ):
+    if o['object_type'] in ( 'Panel', 'Transformer', 'Distribution' ):
 
         # Concatenate label fragments
         if o['source']:
@@ -668,7 +668,7 @@ class sortableTable:
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
                     voltage = get_voltage( voltage_id )
-                    ptc = { 'object_type': 'GenericDistributionObject', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_distribution_object_label( ptc )
 
                 if remove_object_type == 'Device':
