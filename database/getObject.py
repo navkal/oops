@@ -12,7 +12,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='retrieve object from Panel Spy database' )
     parser.add_argument( '-t', '--type', dest='type', help='object type' )
     parser.add_argument( '-i', '--id', dest='id',  help='object id' )
-    parser.add_argument( '-p', '--path', dest='path',  help='object path' )
     parser.add_argument( '-r', '--user_role', dest='user_role', help='user role' )
     parser = context.add_context_args( parser )
     args = parser.parse_args()
@@ -22,9 +21,7 @@ if __name__ == '__main__':
     else:
         object_class = 'distributionObject'
 
-    if args.path:
-      sArgs = 'path="' + args.path + '", '
-    elif args.id:
+    if args.id:
       sArgs = 'id=' + args.id + ', '
     else:
       sArgs = ''
