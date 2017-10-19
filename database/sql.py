@@ -253,23 +253,23 @@ def get_location( room_id, facility ):
 
 def summarize_distribution_object( id, facility ):
 
-    cur.execute('SELECT path, room_id, voltage_id, description FROM ' + facility + '_Distribution WHERE id = ?', (id,))
+    dist_table = facility + '_Distribution'
+    cur.execute( 'SELECT path, room_id, voltage_id, description, voltage FROM ' + dist_table + ' LEFT JOIN Voltage ON voltage_id=Voltage.id WHERE ' + dist_table + '.id=?', (id,) )
+
     row = cur.fetchone()
     path = row[0]
     room_id = row[1]
-    voltage_id = row[2]
     description = row[3]
+    voltage = row[4]
 
     loc = dbCommon.format_location( *get_location( room_id, facility ) )
     if loc:
         loc = ' [' + loc + ']'
 
-    voltage = ' ' + get_voltage( voltage_id )
-
     if description:
         description = ' "' + description + '"'
 
-    summary = path + voltage + loc + description
+    summary = path + ' ' + voltage + loc + description
 
     return summary
 
