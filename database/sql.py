@@ -406,21 +406,28 @@ class distributionObject:
     def __init__(self,id=None,getkids=True,user_role=None,enterprise=None,facility=None):
         open_database( enterprise )
 
+        dist_table = facility + '_Distribution'
+        selectWhere = '''
+            SELECT ''' + dist_table + '''.*, Voltage.voltage
+              FROM ''' + dist_table + '''
+              LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
+              WHERE '''
+
         if id:
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE id = ?', (id,))
+            cur.execute( selectWhere + dist_table + '.id = ?', (id,) )
         else:
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE parent_id IS NULL' )
+            cur.execute( selectWhere + 'parent_id IS NULL' )
 
         #initialize distribution object properties
         row = cur.fetchone()
         self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
-        self.voltage = get_voltage( row[4] )
-        self.object_type = row[5].title()
+        self.object_type = row[5]
         self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
+        self.voltage = row[11]
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
@@ -859,7 +866,7 @@ class distributionTableRow:
         self.room_id = row[1]
         self.path = row[2]
         self.voltage_id = row[4]
-        self.object_type = row[5].title()
+        self.object_type = row[5]
         self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
