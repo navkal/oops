@@ -735,7 +735,14 @@ class sortableTable:
 
         else:
             # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE upper(object_type) = ?', (object_type.upper(),))
+            dist_table = facility + '_Distribution'
+            cur.execute(
+              '''SELECT ''' +
+                    dist_table + '''.*,
+                    Voltage.voltage
+                  FROM ''' + dist_table + '''
+                    LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
+                  WHERE upper(object_type) = ?''', (object_type.upper(),) )
             objects = cur.fetchall()
 
             # Add other fields to each row
@@ -838,23 +845,29 @@ class distributionTableRow:
         open_database( enterprise )
 
         if not row:
-            cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE id = ?', (id,))
+            dist_table = facility + '_Distribution'
+            cur.execute(
+              '''SELECT ''' +
+                    dist_table + '''.*,
+                    Voltage.voltage
+                  FROM ''' + dist_table + '''
+                    LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
+                  WHERE ''' + dist_table + '''.id = ?''', (id,) )
             row = cur.fetchone()
 
         self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
+        self.voltage_id = row[4]
         self.object_type = row[5].title()
         self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
+        self.voltage = row[11]
 
         # Extract number and name from path tail
         tail = self.path.split('.')[-1]
         ( self.number, self.name ) = tail_to_number_name( tail )
-
-        self.voltage_id = row[4]
-        self.voltage = get_voltage( row[4] )
 
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
