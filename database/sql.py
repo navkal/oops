@@ -854,10 +854,8 @@ class distributionTableRow:
         tail = self.path.split('.')[-1]
         ( self.number, self.name ) = tail_to_number_name( tail )
 
-        cur.execute('SELECT * FROM Voltage WHERE id = ?',(row[4],))
-        voltage = cur.fetchone()
-        self.voltage_id = voltage[0]
-        self.voltage = voltage[1]
+        self.voltage_id = row[4]
+        self.voltage = get_voltage( row[4] )
 
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
         self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
