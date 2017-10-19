@@ -1115,7 +1115,7 @@ class updateDistributionObject:
             if path != original_path:
 
                 # Retrieve all descendants of the target object
-                cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + original_path + '.%"' )
+                cur.execute( 'SELECT ' + target_table + '.*, Voltage.voltage FROM ' + target_table + ' LEFT JOIN Voltage ON ' + target_table + '.voltage_id = Voltage.id WHERE path LIKE "' + original_path + '.%"' )
                 descendants = cur.fetchall()
 
                 # Update path, search result, and source of all descendants
@@ -1123,10 +1123,10 @@ class updateDistributionObject:
                     desc_id = desc[0]
                     desc_room_id = desc[1]
                     desc_path = desc[2]
-                    desc_voltage = get_voltage( desc[4] )
                     desc_object_type = desc[5]
                     desc_description = desc[6]
                     desc_tail = desc[8]
+                    desc_voltage = desc[11]
                     ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                     new_desc_path = desc_path.replace( original_path, path, 1 )
                     new_desc_source = new_desc_path.split( '.' )[-2]
