@@ -1792,17 +1792,23 @@ class restoreRemovedObject:
                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
             # Get Distribution descendants
-            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=? AND id<>?', ( id,remove_object_id ) )
+            cur.execute(
+              '''SELECT ''' +
+                    source_table + '''.*,
+                    Voltage.voltage
+                  FROM ''' + source_table + '''
+                    LEFT JOIN Voltage ON ''' + source_table + '''.voltage_id = Voltage.id
+                  WHERE remove_id=? AND ''' + source_table + '''.id<>?''', ( id,remove_object_id ) )
             descendants = cur.fetchall()
 
             # Update path, search result, and source of all descendants; restore at original IDs
             for desc in descendants:
                 desc_room_id = desc[1]
                 desc_path = desc[2]
-                desc_voltage = get_voltage( desc[4] )
                 desc_object_type = desc[5]
                 desc_description = desc[6]
                 desc_tail = desc[8]
+                desc_voltage = desc[12]
                 ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                 restore_desc_path = desc_path.replace( removed_path, restore_path, 1 )
                 restore_desc_source = restore_desc_path.split( '.' )[-2]
@@ -1811,6 +1817,7 @@ class restoreRemovedObject:
 
                 # Restore descendant object at original ID, with updated path, search result, and source
                 restore_desc_row = list( desc )
+                restore_desc_row.pop()
                 restore_desc_row.pop()
                 restore_desc_row[2] = restore_desc_path
                 restore_desc_row[9] = restore_desc_search_result
