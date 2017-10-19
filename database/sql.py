@@ -218,7 +218,7 @@ def get_facility( facility_id ):
 
 
 def get_voltage( voltage_id ):
-    cur.execute( 'SELECT description FROM Voltage WHERE id = ?', (voltage_id,) )
+    cur.execute( 'SELECT voltage FROM Voltage WHERE id = ?', (voltage_id,) )
     voltage = cur.fetchone()[0]
     return voltage
 
@@ -544,7 +544,7 @@ class search:
                         ''' + facility + '''_Distribution.tail AS tail,
                         ''' + facility + '''_Distribution.source AS source,
                         ''' + facility + '''_Distribution.description AS description,
-                        Voltage.description AS voltage,
+                        Voltage.voltage AS voltage,
                         ''' + facility + '''_Room.room_num AS location,
                         ''' + facility + '''_Room.old_num AS location_old,
                         ''' + facility + '''_Room.description AS location_descr
@@ -1624,7 +1624,7 @@ class restoreDropdowns:
         open_database( enterprise )
 
         # Get voltages
-        cur.execute('SELECT id, description FROM Voltage')
+        cur.execute('SELECT id, voltage FROM Voltage')
         rows = cur.fetchall()
 
         voltages = []
@@ -1670,7 +1670,7 @@ class distributionDropdowns:
         self.locations = get_location_dropdown( facility )
 
         # Get all voltages
-        cur.execute('SELECT id, description FROM Voltage')
+        cur.execute('SELECT id, voltage FROM Voltage')
         rows = cur.fetchall()
 
         voltages = []
