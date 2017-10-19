@@ -1262,17 +1262,21 @@ class updateLocation:
         # Update search results of distribution objects that refer to this location
 
         # Get distribution objects that refer to this location
-        cur.execute('SELECT * FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
+        dist_table = facility + '_Distribution'
+        cur.execute(
+          '''SELECT ''' +
+                dist_table + '''.*,
+                Voltage.voltage
+              FROM ''' + dist_table + '''
+                LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
+              WHERE ''' + dist_table + '''.room_id = ?''', (id,) )
         rows = cur.fetchall()
 
         # Traverse distribution objects
         for row in rows:
             # Get search result fragments
             source = row[10]
-
-            voltage_id = row[4]
-            voltage = get_voltage( voltage_id )
-
+            voltage = row[11]
             object_type = row[5]
             object_descr = row[6]
             tail = row[8]
