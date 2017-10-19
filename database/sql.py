@@ -264,8 +264,7 @@ def summarize_distribution_object( id, facility ):
     if loc:
         loc = ' [' + loc + ']'
 
-    voltage = get_voltage( voltage_id )
-    voltage = ' ' + voltage
+    voltage = ' ' + get_voltage( voltage_id )
 
     if description:
         description = ' "' + description + '"'
