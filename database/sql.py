@@ -402,24 +402,6 @@ class device:
             self.events = []
 
 
-    def properties(self):
-        print("room_id:", self.room_id)
-        print("parent_id:",self.parent_id)
-        print("description:", self.description)
-        print("parent_path:",self.parent_path)
-        print("loc_new:", self.loc_new)
-        print("loc_old:", self.loc_old)
-
-    def get_main_display(self):
-        return {'ID': self.id,
-                'Room ID': self.room_id,
-                'Parent ID': self.parent_id,
-                'Description':self.description,
-                'Parent Path': self.parent_path,
-                'Location New': self.loc_new,
-                'Location Old': self.loc_old}
-
-
 class distributionObject:
 
     def __init__(self,id=None,getkids=True,user_role=None,enterprise=None,facility=None):
@@ -511,19 +493,6 @@ class distributionObject:
             self.events = natsort.natsorted( self.events, key=lambda x: x[0], reverse=True )
         else:
             self.events = []
-
-
-
-
-    def get_main_display(self):
-        return {'ID': self.id,
-                'Room ID': self.room_id,
-                'Path': self.path,
-                'Voltage': self.voltage,
-                'Type': self.object_type,
-                'Description': self.description,
-                'Parent Path': self.parent_path,
-                'Children': self.children}
 
 
 class search:
