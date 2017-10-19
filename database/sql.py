@@ -628,19 +628,26 @@ class sortableTable:
                 remove_object_id = obj[8]
 
                 if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
-                    cur.execute('SELECT * FROM ' + facility + '_Removed_Distribution WHERE id = ?', (remove_object_id,))
+                    dist_table = facility + '_Removed_Distribution'
+                    cur.execute(
+                      '''SELECT ''' +
+                            dist_table + '''.*,
+                            Voltage.voltage
+                          FROM ''' + dist_table + '''
+                            LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
+                          WHERE ''' + dist_table + '''.id = ?''', (remove_object_id,) )
                     ptc_row = cur.fetchone()
                     room_id = ptc_row[1]
                     voltage_id = ptc_row[4]
                     description = ptc_row[6]
                     parent_id = ptc_row[7]
                     tail = ptc_row[8]
+                    voltage = ptc_row[12]
                     path = parent_path + '.' + tail
                     ( number, name ) = tail_to_number_name( tail )
 
                     fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
-                    voltage = get_voltage( voltage_id )
                     ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_distribution_object_label( ptc )
 
