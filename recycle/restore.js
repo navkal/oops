@@ -2,7 +2,6 @@
 
 var g_sRestoreId = null;
 var g_tRow = null;
-var g_tDropdowns = null;
 var g_sParentIdId = null;
 
 
@@ -12,14 +11,7 @@ function initRestoreDialog( sRestoreId )
 
   showSpinner();
 
-  if ( ! g_tDropdowns )
-  {
-    getRestoreDropdowns();
-  }
-  else
-  {
-    loadRestoreDialog();
-  }
+  getRestoreDropdowns();
 }
 
 function getRestoreDropdowns()
@@ -44,11 +36,6 @@ function getRestoreDropdowns()
 
 function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
-  if ( tRsp )
-  {
-    g_tDropdowns = tRsp;
-  }
-
   // Set dialog 'shown' handler
   $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', onShownRestoreDialog );
 
@@ -71,13 +58,13 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
     case 'Circuit':
       g_sParentIdId = 'parent_path';
       initDistributionObjectFields();
-      makeDropdowns();
+      makeDropdowns( tRsp );
       break;
 
     case 'Device':
       g_sParentIdId = 'source_path';
       initDeviceFields();
-      makeDropdowns();
+      makeDropdowns( tRsp );
       break;
 
     case 'Location':
@@ -155,7 +142,7 @@ function initDeviceFields()
   $( '#restoreFields' ).html( sHtml );
 }
 
-function makeDropdowns()
+function makeDropdowns( tRsp )
 {
   // Generate parent dropdown
   var sHtmlParentPath = '';
@@ -163,16 +150,16 @@ function makeDropdowns()
   switch( g_tRow.remove_object_type )
   {
     case 'Panel':
-      aParents = g_tDropdowns.panel_parents;
+      aParents = tRsp.panel_parents;
       break;
     case 'Transformer':
-      aParents = g_tDropdowns.transformer_parents;
+      aParents = tRsp.transformer_parents;
       break;
     case 'Circuit':
-      aParents = g_tDropdowns.circuit_parents;
+      aParents = tRsp.circuit_parents;
       break;
     case 'Device':
-      aParents = g_tDropdowns.device_parents;
+      aParents = tRsp.device_parents;
       break;
   }
 
@@ -210,7 +197,7 @@ function makeDropdowns()
 
   // Generate location dropdown
   var sHtmlLocation = ( g_tRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';
-  var aLocations = g_tDropdowns.locations;
+  var aLocations = tRsp.locations;
   for ( var iLoc in aLocations )
   {
     var tLoc = aLocations[iLoc];
