@@ -1765,13 +1765,19 @@ class restoreRemovedObject:
         else:
 
             # Get root object from source table
-            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE id=?', ( remove_object_id, ) );
+            cur.execute(
+              '''SELECT ''' +
+                    source_table + '''.*,
+                    Voltage.voltage
+                  FROM ''' + source_table + '''
+                    LEFT JOIN Voltage ON ''' + source_table + '''.voltage_id = Voltage.id
+                  WHERE ''' + source_table + '''.id=?''', ( remove_object_id, ) )
             removed_root_row = cur.fetchone()
             removed_room_id = removed_root_row[1]
             removed_path = removed_root_row[2]
 
             # Generate search result text
-            voltage = get_voltage( removed_root_row[4] )
+            voltage = removed_root_row[12]
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             object_type = removed_root_row[5]
             description = removed_root_row[6]
@@ -1779,6 +1785,7 @@ class restoreRemovedObject:
 
             # Overwrite original values with new values in root row
             restore_root_row = list( removed_root_row )
+            restore_root_row.pop()
             restore_root_row.pop()
             restore_root_row[1] = room_id
             restore_root_row[2] = restore_path
