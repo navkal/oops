@@ -867,13 +867,7 @@ class distributionTableRow:
 
         if not row:
             dist_table = facility + '_Distribution'
-            cur.execute(
-              '''SELECT ''' +
-                    dist_table + '''.*,
-                    Voltage.voltage
-                  FROM ''' + dist_table + '''
-                    LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
-                  WHERE ''' + dist_table + '''.id = ?''', (id,) )
+            select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(id,) )
             row = cur.fetchone()
 
         self.id = str( row[0] )
