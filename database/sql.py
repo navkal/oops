@@ -332,13 +332,13 @@ def get_nearest_panel( type, id, facility ):
         panel_id = id
         panel_path = get_path( id, facility )
     else:
-        ptc_table = facility + '_Distribution'
+        dist_table = facility + '_Distribution'
         device_table = facility + '_Device'
 
         if ( type == 'Device' ):
             initial_table = device_table
         else:
-            initial_table = ptc_table
+            initial_table = dist_table
 
         # Get parent_id of initial object
         cur.execute( 'SELECT parent_id from ' + initial_table + ' WHERE id=?', ( id, ) )
@@ -350,7 +350,7 @@ def get_nearest_panel( type, id, facility ):
         panel_path = ''
 
         while object_type != 'Panel':
-            cur.execute( 'SELECT object_type, parent_id, id, path from ' + ptc_table + ' WHERE id=?', ( parent_id, ) );
+            cur.execute( 'SELECT object_type, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) );
             row = cur.fetchone()
             object_type = row[0]
             parent_id = row[1]
@@ -1754,13 +1754,7 @@ class restoreRemovedObject:
         else:
 
             # Get root object from source table
-            cur.execute(
-              '''SELECT ''' +
-                    source_table + '''.*,
-                    Voltage.voltage
-                  FROM ''' + source_table + '''
-                    LEFT JOIN Voltage ON ''' + source_table + '''.voltage_id = Voltage.id
-                  WHERE ''' + source_table + '''.id=?''', ( remove_object_id, ) )
+            select_from_distribution( table=source_table, condition=(source_table + '.id=?'), params=(remove_object_id,) )
             removed_root_row = cur.fetchone()
             removed_room_id = removed_root_row[1]
             removed_path = removed_root_row[2]
