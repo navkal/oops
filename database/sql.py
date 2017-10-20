@@ -1782,13 +1782,7 @@ class restoreRemovedObject:
                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
             # Get Distribution descendants
-            cur.execute(
-              '''SELECT ''' +
-                    source_table + '''.*,
-                    Voltage.voltage
-                  FROM ''' + source_table + '''
-                    LEFT JOIN Voltage ON ''' + source_table + '''.voltage_id = Voltage.id
-                  WHERE remove_id=? AND ''' + source_table + '''.id<>?''', ( id,remove_object_id ) )
+            select_from_distribution( table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
             descendants = cur.fetchall()
 
             # Update path, search result, and source of all descendants; restore at original IDs
