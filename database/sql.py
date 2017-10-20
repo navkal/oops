@@ -272,7 +272,7 @@ def select_from_distribution( table=None, fields=None, condition='', params=None
 def summarize_distribution_object( id, facility ):
 
     dist_table = facility + '_Distribution'
-    cur.execute( 'SELECT path, room_id, voltage_id, description, voltage FROM ' + dist_table + ' LEFT JOIN Voltage ON voltage_id=Voltage.id WHERE ' + dist_table + '.id=?', (id,) )
+    select_from_distribution( table=dist_table, fields='path, room_id, voltage_id, description', condition=(dist_table + '.id=?'), params=(id,) )
 
     row = cur.fetchone()
     path = row[0]
