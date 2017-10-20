@@ -1117,7 +1117,7 @@ class updateDistributionObject:
             if path != original_path:
 
                 # Retrieve all descendants of the target object
-                cur.execute( 'SELECT ' + target_table + '.*, Voltage.voltage FROM ' + target_table + ' LEFT JOIN Voltage ON ' + target_table + '.voltage_id = Voltage.id WHERE path LIKE "' + original_path + '.%"' )
+                select_from_distribution( table=target_table, condition=('path LIKE "' + original_path + '.%"') )
                 descendants = cur.fetchall()
 
                 # Update path, search result, and source of all descendants
