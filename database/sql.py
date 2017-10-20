@@ -642,13 +642,7 @@ class sortableTable:
 
                 if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
                     dist_table = facility + '_Removed_Distribution'
-                    cur.execute(
-                      '''SELECT ''' +
-                            dist_table + '''.*,
-                            Voltage.voltage
-                          FROM ''' + dist_table + '''
-                            LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
-                          WHERE ''' + dist_table + '''.id = ?''', (remove_object_id,) )
+                    select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
                     ptc_row = cur.fetchone()
                     room_id = ptc_row[1]
                     voltage_id = ptc_row[4]
