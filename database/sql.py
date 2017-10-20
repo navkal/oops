@@ -1270,13 +1270,7 @@ class updateLocation:
 
         # Get distribution objects that refer to this location
         dist_table = facility + '_Distribution'
-        cur.execute(
-          '''SELECT ''' +
-                dist_table + '''.*,
-                Voltage.voltage
-              FROM ''' + dist_table + '''
-                LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
-              WHERE ''' + dist_table + '''.room_id = ?''', (id,) )
+        select_from_distribution( table=dist_table, condition=(dist_table + '.room_id=?'), params=(id,) )
         rows = cur.fetchall()
 
         # Traverse distribution objects
