@@ -251,6 +251,24 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
+def select_from_distribution( table=None, fields=None, condition='', params=None ):
+
+    if not fields:
+        fields = table + '.*'
+
+    if condition:
+        where = ' WHERE '
+    else:
+        where = ''
+
+    sql = 'SELECT ' + fields + ', Voltage.voltage FROM ' + table + ' LEFT JOIN Voltage ON voltage_id=Voltage.id' + where + condition
+
+    if params:
+        cur.execute( sql, params )
+    else:
+        cur.execute( sql )
+
+
 def summarize_distribution_object( id, facility ):
 
     dist_table = facility + '_Distribution'
@@ -407,16 +425,11 @@ class distributionObject:
         open_database( enterprise )
 
         dist_table = facility + '_Distribution'
-        selectWhere = '''
-            SELECT ''' + dist_table + '''.*, Voltage.voltage
-              FROM ''' + dist_table + '''
-              LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
-              WHERE '''
 
         if id:
-            cur.execute( selectWhere + dist_table + '.id = ?', (id,) )
+            select_from_distribution( table=dist_table, condition=(dist_table + '.id = ?'), params=(id,) )
         else:
-            cur.execute( selectWhere + 'parent_id IS NULL' )
+            select_from_distribution( table=dist_table, condition='parent_id IS NULL' )
 
         #initialize distribution object properties
         row = cur.fetchone()
@@ -750,13 +763,7 @@ class sortableTable:
         else:
             # Retrieve all objects of requested type
             dist_table = facility + '_Distribution'
-            cur.execute(
-              '''SELECT ''' +
-                    dist_table + '''.*,
-                    Voltage.voltage
-                  FROM ''' + dist_table + '''
-                    LEFT JOIN Voltage ON ''' + dist_table + '''.voltage_id = Voltage.id
-                  WHERE upper(object_type) = ?''', (object_type.upper(),) )
+            select_from_distribution( table=dist_table, condition='upper(object_type)=?', params=(object_type.upper(),) )
             objects = cur.fetchall()
 
             # Add other fields to each row
