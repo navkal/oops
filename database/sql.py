@@ -549,19 +549,14 @@ class search:
                 sWhere = ''
             else:
                 aWhere = []
-                if ( 'All' in aTargets ) or ( 'Circuit' in aTargets ):
-                    aWhere.append( facility + '_Distribution.object_type = "Circuit"' )
-                if ( 'All' in aTargets ) or ( 'Panel' in aTargets ):
-                    aWhere.append( facility + '_Distribution.object_type = "Panel"' )
-                if ( 'All' in aTargets ) or ( 'Transformer' in aTargets ):
-                    aWhere.append( facility + '_Distribution.object_type = "Transformer"' )
+                if ( 'Panel' in aTargets ):
+                    aWhere.append( "'Panel'" )
+                if ( 'Transformer' in aTargets ):
+                    aWhere.append( "'Transformer'" )
+                if ( 'Circuit' in aTargets ):
+                    aWhere.append( "'Circuit'" )
 
-                sWhere = 'WHERE '
-
-                for i in range( len (aWhere) ):
-                    sWhere += aWhere[i]
-                    if i < ( len( aWhere ) - 1 ):
-                        sWhere += ' OR '
+                sWhere = ' WHERE DistributionObjectType.object_type IN (' + ','.join( aWhere ) + ')'
 
             cur.execute(
               '''SELECT path, search_result
@@ -569,7 +564,7 @@ class search:
                     (SELECT
                         ''' + facility + '''_Distribution.path,
                         ''' + facility + '''_Distribution.search_result,
-                        ''' + facility + '''_Distribution.object_type,
+                        DistributionObjectType.object_type,
                         ''' + facility + '''_Distribution.tail AS tail,
                         ''' + facility + '''_Distribution.source AS source,
                         ''' + facility + '''_Distribution.description AS description,
@@ -578,6 +573,7 @@ class search:
                         ''' + facility + '''_Room.old_num AS location_old,
                         ''' + facility + '''_Room.description AS location_descr
                     FROM ''' + facility + '''_Distribution
+                        LEFT JOIN DistributionObjectType ON ''' + facility + '''_Distribution.object_type_id = DistributionObjectType.id
                         LEFT JOIN Voltage ON ''' + facility + '''_Distribution.voltage_id = Voltage.id
                         LEFT JOIN ''' + facility + '''_Room ON ''' + facility + '''_Distribution.room_id = ''' + facility + '''_Room.id
                     '''
