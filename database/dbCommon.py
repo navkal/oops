@@ -124,6 +124,12 @@ def make_search_result( source, voltage, location, location_old, location_descr,
     return search_result
 
 
+def object_type_to_id( cur, object_type ):
+    cur.execute('SELECT id FROM DistributionObjectType WHERE object_type=?', (object_type,))
+    row = cur.fetchone()
+    return str( row[0] )
+
+
 def path_to_id( cur, path, sFacility='' ):
     cur.execute('SELECT id FROM ' + sFacility + '_Distribution WHERE path = ?', ( path, ))
     index = cur.fetchone()

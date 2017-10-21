@@ -1,6 +1,6 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
-var g_tProperties = window.opener.g_tTreeMap[g_sOid];
+var g_tProperties = window.opener.g_tTreeMap[g_sPath];
 
 $( document ).ready( loadProperties );
 
@@ -40,6 +40,7 @@ function getProperties()
 function saveProperties( tRsp, sStatus, tJqXhr )
 {
   g_tProperties = tRsp;
+  window.opener.g_tTreeMap[g_sPath] = tRsp;
 
   showProperties();
 }
@@ -48,11 +49,11 @@ function showProperties()
 {
   // Display title
   var sTitle = '';
-  var sType = g_tProperties['object_type'] ? g_tProperties['object_type'].toLowerCase() : 'device';
+  var sType = g_tProperties['object_type'] ? g_tProperties['object_type'] : 'Device';
   switch( sType )
   {
-    case 'panel':
-    case 'transformer':
+    case 'Panel':
+    case 'Transformer':
       var aPath = g_tProperties['path'].split( '.' );
       sTitle = aPath[ aPath.length - 1 ];
       aSplit = sTitle.split( '-' );
@@ -62,11 +63,11 @@ function showProperties()
       }
       break;
 
-    case 'circuit':
+    case 'Circuit':
       sTitle = g_tProperties['description'];
       break;
 
-    case 'device':
+    case 'Device':
     default:
       sTitle = g_tProperties['name'];
       break;

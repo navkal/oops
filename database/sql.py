@@ -261,7 +261,15 @@ def select_from_distribution( table=None, fields=None, condition='', params=None
     else:
         where = ''
 
-    sql = 'SELECT ' + fields + ', Voltage.voltage FROM ' + table + ' LEFT JOIN Voltage ON voltage_id=Voltage.id' + where + condition
+    sql = '''
+      SELECT
+        ''' + fields + ''',
+        Voltage.voltage,
+        DistributionObjectType.object_type
+      FROM ''' + table + '''
+        LEFT JOIN Voltage ON voltage_id=Voltage.id
+        LEFT JOIN DistributionObjectType ON object_type_id=DistributionObjectType.id
+      ''' + where + condition
 
     if params:
         cur.execute( sql, params )
@@ -345,14 +353,15 @@ def get_nearest_panel( type, id, facility ):
         parent_id = cur.fetchone()[0]
 
         # Traverse source hierarchy to nearest ancestor panel
-        object_type = ''
+        panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+        object_type_id = ''
         panel_id = ''
         panel_path = ''
 
-        while object_type != 'Panel':
-            cur.execute( 'SELECT object_type, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) );
+        while object_type_id != panel_type_id:
+            cur.execute( 'SELECT object_type_id, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) );
             row = cur.fetchone()
-            object_type = row[0]
+            object_type_id = row[0]
             parent_id = row[1]
             panel_id = row[2]
             panel_path = row[3]
@@ -436,11 +445,12 @@ class distributionObject:
         self.id = str( row[0] )
         self.room_id = row[1]
         self.path = row[2]
-        self.object_type = row[5]
+        self.object_type_id = row[5]
         self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
         self.voltage = row[11]
+        self.object_type = row[12]
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
