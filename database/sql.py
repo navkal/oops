@@ -142,9 +142,14 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility, sTypes ):
+def get_distribution_dropdown( facility, aTypes ):
 
-    cur.execute('SELECT id, path, voltage_id, object_type FROM ' + facility + '_Distribution WHERE object_type IN (' + sTypes + ')'  )
+    aTypeIds = []
+    for sType in aTypes:
+        sId = dbCommon.object_type_to_id( cur, sType )
+        aTypeIds.append( sId )
+
+    cur.execute('SELECT id, path, voltage_id, object_type_id FROM ' + facility + '_Distribution WHERE object_type_id IN (' + ','.join( aTypeIds ) + ')'  )
     rows = cur.fetchall()
 
     testId = 0
@@ -629,7 +634,7 @@ class sortableTable:
 
         self.rows = []
 
-        if table_object_type == 'recycle':
+        if table_object_type == 'Recycle':
             recycle_table = facility + '_Recycle'
             cur.execute( 'SELECT * FROM ' + recycle_table )
             objects = cur.fetchall()
@@ -685,7 +690,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-        elif table_object_type == 'activity':
+        elif table_object_type == 'Activity':
             # Retrieve all objects of requested type
             if target_object_type and target_object_id:
                 where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
@@ -709,7 +714,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-        elif table_object_type == 'user':
+        elif table_object_type == 'User':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM User')
             objects = cur.fetchall()
@@ -723,7 +728,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
 
-        elif table_object_type == 'device':
+        elif table_object_type == 'Device':
             # Retrieve all objects of requested type
             cur.execute(
               '''SELECT *
@@ -748,7 +753,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
 
-        elif table_object_type == 'location':
+        elif table_object_type == 'Location':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM ' + facility + '_Room')
             objects = cur.fetchall()
@@ -1666,10 +1671,10 @@ class restoreDropdowns:
         self.locations = get_location_dropdown( facility )
 
         # Get parents
-        self.device_parents = get_distribution_dropdown( facility, '"Circuit"' )
-        self.circuit_parents = get_distribution_dropdown( facility, '"Panel"' )
-        self.transformer_parents = get_distribution_dropdown( facility, '"Panel"' )
-        self.panel_parents = get_distribution_dropdown( facility, '"Panel","Transformer"' )
+        self.device_parents = get_distribution_dropdown( facility, ["Circuit"] )
+        self.circuit_parents = get_distribution_dropdown( facility, ["Panel"] )
+        self.transformer_parents = get_distribution_dropdown( facility, ["Panel"] )
+        self.panel_parents = get_distribution_dropdown( facility, ["Panel", "Transformer"] )
 
 
 class deviceDropdowns:
@@ -1678,7 +1683,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_distribution_dropdown( facility, '"Circuit"' )
+        self.sources = get_distribution_dropdown( facility, ["Circuit"] )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -1690,10 +1695,10 @@ class distributionDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        sTypes = '"Panel"'
-        if object_type == 'panel':
-            sTypes += ',"Transformer"'
-        self.parents = get_distribution_dropdown( facility, sTypes )
+        aTypes = ["Panel"]
+        if object_type == 'Panel':
+            aTypes.append( "Transformer" )
+        self.parents = get_distribution_dropdown( facility, aTypes )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )

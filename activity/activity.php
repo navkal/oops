@@ -6,6 +6,6 @@
 
 <script>
   g_sSortableTableTitle = 'Activity Log';
-  g_sSortableTableType = 'activity';
+  g_sSortableTableType = 'Activity';
   $( document ).ready( getSortableTable );
 </script>

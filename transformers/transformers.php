@@ -11,7 +11,7 @@
 
 <script>
   g_sSortableTableTitle = 'Transformers';
-  g_sSortableTableType = 'transformer';
+  g_sSortableTableType = 'Transformer';
 
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {

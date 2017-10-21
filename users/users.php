@@ -8,7 +8,7 @@
 
 <script>
   g_sSortableTableTitle = 'Users';
-  g_sSortableTableType = 'user';
+  g_sSortableTableType = 'User';
   g_sSortableTableEditWhat = "User";
   g_sRemoveCodeFolder = 'users';
   $( document ).ready( getSortableTable );

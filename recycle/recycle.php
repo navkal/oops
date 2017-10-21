@@ -9,6 +9,6 @@
 
 <script>
   g_sSortableTableTitle = 'Recycle Bin';
-  g_sSortableTableType = 'recycle';
+  g_sSortableTableType = 'Recycle';
   $( document ).ready( getSortableTable );
 </script>

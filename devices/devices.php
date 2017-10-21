@@ -8,7 +8,7 @@
 
 <script>
   g_sSortableTableTitle = 'Devices';
-  g_sSortableTableType = 'device';
+  g_sSortableTableType = 'Device';
 
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {

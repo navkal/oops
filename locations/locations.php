@@ -8,7 +8,7 @@
 
 <script>
   g_sSortableTableTitle = 'Locations';
-  g_sSortableTableType = 'location';
+  g_sSortableTableType = 'Location';
   if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
   {
     g_sSortableTableEditWhat = 'Location';
