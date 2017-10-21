@@ -15,8 +15,8 @@
     $aUrlContext['enterprise'] = strtolower( $_REQUEST['e'] );
   }
 
-  // If URL explicitly changes enterprise, clear user and context
-  if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) )
+  // If URL explicitly specifies, but doesn't necessarily change (NOTE commented-out code!) enterprise, clear user and context
+  if ( isset( $aUrlContext['enterprise'] ) && isset( $_SESSION['panelSpy']['context']['enterprise'] ) /******* && ( $aUrlContext['enterprise'] != $_SESSION['panelSpy']['context']['enterprise'] ) *******/ )
   {
     $_SESSION['panelSpy']['user'] = [];
     unset( $_SESSION['panelSpy']['context'] );
