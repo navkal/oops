@@ -839,13 +839,16 @@ class location:
         cur.execute('SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (self.id,))
         self.devices = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Panel"', (self.id,))
+        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
         self.panels = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Transformer"', (self.id,))
+        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
         self.transformers = cur.fetchone()[0]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ? AND object_type = "Circuit"', (self.id,))
+        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
         self.circuits = cur.fetchone()[0]
 
         if user_role == 'Technician':
