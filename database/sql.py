@@ -624,12 +624,12 @@ class search:
 
 
 class sortableTable:
-    def __init__(self, object_type=None, user_role=None, target_object_type=None, target_object_id=None, enterprise=None, facility=None):
+    def __init__(self, table_object_type=None, user_role=None, target_object_type=None, target_object_id=None, enterprise=None, facility=None):
         open_database( enterprise )
 
         self.rows = []
 
-        if object_type == 'recycle':
+        if table_object_type == 'recycle':
             recycle_table = facility + '_Recycle'
             cur.execute( 'SELECT * FROM ' + recycle_table )
             objects = cur.fetchall()
@@ -685,7 +685,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-        elif object_type == 'activity':
+        elif table_object_type == 'activity':
             # Retrieve all objects of requested type
             if target_object_type and target_object_id:
                 where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
@@ -709,7 +709,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-        elif object_type == 'user':
+        elif table_object_type == 'user':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM User')
             objects = cur.fetchall()
@@ -723,7 +723,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
 
-        elif object_type == 'device':
+        elif table_object_type == 'device':
             # Retrieve all objects of requested type
             cur.execute(
               '''SELECT *
@@ -748,7 +748,7 @@ class sortableTable:
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
 
-        elif object_type == 'location':
+        elif table_object_type == 'location':
             # Retrieve all objects of requested type
             cur.execute('SELECT * FROM ' + facility + '_Room')
             objects = cur.fetchall()
@@ -763,7 +763,7 @@ class sortableTable:
         else:
             # Retrieve all objects of requested type
             dist_table = facility + '_Distribution'
-            select_from_distribution( table=dist_table, condition='upper(object_type)=?', params=(object_type.upper(),) )
+            select_from_distribution( table=dist_table, condition='upper(object_type)=?', params=(table_object_type.upper(),) )
             objects = cur.fetchall()
 
             # Add other fields to each row
