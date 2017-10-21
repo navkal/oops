@@ -874,11 +874,12 @@ class distributionTableRow:
         self.room_id = row[1]
         self.path = row[2]
         self.voltage_id = row[4]
-        self.object_type = row[5]
+        self.object_type_id = row[5]
         self.description = row[6]
         self.parent_id = row[7]
         self.source = row[10]
         self.voltage = row[11]
+        self.object_type = row[12]
 
         # Extract number and name from path tail
         tail = self.path.split('.')[-1]
