@@ -1062,8 +1062,9 @@ class addDistributionObject:
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Add new object
-            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type, description, parent_id, tail, search_result, source))
+            object_type_id = dbCommon.object_type_to_id( cur, object_type )
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
+                 VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type_id, description, parent_id, tail, search_result, source))
             target_object_id = cur.lastrowid
 
             # Copy uploaded image file
