@@ -1780,12 +1780,13 @@ class restoreRemovedObject:
             # Generate search result text
             voltage = removed_root_row[12]
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-            object_type = removed_root_row[5]
+            object_type = removed_root_row[13]
             description = removed_root_row[6]
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Overwrite original values with new values in root row
             restore_root_row = list( removed_root_row )
+            restore_root_row.pop()
             restore_root_row.pop()
             restore_root_row.pop()
             restore_root_row[1] = room_id
@@ -1796,7 +1797,7 @@ class restoreRemovedObject:
             restore_root_row[10] = source
 
             # Restore root object at original ID
-            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
             # Get Distribution descendants
@@ -1807,10 +1808,10 @@ class restoreRemovedObject:
             for desc in descendants:
                 desc_room_id = desc[1]
                 desc_path = desc[2]
-                desc_object_type = desc[5]
                 desc_description = desc[6]
                 desc_tail = desc[8]
                 desc_voltage = desc[12]
+                desc_object_type = desc[13]
                 ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                 restore_desc_path = desc_path.replace( removed_path, restore_path, 1 )
                 restore_desc_source = restore_desc_path.split( '.' )[-2]
@@ -1821,10 +1822,11 @@ class restoreRemovedObject:
                 restore_desc_row = list( desc )
                 restore_desc_row.pop()
                 restore_desc_row.pop()
+                restore_desc_row.pop()
                 restore_desc_row[2] = restore_desc_path
                 restore_desc_row[9] = restore_desc_search_result
                 restore_desc_row[10] = restore_desc_source
-                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source)
+                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
                   VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_desc_row ) )
 
             # Get descendant devices
