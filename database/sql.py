@@ -764,7 +764,7 @@ class sortableTable:
         else:
             # Retrieve all objects of requested type
             dist_table = facility + '_Distribution'
-            select_from_distribution( table=dist_table, condition='upper(object_type)=?', params=(table_object_type.upper(),) )
+            select_from_distribution( table=dist_table, condition='object_type=?', params=(table_object_type,) )
             objects = cur.fetchall()
 
             # Add other fields to each row
