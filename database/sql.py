@@ -1331,15 +1331,14 @@ class removeDistributionObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
-
         # Get row to be deleted
         target_table = facility + '_Distribution'
-        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+        select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
         room_id = row[1]
         path = row[2]
-        object_type = row[5]
         parent_id = row[7]
+        object_type = row[12]
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
@@ -1358,7 +1357,11 @@ class removeDistributionObject:
 
         # Insert target object in table of removed objects
         removed_table = facility + '_Removed_Distribution'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+        row = list( row )
+        row.pop()
+        row.pop()
+        row = tuple( row )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1377,20 +1380,23 @@ class removeDistributionObject:
             cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
         # Retrieve all descendants of deleted object
-        cur.execute( 'SELECT * FROM ' + target_table + ' WHERE path LIKE "' + path + '.%"' )
+        select_from_distribution( table=target_table, condition=( 'path LIKE "' + path + '.%"' ) )
         descendants = cur.fetchall()
 
         # Move all descendants and their respective attached devices to 'Removed' tables
         for desc in descendants:
             descendant_id = desc[0]
-            desc_object_type = desc[5]
+            desc_object_type = desc[12]
 
             if object_type == desc_object_type:
-                # A descendent of same object type is affected; suppress return of row, so that GUI will reload table
                 self.removed_object_ids.append( descendant_id )
 
             # Move current descendant to 'Removed' table
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *desc, remove_id ) )
+            desc = list( desc )
+            desc.pop()
+            desc.pop()
+            desc = tuple( desc )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *desc, remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
             # Retrieve all devices attached to current descendant
