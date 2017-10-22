@@ -1392,11 +1392,11 @@ class removeDistributionObject:
                 self.removed_object_ids.append( descendant_id )
 
             # Move current descendant to 'Removed' table
-            desc = list( desc )
-            desc.pop()
-            desc.pop()
-            desc = tuple( desc )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *desc, remove_id ) )
+            removed_desc = list( desc )
+            removed_desc.pop()
+            removed_desc.pop()
+            removed_desc = tuple( removed_desc )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
             # Retrieve all devices attached to current descendant
