@@ -144,19 +144,15 @@ def get_location_dropdown( facility ):
 
 def get_distribution_dropdown( facility, aTypes ):
 
-    aTypeIds = []
-    for sType in aTypes:
-        sId = dbCommon.object_type_to_id( cur, sType )
-        aTypeIds.append( sId )
-
-    cur.execute('SELECT id, path, voltage_id, object_type_id FROM ' + facility + '_Distribution WHERE object_type_id IN (' + ','.join( aTypeIds ) + ')'  )
+    dist_table = facility + '_Distribution'
+    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + ','.join( aTypes ) + ')' ) )
     rows = cur.fetchall()
 
     testId = 0
     objects = []
     for row in rows:
         testId = max( testId, row[0] )
-        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[2], 'object_type': row[3] } )
+        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[2], 'object_type': row[4] } )
 
     # To test large volume of dropdown elements, change 0 to number desired.
     for i in range( len(objects), 0 ):
@@ -1671,10 +1667,10 @@ class restoreDropdowns:
         self.locations = get_location_dropdown( facility )
 
         # Get parents
-        self.device_parents = get_distribution_dropdown( facility, ["Circuit"] )
-        self.circuit_parents = get_distribution_dropdown( facility, ["Panel"] )
-        self.transformer_parents = get_distribution_dropdown( facility, ["Panel"] )
-        self.panel_parents = get_distribution_dropdown( facility, ["Panel", "Transformer"] )
+        self.device_parents = get_distribution_dropdown( facility, ["'Circuit'"] )
+        self.circuit_parents = get_distribution_dropdown( facility, ["'Panel'"] )
+        self.transformer_parents = get_distribution_dropdown( facility, ["'Panel'"] )
+        self.panel_parents = get_distribution_dropdown( facility, ["'Panel'", "'Transformer'"] )
 
 
 class deviceDropdowns:
@@ -1683,7 +1679,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_distribution_dropdown( facility, ["Circuit"] )
+        self.sources = get_distribution_dropdown( facility, ["'Circuit'"] )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -1695,9 +1691,9 @@ class distributionDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        aTypes = ["Panel"]
+        aTypes = ["'Panel'"]
         if object_type == 'Panel':
-            aTypes.append( "Transformer" )
+            aTypes.append( "'Transformer'" )
         self.parents = get_distribution_dropdown( facility, aTypes )
 
         # Get all locations
