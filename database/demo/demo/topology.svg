@@ -1400,25 +1400,25 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str0" x1="25554" y1="2028" x2="25902" y2= "2028" />
   </g>
   <rect class="fil0 str12" x="24237" y="804" width="3282" height="900"/>
-  <a xlink:href="MSWB.1-PBA">
+  <a xlink:href="MSWB.1-PBA.PBA">
    <rect class="fil0 str12" x="2828" y="5200" width="1094" height="806"/>
   </a>
-  <a xlink:href="MSWB.4-M1">
+  <a xlink:href="MSWB.4-M1.M1">
    <rect class="fil0 str12" x="7750" y="5273" width="1000" height="734"/>
   </a>
-  <a xlink:href="MSWB.5-DHB">
+  <a xlink:href="MSWB.5-DHB.DHB">
    <rect class="fil0 str12" x="9642" y="5295" width="914" height="684"/>
   </a>
-  <a xlink:href="MSWB.6-DE">
+  <a xlink:href="MSWB.6-DE.DE">
    <rect class="fil0 str12" x="20250" y="5386" width="972" height="636"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.1-L42Csec1">
+  <a xlink:href="MSWB.5-DHB.DHB.1-L42Csec1.L42Csec1">
    <rect class="fil0 str12" x="400" y="9386" width="1750" height="500"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.1-L42Csec2">
+  <a xlink:href="MSWB.5-DHB.DHB.1-L42Csec2.L42Csec2">
    <rect class="fil0 str12" x="1750" y="8685" width="1750" height="378"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.1-L42Csec2.38-T2C.L2C">
+  <a xlink:href="MSWB.5-DHB.DHB.1-L42Csec2.L42Csec2.38-T2C.T2C.L2C">
    <rect class="fil0 str12" x="2146" y="11268" width="882" height="712"/>
   </a>
   <text x="4278" y="11811"  class="fil1 fnt19">L2</text>
@@ -1428,76 +1428,76 @@ viewBox="0 0 50000 23386"
   <line class="fil0 str5" x1="3612" y1="9804" x2="3955" y2= "9804" />
   <line class="fil0 str5" x1="3618" y1="9807" x2="3618" y2= "10556" />
   <line class="fil0 str5" x1="4662" y1="9807" x2="4662" y2= "11448" />
-  <a xlink:href="MSWB.5-DHB.2-T2BA.L2BAsec1">
+  <a xlink:href="MSWB.5-DHB.DHB.2-T2BA.T2BA.L2BAsec1">
    <rect class="fil0 str12" x="2898" y="10534" width="1605" height="403"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.2-T2BA.L2BAsec2">
+  <a xlink:href="MSWB.5-DHB.DHB.2-T2BA.T2BA.L2BAsec2">
    <rect class="fil0 str12" x="4215" y="11513" width="1662" height="338"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.3-T1A.L1A">
+  <a xlink:href="MSWB.5-DHB.DHB.3-T1A.T1A.L1A">
    <rect class="fil0 str12" x="5144" y="9994" width="907" height="439"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.4-T1DA.L1DA">
+  <a xlink:href="MSWB.5-DHB.DHB.4-T1DA.T1DA.L1DA">
    <rect class="fil0 str12" x="7361" y="10081" width="943" height="367"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.5-T2A.L2A">
+  <a xlink:href="MSWB.5-DHB.DHB.5-T2A.T2A.L2A">
    <rect class="fil0 str12" x="9350" y="10037" width="777" height="432"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.6-T2DA.L2DA">
+  <a xlink:href="MSWB.5-DHB.DHB.6-T2DA.T2DA.L2DA">
    <rect class="fil0 str12" x="11466" y="10023" width="982" height="425"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.9-T2CA.L2CA">
+  <a xlink:href="MSWB.5-DHB.DHB.9-T2CA.T2CA.L2CA">
    <rect class="fil0 str12" x="15723" y="9951" width="993" height="425"/>
   </a>
-  <a xlink:href="MSWB.5-DHB.10-T1BA.L1BA">
+  <a xlink:href="MSWB.5-DHB.DHB.10-T1BA.T1BA.L1BA">
    <rect class="fil0 str12" x="17026" y="9987" width="1029" height="403"/>
   </a>
-  <a xlink:href="MSWB.6-DE.1-LE3A">
+  <a xlink:href="MSWB.6-DE.DE.1-LE3A.LE3A">
    <rect class="fil0 str12" x="8555" y="14377" width="972" height="475"/>
   </a>
-  <a xlink:href="MSWB.6-DE.2-LE3">
+  <a xlink:href="MSWB.6-DE.DE.1-LE3.LE3">
    <rect class="fil0 str12" x="9268" y="15255" width="842" height="374"/>
   </a>
-  <a xlink:href="MSWB.6-DE.2-LE2">
+  <a xlink:href="MSWB.6-DE.DE.2-LE2.LE2">
    <rect class="fil0 str12" x="10700" y="15227" width="936" height="403"/>
   </a>
-  <a xlink:href="MSWB.6-DE.2-LE2A">
+  <a xlink:href="MSWB.6-DE.DE.2-LE2A.LE2A">
    <rect class="fil0 str12" x="10081" y="14442" width="943" height="374"/>
   </a>
-  <a xlink:href="MSWB.6-DE.3-LE1A">
+  <a xlink:href="MSWB.6-DE.DE.3-LE1A.LE1A">
    <rect class="fil0 str12" x="11635" y="14399" width="986" height="453"/>
   </a>
-  <a xlink:href="MSWB.6-DE.3-LE1">
+  <a xlink:href="MSWB.6-DE.DE.3-LE1.LE1">
    <rect class="fil0 str12" x="12319" y="15255" width="842" height="374"/>
   </a>
-  <a xlink:href="MSWB.6-DE.5-TODE.ODE">
+  <a xlink:href="MSWB.6-DE.DE.5-TODE.TODE.ODE">
    <rect class="fil0 str12" x="14888" y="14931" width="1288" height="425"/>
   </a>
-  <a xlink:href="MSWB.6-DE.6-TKE.PKE">
+  <a xlink:href="MSWB.6-DE.DE.6-TKE.TKE.PKE">
    <rect class="fil0 str12" x="16565" y="14795" width="871" height="345"/>
   </a>
-  <a xlink:href="MSWB.6-DE.8-PMEsec1">
+  <a xlink:href="MSWB.6-DE.DE.8-PMEsec1.PMEsec1">
    <rect class="fil0 str12" x="19414" y="14435" width="1598" height="425"/>
   </a>
-  <a xlink:href="MSWB.6-DE.8-PMEsec2">
+  <a xlink:href="MSWB.6-DE.DE.8-PMEsec2.PMEsec2">
    <rect class="fil0 str12" x="20963" y="15255" width="1591" height="410"/>
   </a>
-  <a xlink:href="MSWB.5-DHB">
+  <a xlink:href="MSWB.5-DHB.DHB">
    <rect class="fil0 str12" x="1606" y="17304" width="717" height="341"/>
   </a>
-  <a xlink:href="MSWB.6-DE">
+  <a xlink:href="MSWB.6-DE.DE">
    <rect class="fil0 str12" x="1606" y="17803" width="486" height="196"/>
   </a>
-  <a xlink:href="MSWB.7-DG">
+  <a xlink:href="MSWB.7-DG.DG">
    <rect class="fil0 str12" x="1606" y="18206" width="443" height="212"/>
   </a>
-  <a xlink:href="MSWB.8-DL">
+  <a xlink:href="MSWB.8-DL.DL">
    <rect class="fil0 str12" x="1606" y="18561" width="386" height="328"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP">
+  <a xlink:href="MSWB.9-AMDP.AMDP">
    <rect class="fil0 str12" x="1606" y="19041" width="457" height="252"/>
   </a>
-  <a xlink:href="MSWB.7-DG">
+  <a xlink:href="MSWB.7-DG.DG">
    <rect class="fil0 str12" x="22581" y="5306" width="649" height="351"/>
   </a>
   <line class="fil0 str5" x1="8444" y1="18111" x2="10565" y2= "18111" />
@@ -1505,25 +1505,25 @@ viewBox="0 0 50000 23386"
   <text x="7673" y="19448"  class="fil1 fnt19">P4Gsec1</text>
   <text x="9587" y="19419"  class="fil1 fnt19">P4Gsec2</text>
   <line class="fil0 str5" x1="10552" y1="18122" x2="10552" y2= "19125" />
-  <a xlink:href="MSWB.7-DG.1-P4Gsec1">
+  <a xlink:href="MSWB.7-DG.DG.1-P4Gsec1.P4Gsec1">
    <rect class="fil0 str12" x="7613" y="19127" width="1432" height="369"/>
   </a>
-  <a xlink:href="MSWB.7-DG.1-P4Gsec2">
+  <a xlink:href="MSWB.7-DG.DG.1-P4Gsec2.P4Gsec2">
    <rect class="fil0 str12" x="9563" y="19143" width="1439" height="331"/>
   </a>
-  <a xlink:href="MSWB.7-DG.2-L4GC.37A-TGC.LGCsec1">
+  <a xlink:href="MSWB.7-DG.DG.2-L4GC.L4GC.37A-TGC.TGC.LGCsec1">
    <rect class="fil0 str12" x="9581" y="21376" width="1519" height="353"/>
   </a>
-  <a xlink:href="MSWB.7-DG.2-L4GC.37A-TGC.LGCsec1.9-LGCsec1-1.LGC-1-1">
+  <a xlink:href="MSWB.7-DG.DG.2-L4GC.L4GC.37A-TGC.TGC.LGCsec1.9-LGC-1-1.LGC-1-1">
    <rect class="fil0 str12" x="6641" y="20958" width="1886" height="410"/>
   </a>
-  <a xlink:href="MSWB.7-DG.2-L4GC.37A-TGC.LGCsec2">
+  <a xlink:href="MSWB.7-DG.DG.2-L4GC.L4GC.37A-TGC.TGC.LGCsec2">
    <rect class="fil0 str12" x="10840" y="22074" width="1562" height="417"/>
   </a>
-  <a xlink:href="MSWB.7-DG.2-L4GC.37A-TGC.LGCsec3">
+  <a xlink:href="MSWB.7-DG.DG.2-L4GC.L4GC.37A-TGC.TGC.LGCsec3">
    <rect class="fil0 str12" x="11985" y="21383" width="1526" height="374"/>
   </a>
-  <a xlink:href="MSWB.7-DG.2-L4GC">
+  <a xlink:href="MSWB.7-DG.DG.2-L4GC.L4GC">
    <rect class="fil0 str12" x="11132" y="18125" width="1094" height="446"/>
   </a>
   <g>
@@ -1552,121 +1552,121 @@ viewBox="0 0 50000 23386"
     </g>
    </a>
   </g>
-  <a xlink:href="MSWB.7-DG.3-L4G1sec1">
+  <a xlink:href="MSWB.7-DG.DG.3-L4G1sec1.L4G1sec1">
    <rect class="fil0 str12" x="15105" y="18197" width="1613" height="416"/>
   </a>
-  <a xlink:href="MSWB.7-DG.3-L4G1sec2">
+  <a xlink:href="MSWB.7-DG.DG.3-L4G1sec2.L4G1sec2">
    <rect class="fil0 str12" x="16936" y="18749" width="1713" height="453"/>
   </a>
-  <a xlink:href="MSWB.7-DG.3-L4G1sec1.20-TGD.LG1sec1">
+  <a xlink:href="MSWB.7-DG.DG.3-L4G1sec1.L4G1sec1.20-TGD.TGD.LG1sec1">
    <rect class="fil0 str12" x="14367" y="21419" width="1461" height="309"/>
   </a>
-  <a xlink:href="MSWB.7-DG.3-L4G1sec1.20-TGD.LG1sec2">
+  <a xlink:href="MSWB.7-DG.DG.3-L4G1sec1.L4G1sec1.20-TGD.TGD.LG1sec2">
    <rect class="fil0 str12" x="15929" y="21959" width="1526" height="345"/>
   </a>
-  <a xlink:href="MSWB.8-DL">
+  <a xlink:href="MSWB.8-DL.DL">
    <rect class="fil0 str12" x="34140" y="5302" width="737" height="345"/>
   </a>
-  <a xlink:href="MSWB.8-DL.1-PK">
+  <a xlink:href="MSWB.8-DL.DL.1-PK.PK">
    <rect class="fil0 str12" x="24525" y="8800" width="482" height="353"/>
   </a>
-  <a xlink:href="MSWB.8-DL.1-PK.12-TK.PKA">
+  <a xlink:href="MSWB.8-DL.DL.1-PK.PK.12-TK.TK.PKA">
    <rect class="fil0 str12" x="24352" y="11268" width="792" height="374"/>
   </a>
-  <a xlink:href="MSWB.8-DL.3-L42D">
+  <a xlink:href="MSWB.8-DL.DL.3-L42D.L42D">
    <rect class="fil0 str12" x="27617" y="8775" width="868" height="359"/>
   </a>
-  <a xlink:href="MSWB.8-DL.3-L42D.29-T2D.L2D">
+  <a xlink:href="MSWB.8-DL.DL.3-L42D.L42D.29-T2D.T2D.L2D">
    <rect class="fil0 str12" x="27647" y="11247" width="771" height="401"/>
   </a>
-  <a xlink:href="MSWB.8-DL.4-L4G.34-TG.LGsec1">
+  <a xlink:href="MSWB.8-DL.DL.4-L4G.L4G.34-TG.TG.LGsec1">
    <rect class="fil0 str12" x="28668" y="12094" width="1248" height="408"/>
   </a>
-  <a xlink:href="MSWB.8-DL.4-L4G">
+  <a xlink:href="MSWB.8-DL.DL.4-L4G.L4G">
    <rect class="fil0 str12" x="29833" y="8743" width="741" height="325"/>
   </a>
-  <a xlink:href="MSWB.8-DL.4-L4G.34-TG.LGsec2">
+  <a xlink:href="MSWB.8-DL.DL.4-L4G.L4G.34-TG.TG.LGsec2">
    <rect class="fil0 str12" x="30355" y="12600" width="1269" height="381"/>
   </a>
-  <a xlink:href="MSWB.8-DL.5-L42B.33-T2B.L2B">
+  <a xlink:href="MSWB.8-DL.DL.5-L42B.L42B.33-T2B.T2B.L2B">
    <rect class="fil0 str12" x="31671" y="11304" width="749" height="317"/>
   </a>
-  <a xlink:href="MSWB.8-DL.5-L42B">
+  <a xlink:href="MSWB.8-DL.DL.5-L42B.L42B">
    <rect class="fil0 str12" x="31652" y="8762" width="881" height="390"/>
   </a>
-  <a xlink:href="MSWB.8-DL.7-L41D">
+  <a xlink:href="MSWB.8-DL.DL.7-L41D.L41D">
    <rect class="fil0 str12" x="34650" y="8783" width="947" height="369"/>
   </a>
-  <a xlink:href="MSWB.8-DL.7-L41D.25-T1D.L1D">
+  <a xlink:href="MSWB.8-DL.DL.7-L41D.L41D.25-T1D.T1D.L1D">
    <rect class="fil0 str12" x="34560" y="11275" width="809" height="365"/>
   </a>
-  <a xlink:href="MSWB.8-DL.8-L42">
+  <a xlink:href="MSWB.8-DL.DL.8-L42.L42">
    <rect class="fil0 str12" x="36133" y="8668" width="756" height="514"/>
   </a>
-  <a xlink:href="MSWB.8-DL.8-L42.34-T2.L2">
+  <a xlink:href="MSWB.8-DL.DL.8-L42.L42.34-T2.T2.L2">
    <rect class="fil0 str12" x="36293" y="11277" width="491" height="348"/>
   </a>
-  <a xlink:href="MSWB.8-DL.9-L4GB">
+  <a xlink:href="MSWB.8-DL.DL.9-L4GB.L4GB">
    <rect class="fil0 str12" x="37329" y="8722" width="960" height="427"/>
   </a>
-  <a xlink:href="MSWB.8-DL.9-L4GB.23-TGB.LGB">
+  <a xlink:href="MSWB.8-DL.DL.9-L4GB.L4GB.23-TGB.TGB.LGB">
    <rect class="fil0 str12" x="36239" y="12298" width="1717" height="454"/>
   </a>
-  <a xlink:href="MSWB.8-DL.9-L4GB.23-TGB.LGBsec2">
+  <a xlink:href="MSWB.8-DL.DL.9-L4GB.L4GB.23-TGB.TGB.LGBsec2">
    <rect class="fil0 str12" x="37814" y="12787" width="1461" height="329"/>
   </a>
-  <a xlink:href="MSWB.8-DL.12-LGB">
+  <a xlink:href="MSWB.8-DL.DL.12-LGB.LGB">
    <rect class="fil0 str12" x="42251" y="8592" width="1460" height="408"/>
   </a>
-  <a xlink:href="MSWB.8-DL.10-L41C">
+  <a xlink:href="MSWB.8-DL.DL.10-L41C.L41C">
    <rect class="fil0 str12" x="39385" y="8734" width="934" height="374"/>
   </a>
-  <a xlink:href="MSWB.8-DL.10-L41C.22-T1C.L1C">
+  <a xlink:href="MSWB.8-DL.DL.10-L41C.L41C.22-T1C.T1C.L1C">
    <rect class="fil0 str12" x="38667" y="11957" width="654" height="329"/>
   </a>
-  <a xlink:href="MSWB.8-DL.10-L41C.22-T1C.L1CA">
+  <a xlink:href="MSWB.8-DL.DL.10-L41C.L41C.22-T1C.T1C.L1CA">
    <rect class="fil0 str12" x="40114" y="12533" width="926" height="378"/>
   </a>
-  <a xlink:href="MSWB.8-DL.12-LGB.5-TLGC.LGC-Left">
+  <a xlink:href="MSWB.8-DL.DL.12-LGB.LGB.5-TLGC.TLGC.LGC-Left">
    <rect class="fil0 str12" x="41069" y="12911" width="1404" height="370"/>
   </a>
-  <a xlink:href="MSWB.8-DL.12-LGB.5-TLGC.LGC-Right">
+  <a xlink:href="MSWB.8-DL.DL.12-LGB.LGB.5-TLGC.TLGC.LGC-Right">
    <rect class="fil0 str12" x="42151" y="13488" width="1618" height="397"/>
   </a>
-  <a xlink:href="MSWB.8-DL.12-LGB.6-TLGD.LGD">
+  <a xlink:href="MSWB.8-DL.DL.12-LGB.LGB.6-TLGD.TLGD.LGD">
    <rect class="fil0 str12" x="43333" y="11969" width="1029" height="431"/>
   </a>
-  <a xlink:href="MSWB.8-DL.13-L41B">
+  <a xlink:href="MSWB.8-DL.DL.13-L41B.L41B">
    <rect class="fil0 str12" x="44906" y="8715" width="991" height="437"/>
   </a>
-  <a xlink:href="MSWB.8-DL.13-L41B.26-T1B.L1B">
+  <a xlink:href="MSWB.8-DL.DL.13-L41B.L41B.26-T1B.T1B.L1B">
    <rect class="fil0 str12" x="44988" y="11254" width="816" height="408"/>
   </a>
-  <a xlink:href="MSWB.8-DL.14-L41">
+  <a xlink:href="MSWB.8-DL.DL.14-L41.L41">
    <rect class="fil0 str12" x="46676" y="8743" width="711" height="399"/>
   </a>
-  <a xlink:href="MSWB.8-DL.14-L41.27-T1.L1">
+  <a xlink:href="MSWB.8-DL.DL.14-L41.L41.27-T1.T1.L1">
    <rect class="fil0 str12" x="46797" y="11293" width="441" height="309"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP">
+  <a xlink:href="MSWB.9-AMDP.AMDP">
    <rect class="fil0 str12" x="47473" y="13620" width="1013" height="382"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.3-HSHTA">
+  <a xlink:href="MSWB.9-AMDP.AMDP.3-HSHTA.HSHTA">
    <rect class="fil0 str12" x="34184" y="18919" width="1236" height="404"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.4-HSHTB">
+  <a xlink:href="MSWB.9-AMDP.AMDP.4-HSHTB.HSHTB">
    <rect class="fil0 str12" x="35700" y="18908" width="1179" height="378"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.6-HSHLB">
+  <a xlink:href="MSWB.9-AMDP.AMDP.6-HSHLB.HSHLB">
    <rect class="fil0 str12" x="39241" y="18938" width="1179" height="374"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.7-HSHLA">
+  <a xlink:href="MSWB.9-AMDP.AMDP.7-HSHLA.HSHLA">
    <rect class="fil0 str12" x="41381" y="17767" width="1250" height="415"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.7-HSHLA.100-TCC.HSLAsec2">
+  <a xlink:href="MSWB.9-AMDP.AMDP.7-HSHLA.HSHLA.100-TCC.TCC.HSLAsec2">
    <rect class="fil0 str12" x="41868" y="21554" width="1523" height="404"/>
   </a>
-  <a xlink:href="MSWB.9-AMDP.7-HSHLA.100-TCC.HSLAsec1">
+  <a xlink:href="MSWB.9-AMDP.AMDP.7-HSHLA.HSHLA.100-TCC.TCC.HSLAsec1">
    <rect class="fil0 str12" x="40224" y="20927" width="1535" height="469"/>
   </a>
   <a xlink:href="MSWB">
@@ -1701,7 +1701,7 @@ viewBox="0 0 50000 23386"
    <line class="fil0 str2" x1="2487" y1="13667" x2="3011" y2= "13285" />
   </g>
   <text x="2533" y="13106"  class="fil1 fnt26">ATS</text>
-  <a xlink:href="MSWB.6-DE.8-PMEsec1.17-TME.PE">
+  <a xlink:href="MSWB.6-DE.DE.8-PMEsec1.PMEsec1.17-TME.TME.PE">
    <rect class="fil0" x="19692" y="15911" width="854" height="396"/>
   </a>
  </g>
