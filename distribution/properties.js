@@ -40,8 +40,6 @@ function getProperties()
 function saveProperties( tRsp, sStatus, tJqXhr )
 {
   g_tProperties = tRsp;
-  window.opener.g_tTreeMap[g_sPath] = tRsp;
-
   showProperties();
 }
 
