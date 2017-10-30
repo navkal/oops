@@ -1686,8 +1686,8 @@ class restoreDropdowns:
         # Get parents
         self.device_parents = get_distribution_dropdown( facility, ["'Circuit'"] )
         self.circuit_parents = get_distribution_dropdown( facility, ["'Panel'"] )
-        self.transformer_parents = get_distribution_dropdown( facility, ["'Panel'"] )
-        self.panel_parents = get_distribution_dropdown( facility, ["'Panel'", "'Transformer'"] )
+        self.transformer_parents = get_distribution_dropdown( facility, ["'Circuit'"] )
+        self.panel_parents = get_distribution_dropdown( facility, ["'Circuit'", "'Transformer'"] )
 
 
 class deviceDropdowns:
@@ -1708,9 +1708,13 @@ class distributionDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        aTypes = ["'Panel'"]
-        if object_type == 'Panel':
-            aTypes.append( "'Transformer'" )
+        if object_type == 'Circuit':
+            aTypes = ["'Panel'"]
+        else:
+            aTypes = ["'Circuit'"]
+            if object_type == 'Panel':
+                aTypes.append( "'Transformer'" )
+
         self.parents = get_distribution_dropdown( facility, aTypes )
 
         # Get all locations
