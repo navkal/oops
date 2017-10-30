@@ -190,6 +190,13 @@
 
     // Allow user to select a voltage
     $( '#voltage' ).prop( 'disabled', false );
+
+    // Special handling of voltage when adding Transformer
+    if ( g_sSortableTableEditWhat == 'Transformer' )
+    {
+      g_sVoltageId = '1';
+      $( '#voltage' ).prop( 'disabled', true );
+    }
   }
 
   function initUpdateDialog()
