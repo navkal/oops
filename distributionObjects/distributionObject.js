@@ -14,11 +14,12 @@ function customizeRemoveDialog( tRow )
 
   // Show description
   $( '#descriptionDiv' ).remove();
+  sObjectType = g_sSortableTableType.toLowerCase();
   var sHtml =
     '<div class="form-group" id="descriptionDiv" >' +
-      '<label for="' + g_sSortableTableType + '_descr">' + g_sSortableTableEditWhat + ' Description</label>' +
+      '<label for="' + sObjectType + '_descr">' + g_sSortableTableEditWhat + ' Description</label>' +
       '<textarea id="descriptionDiv" class="form-control" disabled >' +
-        eval( 'tRow.' + g_sSortableTableType + '_descr' ) +
+        eval( 'tRow.' + sObjectType + '_descr' ) +
       '</textarea>' +
     '</div>';
   $( '#removeDialogForm' ).append( sHtml );
