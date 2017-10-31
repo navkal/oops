@@ -36,10 +36,6 @@ function getRestoreDropdowns()
 
 function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
-  // Set dialog 'shown' handler
-  $( '#restoreDialog' ).off( 'shown.bs.modal' );
-  $( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
-
   // Set operation labels
   g_tRow = findSortableTableRow( g_sRestoreId );
   var sLabel = 'Restore ' + g_tRow.remove_object_type;
@@ -262,6 +258,10 @@ function finishInit()
 
   // Clear messages
   clearMessages();
+
+  // Set dialog 'shown' handler
+  $( '#restoreDialog' ).off( 'shown.bs.modal' );
+  $( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
 }
 
 function onShownRestoreDialog()
