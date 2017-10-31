@@ -6,6 +6,8 @@ var g_bShowRemoveComment = null;
 
 function initRemoveDialog( sRemoveId )
 {
+  showSpinner();
+
   g_sRemoveId = sRemoveId;
 
   // Set labels
@@ -20,7 +22,8 @@ function initRemoveDialog( sRemoveId )
   $( '#removeWhat' ).val( tRow[tRow.remove_what] );
 
   // Set dialog 'shown' handler
-  $( '#removeDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', initRemoveDialogFocus );
+  $( '#removeDialog' ).off( 'shown.bs.modal' );
+  $( '#removeDialog' ).on( 'shown.bs.modal', initRemoveDialogFocus );
 
   // Clear and optionally show comment field
   $( '#remove_comment' ).val( '' );
@@ -48,6 +51,8 @@ function initRemoveDialogFocus()
   {
     $( '#removeFormSubmitProxy' ).focus();
   }
+
+  hideSpinner();
 }
 
 function removeObject()

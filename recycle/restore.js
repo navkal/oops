@@ -37,7 +37,8 @@ function getRestoreDropdowns()
 function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
   // Set dialog 'shown' handler
-  $( '#restoreDialog' ).off( 'shown.bs.modal' ).on( 'shown.bs.modal', onShownRestoreDialog );
+  $( '#restoreDialog' ).off( 'shown.bs.modal' );
+  $( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
 
   // Set operation labels
   g_tRow = findSortableTableRow( g_sRestoreId );
