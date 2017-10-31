@@ -1072,8 +1072,8 @@ class addDistributionObject:
 
             # Add new object
             object_type_id = dbCommon.object_type_to_id( cur, object_type )
-            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?,?,?,?,?,?,?)''', (room_id, path, '', voltage_id, object_type_id, description, parent_id, tail, search_result, source))
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
+                 VALUES (?,?,?,?,?,?,?,?,?)''', (room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source))
             target_object_id = cur.lastrowid
 
             # Copy uploaded image file
@@ -1168,8 +1168,8 @@ class updateDistributionObject:
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Update target object
-            cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, zone=?, voltage_id=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
-                ( room_id, path, '', voltage_id, description, parent_id, tail, search_result, source, id ) )
+            cur.execute( '''UPDATE ''' + target_table + ''' SET room_id=?, path=?, voltage_id=?, description=?, parent_id=?, tail=?, search_result=?, source=? WHERE id=?''',
+                ( room_id, path, voltage_id, description, parent_id, tail, search_result, source, id ) )
 
             # Log activity
             facility_id = facility_name_to_id( facility )
@@ -1371,7 +1371,7 @@ class removeDistributionObject:
         row.pop()
         row.pop()
         row = tuple( row )
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1406,7 +1406,7 @@ class removeDistributionObject:
             removed_desc.pop()
             removed_desc.pop()
             removed_desc = tuple( removed_desc )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
             # Retrieve all devices attached to current descendant
@@ -1810,8 +1810,8 @@ class restoreRemovedObject:
             restore_root_row[11] = source
 
             # Restore root object at original ID
-            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
+                 VALUES (?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
 
             # Get Distribution descendants
             select_from_distribution( table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
@@ -1839,8 +1839,8 @@ class restoreRemovedObject:
                 restore_desc_row[1] = restore_desc_path
                 restore_desc_row[10] = restore_desc_search_result
                 restore_desc_row[11] = restore_desc_source
-                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, zone, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
-                  VALUES (?,?,?,?,?,?,?,?,?,?,?)''', tuple( restore_desc_row ) )
+                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
+                  VALUES (?,?,?,?,?,?,?,?,?,?)''', tuple( restore_desc_row ) )
 
             # Get descendant devices
             source_device_table = facility + '_Removed_Device'
