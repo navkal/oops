@@ -1824,8 +1824,7 @@ class restoreRemovedObject:
             restore_root_row[11] = source
 
             # Restore root object at original ID
-            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
-                 VALUES (?,?,?,?,?,?,?,?,?,?)''', tuple( restore_root_row ) )
+            cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_root_row ) )
 
             # Get Distribution descendants
             select_from_distribution( table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
@@ -1853,8 +1852,7 @@ class restoreRemovedObject:
                 restore_desc_row[1] = restore_desc_path
                 restore_desc_row[10] = restore_desc_search_result
                 restore_desc_row[11] = restore_desc_source
-                cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source)
-                  VALUES (?,?,?,?,?,?,?,?,?,?)''', tuple( restore_desc_row ) )
+                cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_desc_row ) )
 
             # Get descendant devices
             source_device_table = facility + '_Removed_Device'
