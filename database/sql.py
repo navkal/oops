@@ -12,6 +12,20 @@ import dbCommon
 conn = None
 cur = None
 
+DISTRIBUTION_OBJECT_FIELDS = '''
+            id,
+            path,
+            object_type_id,
+            parent_id,
+            phase_b_parent_id,
+            phase_c_parent_id,
+            voltage_id,
+            room_id,
+            description,
+            tail,
+            search_result,
+            source '''
+
 
 def open_database( enterprise ):
     if enterprise != None:
@@ -1345,10 +1359,10 @@ class removeDistributionObject:
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
-        room_id = row[1]
-        path = row[2]
-        parent_id = row[7]
-        object_type = row[14]
+        path = row[1]
+        parent_id = row[3]
+        room_id = row[7]
+        object_type = row[13]
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
@@ -1371,7 +1385,7 @@ class removeDistributionObject:
         row.pop()
         row.pop()
         row = tuple( row )
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1396,7 +1410,7 @@ class removeDistributionObject:
         # Move all descendants and their respective attached devices to 'Removed' tables
         for desc in descendants:
             descendant_id = desc[0]
-            desc_object_type = desc[14]
+            desc_object_type = desc[13]
 
             if object_type == desc_object_type:
                 self.removed_object_ids.append( descendant_id )
@@ -1406,7 +1420,7 @@ class removeDistributionObject:
             removed_desc.pop()
             removed_desc.pop()
             removed_desc = tuple( removed_desc )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, path, voltage_id, object_type_id, description, parent_id, tail, search_result, source, remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
             # Retrieve all devices attached to current descendant
