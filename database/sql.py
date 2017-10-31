@@ -439,7 +439,7 @@ class distributionObject:
         if id:
             select_from_distribution( table=dist_table, condition=(dist_table + '.id = ?'), params=(id,) )
         else:
-            select_from_distribution( table=dist_table, condition='parent_id IS NULL' )
+            select_from_distribution( table=dist_table, condition='parent_id=""' )
 
         #initialize distribution object properties
         row = cur.fetchone()
