@@ -1,7 +1,7 @@
 // Copyright 2017 Panel Spy.  All rights reserved.
 
 var g_sRestoreId = null;
-var g_tRow = null;
+var g_tRestoreRow = null;
 var g_sParentIdId = null;
 
 
@@ -37,18 +37,18 @@ function getRestoreDropdowns()
 function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 {
   // Set operation labels
-  g_tRow = findSortableTableRow( g_sRestoreId );
-  var sLabel = 'Restore ' + g_tRow.remove_object_type;
+  g_tRestoreRow = findSortableTableRow( g_sRestoreId );
+  var sLabel = 'Restore ' + g_tRestoreRow.remove_object_type;
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
 
   // Initialize common field values
-  sTimestamp = formatTimestamp( g_tRow.timestamp );
+  sTimestamp = formatTimestamp( g_tRestoreRow.timestamp );
   $( '#timestamp' ).val( sTimestamp );
-  $( '#remove_comment' ).val( g_tRow.remove_comment );
+  $( '#remove_comment' ).val( g_tRestoreRow.remove_comment );
 
   // Show fields applicable to the object type
   $( '#restoreFields' ).html( '' );
-  switch( g_tRow.remove_object_type )
+  switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
     case 'Transformer':
@@ -74,7 +74,7 @@ function loadRestoreDialog( tRsp, sStatus, tJqXhr )
 
 function initDistributionObjectFields()
 {
-  var tFields = g_tRow.fields;
+  var tFields = g_tRestoreRow.fields;
 
   var sHtml = '';
   sHtml +=
@@ -111,7 +111,7 @@ function initDistributionObjectFields()
 
 function initDeviceFields()
 {
-  var tFields = g_tRow.fields;
+  var tFields = g_tRestoreRow.fields;
 
   var sHtml = '';
   sHtml +=
@@ -144,7 +144,7 @@ function makeDropdowns( tRsp )
   // Generate parent dropdown
   var sHtmlParentPath = '';
   var aParents = null;
-  switch( g_tRow.remove_object_type )
+  switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
       aParents = tRsp.panel_parents;
@@ -165,18 +165,18 @@ function makeDropdowns( tRsp )
     var tParent = aParents[iParent];
     var bParentAllowed = null;
 
-    switch( g_tRow.remove_object_type )
+    switch( g_tRestoreRow.remove_object_type )
     {
       case 'Panel':
         // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-        bParentAllowed = ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < g_tRow.fields.voltage_id ) : ( tParent.voltage_id == g_tRow.fields.voltage_id  );
+        bParentAllowed = ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < g_tRestoreRow.fields.voltage_id ) : ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id  );
         // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
         break;
       case 'Transformer':
-        bParentAllowed = ( tParent.voltage_id == g_tRow.fields.voltage_id );
+        bParentAllowed = ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id );
         break;
       case 'Circuit':
-        bParentAllowed = ( tParent.voltage_id == g_tRow.fields.voltage_id );
+        bParentAllowed = ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id );
         break;
       case 'Device':
         bParentAllowed = true;
@@ -189,11 +189,11 @@ function makeDropdowns( tRsp )
     }
   }
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
-  $( '#' + g_sParentIdId ).val( g_tRow.fields.parent_id );
+  $( '#' + g_sParentIdId ).val( g_tRestoreRow.fields.parent_id );
 
 
   // Generate location dropdown
-  var sHtmlLocation = ( g_tRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';
+  var sHtmlLocation = ( g_tRestoreRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';
   var aLocations = tRsp.locations;
   for ( var iLoc in aLocations )
   {
@@ -201,17 +201,17 @@ function makeDropdowns( tRsp )
     sHtmlLocation += '<option value="' + tLoc.id + '" >' + tLoc.text + '</option>';
   }
   $( '#room_id' ).html( sHtmlLocation );
-  $( '#room_id' ).val( g_tRow.fields.room_id );
+  $( '#room_id' ).val( g_tRestoreRow.fields.room_id );
 
   // Initialize select2 objects
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-  $( '#' + g_sParentIdId ).select2( { placeholder: ( g_tRow.remove_object_type == 'Device' ) ? 'Circuit' : 'Parent' } );
+  $( '#' + g_sParentIdId ).select2( { placeholder: ( g_tRestoreRow.remove_object_type == 'Device' ) ? 'Circuit' : 'Parent' } );
   $( '#room_id' ).select2( { placeholder: 'Location' } );
 }
 
 function initLocationFields()
 {
-  var tFields = g_tRow.fields;
+  var tFields = g_tRestoreRow.fields;
 
   var sHtml = '';
   sHtml +=
@@ -303,7 +303,7 @@ function onChangeControl( tEvent )
     var sVal = tControl.val();
 
     // Special handling for PTC Name field
-    switch( g_tRow.remove_object_type )
+    switch( g_tRestoreRow.remove_object_type )
     {
       case 'Panel':
       case 'Transformer':
@@ -335,7 +335,7 @@ function onSubmitRestoreDialog()
     var tPostData = new FormData();
     tPostData.append( 'id', g_sRestoreId );
 
-    switch( g_tRow.remove_object_type )
+    switch( g_tRestoreRow.remove_object_type )
     {
       case 'Panel':
       case 'Transformer':
@@ -382,7 +382,7 @@ function validateInput()
   var aMessages = [];
 
   // Require parent
-  switch( g_tRow.remove_object_type )
+  switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
     case 'Transformer':
@@ -411,7 +411,7 @@ function validateInput()
   // Require elements of tail
   var sNumber = $( '#number' ).val();
   var sName = $( '#name' ).val();
-  switch( g_tRow.remove_object_type )
+  switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
     case 'Transformer':
@@ -439,7 +439,7 @@ function validateInput()
   }
 
   // Check tail syntax and require location
-  switch( g_tRow.remove_object_type )
+  switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
     case 'Transformer':
