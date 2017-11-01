@@ -5,6 +5,10 @@ var g_tRestoreRow = null;
 var g_sParentIdId = null;
 
 
+// Set dialog 'shown' handler
+$( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
+
+
 function initRestoreDialog( sRestoreId )
 {
   g_sRestoreId = sRestoreId;
@@ -258,10 +262,6 @@ function finishInit()
 
   // Clear messages
   clearMessages();
-
-  // Set dialog 'shown' handler
-  $( '#restoreDialog' ).off( 'shown.bs.modal' );
-  $( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
 }
 
 function onShownRestoreDialog()
