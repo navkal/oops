@@ -461,8 +461,8 @@ class distributionObject:
         self.path = row[1]
         self.object_type_id = row[2]
         self.parent_id = row[3]
-        self.phase_b_parent_id = row[4]
-        self.phase_c_parent_id = row[5]
+        phase_b_parent_id = row[4]
+        phase_c_parent_id = row[5]
         # self.voltage_id = row[6]
         self.room_id = row[7]
         self.description = row[8]
@@ -481,6 +481,14 @@ class distributionObject:
 
         # Retrieve parent path
         self.parent_path = get_path( self.parent_id, facility )
+
+        if phase_b_parent_id:
+            select_from_distribution( table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_b_parent_id,) )
+            self.phase_b_tail = cur.fetchone()[0]
+
+        if phase_c_parent_id:
+            select_from_distribution( table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_c_parent_id,) )
+            self.phase_c_tail = cur.fetchone()[0]
 
         # Get room information
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
@@ -902,14 +910,13 @@ class distributionTableRow:
         self.voltage_id = row[6]
         self.room_id = row[7]
         self.description = row[8]
-        # self.tail = row[9]
+        tail = row[9]
         # self.search_result = row[10]
         self.source = row[11]
         self.voltage = row[12]
         self.object_type = row[13]
 
         # Extract number and name from path tail
-        tail = self.path.split('.')[-1]
         ( self.number, self.name ) = tail_to_number_name( tail )
 
         ( self.loc_new, self.loc_old, self.loc_descr ) = get_location( self.room_id, facility )
