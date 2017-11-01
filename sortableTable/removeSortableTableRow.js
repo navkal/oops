@@ -21,10 +21,6 @@ function initRemoveDialog( sRemoveId )
   $( '#removeWhatLabel' ).text( g_tPropertyRules[tRow.remove_what] ? g_tPropertyRules[tRow.remove_what].label : g_sSortableTableEditWhat );
   $( '#removeWhat' ).val( tRow[tRow.remove_what] );
 
-  // Set dialog 'shown' handler
-  $( '#removeDialog' ).off( 'shown.bs.modal' );
-  $( '#removeDialog' ).on( 'shown.bs.modal', initRemoveDialogFocus );
-
   // Clear and optionally show comment field
   $( '#remove_comment' ).val( '' );
   if ( g_bShowRemoveComment )

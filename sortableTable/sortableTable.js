@@ -477,10 +477,11 @@ function onSortableTableReady( tEvent )
   // Initialize optional editing
   if ( g_sSortableTableEditWhat )
   {
-    // Set modal event handlers
+    // Set modal event handlers for edit and remove dialogs
     var tEditDialog = $( '#editDialog ' );
     tEditDialog.on( 'show.bs.modal', onShowEditDialog );
     tEditDialog.on( 'shown.bs.modal', onShownEditDialog );
+    $( '#removeDialog' ).on( 'shown.bs.modal', initRemoveDialogFocus );
 
     // Customize and show the Add button
     $( '#sortableTableAddButtonText' ).text( 'Add ' + g_sSortableTableEditWhat );
