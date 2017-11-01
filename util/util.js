@@ -173,6 +173,20 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  phase_b_tail:
+  {
+    label: "Phase B Connection",
+    showInPropertiesWindow: true,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
+  phase_c_tail:
+  {
+    label: "Phase C Connection",
+    showInPropertiesWindow: true,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
   voltage:
   {
     label: "Voltage",
