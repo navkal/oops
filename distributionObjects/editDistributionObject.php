@@ -515,10 +515,25 @@
     clearMessages();
     var aMessages = [];
 
+    if ( $( '#voltage' ).val() == null )
+    {
+      aMessages.push( 'Voltage is required' );
+      $( '#voltage' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
     if ( ( $( '#parent_path' ).val() == null ) && ( $( '#parent_path option' ).length > 0 ) )
     {
       aMessages.push( 'Parent is required' );
-      $( '#parent_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#parent_path' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    var iPhaseBParentId = Number( $( '#phase_b_tail' ).val() );
+    var iPhaseCParentId = Number( $( '#phase_c_tail' ).val() );
+    if ( iPhaseBParentId && ( iPhaseBParentId == iPhaseCParentId ) )
+    {
+      aMessages.push( 'Phase B Connection and Phase C Connection must be unique' );
+      $( '#phase_b_tail' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#phase_c_tail' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     var sNumber = $( '#number' ).val();
@@ -569,16 +584,10 @@
       $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
-    if ( $( '#voltage' ).val() == null )
-    {
-      aMessages.push( 'Voltage is required' );
-      $( '#voltage_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
     if ( $( '#room_id' ).val() == null )
     {
       aMessages.push( 'Location is required' );
-      $( '#room_id_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#room_id' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );
