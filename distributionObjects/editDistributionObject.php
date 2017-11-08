@@ -338,8 +338,8 @@
     }
 
     // Clear phase selections
-    $( '#phase_b_tail' ).val( 0 ).trigger( 'change' );
-    $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
+    $( '#phase_b_tail option:selected' ).prop( 'selected', false );
+    $( '#phase_b_tail' ).trigger( 'change' );
   }
 
   function getGrannyPath( sParentPath )
@@ -412,15 +412,15 @@
           break;
 
         case 'phase_b_tail':
-          var sPhaseBParentId = $( '#phase_b_tail' ).val();
-          if ( Number( sPhaseBParentId ) )
+          if ( Number( $( '#phase_b_tail' ).val() ) )
           {
             $( '#phase_c_tail' ).prop( 'disabled', false );
           }
           else
           {
             $( '#phase_c_tail' ).prop( 'disabled', true );
-            $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
+            $( '#phase_c_tail option:selected' ).prop( 'selected', false );
+            $( '#phase_c_tail' ).trigger( 'change' );
           }
           break;
 
