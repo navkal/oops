@@ -338,8 +338,8 @@
     }
 
     // Clear phase selections
-    $( '#phase_b_tail' ).val( '' ).trigger( 'change' );
-    $( '#phase_c_tail' ).val( '' ).trigger( 'change' );
+    $( '#phase_b_tail' ).val( 0 ).trigger( 'change' );
+    $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
   }
 
   function getGrannyPath( sParentPath )
@@ -389,9 +389,8 @@
 
       switch( sId )
       {
-        case 'name':
-          // Convert to uppercase
-          tControl.val( sVal.toUpperCase() );
+        case 'voltage':
+          makeParentDropdown( sVal );
           break;
 
         case 'parent_path':
@@ -412,10 +411,6 @@
           makePhaseDropdowns( sVal );
           break;
 
-        case 'voltage':
-          makeParentDropdown( sVal );
-          break;
-
         case 'phase_b_tail':
           var sPhaseBParentId = $( '#phase_b_tail' ).val();
           if ( Number( sPhaseBParentId ) )
@@ -427,6 +422,11 @@
             $( '#phase_c_tail' ).prop( 'disabled', true );
             $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
           }
+          break;
+
+        case 'name':
+          // Convert to uppercase
+          tControl.val( sVal.toUpperCase() );
           break;
       }
 
