@@ -29,6 +29,16 @@
                 </div>
               </div>
               <div class="form-group">
+                <label for="phase_b_tail"></label>
+                <div id="phase_b_tail_container" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phase_c_tail"></label>
+                <div id="phase_c_tail_container" >
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="number"></label>
                 <div>
                   <input type="text" class="form-control" id="number" maxlength="4">
@@ -90,6 +100,8 @@
 <script>
   var g_sObjectId = null;
   var g_sParentId = null;
+  var g_sPhaseBParentId = null;
+  var g_sPhaseCParentId = null;
   var g_sNumber = null;
   var g_sName = null;
   var g_sVoltageId = null;
@@ -103,6 +115,8 @@
     showSpinner();
 
     $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
+    $( '#phase_b_tail_container' ).html( '<select id="phase_b_tail" class="form-control" style="width: 100%" ></select>' );
+    $( '#phase_c_tail_container' ).html( '<select id="phase_c_tail" class="form-control" style="width: 100%" ></select>' );
     $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
     $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
@@ -155,6 +169,8 @@
 
     // Initialize input fields
     $( '#parent_path' ).val( g_sParentId );
+    $( '#phase_b_tail' ).val( g_sPhaseBParentId );
+    $( '#phase_c_tail' ).val( g_sPhaseCParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
     $( '#voltage' ).val( g_sVoltageId );
@@ -164,12 +180,17 @@
 
     // Initialize select2 objects
     $.fn.select2.defaults.set( 'theme', 'bootstrap' );
-    $( '#parent_path' ).select2( { placeholder: 'Parent' } );
-    $( '#voltage' ).select2( { placeholder: 'Voltage' } );
-    $( '#room_id' ).select2( { placeholder: 'Location' } );
+    $( '#parent_path' ).select2( { placeholder: g_tPropertyRules['parent_path'].label } );
+    $( '#phase_b_tail' ).select2( { placeholder: g_tPropertyRules['phase_b_tail'].label } );
+    $( '#phase_c_tail' ).select2( { placeholder: g_tPropertyRules['phase_c_tail'].label } );
+    $( '#voltage' ).select2( { placeholder: g_tPropertyRules['voltage'].label } );
+    $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
     // Optionally show control for uploading Panel picture
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
+
+    // Optionally show Phase Connection controls
+    $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 
     // Set change handler
     resetChangeHandler();
@@ -207,6 +228,8 @@
     // Save values of selected row
     g_sObjectId = tRow.id;
     g_sParentId = tRow.parent_id;
+    g_sPhaseBParentId = tRow.phase_b_parent_id;
+    g_sPhaseCParentId = tRow.phase_c_parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
     g_sVoltageId = tRow.voltage_id;
@@ -270,6 +293,50 @@
 
     // Restore parent selection, if possible
     $( '#parent_path' ).val( sParentVal );
+
+    makePhaseDropdowns();
+  }
+
+  function makePhaseDropdowns()
+  {
+    $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', ! g_sParentId );
+
+
+    if ( g_sParentId )
+    {
+      var tParent = g_tDropdowns.parents.find(
+        function( tParent )
+        {
+          return tParent.id == g_sParentId
+        }
+      );
+
+      var sParentPath = tParent.text;
+      var sGrannyPath = getGrannyPath( sParentPath );
+
+      var aSiblings = g_tDropdowns.parents.filter(
+        function ( tParent )
+        {
+          return ( tParent.text != sParentPath ) && ( getGrannyPath( tParent.text ) == sGrannyPath );
+        }
+      );
+
+      var sHtmlPhase = '<option value="0" >[none]</option>';
+      for ( var iSibling in aSiblings )
+      {
+        var tSibling = aSiblings[iSibling];
+        sHtmlPhase += '<option value="' + tSibling.id + '" >' + tSibling.text.split( '.' ).pop() + '</option>';
+      }
+      $( '#phase_b_tail' ).html( sHtmlPhase );
+      $( '#phase_c_tail' ).html( sHtmlPhase );
+    }
+  }
+
+  function getGrannyPath( sParentPath )
+  {
+    var aParentPath = sParentPath.split( '.' );
+    aParentPath.pop();
+    return aParentPath.join( '.' );
   }
 
   function onShownEditDialog()
@@ -285,6 +352,8 @@
 
     // Allow user to select text in select2 rendering
     allowSelect2SelectText( 'parent_path' );
+    allowSelect2SelectText( 'phase_b_tail' );
+    allowSelect2SelectText( 'phase_c_tail' );
     allowSelect2SelectText( 'voltage' );
     allowSelect2SelectText( 'room_id' );
 
