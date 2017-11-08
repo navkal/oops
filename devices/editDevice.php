@@ -243,7 +243,7 @@
     if ( $( '#source_path' ).val() == null )
     {
       aMessages.push( 'Circuit is required' );
-      $( '#source_path_container .selection' ).closest( '.form-group' ).addClass( 'has-error' );
+      $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
     }
 
     showMessages( aMessages );
