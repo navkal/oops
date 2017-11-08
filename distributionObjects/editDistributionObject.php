@@ -338,8 +338,7 @@
     }
 
     // Clear phase selections
-    $( '#phase_b_tail option:selected' ).prop( 'selected', false );
-    $( '#phase_b_tail' ).trigger( 'change' );
+    $( '#phase_b_tail' ).val( 0 ).trigger( 'change' );
   }
 
   function getGrannyPath( sParentPath )
@@ -419,8 +418,7 @@
           else
           {
             $( '#phase_c_tail' ).prop( 'disabled', true );
-            $( '#phase_c_tail option:selected' ).prop( 'selected', false );
-            $( '#phase_c_tail' ).trigger( 'change' );
+            $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
           }
           break;
 
