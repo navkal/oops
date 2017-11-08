@@ -294,20 +294,17 @@
     // Restore parent selection, if possible
     $( '#parent_path' ).val( sParentVal );
 
-    makePhaseDropdowns();
+    makePhaseDropdowns( g_sParentId );
   }
 
-  function makePhaseDropdowns()
+  function makePhaseDropdowns( sParentId )
   {
-    $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', ! g_sParentId );
-
-
-    if ( g_sParentId )
+    if ( sParentId )
     {
       var tParent = g_tDropdowns.parents.find(
         function( tParent )
         {
-          return tParent.id == g_sParentId
+          return tParent.id == sParentId
         }
       );
 
@@ -329,7 +326,20 @@
       }
       $( '#phase_b_tail' ).html( sHtmlPhase );
       $( '#phase_c_tail' ).html( sHtmlPhase );
+
+      // Enable/disable phase dropdowns
+      $( '#phase_b_tail' ).prop( 'disabled', false );
+      $( '#phase_c_tail' ).prop( 'disabled', true );
     }
+    else
+    {
+      // Disable phase dropdowns
+      $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', true );
+    }
+
+    // Clear phase selections
+    $( '#phase_b_tail' ).val( '' ).trigger( 'change' );
+    $( '#phase_c_tail' ).val( '' ).trigger( 'change' );
   }
 
   function getGrannyPath( sParentPath )
@@ -377,35 +387,47 @@
       var sId = tControl.attr( 'id' );
       var sVal = tControl.val();
 
-      // Special handling for Name field
-      if ( sId == 'name' )
+      switch( sId )
       {
-        // Convert to uppercase
-        tControl.val( sVal.toUpperCase() );
-      }
+        case 'name':
+          // Convert to uppercase
+          tControl.val( sVal.toUpperCase() );
+          break;
 
-      // If parent changed, correct voltage
-      if ( sId == 'parent_path' )
-      {
-        var sParentType = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'object_type' );
-        var sParentVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' );
-        var sCurrentVoltageId = $( '#voltage' ).val();
+        case 'parent_path':
+          var sParentType = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'object_type' );
+          var sParentVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' );
+          var sCurrentVoltageId = $( '#voltage' ).val();
 
-        // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-        var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
-        sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
-        // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
+          // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
+          var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
+          sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
+          // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
 
-        if ( sCurrentVoltageId != sAllowedVoltageId )
-        {
-          $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
-        }
-      }
+          if ( sCurrentVoltageId != sAllowedVoltageId )
+          {
+            $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
+          }
 
-      // If voltage changed, re-populate the parent dropdown with compatible objects
-      if ( sId == 'voltage' )
-      {
-        makeParentDropdown( sVal );
+          makePhaseDropdowns( sVal );
+          break;
+
+        case 'voltage':
+          makeParentDropdown( sVal );
+          break;
+
+        case 'phase_b_tail':
+          var sPhaseBParentId = $( '#phase_b_tail' ).val();
+          if ( Number( sPhaseBParentId ) )
+          {
+            $( '#phase_c_tail' ).prop( 'disabled', false );
+          }
+          else
+          {
+            $( '#phase_c_tail' ).prop( 'disabled', true );
+            $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
+          }
+          break;
       }
 
       // Special handling for select2 objects
