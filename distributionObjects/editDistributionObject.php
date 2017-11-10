@@ -191,6 +191,8 @@
     $( '#phase_c_tail' ).val( g_sPhaseCParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
+    $( '#' + g_s3Phase ).prop( 'checked', true );
+
     $( '#voltage' ).val( g_sVoltageId );
     $( '#room_id' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
@@ -255,8 +257,7 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
-    g_s3Phase = tRow.is_3_phase;
-    alert( g_s3Phase );
+    g_s3Phase = tRow.is_3_phase ? '3_phase' : '1_phase';
 
     // Don't let the user change creation-time settings
     $( '#is_3_phase' ).prop( 'disabled', true );
