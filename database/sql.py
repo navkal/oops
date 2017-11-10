@@ -16,6 +16,7 @@ DISTRIBUTION_OBJECT_FIELDS = '''
             id,
             path,
             object_type_id,
+            is_3_phase,
             parent_id,
             phase_b_parent_id,
             phase_c_parent_id,
@@ -1395,7 +1396,7 @@ class removeDistributionObject:
         row.pop()
         row.pop()
         row = tuple( row )
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
         # Delete target object
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
@@ -1430,7 +1431,7 @@ class removeDistributionObject:
             removed_desc.pop()
             removed_desc.pop()
             removed_desc = tuple( removed_desc )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
             cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
             # Retrieve all devices attached to current descendant
@@ -1834,7 +1835,7 @@ class restoreRemovedObject:
             restore_root_row[12] = source
 
             # Restore root object at original ID
-            cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_root_row ) )
+            cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_root_row ) )
 
             # Get Distribution descendants
             select_from_distribution( table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
@@ -1862,7 +1863,7 @@ class restoreRemovedObject:
                 restore_desc_row[1] = restore_desc_path
                 restore_desc_row[10] = restore_desc_search_result
                 restore_desc_row[11] = restore_desc_source
-                cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_desc_row ) )
+                cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_desc_row ) )
 
             # Get descendant devices
             source_device_table = facility + '_Removed_Device'
