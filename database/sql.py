@@ -460,17 +460,18 @@ class distributionObject:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.parent_id = row[3]
-        phase_b_parent_id = row[4]
-        phase_c_parent_id = row[5]
-        # self.voltage_id = row[6]
-        self.room_id = row[7]
-        self.description = row[8]
-        # self.tail = row[9]
-        # self.search_result = row[10]
-        self.source = row[11]
-        self.voltage = row[12]
-        self.object_type = row[13]
+        self.is_3_phase = row[3]
+        self.parent_id = row[4]
+        phase_b_parent_id = row[5]
+        phase_c_parent_id = row[6]
+        # self.voltage_id = row[7]
+        self.room_id = row[8]
+        self.description = row[9]
+        # self.tail = row[10]
+        # self.search_result = row[11]
+        self.source = row[12]
+        self.voltage = row[13]
+        self.object_type = row[14]
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
@@ -678,12 +679,12 @@ class sortableTable:
                     dist_table = facility + '_Removed_Distribution'
                     select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
                     ptc_row = cur.fetchone()
-                    room_id = ptc_row[7]
-                    voltage_id = ptc_row[6]
-                    description = ptc_row[8]
-                    parent_id = ptc_row[3]
-                    tail = ptc_row[9]
-                    voltage = ptc_row[13]
+                    parent_id = ptc_row[4]
+                    voltage_id = ptc_row[7]
+                    room_id = ptc_row[8]
+                    description = ptc_row[9]
+                    tail = ptc_row[10]
+                    voltage = ptc_row[14]
                     path = parent_path + '.' + tail
                     ( number, name ) = tail_to_number_name( tail )
 
@@ -904,17 +905,19 @@ class distributionTableRow:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.parent_id = row[3]
-        self.phase_b_parent_id = row[4]
-        self.phase_c_parent_id = row[5]
-        self.voltage_id = row[6]
-        self.room_id = row[7]
-        self.description = row[8]
-        tail = row[9]
-        # self.search_result = row[10]
-        self.source = row[11]
-        self.voltage = row[12]
-        self.object_type = row[13]
+        self.is_3_phase = row[3]
+        self.parent_id = row[4]
+        self.phase_b_parent_id = row[5]
+        self.phase_c_parent_id = row[6]
+        self.voltage_id = row[7]
+        self.room_id = row[8]
+        self.description = row[9]
+        tail = row[10]
+        # self.search_result = row[11]
+        self.source = row[12]
+        self.voltage = row[13]
+        self.object_type = row[14]
+
 
         # Extract number and name from path tail
         ( self.number, self.name ) = tail_to_number_name( tail )
@@ -1166,11 +1169,11 @@ class updateDistributionObject:
                 for desc in descendants:
                     desc_id = str( desc[0] )
                     desc_path = desc[1]
-                    desc_room_id = desc[7]
-                    desc_description = desc[8]
-                    desc_tail = desc[9]
-                    desc_voltage = desc[12]
-                    desc_object_type = desc[13]
+                    desc_room_id = desc[8]
+                    desc_description = desc[9]
+                    desc_tail = desc[10]
+                    desc_voltage = desc[13]
+                    desc_object_type = desc[14]
 
                     ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                     new_desc_path = desc_path.replace( original_path, path, 1 )
@@ -1307,11 +1310,11 @@ class updateLocation:
         # Traverse distribution objects
         for row in rows:
             # Get search result fragments
-            object_descr = row[8]
-            tail = row[9]
-            source = row[11]
-            voltage = row[12]
-            object_type = row[13]
+            object_descr = row[9]
+            tail = row[10]
+            source = row[12]
+            voltage = row[13]
+            object_type = row[14]
 
             # Generate the search result
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, object_descr, tail )
@@ -1367,9 +1370,9 @@ class removeDistributionObject:
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
         path = row[1]
-        parent_id = row[3]
-        room_id = row[7]
-        object_type = row[13]
+        parent_id = row[4]
+        room_id = row[8]
+        object_type = row[14]
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
@@ -1417,7 +1420,7 @@ class removeDistributionObject:
         # Move all descendants and their respective attached devices to 'Removed' tables
         for desc in descendants:
             descendant_id = desc[0]
-            desc_object_type = desc[13]
+            desc_object_type = desc[14]
 
             if object_type == desc_object_type:
                 self.removed_object_ids.append( descendant_id )
@@ -1812,10 +1815,10 @@ class restoreRemovedObject:
             removed_path = removed_root_row[1]
 
             # Generate search result text
-            description = removed_root_row[8]
-            voltage = removed_root_row[13]
+            description = removed_root_row[9]
+            voltage = removed_root_row[14]
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-            object_type = removed_root_row[14]
+            object_type = removed_root_row[15]
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
             # Overwrite original values with new values in root row
@@ -1824,11 +1827,11 @@ class restoreRemovedObject:
             restore_root_row.pop()
             restore_root_row.pop()
             restore_root_row[1] = restore_path
-            restore_root_row[3] = parent_id
-            restore_root_row[7] = room_id
-            restore_root_row[9] = tail
-            restore_root_row[10] = search_result
-            restore_root_row[11] = source
+            restore_root_row[4] = parent_id
+            restore_root_row[8] = room_id
+            restore_root_row[10] = tail
+            restore_root_row[11] = search_result
+            restore_root_row[12] = source
 
             # Restore root object at original ID
             cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_OBJECT_FIELDS + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_root_row ) )
@@ -1840,11 +1843,11 @@ class restoreRemovedObject:
             # Update path, search result, and source of all descendants; restore at original IDs
             for desc in descendants:
                 desc_path = desc[1]
-                desc_room_id = desc[7]
-                desc_description = desc[8]
-                desc_tail = desc[9]
-                desc_voltage = desc[13]
-                desc_object_type = desc[14]
+                desc_room_id = desc[8]
+                desc_description = desc[9]
+                desc_tail = desc[10]
+                desc_voltage = desc[14]
+                desc_object_type = desc[15]
                 ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                 restore_desc_path = desc_path.replace( removed_path, restore_path, 1 )
                 restore_desc_source = restore_desc_path.split( '.' )[-2]
