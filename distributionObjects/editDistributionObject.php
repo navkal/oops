@@ -16,6 +16,24 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
+              <div class="form-group" id="panel_is_3_phase" >
+                <label for="is_3_phase"></label>
+                <div>
+                  <input type="hidden" class="form-control" id="is_3_phase">
+                  <div class="radio-inline">
+                    <label style="font-weight: normal;" >
+                      <input type="radio" id="3_phase" name="is_3_phase" checked >
+                      Three-Phase
+                    </label>
+                  </div>
+                  <div class="radio-inline">
+                    <label style="font-weight: normal;" >
+                      <input type="radio" id="1_phase" name="is_3_phase" >
+                      Single-Phase
+                    </label>
+                  </div>
+                </div>
+              </div>
               <div class="form-group">
                 <label for="voltage"></label>
                 <div>
@@ -186,10 +204,9 @@
     $( '#voltage' ).select2( { placeholder: g_tPropertyRules['voltage'].label } );
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
-    // Optionally show control for uploading Panel picture
+    // Optionally show type-specific fields
+    $( "#panel_is_3_phase" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
-
-    // Optionally show Phase Connection controls
     $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 
     // Set change handler
@@ -208,8 +225,10 @@
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
+    g_s3Phase = '';
 
-    // Allow user to select a voltage
+    // Allow user to set creation-time attributes
+    $( '#is_3_phase' ).prop( 'disabled', false );
     $( '#voltage' ).prop( 'disabled', false );
 
     // Special handling of voltage when adding Transformer
@@ -236,8 +255,11 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
+    g_s3Phase = tRow.is_3_phase;
+    alert( g_s3Phase );
 
-    // Don't let the user change the voltage
+    // Don't let the user change creation-time settings
+    $( '#is_3_phase' ).prop( 'disabled', true );
     $( '#voltage' ).prop( 'disabled', true );
   }
 

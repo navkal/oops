@@ -543,6 +543,13 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
+  is_3_phase:
+  {
+    label: "Power",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
+    displayIndex: displayIndex ++
+  },
   note:
   {
     label: "Note",
