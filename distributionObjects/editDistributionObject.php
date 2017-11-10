@@ -230,7 +230,7 @@
     g_s3Phase = '';
 
     // Allow user to set creation-time attributes
-    $( '#is_3_phase' ).prop( 'disabled', false );
+    $( '#panel_is_3_phase input' ).prop( 'disabled', false );
     $( '#voltage' ).prop( 'disabled', false );
 
     // Special handling of voltage when adding Transformer
@@ -260,7 +260,7 @@
     g_s3Phase = tRow.is_3_phase ? '3_phase' : '1_phase';
 
     // Don't let the user change creation-time settings
-    $( '#is_3_phase' ).prop( 'disabled', true );
+    $( '#panel_is_3_phase input' ).prop( 'disabled', true );
     $( '#voltage' ).prop( 'disabled', true );
   }
 
