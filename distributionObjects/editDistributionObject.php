@@ -16,6 +16,13 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
+              <div class="form-group">
+                <label for="voltage"></label>
+                <div>
+                  <div id="voltage_container" >
+                  </div>
+                </div>
+              </div>
               <div class="form-group" id="phases_input_group" >
                 <label for="phases"></label>
                 <div>
@@ -31,13 +38,6 @@
                       <input type="radio" name="phases" >
                       Single-Phase
                     </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="voltage"></label>
-                <div>
-                  <div id="voltage_container" >
                   </div>
                 </div>
               </div>

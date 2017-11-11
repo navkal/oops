@@ -397,7 +397,9 @@ def get_nearest_panel( type, id, facility ):
 
 def make_phase_label( is_3_phase ):
 
-    if is_3_phase:
+    if is_3_phase == '':
+        label = ''
+    elif is_3_phase:
         label = 'Three-Phase'
     else:
         label = 'Single-Phase'

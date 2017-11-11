@@ -173,6 +173,20 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
+  voltage:
+  {
+    label: "Voltage",
+    showInPropertiesWindow: true,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  phases:
+  {
+    label: "Phases",
+    showInPropertiesWindow: true,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   phase_b_tail:
   {
     label: "Phase B Connection",
@@ -185,13 +199,6 @@ var g_tPropertyRules =
     label: "Phase C Connection",
     showInPropertiesWindow: true,
     showInSortableTable: false,
-    displayIndex: displayIndex ++
-  },
-  voltage:
-  {
-    label: "Voltage",
-    showInPropertiesWindow: true,
-    showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   loc_new:
@@ -539,13 +546,6 @@ var g_tPropertyRules =
   room_id:
   {
     label: "Location",
-    showInPropertiesWindow: false,
-    showInSortableTable: false,
-    displayIndex: displayIndex ++
-  },
-  phases:
-  {
-    label: "Phases",
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++
