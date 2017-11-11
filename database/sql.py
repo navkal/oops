@@ -395,6 +395,16 @@ def get_nearest_panel( type, id, facility ):
     return ( str( panel_id ), panel_path )
 
 
+def make_phase_label( is_3_phase ):
+
+    if is_3_phase:
+        label = 'Three-Phase'
+    else:
+        label = 'Single-Phase'
+
+    return label
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -471,7 +481,7 @@ class distributionObject:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.is_3_phase = row[3]
+        self.phases = make_phase_label( row[3] )
         self.parent_id = row[4]
         phase_b_parent_id = row[5]
         phase_c_parent_id = row[6]
@@ -916,7 +926,7 @@ class distributionTableRow:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.is_3_phase = row[3]
+        self.phases = make_phase_label( row[3] )
         self.parent_id = row[4]
         self.phase_b_parent_id = row[5]
         self.phase_c_parent_id = row[6]

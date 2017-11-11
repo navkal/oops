@@ -543,9 +543,9 @@ var g_tPropertyRules =
     showInSortableTable: false,
     displayIndex: displayIndex ++
   },
-  is_3_phase:
+  phases:
   {
-    label: "Power",
+    label: "Phases",
     showInPropertiesWindow: false,
     showInSortableTable: false,
     displayIndex: displayIndex ++

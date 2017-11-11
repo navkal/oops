@@ -16,19 +16,19 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
-              <div class="form-group" id="panel_is_3_phase" >
-                <label for="is_3_phase"></label>
+              <div class="form-group" id="phases_input_group" >
+                <label for="phases"></label>
                 <div>
-                  <input type="hidden" class="form-control" id="is_3_phase">
+                  <input type="hidden" class="form-control" id="phases">
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" id="3_phase" name="is_3_phase" checked >
+                      <input type="radio" name="phases" >
                       Three-Phase
                     </label>
                   </div>
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" id="1_phase" name="is_3_phase" >
+                      <input type="radio" name="phases" >
                       Single-Phase
                     </label>
                   </div>
@@ -191,8 +191,7 @@
     $( '#phase_c_tail' ).val( g_sPhaseCParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
-    $( '#' + g_s3Phase ).prop( 'checked', true );
-
+    $( '#phases_input_group label:contains(' + g_sPhases + ') input' ).prop( 'checked', true );
     $( '#voltage' ).val( g_sVoltageId );
     $( '#room_id' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
@@ -207,7 +206,7 @@
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
     // Optionally show type-specific fields
-    $( "#panel_is_3_phase" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
+    $( "#phases_input_group" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 
@@ -227,10 +226,10 @@
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
-    g_s3Phase = '';
+    g_sPhases = 'Three-Phase';
 
     // Allow user to set creation-time attributes
-    $( '#panel_is_3_phase input' ).prop( 'disabled', false );
+    $( '#phases_input_group input' ).prop( 'disabled', false );
     $( '#voltage' ).prop( 'disabled', false );
 
     // Special handling of voltage when adding Transformer
@@ -257,10 +256,10 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
-    g_s3Phase = tRow.is_3_phase ? '3_phase' : '1_phase';
+    g_sPhases = tRow.phases;
 
     // Don't let the user change creation-time settings
-    $( '#panel_is_3_phase input' ).prop( 'disabled', true );
+    $( '#phases_input_group input' ).prop( 'disabled', true );
     $( '#voltage' ).prop( 'disabled', true );
   }
 
