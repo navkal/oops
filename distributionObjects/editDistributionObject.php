@@ -322,15 +322,20 @@
 
   function makePhaseDropdowns( sParentId, sPhaseBParentId )
   {
+    var tParent = null;
+
     if ( sParentId )
     {
-      var tParent = g_tDropdowns.parents.find(
+      tParent = g_tDropdowns.parents.find(
         function( tParent )
         {
           return tParent.id == sParentId
         }
       );
+    }
 
+    if ( tParent && tParent.make_phase_dropdowns )
+    {
       var sParentPath = tParent.text;
       var sGrannyPath = getGrannyPath( sParentPath );
 
