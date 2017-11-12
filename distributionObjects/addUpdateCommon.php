@@ -10,12 +10,12 @@
   error_log( '==> files=' . print_r( $_FILES, true ) );
 
   // Get attributes
-  $sObjectType = $_POST['object_type'];
+  $sObjectType = quote( $_POST['object_type'] );
   $sParentId = quote( $_POST['parent_id'] );
   $sPhaseBParentId = quote( $_POST['phase_b_parent_id'] );
   $sPhaseCParentId = quote( $_POST['phase_c_parent_id'] );
-  $sTail = $_POST['tail'];
-  $sVoltageId = $_POST['voltage_id'];
+  $sTail = quote( $_POST['tail'] );
+  $sVoltageId = quote( $_POST['voltage_id'] );
   $sThreePhase = quote( $_POST['three_phase'] );
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
@@ -63,8 +63,11 @@
       . $sIdParam
       . ' -o ' . $sObjectType
       . ' -p ' . $sParentId
+      . ' -m ' . $sPhaseBParentId
+      . ' -n ' . $sPhaseCParentId
       . ' -t ' . $sTail
       . ' -v ' . $sVoltageId
+      . ' -w ' . $sThreePhase
       . ' -r ' . $sRoomId
       . ' -d ' . $sDescription
       . ' -f ' . $sFilename
