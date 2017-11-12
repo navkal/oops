@@ -400,9 +400,9 @@ def make_phase_label( is_3_phase ):
     if is_3_phase == '':
         label = ''
     elif is_3_phase:
-        label = 'Three-Phase'
+        label = 'Yes'
     else:
-        label = 'Single-Phase'
+        label = 'No'
 
     return label
 
@@ -483,7 +483,7 @@ class distributionObject:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.phases = make_phase_label( row[3] )
+        self.is_3_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         phase_b_parent_id = row[5]
         phase_c_parent_id = row[6]
@@ -928,7 +928,7 @@ class distributionTableRow:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.phases = make_phase_label( row[3] )
+        self.is_3_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         self.phase_b_parent_id = row[5]
         self.phase_c_parent_id = row[6]

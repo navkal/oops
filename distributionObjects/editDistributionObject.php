@@ -24,19 +24,19 @@
                 </div>
               </div>
               <div class="form-group" id="phases_input_group" >
-                <label for="phases"></label>
+                <label for="is_3_phase"></label>
                 <div>
-                  <input type="hidden" class="form-control" id="phases">
+                  <input type="hidden" class="form-control" id="is_3_phase">
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="phases" >
-                      Three-Phase
+                      <input type="radio" name="is_3_phase" >
+                      Yes
                     </label>
                   </div>
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="phases" >
-                      Single-Phase
+                      <input type="radio" name="is_3_phase" >
+                      No
                     </label>
                   </div>
                 </div>
@@ -226,7 +226,7 @@
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
-    g_sPhases = 'Three-Phase';
+    g_sPhases = 'Yes';
 
     // Allow user to set creation-time attributes
     $( '#phases_input_group input' ).prop( 'disabled', false );
@@ -256,7 +256,7 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
-    g_sPhases = tRow.phases;
+    g_sPhases = tRow.is_3_phase;
 
     // Don't let the user change creation-time settings
     $( '#phases_input_group input' ).prop( 'disabled', true );
