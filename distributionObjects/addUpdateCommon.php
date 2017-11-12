@@ -20,10 +20,6 @@
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
 
-  error_log( '======================' );
-  error_log( '=========> b=' . $sPhaseBParentId . ' c=' . $sPhaseCParentId . ' 3=' . $sThreePhase );
-  error_log( '======================' );
-
   // Handle image upload, if any
   $sFilename = '';
   $aMessages = [];
