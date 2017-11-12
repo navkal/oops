@@ -29,13 +29,13 @@
                   <input type="hidden" class="form-control" id="three_phase">
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="three_phase" value="Yes" >
+                      <input type="radio" name="three_phase" >
                       Yes
                     </label>
                   </div>
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="three_phase" value="No" >
+                      <input type="radio" name="three_phase" >
                       No
                     </label>
                   </div>
@@ -205,8 +205,10 @@
     $( '#voltage' ).select2( { placeholder: g_tPropertyRules['voltage'].label } );
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
-    // Optionally show type-specific fields
+    // Customize type-specific fields
     $( "#three_phase_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
+    $( '#three_phase_block label:contains(Yes) input' ).val( ( g_sSortableTableEditWhat == 'Panel' ) ? '1' : '' );
+    $( '#three_phase_block label:contains(No) input' ).val( ( g_sSortableTableEditWhat == 'Panel' ) ? '0' : '' );
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 

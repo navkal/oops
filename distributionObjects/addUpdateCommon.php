@@ -12,10 +12,17 @@
   // Get attributes
   $sObjectType = $_POST['object_type'];
   $sParentId = quote( $_POST['parent_id'] );
+  $sPhaseBParentId = quote( $_POST['phase_b_parent_id'] );
+  $sPhaseCParentId = quote( $_POST['phase_c_parent_id'] );
   $sTail = $_POST['tail'];
   $sVoltageId = $_POST['voltage_id'];
+  $sThreePhase = quote( $_POST['three_phase'] );
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
+
+  error_log( '======================' );
+  error_log( '=========> b=' . $sPhaseBParentId . ' c=' . $sPhaseCParentId . ' 3=' . $sThreePhase );
+  error_log( '======================' );
 
   // Handle image upload, if any
   $sFilename = '';
