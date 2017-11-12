@@ -23,19 +23,19 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group" id="phases_input_group" >
+              <div class="form-group" id="three_phase_block" >
                 <label for="three_phase"></label>
                 <div>
                   <input type="hidden" class="form-control" id="three_phase">
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="three_phase" >
+                      <input type="radio" name="three_phase" value="Yes" >
                       Yes
                     </label>
                   </div>
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="three_phase" >
+                      <input type="radio" name="three_phase" value="No" >
                       No
                     </label>
                   </div>
@@ -191,7 +191,7 @@
     $( '#phase_c_tail' ).val( g_sPhaseCParentId );
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
-    $( '#phases_input_group label:contains(' + g_sPhases + ') input' ).prop( 'checked', true );
+    $( '#three_phase_block label:contains(' + g_sPhases + ') input' ).prop( 'checked', true );
     $( '#voltage' ).val( g_sVoltageId );
     $( '#room_id' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
@@ -206,7 +206,7 @@
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
     // Optionally show type-specific fields
-    $( "#phases_input_group" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
+    $( "#three_phase_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 
@@ -229,7 +229,7 @@
     g_sPhases = 'Yes';
 
     // Allow user to set creation-time attributes
-    $( '#phases_input_group input' ).prop( 'disabled', false );
+    $( '#three_phase_block input' ).prop( 'disabled', false );
     $( '#voltage' ).prop( 'disabled', false );
 
     // Special handling of voltage when adding Transformer
@@ -259,7 +259,7 @@
     g_sPhases = tRow.three_phase;
 
     // Don't let the user change creation-time settings
-    $( '#phases_input_group input' ).prop( 'disabled', true );
+    $( '#three_phase_block input' ).prop( 'disabled', true );
     $( '#voltage' ).prop( 'disabled', true );
   }
 
@@ -504,6 +504,8 @@
 
       tPostData.append( 'object_type', g_sSortableTableEditWhat );
       tPostData.append( 'parent_id', $( '#parent_path' ).val() ? $( '#parent_path' ).val() : '' );
+      tPostData.append( 'phase_b_parent_id', $( '#phase_b_tail' ).val() ? $( '#phase_b_tail' ).val() : '' );
+      tPostData.append( 'phase_c_parent_id', $( '#phase_c_tail' ).val() ? $( '#phase_c_tail' ).val() : '' );
 
       var sNumber = $( '#number' ).val();
       var sName = $( '#name' ).val();
@@ -511,6 +513,8 @@
       tPostData.append( 'tail', sNumber + sHyphen + sName );
 
       tPostData.append( 'voltage_id', $( '#voltage' ).val() );
+      tPostData.append( 'three_phase', $( '#three_phase_block input[name=three_phase]:checked' ).val() );
+
       tPostData.append( 'room_id', $( '#room_id' ).val() );
       tPostData.append( 'description', $( '#description textarea' ).val() );
 
