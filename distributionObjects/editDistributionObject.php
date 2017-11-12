@@ -24,18 +24,18 @@
                 </div>
               </div>
               <div class="form-group" id="phases_input_group" >
-                <label for="is_3_phase"></label>
+                <label for="three_phase"></label>
                 <div>
-                  <input type="hidden" class="form-control" id="is_3_phase">
+                  <input type="hidden" class="form-control" id="three_phase">
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="is_3_phase" >
+                      <input type="radio" name="three_phase" >
                       Yes
                     </label>
                   </div>
                   <div class="radio-inline">
                     <label style="font-weight: normal;" >
-                      <input type="radio" name="is_3_phase" >
+                      <input type="radio" name="three_phase" >
                       No
                     </label>
                   </div>
@@ -256,7 +256,7 @@
     g_sLocationId = tRow.room_id;
     g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
     g_sPath = tRow.path;
-    g_sPhases = tRow.is_3_phase;
+    g_sPhases = tRow.three_phase;
 
     // Don't let the user change creation-time settings
     $( '#phases_input_group input' ).prop( 'disabled', true );

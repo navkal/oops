@@ -16,7 +16,7 @@ DISTRIBUTION_OBJECT_FIELDS = '''
             id,
             path,
             object_type_id,
-            is_3_phase,
+            three_phase,
             parent_id,
             phase_b_parent_id,
             phase_c_parent_id,
@@ -172,12 +172,12 @@ def get_distribution_dropdown( facility, aTypes ):
         # Retrieve flag indicating whether phase B/C tail inputs should be disabled
         if object_type == 'Circuit':
             parent_id = row[2]
-            select_from_distribution( table=dist_table, fields='is_3_phase', condition=(dist_table + '.id=?'), params=(parent_id,) )
-            is_3_phase = cur.fetchone()[0]
+            select_from_distribution( table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(parent_id,) )
+            three_phase = cur.fetchone()[0]
         else:
-            is_3_phase = 0
+            three_phase = 0
 
-        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[3], 'object_type': object_type, 'make_phase_dropdowns': not is_3_phase } )
+        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[3], 'object_type': object_type, 'make_phase_dropdowns': not three_phase } )
 
     # To test large volume of dropdown elements, change 0 to number desired.
     for i in range( len(objects), 0 ):
@@ -395,11 +395,11 @@ def get_nearest_panel( type, id, facility ):
     return ( str( panel_id ), panel_path )
 
 
-def make_phase_label( is_3_phase ):
+def make_phase_label( three_phase ):
 
-    if is_3_phase == '':
+    if three_phase == '':
         label = ''
-    elif is_3_phase:
+    elif three_phase:
         label = 'Yes'
     else:
         label = 'No'
@@ -483,7 +483,7 @@ class distributionObject:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.is_3_phase = make_phase_label( row[3] )
+        self.three_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         phase_b_parent_id = row[5]
         phase_c_parent_id = row[6]
@@ -928,7 +928,7 @@ class distributionTableRow:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.is_3_phase = make_phase_label( row[3] )
+        self.three_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         self.phase_b_parent_id = row[5]
         self.phase_c_parent_id = row[6]
