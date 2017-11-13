@@ -1232,7 +1232,7 @@ class updateDistributionObject:
             self.messages.append( "Path '" + path + "' is not available." )
             self.selectors = [ '#parent_path', '#number', '#name' ]
 
-        else:
+        if len( self.messages ) == 0:
             # Path is either available or original; okay to update
 
             # Copy uploaded image file
