@@ -81,7 +81,7 @@ def make_distribution_object_label( o ):
 
         if o['loc_new'] or o['loc_old'] or o['loc_descr']:
             label += ' <span class="glyphicon glyphicon-map-marker"></span>'
-            label += dbCommon.format_location( o['loc_new'], o['loc_old'], o['loc_descr']);
+            label += dbCommon.format_location( o['loc_new'], o['loc_old'], o['loc_descr'])
 
     else:
         # Circuit - show description
@@ -433,7 +433,7 @@ def get_nearest_panel( type, id, facility ):
         panel_path = ''
 
         while object_type_id != panel_type_id:
-            cur.execute( 'SELECT object_type_id, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) );
+            cur.execute( 'SELECT object_type_id, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) )
             row = cur.fetchone()
             object_type_id = row[0]
             parent_id = row[1]
@@ -1120,8 +1120,8 @@ class changePassword:
             # Sign-in succeeded
 
             # Set the password and clear the force_change_password flag
-            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
-            conn.commit();
+            cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) )
+            conn.commit()
 
             # Sign in again with new password
             user = signInUser( username, password )
@@ -1155,7 +1155,7 @@ class addDistributionObject:
         if test_id:
             # Path already in use
             self.messages.append( "Path '" + path + "' is not available." )
-            self.selectors = [ '#parent_path', '#number', '#name' ];
+            self.selectors = [ '#parent_path', '#number', '#name' ]
 
         if len( self.messages ) == 0:
             # Determine whether parent and B/C connections are available
@@ -1189,7 +1189,7 @@ class addDistributionObject:
             if filename:
                 id = dbCommon.path_to_id( cur, path, facility )
                 target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
-                shutil.copy2( filename, target );
+                shutil.copy2( filename, target )
 
             # Log activity
             facility_id = facility_name_to_id( facility )
@@ -1230,7 +1230,7 @@ class updateDistributionObject:
         if ( test_id != None ) and ( test_id != id ):
             # Path is neither available nor original
             self.messages.append( "Path '" + path + "' is not available." )
-            self.selectors = [ '#parent_path', '#number', '#name' ];
+            self.selectors = [ '#parent_path', '#number', '#name' ]
 
         else:
             # Path is either available or original; okay to update
@@ -1238,7 +1238,7 @@ class updateDistributionObject:
             # Copy uploaded image file
             if filename:
                 target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
-                shutil.copy2( filename, target );
+                shutil.copy2( filename, target )
 
             # Get original path of target element
             original_path = get_path( id, facility )
@@ -1662,7 +1662,7 @@ class updateUser:
                     self.selectors.append( '#oldPassword' )
             else:
                 # Change password without authentication
-                cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) );
+                cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) )
                 conn.commit()
 
 
@@ -1859,7 +1859,7 @@ class restoreRemovedObject:
 
         # Get values representing object to be restored
         recycle_table = facility + '_Recycle'
-        cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
+        cur.execute( 'SELECT * FROM ' + recycle_table + ' WHERE id=?', ( id, ) )
         recycle_row = cur.fetchone()
         remove_object_type = recycle_row[2]
 
@@ -1874,7 +1874,7 @@ class restoreRemovedObject:
 
         if len( self.messages ) == 0:
             # Clean up recyle bin
-            cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) );
+            cur.execute( 'DELETE FROM ' + recycle_table + ' WHERE id=?', ( id, ) )
             self.id = id
 
             conn.commit()
@@ -1891,7 +1891,7 @@ class restoreRemovedObject:
         if test_id:
             # Path already in use
             self.messages.append( "Path '" + restore_path + "' is not available." )
-            self.selectors = [ '#parent_path', '#number', '#name' ];
+            self.selectors = [ '#parent_path', '#number', '#name' ]
 
         else:
 
@@ -1963,8 +1963,8 @@ class restoreRemovedObject:
                 cur.execute( 'INSERT INTO ' + target_device_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_dev_row ) )
 
             # Clean up restored objects from _Removed_ tables
-            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
-            cur.execute( 'DELETE FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) );
+            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
+            cur.execute( 'DELETE FROM ' + source_device_table + ' WHERE remove_id=?', ( id, ) )
 
             # Log activity
             facility_id = facility_name_to_id( facility )
@@ -1980,7 +1980,7 @@ class restoreRemovedObject:
         target_table = facility + '_Device'
 
         # Get fields from source table
-        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
         source_row = cur.fetchone()
 
         # Copy source row and overwrite fields with updated values
@@ -1993,7 +1993,7 @@ class restoreRemovedObject:
         cur.execute( 'INSERT INTO ' + target_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_row ) )
 
         # Clean up removed object
-        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
 
         # Log activity
         facility_id = facility_name_to_id( facility )
@@ -2009,7 +2009,7 @@ class restoreRemovedObject:
         target_table = facility + '_Room'
 
         # Get fields from source table into list
-        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
         source_row = cur.fetchone()
         source_row = list( source_row )
 
@@ -2020,7 +2020,7 @@ class restoreRemovedObject:
         cur.execute( 'INSERT INTO ' + target_table + ' (id, room_num, old_num, location_type, description) VALUES (?,?,?,?,?) ', restore_row )
 
         # Clean up removed object
-        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) );
+        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
 
         # Log activity
         facility_id = facility_name_to_id( facility )
