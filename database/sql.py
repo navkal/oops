@@ -1884,8 +1884,8 @@ class restoreRemovedObject:
                 restore_desc_row.pop()
                 restore_desc_row.pop()
                 restore_desc_row[1] = restore_desc_path
-                restore_desc_row[10] = restore_desc_search_result
-                restore_desc_row[11] = restore_desc_source
+                restore_desc_row[11] = restore_desc_search_result
+                restore_desc_row[12] = restore_desc_source
                 cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_ROW + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_desc_row ) )
 
             # Get descendant devices
