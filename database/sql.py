@@ -1508,6 +1508,21 @@ class removeDistributionObject:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
         self.removed_object_ids = [id]
 
+
+        co_parent_ids = [id]
+        for co_parent_id in co_parent_ids:
+            self.remove_attachments( co_parent_id, remove_id, path, object_type, target_table, removed_table, facility )
+
+        # Log activity
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
+
+        conn.commit()
+
+
+    def remove_attachments( self, id, remove_id, path, object_type, target_table, removed_table, facility ):
+
         # Retrieve all devices attached to removed object
         dev_table = facility + '_Device'
         cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( id,) )
@@ -1549,13 +1564,6 @@ class removeDistributionObject:
                 device_id = dev[0]
                 cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *dev, remove_id ) )
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
-
-        conn.commit()
 
 
 class removeDevice:
