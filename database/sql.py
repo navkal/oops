@@ -209,7 +209,8 @@ def test_path_availability( target_table, parent_id, tail ):
     return ( test_id, path, source )
 
 
-def test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id ):
+def test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, allowed_id ):
+
     parent_path = None
     phase_b_tail = None
     phase_c_tail = None
@@ -217,12 +218,18 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
     if object_type in [ 'Panel', 'Transformer' ]:
 
         # Determine whether parent is already in use
-        cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( parent_id, parent_id, parent_id, ) )
-        count = cur.fetchone()[0]
+        cur.execute( 'SELECT id FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( parent_id, parent_id, parent_id, ) )
+        id_rows = cur.fetchall()
+        count = len( id_rows )
+
+        if allowed_id and ( count == 1 ):
+            count = 0
+
         if count == 0:
             # Check whether parent is in use by a device
             cur.execute( 'SELECT COUNT(*) FROM ' + device_table + ' WHERE parent_id=?', ( parent_id, ) )
             count = cur.fetchone()[0]
+
         if count > 0:
             # Report parent path as unavailable
             cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) )
@@ -230,12 +237,18 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
 
         if phase_b_parent_id:
             # Determine whether Phase B parent is available
-            cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( phase_b_parent_id, phase_b_parent_id, phase_b_parent_id, ) )
-            count = cur.fetchone()[0]
+            cur.execute( 'SELECT id FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( phase_b_parent_id, phase_b_parent_id, phase_b_parent_id, ) )
+            id_rows = cur.fetchall()
+            count = len( id_rows )
+
+            if allowed_id and ( count == 1 ):
+                count = 0
+
             if count == 0:
                 # Check whether Phase B parent is in use by a device
                 cur.execute( 'SELECT COUNT(*) FROM ' + device_table + ' WHERE parent_id=?', ( phase_b_parent_id, ) )
                 count = cur.fetchone()[0]
+
             if count > 0:
                 # Report Phase B parent as unavailable
                 cur.execute( 'SELECT tail FROM ' + target_table + ' WHERE id=?', ( phase_b_parent_id, ) )
@@ -243,12 +256,18 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
 
         if phase_c_parent_id:
             # Determine whether Phase C parent is available
-            cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( phase_c_parent_id, phase_c_parent_id, phase_c_parent_id, ) )
-            count = cur.fetchone()[0]
+            cur.execute( 'SELECT id FROM ' + target_table + ' WHERE parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?', ( phase_c_parent_id, phase_c_parent_id, phase_c_parent_id, ) )
+            id_rows = cur.fetchall()
+            count = len( id_rows )
+
+            if allowed_id and ( count == 1 ):
+                count = 0
+
             if count == 0:
                 # Check whether Phase C parent is in use by a device
                 cur.execute( 'SELECT COUNT(*) FROM ' + device_table + ' WHERE parent_id=?', ( phase_c_parent_id, ) )
                 count = cur.fetchone()[0]
+
             if count > 0:
                 # Report Phase C parent as unavailable
                 cur.execute( 'SELECT tail FROM ' + target_table + ' WHERE id=?', (phase_c_parent_id,) )
@@ -1160,7 +1179,7 @@ class addDistributionObject:
         if len( self.messages ) == 0:
             # Determine whether parent and B/C connections are available
             device_table = facility + '_Device'
-            ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id )
+            ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, None )
             if parent_path:
                 self.messages.append( "Parent '" + parent_path + "' is not available." )
                 self.selectors.append( '#parent_path' )
