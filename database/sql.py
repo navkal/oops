@@ -1508,10 +1508,18 @@ class removeDistributionObject:
         cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
         self.removed_object_ids = [id]
 
+        if object_type == 'Circuit':
+            # Remove circuits that converge in Phase A/B/C connection
+            sibling_root_ids = []
+        else:
+            sibling_root_ids = []
 
-        co_parent_ids = [id]
-        for co_parent_id in co_parent_ids:
-            self.remove_attachments( co_parent_id, remove_id, path, object_type, target_table, removed_table, facility )
+        # Initialize array of subtree roots to be removed
+        convergent_root_ids = [id] + sibling_root_ids
+
+        # Remove attachments under all roots
+        for root_id in convergent_root_ids:
+            self.remove_attachments( root_id, remove_id, path, object_type, target_table, removed_table, facility )
 
         # Log activity
         facility_id = facility_name_to_id( facility )
