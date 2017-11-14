@@ -611,10 +611,19 @@
       }
     }
 
-    if ( ( sName.length > 0 ) && ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
+    if ( sName.length > 0 )
     {
-      aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
-      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+      if ( sName.match( /^\d+$/ ) )
+      {
+        aMessages.push( 'Name must contain at least one non-digit character.' );
+        $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
+
+      if ( ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
+      {
+        aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
+        $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
     }
 
     if ( $( '#room_id' ).val() == null )
