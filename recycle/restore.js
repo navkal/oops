@@ -517,6 +517,6 @@ function restoreDone( tRsp, sStatus, tJqXhr )
     $( '#restoreDialog' ).modal( 'hide' );
 
     // Remove the row from the table
-    removeRow( tRsp.id );
+    removeRow( tRsp.id, true );
   }
 }

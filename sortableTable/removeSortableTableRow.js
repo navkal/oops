@@ -86,11 +86,11 @@ function removeDone( tRsp, sStatus, tJqXhr )
   for ( var iIndex in aIds )
   {
     var sId = aIds[iIndex];
-    removeRow( sId );
+    removeRow( sId, iIndex == ( aIds.length - 1 ) );
   }
 }
 
-function removeRow( sId )
+function removeRow( sId, bUpdate )
 {
   var iRow = g_tRowMap[sId];
 
@@ -137,17 +137,20 @@ function removeRow( sId )
     // Remove row from display
     $( '#sortableTableBody tr[object_id="' + sId + '"]' ).remove();
 
-    // Update the table
-    $( '#sortableTable' ).trigger( 'update', [true] );
-
-    // If table is empty, show empty message
-    if ( $( '#sortableTableBody tr' ).length == 0 )
+    if ( bUpdate )
     {
-      $( '#sortableTable' ).hide();
-      $( '#sortableTableIsEmpty' ).show();
-    }
+      // Update the table
+      $( '#sortableTable' ).trigger( 'update', [true] );
 
-    renumberIndex();
+      // If table is empty, show empty message
+      if ( $( '#sortableTableBody tr' ).length == 0 )
+      {
+        $( '#sortableTable' ).hide();
+        $( '#sortableTableIsEmpty' ).show();
+      }
+
+      renumberIndex();
+    }
   }
   else
   {
