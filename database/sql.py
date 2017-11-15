@@ -1475,11 +1475,10 @@ class removeDistributionObject:
         # Get row to be deleted
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
-        row = cur.fetchone()
-        path = row[1]
-        parent_id = row[4]
-        room_id = row[8]
-        object_type = row[14]
+        target_row = cur.fetchone()
+        parent_id = target_row[4]
+        room_id = target_row[8]
+        object_type = target_row[14]
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
@@ -1496,30 +1495,51 @@ class removeDistributionObject:
         cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
-        # Insert target object in table of removed objects
-        removed_table = facility + '_Removed_Distribution'
-        row = list( row )
-        row.pop()
-        row.pop()
-        row = tuple( row )
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+        # Initialize list of root rows to be deleted
+        root_rows = [target_row]
 
-        # Delete target object
-        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
-        self.removed_object_ids = [id]
-
+        # Get additional root rows if target is circuit that converges in a phase connection
         if object_type == 'Circuit':
-            # Remove circuits that converge in Phase A/B/C connection
-            sibling_root_ids = []
-        else:
-            sibling_root_ids = []
+            # Get children of target object (actual or by phase B/C connection)
+            select_from_distribution( table=target_table, fields='parent_id, phase_b_parent_id, phase_c_parent_id', condition=('parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?'), params=(id,id,id,) )
+            child_rows = cur.fetchall()
 
-        # Initialize array of subtree roots to be removed
-        convergent_root_ids = [id] + sibling_root_ids
+            # If target object has only one child, set root rows to include all of the child's parents (actual and phase B/C, if any)
+            if len( child_rows ) == 1:
+                converged_row = child_rows[0]
+                phase_a_parent_id = converged_row[0]
+                phase_b_parent_id = converged_row[1]
+                phase_c_parent_id = converged_row[2]
+                select_from_distribution( table=target_table, condition=(target_table + '.id=? OR ' + target_table + '.id=? OR ' + target_table + '.id=?'), params=(phase_a_parent_id, phase_b_parent_id, phase_c_parent_id,) )
+                root_rows = cur.fetchall()
 
-        # Remove attachments under all roots
-        for root_id in convergent_root_ids:
+
+        # Initialize list of removed object IDs
+        self.removed_object_ids = []
+
+        # Iterate over root objects. Remove them and all their attachments.
+        for row in root_rows:
+            root_id = row[0]
+            path = row[1]
+            object_type = row[14]
+
+            # Insert target object in table of removed objects
+            removed_table = facility + '_Removed_Distribution'
+            row = list( row )
+            row.pop()
+            row.pop()
+            row = tuple( row )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+
+            # Delete target object
+            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( root_id, ) )
+
+            # Save ID in array
+            self.removed_object_ids.append( root_id )
+
+            # Remove attachments under the current root
             self.remove_attachments( root_id, remove_id, path, object_type, target_table, removed_table, facility )
+
 
         # Log activity
         facility_id = facility_name_to_id( facility )
