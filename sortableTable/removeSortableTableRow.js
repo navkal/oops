@@ -140,16 +140,7 @@ function removeRow( sId, bUpdate )
     if ( bUpdate )
     {
       // Update the table
-      $( '#sortableTable' ).trigger( 'update', [true] );
-
-      // If table is empty, show empty message
-      if ( $( '#sortableTableBody tr' ).length == 0 )
-      {
-        $( '#sortableTable' ).hide();
-        $( '#sortableTableIsEmpty' ).show();
-      }
-
-      renumberIndex();
+      $( '#sortableTable' ).trigger( 'update', [true, function(){ renumberIndex(); } ] );
     }
   }
   else

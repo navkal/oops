@@ -124,10 +124,7 @@ function updateSortableTable( tRsp )
   if ( bTableHasAllColumns && columnFiltersValid() && ! updateEmptyColumns() )
   {
     // Update the table
-    $( '#sortableTable' ).trigger( 'update', [true] );
-
-    // Renumber the index column
-    renumberIndex();
+    $( '#sortableTable' ).trigger( 'update', [true, function(){ renumberIndex(); } ] );
   }
   else
   {
