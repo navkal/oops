@@ -85,7 +85,7 @@ function removeDone( tRsp, sStatus, tJqXhr )
   var aIds = tRsp.removed_object_ids;
   for ( var iIndex in aIds )
   {
-    sId = aIds[iIndex];
+    var sId = aIds[iIndex];
     removeRow( sId );
   }
 }
