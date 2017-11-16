@@ -13,6 +13,12 @@ function initRestoreDialog( sRestoreId )
 {
   g_sRestoreId = sRestoreId;
 
+  g_tRestoreRow = findSortableTableRow( g_sRestoreId );
+  $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( 'Restore ' + g_tRestoreRow.remove_object_type );
+  $( '#timestamp' ).val( formatTimestamp( g_tRestoreRow.timestamp ) );
+  $( '#remove_comment' ).val( g_tRestoreRow.remove_comment );
+  $( '#restoreFields' ).html( '' );
+
   showSpinner();
 
   getRestoreDropdowns();
@@ -34,24 +40,13 @@ function getRestoreDropdowns()
       data: tPostData
     }
   )
-  .done( loadRestoreDialog )
+  .done( loadCustomFields )
   .fail( handleAjaxError );
 }
 
-function loadRestoreDialog( tRsp, sStatus, tJqXhr )
+function loadCustomFields( tRsp, sStatus, tJqXhr )
 {
-  // Set operation labels
-  g_tRestoreRow = findSortableTableRow( g_sRestoreId );
-  var sLabel = 'Restore ' + g_tRestoreRow.remove_object_type;
-  $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( sLabel );
-
-  // Initialize common field values
-  sTimestamp = formatTimestamp( g_tRestoreRow.timestamp );
-  $( '#timestamp' ).val( sTimestamp );
-  $( '#remove_comment' ).val( g_tRestoreRow.remove_comment );
-
   // Show fields applicable to the object type
-  $( '#restoreFields' ).html( '' );
   switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
@@ -86,6 +81,20 @@ function initDistributionObjectFields()
       '<label for="' + g_sParentIdId + '"></label>' +
       '<div>' +
         '<select id="' + g_sParentIdId + '" class="form-control" style="width: 100%" ></select>' +
+      '</div>' +
+    '</div>';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="phase_b_tail"></label>' +
+      '<div id="phase_b_tail_container" >' +
+        '<select id="phase_b_tail" class="form-control" style="width: 100%" ></select>' +
+      '</div>' +
+    '</div>';
+  sHtml +=
+    '<div class="form-group">' +
+      '<label for="phase_c_tail"></label>' +
+      '<div id="phase_c_tail_container" >' +
+        '<select id="phase_c_tail" class="form-control" style="width: 100%" ></select>' +
       '</div>' +
     '</div>';
   sHtml +=
@@ -195,6 +204,7 @@ function makeDropdowns( tRsp )
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
   $( '#' + g_sParentIdId ).val( g_tRestoreRow.fields.parent_id );
 
+  makePhaseDropdowns( aParents, g_tRestoreRow.fields.parent_id, g_tRestoreRow.fields.phase_b_parent_id )
 
   // Generate location dropdown
   var sHtmlLocation = ( g_tRestoreRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';
@@ -208,8 +218,11 @@ function makeDropdowns( tRsp )
   $( '#room_id' ).val( g_tRestoreRow.fields.room_id );
 
   // Initialize select2 objects
+  $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_tRestoreRow.remove_object_type == 'Circuit' ) ? 'none' : 'block' );
   $.fn.select2.defaults.set( 'theme', 'bootstrap' );
   $( '#' + g_sParentIdId ).select2( { placeholder: ( g_tRestoreRow.remove_object_type == 'Device' ) ? 'Circuit' : 'Parent' } );
+  $( '#phase_b_tail' ).select2( { placeholder: g_tPropertyRules['phase_b_tail'].label } );
+  $( '#phase_c_tail' ).select2( { placeholder: g_tPropertyRules['phase_c_tail'].label } );
   $( '#room_id' ).select2( { placeholder: 'Location' } );
 }
 

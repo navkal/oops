@@ -318,72 +318,7 @@
     // Restore parent selection, if possible
     $( '#parent_path' ).val( sParentVal );
 
-    makePhaseDropdowns( g_sParentId, g_sPhaseBParentId );
-  }
-
-  function makePhaseDropdowns( sParentId, sPhaseBParentId )
-  {
-    var tParent = null;
-
-    if ( sParentId )
-    {
-      tParent = g_tDropdowns.parents.find(
-        function( tParent )
-        {
-          return tParent.id == sParentId
-        }
-      );
-    }
-
-    if ( tParent && tParent.make_phase_dropdowns )
-    {
-      var sParentPath = tParent.text;
-      var sGrannyPath = getGrannyPath( sParentPath );
-
-      var aSiblings = g_tDropdowns.parents.filter(
-        function ( tParent )
-        {
-          return ( tParent.text != sParentPath ) && ( getGrannyPath( tParent.text ) == sGrannyPath );
-        }
-      );
-
-      if ( aSiblings.length )
-      {
-        // Load siblings into dropdowns
-        var sHtmlPhase = '<option value="0" >[none]</option>';
-        for ( var iSibling in aSiblings )
-        {
-          var tSibling = aSiblings[iSibling];
-          sHtmlPhase += '<option value="' + tSibling.id + '" >' + tSibling.text.split( '.' ).pop() + '</option>';
-        }
-        $( '#phase_b_tail, #phase_c_tail' ).html( sHtmlPhase );
-
-        // Enable/disable phase dropdowns
-        $( '#phase_b_tail' ).prop( 'disabled', false );
-        updatePhaseCDropdown( sPhaseBParentId );
-      }
-      else
-      {
-        // No siblings
-        $( '#phase_b_tail, #phase_c_tail' ).html( '' );
-        $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', true );
-      }
-    }
-    else
-    {
-      // Disable phase dropdowns
-      $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', true );
-    }
-
-    // Clear phase selections
-    $( '#phase_b_tail' ).val( 0 ).trigger( 'change' );
-  }
-
-  function getGrannyPath( sParentPath )
-  {
-    var aParentPath = sParentPath.split( '.' );
-    aParentPath.pop();
-    return aParentPath.join( '.' );
+    makePhaseDropdowns( g_tDropdowns.parents, g_sParentId, g_sPhaseBParentId );
   }
 
   function onShownEditDialog()
@@ -445,7 +380,7 @@
             $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
           }
 
-          makePhaseDropdowns( sVal, $( '#phase_b_tail' ).val() );
+          makePhaseDropdowns( g_tDropdowns.parents, sVal, $( '#phase_b_tail' ).val() );
           break;
 
         case 'phase_b_tail':
@@ -470,20 +405,6 @@
 
     // Set flag
     g_bChanged = true;
-  }
-
-  // Update state of Phase C dropdown
-  function updatePhaseCDropdown( sPhaseBParentId )
-  {
-    if ( Number( sPhaseBParentId ) )
-    {
-      $( '#phase_c_tail' ).prop( 'disabled', false );
-    }
-    else
-    {
-      $( '#phase_c_tail' ).prop( 'disabled', true );
-      $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
-    }
   }
 
   // Show selected filename in input field
