@@ -55,7 +55,7 @@ function getSortableTable()
 }
 
 // Load sortable table onto page
-var g_iStartRenderingTime = null;
+var g_iStartGeneratingTime = null;
 function loadSortableTable( tRsp, sStatus, tJqXhr )
 {
   if ( g_iStartRetrievalTime )
@@ -63,7 +63,7 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
     console.log( '=> Time to retrieve sortable table: ' + ( Date.now() - g_iStartRetrievalTime ) + ' ms' );
   }
 
-  g_iStartRenderingTime = Date.now();
+  g_iStartGeneratingTime = Date.now();
 
   g_aSortableTableRows = tRsp['rows'];
 
@@ -422,8 +422,12 @@ var g_tControlParser =
 
 
 // Style table to support sort, filter, and dynamic update
+g_iStartStylingTime = null;
 function styleTable( sId )
 {
+  console.log( '=> Time to generate sortable table HTML: ' + ( Date.now() - g_iStartGeneratingTime ) + ' ms' );
+  g_iStartStylingTime = Date.now();
+
   var tTable =  sId ? $( "#" + sId ) : $( 'table' );
   if ( tTable.length > 0 )
   {
@@ -504,7 +508,7 @@ function onSortableTableReady( tEvent )
   );
   tTable.trigger( 'update', [true] );
 
-  console.log( '=> Time to render sortable table: ' + ( Date.now() - g_iStartRenderingTime ) + ' ms' );
+  console.log( '=> Time to style sortable table: ' + ( Date.now() - g_iStartStylingTime ) + ' ms' );
 }
 
 function renumberIndex()
