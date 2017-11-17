@@ -414,6 +414,15 @@ function validateInput()
         aMessages.push( 'Parent is required' );
         $( '#' + g_sParentIdId ).closest( '.form-group' ).addClass( 'has-error' );
       }
+
+      var iPhaseBParentId = Number( $( '#phase_b_tail' ).val() );
+      var iPhaseCParentId = Number( $( '#phase_c_tail' ).val() );
+      if ( iPhaseBParentId && ( iPhaseBParentId == iPhaseCParentId ) )
+      {
+        aMessages.push( 'Phase B Connection and Phase C Connection must be unique' );
+        $( '#phase_b_tail' ).closest( '.form-group' ).addClass( 'has-error' );
+        $( '#phase_c_tail' ).closest( '.form-group' ).addClass( 'has-error' );
+      }
       break;
 
     case 'Device':
