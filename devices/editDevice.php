@@ -238,14 +238,7 @@
   function validateInput()
   {
     clearMessages();
-    var aMessages = [];
-
-    if ( $( '#source_path' ).val() == null )
-    {
-      aMessages.push( 'Circuit is required' );
-      $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
+    var aMessages = validateDeviceInput();
     showMessages( aMessages );
     return ( aMessages.length == 0 );
   }

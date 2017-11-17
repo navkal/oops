@@ -438,3 +438,16 @@ function requireLocation()
 
   return aMessages;
 }
+
+function validateDeviceInput()
+{
+  var aMessages = [];
+
+  if ( $( '#source_path' ).val() == null )
+  {
+    aMessages.push( 'Circuit is required' );
+    $( '#source_path' ).closest( '.form-group' ).addClass( 'has-error' );
+  }
+
+  return aMessages;
+}

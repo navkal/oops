@@ -468,8 +468,7 @@
   {
     clearMessages();
 
-    var aMessages = [];
-    aMessages = aMessages.concat( validateDistributionObjectInput( g_sSortableTableEditWhat ) );
+    var aMessages = validateDistributionObjectInput( g_sSortableTableEditWhat );
     showMessages( aMessages );
 
     return ( aMessages.length == 0 );

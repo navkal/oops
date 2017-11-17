@@ -408,15 +408,11 @@ function validateInput()
     case 'Panel':
     case 'Transformer':
     case 'Circuit':
-      aMessages = aMessages.concat( validateDistributionObjectInput( g_tRestoreRow.remove_object_type ) );
+      aMessages = validateDistributionObjectInput( g_tRestoreRow.remove_object_type );
       break;
 
     case 'Device':
-      if ( $( '#' + g_sParentIdId ).val() == null )
-      {
-        aMessages.push( 'Circuit is required' );
-        $( '#' + g_sParentIdId ).closest( '.form-group' ).addClass( 'has-error' );
-      }
+      aMessages = validateDeviceInput();
       break;
 
     case 'Location':
