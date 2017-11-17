@@ -368,6 +368,12 @@ function onSubmitRestoreDialog()
         var sHyphen = ( sNumber && sName ) ? '-' : '';
         tPostData.append( 'tail', sNumber + sHyphen + sName );
 
+        var sPhaseVal = $( '#phase_b_tail' ).val();
+        tPostData.append( 'phase_b_parent_id', ( ( sPhaseVal == null ) || ( sPhaseVal == '0' ) ) ? '' : sPhaseVal );
+
+        var sPhaseVal = $( '#phase_c_tail' ).val();
+        tPostData.append( 'phase_c_parent_id', ( ( sPhaseVal == null ) || ( sPhaseVal == '0' ) ) ? '' : sPhaseVal );
+
         // NO BREAK !!!  Continue into 'Device' case...
 
       case 'Device':
