@@ -205,6 +205,8 @@ function makeDropdowns( tRsp )
   $( '#' + g_sParentIdId ).val( g_tRestoreRow.fields.parent_id );
 
   makePhaseDropdowns( aParents, g_tRestoreRow.fields.parent_id, g_tRestoreRow.fields.phase_b_parent_id )
+  $( '#phase_b_tail' ).val( g_tRestoreRow.fields.phase_b_parent_id );
+  $( '#phase_c_tail' ).val( g_tRestoreRow.fields.phase_c_parent_id );
 
   // Generate location dropdown
   var sHtmlLocation = ( g_tRestoreRow.remove_object_type == 'Device' ) ? '<option value="0" >[none]</option>' : '';

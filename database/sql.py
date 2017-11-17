@@ -758,6 +758,8 @@ class sortableTable:
                     select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
                     ptc_row = cur.fetchone()
                     parent_id = ptc_row[4]
+                    phase_b_parent_id = ptc_row[5]
+                    phase_c_parent_id = ptc_row[6]
                     voltage_id = ptc_row[7]
                     room_id = ptc_row[8]
                     description = ptc_row[9]
@@ -766,7 +768,7 @@ class sortableTable:
                     path = parent_path + '.' + tail
                     ( number, name ) = tail_to_number_name( tail )
 
-                    fields = { 'parent_id': parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
+                    fields = { 'parent_id': parent_id, 'phase_b_parent_id': phase_b_parent_id, 'phase_c_parent_id': phase_c_parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
 
                     ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_distribution_object_label( ptc )
