@@ -211,3 +211,83 @@ function updateRow( tRspRow, aRspDescendants )
     $( '#sortableTableBody tr[object_id="' + tRspRow.id + '"]' ).replaceWith( sHtml );
   }
 }
+
+function makePhaseDropdowns( aParents, sParentId, sPhaseBParentId )
+{
+  var tParent = null;
+
+  if ( sParentId )
+  {
+    tParent = aParents.find(
+      function( tParent )
+      {
+        return tParent.id == sParentId
+      }
+    );
+  }
+
+  if ( tParent && tParent.make_phase_dropdowns )
+  {
+    var sParentPath = tParent.text;
+    var sGrannyPath = getGrannyPath( sParentPath );
+
+    var aSiblings = aParents.filter(
+      function ( tParent )
+      {
+        return ( tParent.text != sParentPath ) && ( getGrannyPath( tParent.text ) == sGrannyPath );
+      }
+    );
+
+    if ( aSiblings.length )
+    {
+      // Load siblings into dropdowns
+      var sHtmlPhase = '<option value="0" >[none]</option>';
+      for ( var iSibling in aSiblings )
+      {
+        var tSibling = aSiblings[iSibling];
+        sHtmlPhase += '<option value="' + tSibling.id + '" >' + tSibling.text.split( '.' ).pop() + '</option>';
+      }
+      $( '#phase_b_tail, #phase_c_tail' ).html( sHtmlPhase );
+
+      // Enable/disable phase dropdowns
+      $( '#phase_b_tail' ).prop( 'disabled', false );
+      updatePhaseCDropdown( sPhaseBParentId );
+    }
+    else
+    {
+      // No siblings
+      $( '#phase_b_tail, #phase_c_tail' ).html( '' );
+      $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', true );
+    }
+  }
+  else
+  {
+    // Disable phase dropdowns
+    $( '#phase_b_tail, #phase_c_tail' ).prop( 'disabled', true );
+  }
+
+  // Clear phase selections
+  $( '#phase_b_tail' ).val( 0 ).trigger( 'change' );
+}
+
+function getGrannyPath( sParentPath )
+{
+  var aParentPath = sParentPath.split( '.' );
+  aParentPath.pop();
+  return aParentPath.join( '.' );
+}
+
+// Update state of Phase C dropdown
+function updatePhaseCDropdown( sPhaseBParentId )
+{
+  if ( Number( sPhaseBParentId ) )
+  {
+    $( '#phase_c_tail' ).prop( 'disabled', false );
+  }
+  else
+  {
+    $( '#phase_c_tail' ).prop( 'disabled', true );
+    $( '#phase_c_tail' ).val( 0 ).trigger( 'change' );
+  }
+}
+

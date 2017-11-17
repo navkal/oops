@@ -5,10 +5,6 @@ var g_tRestoreRow = null;
 var g_sParentIdId = null;
 
 
-// Set dialog 'shown' handler
-$( '#restoreDialog' ).on( 'shown.bs.modal', onShownRestoreDialog );
-
-
 function initRestoreDialog( sRestoreId )
 {
   g_sRestoreId = sRestoreId;
@@ -277,12 +273,11 @@ function finishInit()
 
   // Clear messages
   clearMessages();
-}
 
-function onShownRestoreDialog()
-{
   // Allow user to select text in select2 rendering
   allowSelect2SelectText( g_sParentIdId );
+  allowSelect2SelectText( 'phase_b_tail' );
+  allowSelect2SelectText( 'phase_c_tail' );
   allowSelect2SelectText( 'room_id' );
 
   // Set handler to focus on select2 object after user sets value
