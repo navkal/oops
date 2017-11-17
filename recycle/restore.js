@@ -403,26 +403,12 @@ function validateInput()
   clearMessages();
   var aMessages = [];
 
-  // Require parent
   switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
     case 'Transformer':
     case 'Circuit':
-      if ( $( '#' + g_sParentIdId ).val() == null )
-      {
-        aMessages.push( 'Parent is required' );
-        $( '#' + g_sParentIdId ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-
-      var iPhaseBParentId = Number( $( '#phase_b_tail' ).val() );
-      var iPhaseCParentId = Number( $( '#phase_c_tail' ).val() );
-      if ( iPhaseBParentId && ( iPhaseBParentId == iPhaseCParentId ) )
-      {
-        aMessages.push( 'Phase B Connection and Phase C Connection must be unique' );
-        $( '#phase_b_tail' ).closest( '.form-group' ).addClass( 'has-error' );
-        $( '#phase_c_tail' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
+      aMessages = aMessages.concat( validateDistributionObjectInput( g_tRestoreRow.remove_object_type ) );
       break;
 
     case 'Device':
@@ -433,88 +419,6 @@ function validateInput()
       }
       break;
 
-    case 'Location':
-    default:
-      // Do nothing
-      break;
-  }
-
-  // Require elements of tail
-  var sNumber = $( '#number' ).val();
-  var sName = $( '#name' ).val();
-  switch( g_tRestoreRow.remove_object_type )
-  {
-    case 'Panel':
-    case 'Transformer':
-        if ( ! sName )
-        {
-          aMessages.push( 'Name is required' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-      break;
-
-    case 'Circuit':
-        if ( ! sNumber && ! sName )
-        {
-          aMessages.push( 'Number or Name is required' );
-          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-      break;
-
-    case 'Device':
-    case 'Location':
-    default:
-      // Do nothing
-      break;
-  }
-
-  // Check tail syntax and require location
-  switch( g_tRestoreRow.remove_object_type )
-  {
-    case 'Panel':
-    case 'Transformer':
-    case 'Circuit':
-
-      if ( sNumber.length > 0 )
-      {
-        if ( ! sNumber.match( /^\d+$/ ) )
-        {
-          aMessages.push( 'Number can contain only digits.' );
-          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-
-        if ( parseInt( sNumber ) == 0 )
-        {
-          aMessages.push( 'Number must be an integer value between 1 and 9999.' );
-          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-      }
-
-      if ( sName.length > 0 )
-      {
-        if ( sName.match( /^\d+$/ ) )
-        {
-          aMessages.push( 'Name must contain at least one non-digit character.' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-
-        if ( ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
-        {
-          aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-      }
-
-      if ( $( '#room_id' ).val() == null )
-      {
-        aMessages.push( 'Location is required' );
-        $( '#room_id' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-
-      break;
-
-    case 'Device':
     case 'Location':
     default:
       // Do nothing

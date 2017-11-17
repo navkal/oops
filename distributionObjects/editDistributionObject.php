@@ -467,93 +467,11 @@
   function validateInput()
   {
     clearMessages();
+
     var aMessages = [];
-
-    if ( $( '#voltage' ).val() == null )
-    {
-      aMessages.push( 'Voltage is required' );
-      $( '#voltage' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
-    if ( ( $( '#parent_path' ).val() == null ) && ( $( '#parent_path option' ).length > 0 ) )
-    {
-      aMessages.push( 'Parent is required' );
-      $( '#parent_path' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
-    var iPhaseBParentId = Number( $( '#phase_b_tail' ).val() );
-    var iPhaseCParentId = Number( $( '#phase_c_tail' ).val() );
-    if ( iPhaseBParentId && ( iPhaseBParentId == iPhaseCParentId ) )
-    {
-      aMessages.push( 'Phase B Connection and Phase C Connection must be unique' );
-      $( '#phase_b_tail' ).closest( '.form-group' ).addClass( 'has-error' );
-      $( '#phase_c_tail' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
-    var sNumber = $( '#number' ).val();
-    var sName = $( '#name' ).val();
-    switch( g_sSortableTableEditWhat )
-    {
-      case 'Circuit':
-        if ( ! sNumber && ! sName )
-        {
-          aMessages.push( 'Number or Name is required' );
-          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-        break;
-
-      case 'Panel':
-      case 'Transformer':
-        if ( ! sName )
-        {
-          aMessages.push( 'Name is required' );
-          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-        }
-        break;
-
-      default:
-        aMessages.push( "Unrecognized Distribution Object type '" + g_sSortableTableEditWhat + "'" );
-        break;
-    }
-
-    if ( sNumber.length > 0 )
-    {
-      if ( ! sNumber.match( /^\d+$/ ) )
-      {
-        aMessages.push( 'Number can contain only digits.' );
-        $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-
-      if ( parseInt( sNumber ) == 0 )
-      {
-        aMessages.push( 'Number must be an integer value between 1 and 9999.' );
-        $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-    }
-
-    if ( sName.length > 0 )
-    {
-      if ( sName.match( /^\d+$/ ) )
-      {
-        aMessages.push( 'Name must contain at least one non-digit character.' );
-        $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-
-      if ( ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
-      {
-        aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
-        $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
-      }
-    }
-
-    if ( $( '#room_id' ).val() == null )
-    {
-      aMessages.push( 'Location is required' );
-      $( '#room_id' ).closest( '.form-group' ).addClass( 'has-error' );
-    }
-
+    aMessages = aMessages.concat( validateDistributionObjectInput( g_sSortableTableEditWhat ) );
     showMessages( aMessages );
+
     return ( aMessages.length == 0 );
   }
 </script>

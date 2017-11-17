@@ -291,3 +291,150 @@ function updatePhaseCDropdown( sPhaseBParentId )
   }
 }
 
+function validateDistributionObjectInput( sType )
+{
+  var aMessages = [];
+
+  aMessages = aMessages.concat( requireVoltage() );
+  aMessages = aMessages.concat( requireParent() );
+  aMessages = aMessages.concat( validatePhaseParents() );
+  aMessages = aMessages.concat( requireTail( sType ) );
+  aMessages = aMessages.concat( validateNumber() );
+  aMessages = aMessages.concat( validateName() );
+  aMessages = aMessages.concat( requireLocation() );
+
+  return aMessages;
+}
+
+function requireVoltage()
+{
+  var aMessages = [];
+
+  if ( ( $( '#voltage' ).val() == null ) && ( $( '#voltage option' ).length > 0 ) )
+  {
+    aMessages.push( 'Voltage is required' );
+    $( '#voltage' ).closest( '.form-group' ).addClass( 'has-error' );
+  }
+
+  return aMessages;
+}
+
+function requireParent()
+{
+  var aMessages = [];
+
+  if ( ( $( '#parent_path' ).val() == null ) && ( $( '#parent_path option' ).length > 0 ) )
+  {
+    aMessages.push( 'Parent is required' );
+    $( '#parent_path' ).closest( '.form-group' ).addClass( 'has-error' );
+  }
+
+  return aMessages;
+}
+
+function validatePhaseParents()
+{
+  var aMessages = [];
+
+  var iPhaseBParentId = Number( $( '#phase_b_tail' ).val() );
+  var iPhaseCParentId = Number( $( '#phase_c_tail' ).val() );
+  if ( iPhaseBParentId && ( iPhaseBParentId == iPhaseCParentId ) )
+  {
+    aMessages.push( 'Phase B Connection and Phase C Connection must be unique' );
+    $( '#phase_b_tail' ).closest( '.form-group' ).addClass( 'has-error' );
+    $( '#phase_c_tail' ).closest( '.form-group' ).addClass( 'has-error' );
+  }
+
+  return aMessages;
+}
+
+function requireTail( sType )
+{
+  var aMessages = [];
+
+  var sNumber = $( '#number' ).val();
+  var sName = $( '#name' ).val();
+
+  switch( sType )
+  {
+    case 'Panel':
+    case 'Transformer':
+        if ( ! sName )
+        {
+          aMessages.push( 'Name is required' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+      break;
+
+    case 'Circuit':
+        if ( ! sNumber && ! sName )
+        {
+          aMessages.push( 'Number or Name is required' );
+          $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+          $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+        }
+      break;
+  }
+
+  return aMessages;
+}
+
+function validateNumber()
+{
+  var aMessages = [];
+
+  var sNumber = $( '#number' ).val();
+  if ( sNumber.length > 0 )
+  {
+    if ( ! sNumber.match( /^\d+$/ ) )
+    {
+      aMessages.push( 'Number can contain only digits.' );
+      $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( parseInt( sNumber ) == 0 )
+    {
+      aMessages.push( 'Number must be an integer value between 1 and 9999.' );
+      $( '#number' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+  }
+
+  return aMessages;
+}
+
+function validateName( sName )
+{
+  var aMessages = [];
+
+  var sName = $( '#name' ).val();
+
+  if ( sName.length > 0 )
+  {
+    if ( sName.match( /^\d+$/ ) )
+    {
+      aMessages.push( 'Name must contain at least one non-digit character.' );
+      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( ! sName.match( /^[a-zA-Z0-9\-_]+$/ ) )
+    {
+      aMessages.push( 'Name can contain only alphanumeric, hyphen, and underscore characters.' );
+      $( '#name' ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+  }
+
+  return aMessages;
+}
+
+function requireLocation()
+{
+  var aMessages = [];
+
+  if ( $( '#room_id' ).val() == null )
+  {
+    aMessages.push( 'Location is required' );
+    $( '#room_id' ).closest( '.form-group' ).addClass( 'has-error' );
+  }
+
+  return aMessages;
+}
