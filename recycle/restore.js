@@ -3,6 +3,7 @@
 var g_sRestoreId = null;
 var g_tRestoreRow = null;
 var g_sParentIdId = null;
+var g_aParents = null;
 
 
 function initRestoreDialog( sRestoreId )
@@ -152,26 +153,26 @@ function makeDropdowns( tRsp )
 {
   // Generate parent dropdown
   var sHtmlParentPath = '';
-  var aParents = null;
+
   switch( g_tRestoreRow.remove_object_type )
   {
     case 'Panel':
-      aParents = tRsp.panel_parents;
+      g_aParents = tRsp.panel_parents;
       break;
     case 'Transformer':
-      aParents = tRsp.transformer_parents;
+      g_aParents = tRsp.transformer_parents;
       break;
     case 'Circuit':
-      aParents = tRsp.circuit_parents;
+      g_aParents = tRsp.circuit_parents;
       break;
     case 'Device':
-      aParents = tRsp.device_parents;
+      g_aParents = tRsp.device_parents;
       break;
   }
 
-  for ( var iParent in aParents )
+  for ( var iParent in g_aParents )
   {
-    var tParent = aParents[iParent];
+    var tParent = g_aParents[iParent];
     var bParentAllowed = null;
 
     switch( g_tRestoreRow.remove_object_type )
@@ -200,7 +201,7 @@ function makeDropdowns( tRsp )
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
   $( '#' + g_sParentIdId ).val( g_tRestoreRow.fields.parent_id );
 
-  makePhaseDropdowns( aParents, g_tRestoreRow.fields.parent_id, g_tRestoreRow.fields.phase_b_parent_id )
+  makePhaseDropdowns( g_aParents, g_tRestoreRow.fields.parent_id, g_tRestoreRow.fields.phase_b_parent_id )
   $( '#phase_b_tail' ).val( g_tRestoreRow.fields.phase_b_parent_id );
   $( '#phase_c_tail' ).val( g_tRestoreRow.fields.phase_c_parent_id );
 
@@ -318,11 +319,22 @@ function onChangeControl( tEvent )
       case 'Panel':
       case 'Transformer':
       case 'Circuit':
-        if ( sId == 'name' )
+
+        switch( sId )
         {
-          // Convert to uppercase
-          tControl.val( sVal.toUpperCase() );
+          case 'parent_path':
+            makePhaseDropdowns( g_aParents, sVal, $( '#phase_b_tail' ).val() );
+            break;
+
+          case 'phase_b_tail':
+            updatePhaseCDropdown( $( '#phase_b_tail' ).val() );
+            break;
+
+          case 'name':
+            tControl.val( sVal.toUpperCase() );
+            break;
         }
+
         break;
     }
 
