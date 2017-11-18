@@ -9,6 +9,8 @@
   // Get posted values
   $sId = quote( $_POST['id'] );
   $sParentId = quote( isset( $_POST['parent_id'] ) ? $_POST['parent_id'] : '' );
+  $sPhaseBParentId = quote( $_POST['phase_b_parent_id'] );
+  $sPhaseCParentId = quote( $_POST['phase_c_parent_id'] );
   $sTail = quote( isset( $_POST['tail'] ) ? $_POST['tail'] : '' );
   $sRoomId = quote( isset( $_POST['room_id'] ) ? $_POST['room_id'] : '' );
 
@@ -17,6 +19,8 @@
   $command = quote( getenv( "PYTHON" ) ) . " ../database/restoreRemovedObject.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -i ' . $sId
     . ' -p ' . $sParentId
+    . ' -m ' . $sPhaseBParentId
+    . ' -n ' . $sPhaseCParentId
     . ' -t ' . $sTail
     . ' -r ' . $sRoomId
     . $g_sContext;

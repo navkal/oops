@@ -1909,7 +1909,7 @@ class imageFilename:
 
 
 class restoreRemovedObject:
-    def __init__(self, by, id, parent_id, tail, room_id, enterprise, facility):
+    def __init__(self, by, id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, enterprise, facility):
 
         open_database( enterprise )
 
