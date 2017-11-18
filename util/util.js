@@ -180,16 +180,9 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  panel_three_phase:
+  three_phase:
   {
     label: "Circuits Grouped as Three-Phase",
-    showInPropertiesWindow: true,
-    showInSortableTable: true,
-    displayIndex: displayIndex ++
-  },
-  circuit_three_phase:
-  {
-    label: "Three-Phase",
     showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
