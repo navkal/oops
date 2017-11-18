@@ -286,6 +286,12 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
   // Convert to trimmed string
   sCell = sCell.toString().trim();
 
+  if ( ( sCell != '' )  && ( sCell != '0' ) )
+  {
+    // Clear column-is-empty flag
+    g_tColumnMap[sLabel].empty = false;
+  }
+  
   if ( sCell != '' )
   {
     // Add value to map
@@ -294,9 +300,6 @@ function makeTableCell( sCell, sLabel, tRule, iRow )
     // Track min and max lengths
     g_tColumnMap[sLabel].minLength = Math.min( g_tColumnMap[sLabel].minLength, sCell.length );
     g_tColumnMap[sLabel].maxLength = Math.max( g_tColumnMap[sLabel].maxLength, sCell.length );
-
-    // Clear column-is-empty flag
-    g_tColumnMap[sLabel].empty = false;
 
     // If column contains non-digit character, change the default alignment
     if ( ! /^\d+$/.test( sCell ) )
