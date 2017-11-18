@@ -160,28 +160,12 @@ def get_location_dropdown( facility ):
 def get_distribution_dropdown( facility, aTypes ):
 
     dist_table = facility + '_Distribution'
-    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, parent_id, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + ','.join( aTypes ) + ')' ) )
+    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + ','.join( aTypes ) + ')' ) )
     rows = cur.fetchall()
 
-    testId = 0
     objects = []
     for row in rows:
-        testId = max( testId, row[0] )
-        object_type = row[5]
-
-        # Retrieve flag indicating whether phase B/C tail inputs should be disabled
-        if object_type == 'Circuit':
-            parent_id = row[2]
-            select_from_distribution( table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(parent_id,) )
-            three_phase = cur.fetchone()[0]
-        else:
-            three_phase = 0
-
-        objects.append( { 'id': row[0], 'text': row[1], 'voltage_id': row[3], 'object_type': object_type, 'make_phase_dropdowns': not three_phase } )
-
-    # To test large volume of dropdown elements, change 0 to number desired.
-    for i in range( len(objects), 0 ):
-        objects.append( { 'id': str( testId + i ), 'text': str( testId + i ) } )
+        objects.append( { 'id': row[0], 'text': row[1], 'make_phase_dropdowns': not row[2], 'voltage_id': row[3], 'object_type': row[5] } )
 
     return natsort.natsorted( objects, key=lambda x: x['text'] )
 
