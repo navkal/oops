@@ -1925,7 +1925,7 @@ class restoreRemovedObject:
         # Handle according to removed object type
         if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ):
             remove_object_id = recycle_row[8]
-            self.restore_distribution_object( by, id, remove_object_id, parent_id, tail, room_id, facility )
+            self.restore_distribution_object( by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, facility )
         elif remove_object_type == 'Device':
             self.restore_device( by, id, parent_id, room_id, facility )
         elif remove_object_type == 'Location':
@@ -1939,7 +1939,7 @@ class restoreRemovedObject:
             conn.commit()
 
 
-    def restore_distribution_object( self, by, id, remove_object_id, parent_id, tail, room_id, facility ):
+    def restore_distribution_object( self, by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, facility ):
 
         source_table = facility + '_Removed_Distribution'
         target_table = facility + '_Distribution'
@@ -1952,7 +1952,21 @@ class restoreRemovedObject:
             self.messages.append( "Path '" + restore_path + "' is not available." )
             self.selectors = [ '#parent_path', '#number', '#name' ]
 
-        else:
+        if len( self.messages ) == 0:
+            # Determine whether parent and B/C connections are available
+            device_table = facility + '_Device'
+            ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( target_table, device_table, remove_object_type, parent_id, phase_b_parent_id, phase_c_parent_id, id )
+            if parent_path:
+                self.messages.append( "Parent '" + parent_path + "' is not available." )
+                self.selectors.append( '#parent_path' )
+            if phase_b_tail:
+                self.messages.append( "Phase B Connection '" + phase_b_tail + "' is not available." )
+                self.selectors.append( '#phase_b_tail' )
+            if phase_c_tail:
+                self.messages.append( "Phase C Connection '" + phase_c_tail + "' is not available." )
+                self.selectors.append( '#phase_c_tail' )
+
+        if len( self.messages ) == 0:
 
             # Get root object from source table
             select_from_distribution( table=source_table, condition=(source_table + '.id=?'), params=(remove_object_id,) )
