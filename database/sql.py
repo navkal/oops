@@ -316,6 +316,13 @@ def get_location( room_id, facility ):
     return ( loc_new, loc_old, loc_descr )
 
 
+def get_three_phase( id, facility ):
+    dist_table = facility + '_Distribution'
+    select_from_distribution( table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(id,) )
+    three_phase = cur.fetchone()[0]
+    return three_phase
+
+
 def select_from_distribution( table=None, fields=None, condition='', params=None ):
 
     if not fields:
@@ -1168,6 +1175,10 @@ class addDistributionObject:
 
         if len( self.messages ) == 0:
             # Path is not in use; okay to add
+
+            # Propagate three_phase property from Panel to Circuit
+            if object_type == 'Circuit':
+                three_phase = get_three_phase( parent_id, facility )
 
             # Generate search result text
             voltage = get_voltage( voltage_id )
