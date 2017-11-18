@@ -538,7 +538,7 @@ class distributionObject:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.three_phase = make_phase_label( row[3] )
+        three_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         phase_b_parent_id = row[5]
         phase_c_parent_id = row[6]
@@ -553,8 +553,10 @@ class distributionObject:
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
+            self.circuit_three_phase = three_phase
         elif self.object_type == 'Panel':
             self.panel_descr = self.description
+            self.panel_three_phase = three_phase
         elif self.object_type == 'Transformer':
             self.transformer_descr = self.description
 
@@ -985,7 +987,7 @@ class distributionTableRow:
         self.id = str( row[0] )
         self.path = row[1]
         self.object_type_id = row[2]
-        self.three_phase = make_phase_label( row[3] )
+        three_phase = make_phase_label( row[3] )
         self.parent_id = row[4]
         self.phase_b_parent_id = row[5]
         self.phase_c_parent_id = row[6]
@@ -1032,8 +1034,10 @@ class distributionTableRow:
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
+            self.circuit_three_phase = three_phase
         elif self.object_type == 'Panel':
             self.panel_descr = self.description
+            self.panel_three_phase = three_phase
         elif self.object_type == 'Transformer':
             self.transformer_descr = self.description
 
