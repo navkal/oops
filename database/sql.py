@@ -1987,6 +1987,8 @@ class restoreRemovedObject:
             restore_root_row.pop()
             restore_root_row[1] = restore_path
             restore_root_row[4] = parent_id
+            restore_root_row[5] = phase_b_parent_id
+            restore_root_row[6] = phase_c_parent_id
             restore_root_row[8] = room_id
             restore_root_row[10] = tail
             restore_root_row[11] = search_result
