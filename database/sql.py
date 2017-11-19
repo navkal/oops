@@ -2015,6 +2015,20 @@ class restoreRemovedObject:
             object_type = removed_root_row[15]
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             # Overwrite original values with new values in root row
             restore_root_row = list( removed_root_row )
             restore_root_row.pop()
@@ -2078,7 +2092,7 @@ class restoreRemovedObject:
 
             # Log activity
             facility_id = facility_name_to_id( facility )
-            object_id = restore_root_row[0]
+            object_id = removed_root_row[0]
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
                 VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restore' + object_type], by, facility_id, '', summarize_object( object_type, object_id, facility ), object_type, object_id  ) )
 
