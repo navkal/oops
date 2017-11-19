@@ -248,6 +248,18 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
     return ( parent_path, phase_b_tail, phase_c_tail )
 
 
+def test_phase_compatibility( circuit_table, circuit_object_id, panel_table, panel_id  ):
+
+    cur.execute( 'SELECT three_phase FROM ' + circuit_table + ' WHERE id = ?', ( circuit_object_id, ) )
+    circuit_three_phase = cur.fetchone()[0]
+    cur.execute( 'SELECT path, three_phase FROM ' + panel_table + ' WHERE id = ?', ( panel_id, ) )
+    panel_row = cur.fetchone()
+    panel_path = panel_row[0]
+    panel_three_phase = panel_row[1]
+    compatible = ( circuit_three_phase == panel_three_phase )
+    return ( compatible, panel_path )
+
+
 def tail_to_number_name( tail ):
 
     aTail = tail.split( '-', maxsplit=1 )
@@ -1962,6 +1974,14 @@ class restoreRemovedObject:
             if phase_c_tail:
                 self.messages.append( "Phase C Connection '" + phase_c_tail + "' is not available." )
                 self.selectors.append( '#phase_c_tail' )
+
+        if len( self.messages ) == 0:
+            # Determine compatibility between target object and its parent
+            if remove_object_type == 'Circuit':
+                ( compatible, parent_path ) = test_phase_compatibility( source_table, remove_object_id, target_table, parent_id )
+                if not compatible:
+                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' does not match." )
+                    self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
 
