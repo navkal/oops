@@ -1265,6 +1265,14 @@ class updateDistributionObject:
                 self.selectors.append( '#phase_c_tail' )
 
         if len( self.messages ) == 0:
+            # Determine compatibility between target object and its parent
+            if object_type == 'Circuit':
+                ( compatible, parent_path ) = test_phase_compatibility( target_table, id, target_table, parent_id )
+                if not compatible:
+                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
+                    self.selectors.append( '#parent_path' )
+
+        if len( self.messages ) == 0:
             # Path is either available or original; okay to update
 
             # Copy uploaded image file
@@ -1980,7 +1988,7 @@ class restoreRemovedObject:
             if remove_object_type == 'Circuit':
                 ( compatible, parent_path ) = test_phase_compatibility( source_table, remove_object_id, target_table, parent_id )
                 if not compatible:
-                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' does not match." )
+                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
                     self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
