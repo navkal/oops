@@ -335,6 +335,29 @@ def get_three_phase( id, facility ):
     return three_phase
 
 
+def get_converged_circuits( id, object_type, three_phase, target_table ):
+
+    circuit_rows = None
+
+    # If target object is a circuit on a panel that does not group circuits as three-phase, retrieve
+    if object_type == 'Circuit' and not three_phase:
+
+        # Look for actual or implied child of this circuit
+        select_from_distribution( table=target_table, fields='parent_id, phase_b_parent_id, phase_c_parent_id', condition=('parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?'), params=( id, id, id, ) )
+        child_rows = cur.fetchall()
+
+        # If exactly one child found, collect all (1, 2, or 3) parents of the child
+        if len( child_rows ) == 1:
+            converged_row = child_rows[0]
+            phase_a_parent_id = converged_row[0]
+            phase_b_parent_id = converged_row[1]
+            phase_c_parent_id = converged_row[2]
+            select_from_distribution( table=target_table, condition=(target_table + '.id=? OR ' + target_table + '.id=? OR ' + target_table + '.id=?'), params=(phase_a_parent_id, phase_b_parent_id, phase_c_parent_id,) )
+            circuit_rows = cur.fetchall()
+
+    return circuit_rows
+
+
 def select_from_distribution( table=None, fields=None, condition='', params=None ):
 
     if not fields:
@@ -1495,6 +1518,7 @@ class removeDistributionObject:
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         target_row = cur.fetchone()
+        three_phase = target_row[3]
         parent_id = target_row[4]
         room_id = target_row[8]
         object_type = target_row[14]
@@ -1514,24 +1538,10 @@ class removeDistributionObject:
         cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
-        # Initialize list of root rows to be deleted
-        root_rows = [target_row]
-
-        # Get additional root rows if target is circuit that converges in a phase connection
-        if object_type == 'Circuit':
-            # Get children of target object (actual or by phase B/C connection)
-            select_from_distribution( table=target_table, fields='parent_id, phase_b_parent_id, phase_c_parent_id', condition=('parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?'), params=(id,id,id,) )
-            child_rows = cur.fetchall()
-
-            # If target object has only one child, set root rows to include all of the child's parents (actual and phase B/C, if any)
-            if len( child_rows ) == 1:
-                converged_row = child_rows[0]
-                phase_a_parent_id = converged_row[0]
-                phase_b_parent_id = converged_row[1]
-                phase_c_parent_id = converged_row[2]
-                select_from_distribution( table=target_table, condition=(target_table + '.id=? OR ' + target_table + '.id=? OR ' + target_table + '.id=?'), params=(phase_a_parent_id, phase_b_parent_id, phase_c_parent_id,) )
-                root_rows = cur.fetchall()
-
+        # Initialize list of root rows to be deleted: collection of converging circuits or target object
+        root_rows = get_converged_circuits( id, object_type, three_phase, target_table )
+        if not root_rows:
+            root_rows = [target_row]
 
         # Initialize list of removed object IDs
         self.removed_object_ids = []
