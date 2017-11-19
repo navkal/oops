@@ -2015,20 +2015,6 @@ class restoreRemovedObject:
             object_type = removed_root_row[15]
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             # Overwrite original values with new values in root row
             restore_root_row = list( removed_root_row )
             restore_root_row.pop()
