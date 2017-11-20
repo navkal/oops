@@ -335,7 +335,8 @@ def get_three_phase( id, facility ):
     return three_phase
 
 
-def get_converged_circuits( id, object_type, three_phase, target_table ):
+# Retrieve sibling circuits bound to specified circuit ID
+def get_bound_sibling_circuits( id, object_type, three_phase, target_table ):
 
     circuit_rows = None
 
@@ -356,6 +357,23 @@ def get_converged_circuits( id, object_type, three_phase, target_table ):
             circuit_rows = cur.fetchall()
 
     return circuit_rows
+
+
+# Retrieve all bound circuits in facility
+def get_bound_circuit_ids( facility ):
+
+    # Retrieve phase a/b/c parent IDs of all elements that have a phase b or phase c parent
+    cur.execute( 'SELECT parent_id, phase_b_parent_id, phase_c_parent_id FROM ' + facility + '_Distribution WHERE phase_b_parent_id<>"" OR phase_c_parent_id<>""' )
+    rows = cur.fetchall()
+
+    # Collect all phase a/b/c parent IDs in single array
+    bound_circuit_ids = []
+    for row in rows:
+        for id in row:
+            if id:
+                bound_circuit_ids.append( str( id ) )
+
+    return bound_circuit_ids
 
 
 def select_from_distribution( table=None, fields=None, condition='', params=None ):
@@ -904,7 +922,7 @@ class sortableTable:
 
             # Add other fields to each row
             for obj in objects:
-                row = distributionTableRow( row=obj, user_role=user_role, enterprise=enterprise, facility=facility )
+                row = distributionTableRow( row=obj, bound_circuit_ids=get_bound_circuit_ids( facility ), user_role=user_role, enterprise=enterprise, facility=facility )
                 self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
@@ -1000,7 +1018,7 @@ class location:
 
 class distributionTableRow:
 
-    def __init__( self, row=None, id=None, user_role=None, enterprise=None, facility=None ):
+    def __init__( self, row=None, id=None, bound_circuit_ids=None, user_role=None, enterprise=None, facility=None ):
 
         open_database( enterprise )
 
@@ -1071,6 +1089,8 @@ class distributionTableRow:
                 self.update_circuit = self.id
                 self.remove_circuit = self.id
                 self.remove_what = 'path'
+                if bound_circuit_ids != None:
+                    self.is_bound_circuit = self.id in bound_circuit_ids
             elif self.object_type == 'Panel':
                 self.update_panel = self.id
                 if self.parent_id:
@@ -1539,7 +1559,7 @@ class removeDistributionObject:
         remove_id = cur.lastrowid
 
         # Initialize list of root rows to be deleted: collection of converging circuits or target object
-        root_rows = get_converged_circuits( id, object_type, three_phase, target_table )
+        root_rows = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
         if not root_rows:
             root_rows = [target_row]
 

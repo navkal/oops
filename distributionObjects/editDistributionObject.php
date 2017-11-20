@@ -263,6 +263,9 @@
     // Don't let the user change creation-time settings
     $( '#three_phase_block input' ).prop( 'disabled', true );
     $( '#voltage' ).prop( 'disabled', true );
+
+    // Don't let user change parent of bound circuit
+    $( '#parent_path' ).prop( 'disabled', ( tRow.object_type == 'Circuit' ) && tRow.is_bound_circuit );
   }
 
   function makeDropdowns()
@@ -325,7 +328,14 @@
   {
     if ( $( '#voltage' ).prop( 'disabled' ) )
     {
-      $( '#parent_path' ).focus();
+      if ( $( '#parent_path' ).prop( 'disabled' ) )
+      {
+        $( '#number' ).focus();
+      }
+      else
+      {
+        $( '#parent_path' ).focus();
+      }
     }
     else
     {
