@@ -735,6 +735,16 @@ function childWindowsClose( aWindows )
     }
   }
 
+  function highlightErrors( aSelectors )
+  {
+    // Highlight pertinent fields
+    for ( var iSelector in aSelectors )
+    {
+      var sSelector = aSelectors[iSelector];
+      $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+  }
+
 // <- <- <- Error messages <- <- <-
 
 

@@ -67,14 +67,7 @@ function submitEditDialogDone( tRsp, sStatus, tJqXhr )
   {
     // Show error messages
     showMessages( tRsp.messages );
-
-    // Highlight pertinent fields
-    var aSelectors = tRsp.selectors;
-    for ( var iSelector in aSelectors )
-    {
-      var sSelector = aSelectors[iSelector];
-      $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
-    }
+    highlightErrors( tRsp.selectors );
   }
   else
   {
