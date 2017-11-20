@@ -1396,57 +1396,80 @@ class addDevice:
     def __init__( self, by, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
-        # Generate new description
-        description = make_device_description( name, room_id, facility )
-
-        # Add new object
-        target_table = facility + '_Device'
-        cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
-             VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
-        target_object_id = cur.lastrowid
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
-
-        conn.commit()
-
-        # Return row
-        row = device( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
-        self.row = row.__dict__
+        # Initialize return values
         self.messages = []
+        self.selectors = []
         self.descendant_rows = []
+
+        # Determine whether parent is available
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? )', ( parent_id, parent_id, parent_id ) )
+        count = cur.fetchone()[0]
+        if count > 0:
+            self.messages.append( "Circuit '" + get_path( parent_id, facility ) + "' is not available." )
+            self.selectors.append( '#source_path' )
+
+        if len( self.messages ) == 0:
+
+            # Generate new description
+            description = make_device_description( name, room_id, facility )
+
+            # Add new object
+            target_table = facility + '_Device'
+            cur.execute('''INSERT OR IGNORE INTO ''' + target_table + ''' (room_id, parent_id, description, name)
+                 VALUES (?,?,?,?)''', (room_id, parent_id, description, name))
+            target_object_id = cur.lastrowid
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['addDevice'], by, facility_id, '', summarize_object( 'Device', target_object_id, facility ), 'Device', target_object_id  ) )
+
+            conn.commit()
+
+            # Return row
+            row = device( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+            self.row = row.__dict__
 
 
 class updateDevice:
     def __init__( self, by, id, parent_id, name, room_id, enterprise, facility ):
         open_database( enterprise )
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( 'Device', id, facility )
-
-        # Generate new description
-        description = make_device_description( name, room_id, facility )
-
-        # Update specified object
-        target_table = facility + '_Device'
-        cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
-            ( parent_id, name, room_id, description, id ) )
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, summarize_object( 'Device', id, facility ), 'Device', id  ) )
-
-        conn.commit()
-
-        # Return row
+        # Initialize return values
         self.messages = []
         self.selectors = []
         self.descendant_rows = []
-        row = device( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
-        self.row = row.__dict__
+
+        # Determine whether parent is available
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? )', ( parent_id, parent_id, parent_id ) )
+        count = cur.fetchone()[0]
+        if count > 0:
+            self.messages.append( "Circuit '" + get_path( parent_id, facility ) + "' is not available." )
+            self.selectors.append( '#source_path' )
+
+        if len( self.messages ) == 0:
+
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( 'Device', id, facility )
+
+            # Generate new description
+            description = make_device_description( name, room_id, facility )
+
+            # Update specified object
+            target_table = facility + '_Device'
+            cur.execute( '''UPDATE ''' + target_table + ''' SET parent_id=?, name=?, room_id=?, description=? WHERE id=?''',
+                ( parent_id, name, room_id, description, id ) )
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateDevice'], by, facility_id, before_summary, summarize_object( 'Device', id, facility ), 'Device', id  ) )
+
+            conn.commit()
+
+            # Return row
+            row = device( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+            self.row = row.__dict__
 
 
 class addLocation:
