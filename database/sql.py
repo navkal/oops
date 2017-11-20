@@ -1548,11 +1548,11 @@ class removeDistributionObject:
         # Get row to be deleted
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
-        target_row = cur.fetchone()
-        three_phase = target_row[3]
-        parent_id = target_row[4]
-        room_id = target_row[8]
-        object_type = target_row[14]
+        row = cur.fetchone()
+        path = row[1]
+        parent_id = row[4]
+        room_id = row[8]
+        object_type = row[14]
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( object_type, id, facility )
@@ -1569,47 +1569,17 @@ class removeDistributionObject:
         cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
         remove_id = cur.lastrowid
 
-        # Initialize list of root rows to be deleted: collection of converging circuits or target object
-        root_rows = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
-        if not root_rows:
-            root_rows = [target_row]
+        # Insert target object in table of removed objects
+        removed_table = facility + '_Removed_Distribution'
+        row = list( row )
+        row.pop()
+        row.pop()
+        row = tuple( row )
+        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
-        # Initialize list of removed object IDs
-        self.removed_object_ids = []
-
-        # Iterate over root objects. Remove them and all their attachments.
-        for row in root_rows:
-            root_id = row[0]
-            path = row[1]
-            object_type = row[14]
-
-            # Insert target object in table of removed objects
-            removed_table = facility + '_Removed_Distribution'
-            row = list( row )
-            row.pop()
-            row.pop()
-            row = tuple( row )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
-
-            # Delete target object
-            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( root_id, ) )
-
-            # Save ID in array
-            self.removed_object_ids.append( root_id )
-
-            # Remove attachments under the current root
-            self.remove_attachments( root_id, remove_id, path, object_type, target_table, removed_table, facility )
-
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
-
-        conn.commit()
-
-
-    def remove_attachments( self, id, remove_id, path, object_type, target_table, removed_table, facility ):
+        # Delete target object
+        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+        self.removed_object_ids = [id]
 
         # Retrieve all devices attached to removed object
         dev_table = facility + '_Device'
@@ -1652,6 +1622,13 @@ class removeDistributionObject:
                 device_id = dev[0]
                 cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *dev, remove_id ) )
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
+
+        # Log activity
+        facility_id = facility_name_to_id( facility )
+        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
+
+        conn.commit()
 
 
 class removeDevice:
