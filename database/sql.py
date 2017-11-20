@@ -1699,7 +1699,6 @@ class removeDevice:
         conn.commit()
 
 
-
 class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
@@ -1708,6 +1707,15 @@ class removeLocation:
         self.messages = []
         self.selectors = []
         self.removed_object_ids = []
+
+        # This should never happen, but is possible with multiple users or multiple windows
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (id,))
+        reference_count = cur.fetchone()[0]
+        if reference_count == 0:
+            cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
+            reference_count = cur.fetchone()[0]
+            if reference_count > 0:
+                self.messages.append( "Location is not available for removal." )
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( 'Location', id, facility )
