@@ -32,6 +32,11 @@
           <button type="button" id="removeFormSubmitProxy" class="btn btn-danger" onclick="$('#removeFormSubmitButton').click()" ></button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
+        <br/>
+        <div id="removeMessages" class="alert alert-danger" style="text-align:left; display:none" role="alert">
+          <ul id="removeMessageList">
+          </ul>
+        </div>
       </div>
     </div>
   </div>

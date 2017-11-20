@@ -6,6 +6,9 @@ var g_bShowRemoveComment = null;
 
 function initRemoveDialog( sRemoveId )
 {
+  // Clear messages
+  clearMessages( '#removeMessages', '#removeMessageList' );
+
   showSpinner();
 
   g_sRemoveId = sRemoveId;
@@ -53,6 +56,8 @@ function initRemoveDialogFocus()
 
 function removeObject()
 {
+  clearMessages( '#removeMessages', '#removeMessageList' );
+
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "id", g_sRemoveId );
@@ -76,17 +81,33 @@ function removeObject()
 
 function removeDone( tRsp, sStatus, tJqXhr )
 {
-  closeChildWindows();
-
   hideSpinner();
 
-  $( '#removeDialog' ).modal( 'hide' );
-
-  var aIds = tRsp.removed_object_ids;
-  for ( var iIndex in aIds )
+  if ( tRsp.messages.length )
   {
-    var sId = aIds[iIndex];
-    removeRow( sId, iIndex == ( aIds.length - 1 ) );
+    // Show error messages
+    showMessages( tRsp.messages, '#removeMessages', '#removeMessageList' );
+
+    // Highlight pertinent fields
+    var aSelectors = tRsp.selectors;
+    for ( var iSelector in aSelectors )
+    {
+      var sSelector = aSelectors[iSelector];
+      $( sSelector ).closest( '.form-group' ).addClass( 'has-error' );
+    }
+  }
+  else
+  {
+    closeChildWindows();
+
+    $( '#removeDialog' ).modal( 'hide' );
+
+    var aIds = tRsp.removed_object_ids;
+    for ( var iIndex in aIds )
+    {
+      var sId = aIds[iIndex];
+      removeRow( sId, iIndex == ( aIds.length - 1 ) );
+    }
   }
 }
 

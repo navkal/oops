@@ -1272,14 +1272,14 @@ class updateDistributionObject:
     def __init__( self, by, id, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, tail, voltage_id, three_phase, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( object_type, id, facility )
-
         # Initialize return values
         self.messages = []
         self.selectors = []
         self.row = {}
         self.descendant_rows = []
+
+        # Get initial state of object for Activity log
+        before_summary = summarize_object( object_type, id, facility )
 
         target_table = facility + '_Distribution'
         user_role = username_to_role( by )
@@ -1327,7 +1327,7 @@ class updateDistributionObject:
                     cur.execute( 'SELECT parent_id FROM ' + target_table + ' WHERE id=?', (id,) )
                     original_parent_id = cur.fetchone()[0]
                     if parent_id != original_parent_id:
-                        self.messages.append( 'Cannot modify Parent because Circuit is bound in multi-phase connection.' )
+                        self.messages.append( 'Cannot modify Parent because Circuit is bound in a multi-phase connection.' )
                         self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
@@ -1549,95 +1549,115 @@ class removeDistributionObject:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
 
+        # Initialize return values
+        self.messages = []
+        self.selectors = []
+        self.removed_object_ids = []
+
         # Get row to be deleted
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
         path = row[1]
+        three_phase = row[3]
         parent_id = row[4]
         room_id = row[8]
         object_type = row[14]
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( object_type, id, facility )
+        # This should never happen, but it could occur with multiple users or multiple windows
+        if object_type == 'Circuit':
+            sibling_circuits = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
+            if sibling_circuits and len( sibling_circuits ) > 1:
+                self.messages.append( 'Cannot remove Circuit because it is bound in a multi-phase connection.' )
+                self.selectors.append( '' )
 
-        # Get parent path
-        parent_path = get_path( parent_id, facility )
+        if len( self.messages ) == 0:
 
-        # Get location
-        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( object_type, id, facility )
 
-        # Create entry in Recycle Bin
-        timestamp = time.time()
-        recycle_table = facility + '_Recycle'
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
-        remove_id = cur.lastrowid
+            # Get parent path
+            parent_path = get_path( parent_id, facility )
 
-        # Insert target object in table of removed objects
-        removed_table = facility + '_Removed_Distribution'
-        row = list( row )
-        row.pop()
-        row.pop()
-        row = tuple( row )
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+            # Get location
+            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
 
-        # Delete target object
-        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
-        self.removed_object_ids = [id]
+            # Create entry in Recycle Bin
+            timestamp = time.time()
+            recycle_table = facility + '_Recycle'
+            cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
+            remove_id = cur.lastrowid
 
-        # Retrieve all devices attached to removed object
-        dev_table = facility + '_Device'
-        cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( id,) )
-        devices = cur.fetchall()
+            # Insert target object in table of removed objects
+            removed_table = facility + '_Removed_Distribution'
+            row = list( row )
+            row.pop()
+            row.pop()
+            row = tuple( row )
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
-        # Move all directly attached devices to 'Removed' table
-        removed_dev_table = facility + '_Removed_Device'
-        for dev in devices:
-            device_id = dev[0]
-            cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *dev, remove_id ) )
-            cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
+            # Delete target object
+            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+            self.removed_object_ids = [id]
 
-        # Retrieve all descendants of deleted object
-        select_from_distribution( table=target_table, condition=( 'path LIKE "' + path + '.%"' ) )
-        descendants = cur.fetchall()
-
-        # Move all descendants and their respective attached devices to 'Removed' tables
-        for desc in descendants:
-            descendant_id = desc[0]
-            desc_object_type = desc[14]
-
-            if object_type == desc_object_type:
-                self.removed_object_ids.append( descendant_id )
-
-            # Move current descendant to 'Removed' table
-            removed_desc = list( desc )
-            removed_desc.pop()
-            removed_desc.pop()
-            removed_desc = tuple( removed_desc )
-            cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
-            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
-
-            # Retrieve all devices attached to current descendant
-            cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( descendant_id,) )
+            # Retrieve all devices attached to removed object
+            dev_table = facility + '_Device'
+            cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( id,) )
             devices = cur.fetchall()
 
-            # Move all devices attached to current descendant
+            # Move all directly attached devices to 'Removed' table
+            removed_dev_table = facility + '_Removed_Device'
             for dev in devices:
                 device_id = dev[0]
                 cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *dev, remove_id ) )
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
+            # Retrieve all descendants of deleted object
+            select_from_distribution( table=target_table, condition=( 'path LIKE "' + path + '.%"' ) )
+            descendants = cur.fetchall()
 
-        conn.commit()
+            # Move all descendants and their respective attached devices to 'Removed' tables
+            for desc in descendants:
+                descendant_id = desc[0]
+                desc_object_type = desc[14]
+
+                if object_type == desc_object_type:
+                    self.removed_object_ids.append( descendant_id )
+
+                # Move current descendant to 'Removed' table
+                removed_desc = list( desc )
+                removed_desc.pop()
+                removed_desc.pop()
+                removed_desc = tuple( removed_desc )
+                cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
+                cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
+
+                # Retrieve all devices attached to current descendant
+                cur.execute( 'SELECT * FROM ' + dev_table + ' WHERE parent_id=?', ( descendant_id,) )
+                devices = cur.fetchall()
+
+                # Move all devices attached to current descendant
+                for dev in devices:
+                    device_id = dev[0]
+                    cur.execute( 'INSERT INTO ' + removed_dev_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *dev, remove_id ) )
+                    cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['remove' + object_type], by, facility_id, before_summary, comment, object_type, id  ) )
+
+            conn.commit()
 
 
 class removeDevice:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
+
+        # Initialize return values
+        self.messages = []
+        self.selectors = []
+        self.removed_object_ids = []
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( 'Device', id, facility )
@@ -1683,6 +1703,11 @@ class removeDevice:
 class removeLocation:
     def __init__( self, by, id, comment, enterprise, facility ):
         open_database( enterprise )
+
+        # Initialize return values
+        self.messages = []
+        self.selectors = []
+        self.removed_object_ids = []
 
         # Get initial state of object for Activity log
         before_summary = summarize_object( 'Location', id, facility )

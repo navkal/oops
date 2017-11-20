@@ -696,22 +696,42 @@ function childWindowsClose( aWindows )
 
 // -> -> -> Error messages -> -> ->
 
-  function clearMessages()
+  function clearMessages( sDivSelector, sListSelector )
   {
+    if ( ! sDivSelector )
+    {
+      sDivSelector = '#messages';
+    }
+
+    if ( ! sListSelector )
+    {
+      sListSelector = '#messageList';
+    }
+
     $( ".has-error" ).removeClass( "has-error" );
-    $( "#messages" ).css( "display", "none" );
-    $( "#messageList" ).html( "" );
+    $( sDivSelector ).css( "display", "none" );
+    $( sListSelector ).html( "" );
   }
 
-  function showMessages( aMessages )
+  function showMessages( aMessages, sDivSelector, sListSelector )
   {
+    if ( ! sDivSelector )
+    {
+      sDivSelector = '#messages';
+    }
+
+    if ( ! sListSelector )
+    {
+      sListSelector = '#messageList';
+    }
+
     if ( aMessages.length > 0 )
     {
       for ( var index in aMessages )
       {
-        $( "#messageList" ).append( '<li>' + aMessages[index] + '</li>' );
+        $( sListSelector ).append( '<li>' + aMessages[index] + '</li>' );
       }
-      $( "#messages" ).css( "display", "block" );
+      $( sDivSelector ).css( "display", "block" );
     }
   }
 
