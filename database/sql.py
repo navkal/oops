@@ -1018,7 +1018,7 @@ class location:
 
 class distributionTableRow:
 
-    def __init__( self, row=None, id=None, bound_circuit_ids=None, user_role=None, enterprise=None, facility=None ):
+    def __init__( self, row=None, id=None, bound_circuit_ids=[], user_role=None, enterprise=None, facility=None ):
 
         open_database( enterprise )
 
@@ -1087,10 +1087,12 @@ class distributionTableRow:
             self.activity_log = self.id
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
-                self.remove_circuit = self.id
-                self.remove_what = 'path'
-                if bound_circuit_ids != None:
-                    self.is_bound_circuit = self.id in bound_circuit_ids
+                self.is_bound_circuit = self.id in bound_circuit_ids
+                if self.is_bound_circuit:
+                    self.remove_circuit = ''
+                else:
+                    self.remove_circuit = self.id
+                    self.remove_what = 'path'
             elif self.object_type == 'Panel':
                 self.update_panel = self.id
                 if self.parent_id:
