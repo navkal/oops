@@ -1714,42 +1714,44 @@ class removeLocation:
         if reference_count == 0:
             cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
             reference_count = cur.fetchone()[0]
-            if reference_count > 0:
-                self.messages.append( "Location is not available for removal." )
+        if reference_count > 0:
+            self.messages.append( "Location is not available for removal." )
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( 'Location', id, facility )
+        if len( self.messages ) == 0:
 
-        # Get row to be deleted
-        target_table = facility + '_Room'
-        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
-        row = cur.fetchone()
-        loc_new = row[1]
-        loc_old = row[2]
-        loc_descr = row[4]
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( 'Location', id, facility )
 
-        # Create entry in Recycle Bin
-        timestamp = time.time()
-        recycle_table = facility + '_Recycle'
-        object_type = 'Location'
-        parent_path = ''
-        cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
-        remove_id = cur.lastrowid
+            # Get row to be deleted
+            target_table = facility + '_Room'
+            cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+            row = cur.fetchone()
+            loc_new = row[1]
+            loc_old = row[2]
+            loc_descr = row[4]
 
-        # Insert target object in table of removed objects
-        removed_table = facility + '_Removed_Room'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_num, old_num, location_type, description, remove_id ) VALUES(?,?,?,?,?,?) ', ( *row, remove_id ) )
+            # Create entry in Recycle Bin
+            timestamp = time.time()
+            recycle_table = facility + '_Recycle'
+            object_type = 'Location'
+            parent_path = ''
+            cur.execute( 'INSERT INTO ' + recycle_table + ' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id ) VALUES(?,?,?,?,?,?,?,?) ', ( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
+            remove_id = cur.lastrowid
 
-        # Delete target object
-        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
-        self.removed_object_ids = [id]
+            # Insert target object in table of removed objects
+            removed_table = facility + '_Removed_Room'
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_num, old_num, location_type, description, remove_id ) VALUES(?,?,?,?,?,?) ', ( *row, remove_id ) )
 
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeLocation'], by, facility_id, before_summary, comment, 'Location', id  ) )
+            # Delete target object
+            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+            self.removed_object_ids = [id]
 
-        conn.commit()
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeLocation'], by, facility_id, before_summary, comment, 'Location', id  ) )
+
+            conn.commit()
 
 
 class addUser:
