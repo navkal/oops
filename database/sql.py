@@ -1316,6 +1316,17 @@ class updateDistributionObject:
                     self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
+            # This should never happen, but it could occur with multiple users or multiple windows
+            if object_type == 'Circuit':
+                sibling_circuits = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
+                if sibling_circuits and len( sibling_circuits ) > 1:
+                    cur.execute( 'SELECT parent_id FROM ' + target_table + ' WHERE id=?', (id,) )
+                    original_parent_id = cur.fetchone()[0]
+                    if parent_id != original_parent_id:
+                        self.messages.append( 'Cannot modify Parent because Circuit is bound in multi-phase connection.' )
+                        self.selectors.append( '#parent_path' )
+
+        if len( self.messages ) == 0:
             # Path is either available or original; okay to update
 
             # Copy uploaded image file
