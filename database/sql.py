@@ -1298,18 +1298,19 @@ class updateDistributionObject:
             self.selectors = [ '#parent_path', '#number', '#name' ]
 
         if len( self.messages ) == 0:
-            # Determine whether parent and B/C connections are available
-            device_table = facility + '_Device'
-            ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, id )
-            if parent_path:
-                self.messages.append( "Parent '" + parent_path + "' is not available." )
-                self.selectors.append( '#parent_path' )
-            if phase_b_tail:
-                self.messages.append( "Phase B Connection '" + phase_b_tail + "' is not available." )
-                self.selectors.append( '#phase_b_tail' )
-            if phase_c_tail:
-                self.messages.append( "Phase C Connection '" + phase_c_tail + "' is not available." )
-                self.selectors.append( '#phase_c_tail' )
+            if parent_id:
+                # Determine whether parent and B/C connections are available
+                device_table = facility + '_Device'
+                ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, id )
+                if parent_path:
+                    self.messages.append( "Parent '" + parent_path + "' is not available." )
+                    self.selectors.append( '#parent_path' )
+                if phase_b_tail:
+                    self.messages.append( "Phase B Connection '" + phase_b_tail + "' is not available." )
+                    self.selectors.append( '#phase_b_tail' )
+                if phase_c_tail:
+                    self.messages.append( "Phase C Connection '" + phase_c_tail + "' is not available." )
+                    self.selectors.append( '#phase_c_tail' )
 
         if len( self.messages ) == 0:
             # Determine compatibility between target object and its parent
