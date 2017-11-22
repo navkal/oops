@@ -15,6 +15,7 @@ function initRestoreDialog( sRestoreId )
   $( '#timestamp' ).val( formatTimestamp( g_tRestoreRow.timestamp ) );
   $( '#remove_comment' ).val( g_tRestoreRow.remove_comment );
   $( '#restoreFields' ).html( '' );
+  $( '#restore_comment' ).val( '' );
 
   showSpinner();
 
@@ -386,6 +387,9 @@ function onSubmitRestoreDialog()
         // Do nothing
         break;
     }
+
+    var sComment = $( '#restore_comment' ).val();
+    tPostData.append( 'comment', sComment );
 
     showSpinner();
 

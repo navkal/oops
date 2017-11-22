@@ -295,9 +295,16 @@ var g_tPropertyRules =
   },
   remove_comment:
   {
-    label: "Comment",
+    label: "Remove Comment",
     showInPropertiesWindow: false,
     showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  restore_comment:
+  {
+    label: "Restore Comment",
+    showInPropertiesWindow: false,
+    showInSortableTable: false,
     displayIndex: displayIndex ++
   },
   restore_object:

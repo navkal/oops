@@ -31,7 +31,13 @@
               <div id="restoreFields">
 
               </div>
-
+              
+              <div class="form-group">
+                <label for="restore_comment"></label>
+                <div>
+                  <textarea id="restore_comment" class="form-control" ></textarea>
+                </div>
+              </div>
               <button id="restoreDialogFormSubmitButton" type="submit" style="display:none" ></button>
             </form>
           </div>

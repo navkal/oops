@@ -9,10 +9,11 @@
   // Get posted values
   $sId = quote( $_POST['id'] );
   $sParentId = quote( isset( $_POST['parent_id'] ) ? $_POST['parent_id'] : '' );
-  $sPhaseBParentId = quote( $_POST['phase_b_parent_id'] );
-  $sPhaseCParentId = quote( $_POST['phase_c_parent_id'] );
+  $sPhaseBParentId = quote( isset( $_POST['phase_b_parent_id'] ) ? $_POST['phase_b_parent_id'] : '' );
+  $sPhaseCParentId = quote( isset( $_POST['phase_c_parent_id'] ) ? $_POST['phase_c_parent_id'] : '' );
   $sTail = quote( isset( $_POST['tail'] ) ? $_POST['tail'] : '' );
   $sRoomId = quote( isset( $_POST['room_id'] ) ? $_POST['room_id'] : '' );
+  $sComment = quote( $_POST['comment'] );
 
 
   // Restore object
@@ -23,6 +24,7 @@
     . ' -n ' . $sPhaseCParentId
     . ' -t ' . $sTail
     . ' -r ' . $sRoomId
+    . ' -c ' . $sComment
     . $g_sContext;
 
   error_log( "==> command=" . $command );

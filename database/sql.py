@@ -2007,7 +2007,7 @@ class imageFilename:
 
 
 class restoreRemovedObject:
-    def __init__(self, by, id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, enterprise, facility):
+    def __init__(self, by, id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, comment, enterprise, facility):
 
         open_database( enterprise )
 
@@ -2023,11 +2023,11 @@ class restoreRemovedObject:
         # Handle according to removed object type
         if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ):
             remove_object_id = recycle_row[8]
-            self.restore_distribution_object( by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, facility )
+            self.restore_distribution_object( by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, comment, facility )
         elif remove_object_type == 'Device':
-            self.restore_device( by, id, parent_id, room_id, facility )
+            self.restore_device( by, id, parent_id, room_id, comment, facility )
         elif remove_object_type == 'Location':
-            self.restore_location( by, id, facility )
+            self.restore_location( by, id, comment, facility )
 
         if len( self.messages ) == 0:
             # Clean up recyle bin
@@ -2037,7 +2037,7 @@ class restoreRemovedObject:
             conn.commit()
 
 
-    def restore_distribution_object( self, by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, facility ):
+    def restore_distribution_object( self, by, id, remove_object_type, remove_object_id, parent_id, phase_b_parent_id, phase_c_parent_id, tail, room_id, comment, facility ):
 
         source_table = facility + '_Removed_Distribution'
         target_table = facility + '_Distribution'
@@ -2151,10 +2151,10 @@ class restoreRemovedObject:
             facility_id = facility_name_to_id( facility )
             object_id = removed_root_row[0]
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restore' + object_type], by, facility_id, '', summarize_object( object_type, object_id, facility ), object_type, object_id  ) )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restore' + object_type], by, facility_id, summarize_object( object_type, object_id, facility ), comment, object_type, object_id  ) )
 
 
-    def restore_device( self, by, id, parent_id, room_id, facility ):
+    def restore_device( self, by, id, parent_id, room_id, comment, facility ):
 
         # Determine source and target tables
         source_table = facility + '_Removed_Device'
@@ -2180,10 +2180,10 @@ class restoreRemovedObject:
         facility_id = facility_name_to_id( facility )
         object_id = restore_row[0]
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreDevice'], by, facility_id, '', summarize_object( 'Device', object_id, facility ), 'Device', object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreDevice'], by, facility_id, summarize_object( 'Device', object_id, facility ), comment, 'Device', object_id  ) )
 
 
-    def restore_location( self, by, id, facility ):
+    def restore_location( self, by, id, comment, facility ):
 
         # Determine source and target tables
         source_table = facility + '_Removed_Room'
@@ -2207,4 +2207,4 @@ class restoreRemovedObject:
         facility_id = facility_name_to_id( facility )
         object_id = restore_row[0]
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreLocation'], by, facility_id, '', summarize_object( 'Location', object_id, facility ), 'Location', object_id  ) )
+            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreLocation'], by, facility_id, summarize_object( 'Location', object_id, facility ), comment, 'Location', object_id  ) )
