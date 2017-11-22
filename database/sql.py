@@ -1058,8 +1058,20 @@ class distributionTableRow:
         else:
             self.panel_image = ''
 
-        cur.execute('SELECT COUNT(id) FROM ' + facility + '_Distribution WHERE parent_id = ?', (self.id,))
-        self.children = cur.fetchone()[0]
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE parent_id = ?', (self.id,) )
+        self.devices = cur.fetchone()[0]
+
+        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
+        self.panels = cur.fetchone()[0]
+
+        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
+        self.transformers = cur.fetchone()[0]
+
+        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
+        self.circuits = cur.fetchone()[0]
 
         cur.execute(
           '''SELECT COUNT( device_id )
