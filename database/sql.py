@@ -506,6 +506,26 @@ def make_phase_label( three_phase ):
     return label
 
 
+def get_references( id_field_name, id, facility ):
+
+    object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+    panels = cur.fetchone()[0]
+
+    object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+    transformers = cur.fetchone()[0]
+
+    object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+    circuits = cur.fetchone()[0]
+
+    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE ' + id_field_name + '=?', (id,))
+    devices = cur.fetchone()[0]
+
+    return ( panels, transformers, circuits, devices )
+
+
 class device:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
@@ -627,6 +647,7 @@ class distributionObject:
         else:
             self.panel_image = ''
 
+        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility )
 
         if getkids:
 
@@ -990,20 +1011,7 @@ class location:
         self.loc_old = row[2]
         self.loc_descr = row[4]
 
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (self.id,))
-        self.devices = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
-        self.panels = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
-        self.transformers = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-        cur.execute('SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id=? AND object_type_id=?', ( self.id, object_type_id ))
-        self.circuits = cur.fetchone()[0]
+        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'room_id', self.id, facility )
 
         if user_role == 'Technician':
             self.activity_log = self.id
@@ -1058,20 +1066,7 @@ class distributionTableRow:
         else:
             self.panel_image = ''
 
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE parent_id = ?', (self.id,) )
-        self.devices = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
-        self.panels = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
-        self.transformers = cur.fetchone()[0]
-
-        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE parent_id=? AND object_type_id=?', ( self.id, object_type_id ) )
-        self.circuits = cur.fetchone()[0]
+        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility )
 
         cur.execute(
           '''SELECT COUNT( device_id )

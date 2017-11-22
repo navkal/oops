@@ -401,7 +401,7 @@ function openPropertiesWindow( tEvent )
   // Open the window
   var sDirectory = bFromPropertiesWindow ? '' : 'distribution/';
   var sUrl = sDirectory + 'properties.php?path=' + sPath + '&type=' + sType + '&oid=' + sOid;
-  childWindowOpen( tEvent, g_aPropertiesWindows, sUrl, "Properties", sPath, 500, 600, false );
+  childWindowOpen( tEvent, g_aPropertiesWindows, sUrl, "Properties", sPath, 550, 650, false );
 }
 
 function openImageWindowEtc( tEvent )

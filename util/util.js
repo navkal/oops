@@ -247,34 +247,27 @@ var g_tPropertyRules =
   panels:
   {
     label: "Panels",
-    showInPropertiesWindow: false,
+    showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   transformers:
   {
     label: "Transformers",
-    showInPropertiesWindow: false,
+    showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   circuits:
   {
     label: "Circuits",
-    showInPropertiesWindow: false,
+    showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   devices:
   {
     label: "Devices",
-    showInPropertiesWindow: true,
-    showInSortableTable: true,
-    displayIndex: displayIndex ++
-  },
-  children:
-  {
-    label: "Children",
     showInPropertiesWindow: true,
     showInSortableTable: true,
     displayIndex: displayIndex ++
