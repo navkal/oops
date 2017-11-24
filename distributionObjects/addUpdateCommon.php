@@ -18,7 +18,7 @@
   $sVoltageId = quote( $_POST['voltage_id'] );
   $sThreePhase = quote( $_POST['three_phase'] );
   $sRoomId = quote( $_POST['room_id'] );
-  $sDescription = quote( htmlentities( $_POST['description'] ) );
+  $sDescription = quote( $_POST['description'] );
 
   // Handle image upload, if any
   $sFilename = '';

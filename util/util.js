@@ -820,7 +820,12 @@ function hideSpinner()
   $( '#spinner' ).css( 'display', 'none' );
 }
 
-function htmlentities_undo( sHtmlEntitiesText )
+function htmlentities( sText )
 {
-  return $( '<span/>' ).html( sHtmlEntitiesText ).text()  
+  return $( '<span/>' ).text( sText ).html()
+}
+
+function htmlentities_undo( sText )
+{
+  return $( '<span/>' ).html( sText ).text()
 }

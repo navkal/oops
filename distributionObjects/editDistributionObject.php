@@ -449,7 +449,7 @@
       tPostData.append( 'three_phase', $( '#three_phase_block input[name=three_phase]:checked' ).val() );
 
       tPostData.append( 'room_id', $( '#room_id' ).val() );
-      tPostData.append( 'description', $( '#description textarea' ).val() );
+      tPostData.append( 'description', htmlentities( $( '#description textarea' ).val() ) );
 
       if ( $( '#panel_photo_filename' ).val() )
       {
