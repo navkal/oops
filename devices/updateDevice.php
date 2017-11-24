@@ -9,7 +9,7 @@
   // Get attributes
   $sId = $_POST['id'];
   $sParentId = $_POST['parent_id'];
-  $sName = quote( $_POST['name'] );
+  $sName = quote( htmlentities( $_POST['name'] ) );
   $sRoomId = quote( $_POST['room_id'] );
 
   // Format command

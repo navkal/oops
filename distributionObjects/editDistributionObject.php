@@ -256,7 +256,7 @@
     g_sName = tRow.name;
     g_sVoltageId = tRow.voltage_id;
     g_sLocationId = tRow.room_id;
-    g_sDescription = tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr;
+    g_sDescription = htmlentities_undo( tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr );
     g_sPath = tRow.path;
     g_sPhases = tRow.three_phase;
 

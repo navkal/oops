@@ -162,7 +162,7 @@
     // Save values of selected row
     g_sDeviceId = tRow.id;
     g_sSourceId = tRow.parent_id;
-    g_sName = tRow.name;
+    g_sName = htmlentities_undo( tRow.name );
     g_sLocationId = tRow.room_id;
   }
 
