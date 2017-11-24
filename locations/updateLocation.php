@@ -7,9 +7,9 @@
 
   // Get attributes
   $sId = $_POST['id'];
-  $sLocation = quote( $_POST['loc_new'] );
-  $sOldLocation = quote( $_POST['loc_old'] );
-  $sDescription = quote( $_POST['loc_descr'] );
+  $sLocation = quote( htmlentities( $_POST['loc_new'] ) );
+  $sOldLocation = quote( htmlentities( $_POST['loc_old'] ) );
+  $sDescription = quote( htmlentities( $_POST['loc_descr'] ) );
 
   // Format command
   $command = quote( getenv( 'PYTHON' ) ) . ' ../database/updateLocation.py 2>&1 -b ' . $_SESSION['panelSpy']['user']['username']

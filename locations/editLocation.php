@@ -100,9 +100,9 @@
 
     // Save values of selected row
     g_sLocationId = tRow.id;
-    g_sLocation = tRow.loc_new;
-    g_sOldLocation = tRow.loc_old;
-    g_sDescription = tRow.loc_descr;
+    g_sLocation = htmlentities_undo( tRow.loc_new );
+    g_sOldLocation = htmlentities_undo( tRow.loc_old );
+    g_sDescription = htmlentities_undo( tRow.loc_descr );
   }
 
   function onShownEditDialog()
