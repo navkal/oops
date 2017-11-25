@@ -94,11 +94,11 @@
     $( '#role' ).prop( 'disabled', true );
 
     $( '#status' ).val( tUser.status );
-    $( '#first_name' ).val( tUser.first_name );
-    $( '#last_name' ).val( tUser.last_name );
-    $( '#email_address' ).val( tUser.email_address );
-    $( '#organization' ).val( tUser.organization );
-    $( '#user_description' ).val( tUser.user_description );
+    $( '#first_name' ).val( htmlentities_undo( tUser.first_name ) );
+    $( '#last_name' ).val( htmlentities_undo( tUser.last_name ) );
+    $( '#email_address' ).val( htmlentities_undo( tUser.email_address ) );
+    $( '#organization' ).val( htmlentities_undo( tUser.organization ) );
+    $( '#user_description' ).val( htmlentities_undo( tUser.user_description ) );
 
     // Hide designated fields
     $( '.settingsHide' ).hide();

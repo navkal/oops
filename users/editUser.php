@@ -75,11 +75,11 @@
     $( '#confirm' ).val( '' );
     $( '#role' ).val( g_sRole );
     $( '#status' ).val( g_sStatus );
-    $( '#first_name' ).val( g_sFirstName );
-    $( '#last_name' ).val( g_sLastName );
-    $( '#email_address' ).val( g_sEmailAddress );
-    $( '#organization' ).val( g_sOrganization );
-    $( '#user_description' ).val( g_sDescription );
+    $( '#first_name' ).val( htmlentities_undo( g_sFirstName ) );
+    $( '#last_name' ).val( htmlentities_undo( g_sLastName ) );
+    $( '#email_address' ).val( htmlentities_undo( g_sEmailAddress ) );
+    $( '#organization' ).val( htmlentities_undo( g_sOrganization ) );
+    $( '#user_description' ).val( htmlentities_undo( g_sDescription ) );
 
     if ( g_sRole == 'Administrator' )
     {

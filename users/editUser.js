@@ -151,11 +151,11 @@ function submitUser()
   tPostData.append( "password", $( '#password' ).val() );
   tPostData.append( "role", $( '#role' ).val() );
   tPostData.append( "status", $( '#status' ).val() );
-  tPostData.append( "first_name", $( '#first_name' ).val() );
-  tPostData.append( "last_name", $( '#last_name' ).val() );
-  tPostData.append( "email_address", $( '#email_address' ).val() );
-  tPostData.append( "organization", $( '#organization' ).val() );
-  tPostData.append( "user_description", $( '#user_description' ).val() );
+  tPostData.append( "first_name", htmlentities( $( '#first_name' ).val() ) );
+  tPostData.append( "last_name", htmlentities( $( '#last_name' ).val() ) );
+  tPostData.append( "email_address", htmlentities( $( '#email_address' ).val() ) );
+  tPostData.append( "organization", htmlentities( $( '#organization' ).val() ) );
+  tPostData.append( "user_description", htmlentities( $( '#user_description' ).val() ) );
 
   // Retrieve list of authorized facilities from checkboxes
   var aChecked = $( ':checkbox:checked', '#auth_facilities' );
