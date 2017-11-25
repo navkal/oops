@@ -77,7 +77,7 @@
       var tPostData = new FormData();
       tPostData.append( 'object_type', g_sSortableTableParams['target_object_type'] );
       tPostData.append( 'object_id', g_sSortableTableParams['target_object_id'] );
-      tPostData.append( 'note', $( '#note' ).val() );
+      tPostData.append( 'note', htmlentities( $( '#note' ).val() ) );
 
       showSpinner();
 
