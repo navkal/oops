@@ -388,7 +388,7 @@ function onSubmitRestoreDialog()
         break;
     }
 
-    var sComment = $( '#restore_comment' ).val();
+    var sComment = htmlentities( $( '#restore_comment' ).val() );
     tPostData.append( 'comment', sComment );
 
     showSpinner();
