@@ -132,7 +132,7 @@
 
     // Initialize input fields
     $( '#source_path' ).val( g_sSourceId );
-    $( '#name' ).val( htmlentities( g_sName ) );
+    $( '#name' ).val( g_sName );
     $( '#room_id' ).val( g_sLocationId );
 
     // Initialize select2 objects
@@ -212,7 +212,7 @@
       }
 
       tPostData.append( 'parent_id', $( '#source_path' ).val() );
-      tPostData.append( 'name', $( '#name' ).val() );
+      tPostData.append( 'name', htmlentities( $( '#name' ).val() ) );
 
       var sLocVal = $( '#room_id' ).val();
       tPostData.append( 'room_id', ( ( sLocVal == null ) || ( sLocVal == '0' ) ) ? '' : sLocVal );
