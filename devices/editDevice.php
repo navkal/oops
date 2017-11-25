@@ -132,7 +132,7 @@
 
     // Initialize input fields
     $( '#source_path' ).val( g_sSourceId );
-    $( '#name' ).val( g_sName );
+    $( '#name' ).val( htmlentities( g_sName ) );
     $( '#room_id' ).val( g_sLocationId );
 
     // Initialize select2 objects

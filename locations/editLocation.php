@@ -129,9 +129,9 @@
       {
         tPostData.append( "id", g_sLocationId );
       }
-      tPostData.append( "loc_new", $( '#loc_new' ).val() );
-      tPostData.append( "loc_old", $( '#loc_old' ).val() );
-      tPostData.append( "loc_descr", $( '#loc_descr' ).val() );
+      tPostData.append( "loc_new", htmlentities( $( '#loc_new' ).val() ) );
+      tPostData.append( "loc_old", htmlentities( $( '#loc_old' ).val() ) );
+      tPostData.append( "loc_descr", htmlentities( $( '#loc_descr' ).val() ) );
 
       showSpinner();
 
