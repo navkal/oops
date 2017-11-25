@@ -28,7 +28,7 @@ function initRemoveDialog( sRemoveId )
   $( '#remove_comment' ).val( '' );
   if ( g_bShowRemoveComment )
   {
-    $( '#removeCommentDiv label' ).text( g_tPropertyRules['remove_comment'].label )
+    $( '#removeCommentDiv label' ).text( htmlentities_undo( g_tPropertyRules['remove_comment'].label ) );
     $( '#removeCommentDiv' ).show();
   }
 
@@ -61,7 +61,7 @@ function removeObject()
   // Post request to server
   var tPostData = new FormData();
   tPostData.append( "id", g_sRemoveId );
-  tPostData.append( 'comment', $( '#remove_comment' ).val() );
+  tPostData.append( 'comment', htmlentities( $( '#remove_comment' ).val() ) );
 
   showSpinner();
 

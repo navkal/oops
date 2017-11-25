@@ -13,7 +13,7 @@ function initRestoreDialog( sRestoreId )
   g_tRestoreRow = findSortableTableRow( g_sRestoreId );
   $( '#restoreDialogTitle,#restoreDialogFormSubmitProxy' ).text( 'Restore ' + g_tRestoreRow.remove_object_type );
   $( '#timestamp' ).val( formatTimestamp( g_tRestoreRow.timestamp ) );
-  $( '#remove_comment' ).val( g_tRestoreRow.remove_comment );
+  $( '#remove_comment' ).val( htmlentities_undo( g_tRestoreRow.remove_comment ) );
   $( '#restoreFields' ).html( '' );
   $( '#restore_comment' ).val( '' );
 
