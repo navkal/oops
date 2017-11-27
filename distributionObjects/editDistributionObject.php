@@ -16,13 +16,6 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <form id="editDialogForm" class="form-horizontal" onsubmit="onSubmitEditDialog(event); return false;" >
-              <div class="form-group">
-                <label for="voltage"></label>
-                <div>
-                  <div id="voltage_container" >
-                  </div>
-                </div>
-              </div>
               <div class="form-group" id="three_phase_block" >
                 <label for="three_phase"></label>
                 <div>
@@ -122,7 +115,7 @@
   var g_sPhaseCParentId = null;
   var g_sNumber = null;
   var g_sName = null;
-  var g_sVoltageId = null;
+  var g_sParentVoltageId = null;
   var g_sLocationId = null;
   var g_sPath = null;
 
@@ -135,7 +128,6 @@
     $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
     $( '#phase_b_tail_container' ).html( '<select id="phase_b_tail" class="form-control" style="width: 100%" ></select>' );
     $( '#phase_c_tail_container' ).html( '<select id="phase_c_tail" class="form-control" style="width: 100%" ></select>' );
-    $( '#voltage_container' ).html( '<select id="voltage" class="form-control" style="width: 100%" ></select>' );
     $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
 
     getDropdowns();
@@ -192,7 +184,6 @@
     $( '#number' ).val( g_sNumber );
     $( '#name' ).val( g_sName );
     $( '#three_phase_block label:contains(' + g_sPhases + ') input' ).prop( 'checked', true );
-    $( '#voltage' ).val( g_sVoltageId );
     $( '#room_id' ).val( g_sLocationId );
     $( '#' + sDescrId ).val( g_sDescription );
     $( '#panel_photo_file,#panel_photo_filename' ).val( '' );
@@ -202,7 +193,6 @@
     $( '#parent_path' ).select2( { placeholder: g_tPropertyRules['parent_path'].label } );
     $( '#phase_b_tail' ).select2( { placeholder: g_tPropertyRules['phase_b_tail'].label } );
     $( '#phase_c_tail' ).select2( { placeholder: g_tPropertyRules['phase_c_tail'].label } );
-    $( '#voltage' ).select2( { placeholder: g_tPropertyRules['voltage'].label } );
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
     // Customize type-specific fields
@@ -224,7 +214,7 @@
     g_sParentId = '';
     g_sNumber = '';
     g_sName = '';
-    g_sVoltageId = '';
+    g_sParentVoltageId = ( g_sSortableTableEditWhat == 'Transformer' ) ? '1' : '';
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
@@ -232,14 +222,6 @@
 
     // Allow user to set creation-time attributes
     $( '#three_phase_block input' ).prop( 'disabled', false );
-    $( '#voltage' ).prop( 'disabled', false );
-
-    // Special handling of voltage when adding Transformer
-    if ( g_sSortableTableEditWhat == 'Transformer' )
-    {
-      g_sVoltageId = '1';
-      $( '#voltage' ).prop( 'disabled', true );
-    }
   }
 
   function initUpdateDialog()
@@ -254,7 +236,7 @@
     g_sPhaseCParentId = tRow.phase_c_parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
-    g_sVoltageId = tRow.voltage_id;
+    g_sParentVoltageId = tRow.parent_voltage_id;
     g_sLocationId = tRow.room_id;
     g_sDescription = htmlentities_undo( tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr );
     g_sPath = tRow.path;
@@ -262,7 +244,6 @@
 
     // Don't let the user change creation-time settings
     $( '#three_phase_block input' ).prop( 'disabled', true );
-    $( '#voltage' ).prop( 'disabled', true );
 
     // Don't let user change parent of bound circuit
     $( '#parent_path' ).prop( 'disabled', ( tRow.object_type == 'Circuit' ) && tRow.is_bound_circuit );
@@ -270,17 +251,8 @@
 
   function makeDropdowns()
   {
-    makeParentDropdown( g_sVoltageId )
-
-    var sHtmlVoltage = '';
-    var aVoltages = g_tDropdowns.voltages;
-    for ( var iVoltage in aVoltages )
-    {
-      var tVoltage = aVoltages[iVoltage];
-      sHtmlVoltage += '<option value="' + tVoltage.id + '" >' + tVoltage.text + '</option>';
-    }
-
-    $( '#voltage' ).html( sHtmlVoltage );
+    makeParentDropdown()
+    makePhaseDropdowns( g_tDropdowns.parents, g_sParentId, g_sPhaseBParentId );
 
     var sHtmlLocation = '';
     var aLocations = g_tDropdowns.locations;
@@ -293,11 +265,8 @@
     $( '#room_id' ).html( sHtmlLocation );
   }
 
-  function makeParentDropdown( sVoltageId )
+  function makeParentDropdown()
   {
-    // Save parent selection, if any
-    var sParentVal = $( '#parent_path' ).val() || '';
-
     // Generate dropdown
     var sHtmlParentPath = '';
     var aParents = g_tDropdowns.parents;
@@ -306,47 +275,36 @@
     {
       var tParent = aParents[iParent];
 
+      // --> KLUDGE. Move this filtering to backend -->
       var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
-      // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-      var bVoltageAllowed = sVoltageId ? ( ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < sVoltageId  ) : ( tParent.voltage_id == sVoltageId  ) ) : true;
-      // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
+      var bVoltageAllowed = g_sParentVoltageId ? ( tParent.voltage_id == g_sParentVoltageId ) : true;
       if ( bPathAllowed && bVoltageAllowed )
       {
+      // <-- KLUDGE. Move this filtering to backend <--
         sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
+      // --> KLUDGE. Move this filtering to backend -->
       }
+      // <-- KLUDGE. Move this filtering to backend <--
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
-
-    // Restore parent selection, if possible
-    $( '#parent_path' ).val( sParentVal );
-
-    makePhaseDropdowns( g_tDropdowns.parents, g_sParentId, g_sPhaseBParentId );
   }
 
   function onShownEditDialog()
   {
-    if ( $( '#voltage' ).prop( 'disabled' ) )
+    if ( $( '#parent_path' ).prop( 'disabled' ) )
     {
-      if ( $( '#parent_path' ).prop( 'disabled' ) )
-      {
-        $( '#number' ).focus();
-      }
-      else
-      {
-        $( '#parent_path' ).focus();
-      }
+      $( '#number' ).focus();
     }
     else
     {
-      $( '#voltage' ).focus();
+      $( '#parent_path' ).focus();
     }
 
     // Allow user to select text in select2 rendering
     allowSelect2SelectText( 'parent_path' );
     allowSelect2SelectText( 'phase_b_tail' );
     allowSelect2SelectText( 'phase_c_tail' );
-    allowSelect2SelectText( 'voltage' );
     allowSelect2SelectText( 'room_id' );
 
     // Set handler to focus on select2 object after user sets value
@@ -371,25 +329,7 @@
 
       switch( sId )
       {
-        case 'voltage':
-          makeParentDropdown( sVal );
-          break;
-
         case 'parent_path':
-          var sParentType = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'object_type' );
-          var sParentVoltageId = tControl.find( 'option[value="' + sVal + '"]' ).attr( 'voltage_id' );
-          var sCurrentVoltageId = $( '#voltage' ).val();
-
-          // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-          var sLowVoltageId = Math.max( g_tDropdowns.voltages[0].id, g_tDropdowns.voltages[1].id ).toString();
-          sAllowedVoltageId = ( sParentType == 'Transformer' ) ? sLowVoltageId : sParentVoltageId;
-          // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
-
-          if ( sCurrentVoltageId != sAllowedVoltageId )
-          {
-            $( '#voltage' ).val( sAllowedVoltageId ).trigger( 'change' );
-          }
-
           makePhaseDropdowns( g_tDropdowns.parents, sVal, $( '#phase_b_tail' ).val() );
           break;
 
@@ -445,7 +385,6 @@
       var sHyphen = ( sNumber && sName ) ? '-' : '';
       tPostData.append( 'tail', sNumber + sHyphen + sName );
 
-      tPostData.append( 'voltage_id', $( '#voltage' ).val() );
       tPostData.append( 'three_phase', $( '#three_phase_block input[name=three_phase]:checked' ).val() );
 
       tPostData.append( 'room_id', $( '#room_id' ).val() );

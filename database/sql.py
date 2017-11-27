@@ -215,7 +215,7 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
             cur.execute( 'SELECT path FROM ' + target_table + ' WHERE id=?', ( parent_id, ) )
             parent_path = cur.fetchone()[0]
 
-        if phase_b_parent_id:
+        if phase_b_parent_id and int( phase_b_parent_id ):
             # Determine whether Phase B parent is available
             cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_b_parent_id, phase_b_parent_id, phase_b_parent_id, allowed_id ) )
             count = cur.fetchone()[0]
@@ -230,7 +230,7 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
                 cur.execute( 'SELECT tail FROM ' + target_table + ' WHERE id=?', ( phase_b_parent_id, ) )
                 phase_b_tail = cur.fetchone()[0]
 
-        if phase_c_parent_id:
+        if phase_c_parent_id and int( phase_c_parent_id ):
             # Determine whether Phase C parent is available
             cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_c_parent_id, phase_c_parent_id, phase_c_parent_id, allowed_id ) )
             count = cur.fetchone()[0]
@@ -333,6 +333,16 @@ def get_three_phase( id, facility ):
     select_from_distribution( table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(id,) )
     three_phase = cur.fetchone()[0]
     return three_phase
+
+
+def get_voltage_id( id, facility ):
+    if id:
+        dist_table = facility + '_Distribution'
+        select_from_distribution( table=dist_table, fields='voltage_id', condition=(dist_table + '.id=?'), params=(id,) )
+        voltage_id = cur.fetchone()[0]
+    else:
+        voltage_id = 1
+    return str( voltage_id )
 
 
 # Retrieve sibling circuits bound to specified circuit ID
@@ -1077,6 +1087,7 @@ class distributionTableRow:
 
         if user_role == 'Technician':
             self.activity_log = self.id
+            self.parent_voltage_id = self.voltage_id
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
                 if bound_circuit_ids == None:
@@ -1097,6 +1108,7 @@ class distributionTableRow:
                     self.remove_panel = ''
                     self.remove_what = ''
             elif self.object_type == 'Transformer':
+                self.parent_voltage_id = get_voltage_id( self.parent_id, facility )
                 self.update_transformer = self.id
                 self.remove_transformer = self.id
                 self.remove_what = 'path'
@@ -1194,7 +1206,7 @@ class changePassword:
 
 
 class addDistributionObject:
-    def __init__( self, by, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, tail, voltage_id, three_phase, room_id, description, filename, enterprise, facility ):
+    def __init__( self, by, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, tail, three_phase, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
         self.messages = []
@@ -1232,6 +1244,10 @@ class addDistributionObject:
                 three_phase = get_three_phase( parent_id, facility )
 
             # Generate search result text
+            if object_type == 'Transformer':
+                voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
+            else:
+                voltage_id = get_voltage_id( parent_id, facility )
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
@@ -1261,7 +1277,7 @@ class addDistributionObject:
 
 
 class updateDistributionObject:
-    def __init__( self, by, id, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, tail, voltage_id, three_phase, room_id, description, filename, enterprise, facility ):
+    def __init__( self, by, id, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, tail, three_phase, room_id, description, filename, enterprise, facility ):
         open_database( enterprise )
 
         # Initialize return values
@@ -1363,6 +1379,10 @@ class updateDistributionObject:
                         self.descendant_rows.append( desc_row.__dict__ )
 
             # Generate search result text
+            if object_type == 'Transformer':
+                voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
+            else:
+                voltage_id = get_voltage_id( parent_id, facility )
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )

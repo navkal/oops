@@ -15,7 +15,6 @@
   $sPhaseBParentId = quote( $_POST['phase_b_parent_id'] );
   $sPhaseCParentId = quote( $_POST['phase_c_parent_id'] );
   $sTail = quote( $_POST['tail'] );
-  $sVoltageId = quote( $_POST['voltage_id'] );
   $sThreePhase = quote( $_POST['three_phase'] );
   $sRoomId = quote( $_POST['room_id'] );
   $sDescription = quote( $_POST['description'] );
@@ -62,7 +61,6 @@
       . ' -m ' . $sPhaseBParentId
       . ' -n ' . $sPhaseCParentId
       . ' -t ' . $sTail
-      . ' -v ' . $sVoltageId
       . ' -w ' . $sThreePhase
       . ' -r ' . $sRoomId
       . ' -d ' . $sDescription

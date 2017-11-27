@@ -190,3 +190,10 @@ def summarize_user( cur, id ):
     summary = username + role + facilities + enabled + full_name + email_address + organization + description
 
     return summary
+
+
+def voltage_to_id( cur, voltage ):
+    cur.execute( 'SELECT id FROM Voltage WHERE voltage=?', (voltage,) )
+    row = cur.fetchone()
+    voltage_id = row[0]
+    return voltage_id
