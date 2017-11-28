@@ -176,12 +176,12 @@ def get_distribution_dropdown( facility, object_type, id='0' ):
 
     objects = []
     for row in rows:
-        ( parent_path, phase_b_tail, phase_c_tail ) = (None,None,None)#test_parent_availability( dist_table, device_table, object_type, row[0], 0, 0, id )
-        if not ( parent_path or phase_b_tail or phase_c_tail ):
-            print( '+', row[1] )
+        # ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, row[0], 0, 0, id )
+        # if not ( parent_path or phase_b_tail or phase_c_tail ):
+            # print( '+', row[1] )
             objects.append( { 'id': row[0], 'text': row[1], 'make_phase_dropdowns': not row[2], 'voltage_id': row[3], 'object_type': row[5] } )
-        else:
-            print( '-', row[1] )
+        # else:
+            # print( '-', row[1] )
 
     return natsort.natsorted( objects, key=lambda x: x['text'] )
 
@@ -236,15 +236,22 @@ def test_parent_availability( target_table, device_table, object_type, parent_id
     phase_b_tail = None
     phase_c_tail = None
 
+    # Check only if target object is a Panel or a Transformer
     if object_type in [ 'Panel', 'Transformer' ]:
 
-        parent_path = test_phase_parent_availability( target_table, device_table, parent_id, allowed_id, 'path' )
+        cur.execute( 'SELECT object_type_id FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
+        parent_type = cur.fetchone()[0]
 
-        if phase_b_parent_id and int( phase_b_parent_id ):
-            phase_b_tail = test_phase_parent_availability( target_table, device_table, phase_b_parent_id, allowed_id, 'tail' )
+        # Check only if requested parent is a Circuit
+        if parent_type == dbCommon.object_type_to_id( cur, 'Circuit' ):
 
-        if phase_c_parent_id and int( phase_c_parent_id ):
-            phase_c_tail = test_phase_parent_availability( target_table, device_table, phase_c_parent_id, allowed_id, 'tail' )
+            parent_path = test_phase_parent_availability( target_table, device_table, parent_id, allowed_id, 'path' )
+
+            if phase_b_parent_id and int( phase_b_parent_id ):
+                phase_b_tail = test_phase_parent_availability( target_table, device_table, phase_b_parent_id, allowed_id, 'tail' )
+
+            if phase_c_parent_id and int( phase_c_parent_id ):
+                phase_c_tail = test_phase_parent_availability( target_table, device_table, phase_c_parent_id, allowed_id, 'tail' )
 
     return ( parent_path, phase_b_tail, phase_c_tail )
 
