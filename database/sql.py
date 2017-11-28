@@ -1243,11 +1243,15 @@ class addDistributionObject:
             if object_type == 'Circuit':
                 three_phase = get_three_phase( parent_id, facility )
 
-            # Generate search result text
+            # Determine voltage of object
             if object_type == 'Transformer':
+                # For Transformer, hard-code the voltage
                 voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
             else:
+                # For Panel and Circuit, inherit the voltage from the parent
                 voltage_id = get_voltage_id( parent_id, facility )
+
+            # Generate search result text
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
@@ -1378,11 +1382,11 @@ class updateDistributionObject:
                         desc_row = distributionTableRow( id=desc_id, user_role=user_role, enterprise=enterprise, facility=facility )
                         self.descendant_rows.append( desc_row.__dict__ )
 
+
+            # Determine voltage of object
+            voltage_id = get_voltage_id( id, facility )
+
             # Generate search result text
-            if object_type == 'Transformer':
-                voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
-            else:
-                voltage_id = get_voltage_id( parent_id, facility )
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
