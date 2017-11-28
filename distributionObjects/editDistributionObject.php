@@ -145,7 +145,7 @@
     }
     else
     {
-      var sId = '';
+      var sId = '0';
     }
 
     tPostData.append( 'id', sId );

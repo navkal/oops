@@ -157,24 +157,31 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility, object_type ):
+def get_distribution_dropdown( facility, object_type, id='0' ):
 
     if object_type == 'Panel':
-      parent_types = "'Circuit','Transformer'"
+        parent_types = "'Circuit','Transformer'"
     elif object_type == 'Transformer':
-      parent_types = "'Circuit'"
+        parent_types = "'Circuit'"
     elif object_type == 'Circuit':
-      parent_types = "'Panel'"
+        parent_types = "'Panel'"
     elif object_type == 'Device':
-      parent_types = "'Circuit'"
+        parent_types = "'Circuit'"
 
     dist_table = facility + '_Distribution'
     select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
     rows = cur.fetchall()
 
+    device_table = facility + '_Device'
+
     objects = []
     for row in rows:
-        objects.append( { 'id': row[0], 'text': row[1], 'make_phase_dropdowns': not row[2], 'voltage_id': row[3], 'object_type': row[5] } )
+        ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, row[0], 0, 0, id )
+        if not ( parent_path or phase_b_tail or phase_c_tail ):
+            print( '+', row[1] )
+            objects.append( { 'id': row[0], 'text': row[1], 'make_phase_dropdowns': not row[2], 'voltage_id': row[3], 'object_type': row[5] } )
+        else:
+            print( '-', row[1] )
 
     return natsort.natsorted( objects, key=lambda x: x['text'] )
 
@@ -1998,7 +2005,11 @@ class distributionDropdowns:
     def __init__(self, id, object_type, enterprise, facility):
 
         open_database( enterprise )
-        self.parents = get_distribution_dropdown( facility, object_type )
+
+        # Get all potential parents
+        self.parents = get_distribution_dropdown( facility, object_type, id )
+
+        # Get all locations
         self.locations = get_location_dropdown( facility )
 
 
