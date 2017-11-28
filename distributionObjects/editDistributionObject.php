@@ -139,6 +139,17 @@
     var tPostData = new FormData();
     tPostData.append( 'object_type', g_sSortableTableType );
 
+    if ( typeof g_sUpdateTarget !== 'undefined' )
+    {
+      var sId = findSortableTableRow( g_sUpdateTarget ).id;
+    }
+    else
+    {
+      var sId = '';
+    }
+
+    tPostData.append( 'id', sId );
+
     $.ajax(
       "distributionObjects/getDistributionObjectDropdowns.php",
       {

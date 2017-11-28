@@ -1924,13 +1924,13 @@ class authFacilities:
         self.name_map = name_map
         self.fullname_map = fullname_map
 
+
 class allFacilities:
     def __init__(self, enterprise):
 
         open_database( enterprise )
         cur.execute('SELECT facility_name, facility_fullname FROM Facility')
         rows = cur.fetchall()
-
 
         names = []
         fullnames = []
@@ -1986,7 +1986,7 @@ class deviceDropdowns:
 
 
 class distributionDropdowns:
-    def __init__(self, object_type, enterprise, facility):
+    def __init__(self, id, object_type, enterprise, facility):
 
         open_database( enterprise )
 
