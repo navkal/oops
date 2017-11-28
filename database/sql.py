@@ -157,10 +157,19 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility, aTypes ):
+def get_distribution_dropdown( facility, object_type ):
+
+    if object_type == 'Panel':
+      parent_types = "'Circuit','Transformer'"
+    elif object_type == 'Transformer':
+      parent_types = "'Circuit'"
+    elif object_type == 'Circuit':
+      parent_types = "'Panel'"
+    elif object_type == 'Device':
+      parent_types = "'Circuit'"
 
     dist_table = facility + '_Distribution'
-    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + ','.join( aTypes ) + ')' ) )
+    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
     rows = cur.fetchall()
 
     objects = []
@@ -1967,10 +1976,10 @@ class restoreDropdowns:
         self.locations = get_location_dropdown( facility )
 
         # Get parents
-        self.device_parents = get_distribution_dropdown( facility, ["'Circuit'"] )
-        self.circuit_parents = get_distribution_dropdown( facility, ["'Panel'"] )
-        self.transformer_parents = get_distribution_dropdown( facility, ["'Circuit'"] )
-        self.panel_parents = get_distribution_dropdown( facility, ["'Circuit'", "'Transformer'"] )
+        self.device_parents = get_distribution_dropdown( facility, 'Device' )
+        self.circuit_parents = get_distribution_dropdown( facility, 'Circuit' )
+        self.transformer_parents = get_distribution_dropdown( facility, 'Transformer' )
+        self.panel_parents = get_distribution_dropdown( facility, 'Panel' )
 
 
 class deviceDropdowns:
@@ -1979,7 +1988,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_distribution_dropdown( facility, ["'Circuit'"] )
+        self.sources = get_distribution_dropdown( facility, 'Device' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -1989,18 +1998,7 @@ class distributionDropdowns:
     def __init__(self, id, object_type, enterprise, facility):
 
         open_database( enterprise )
-
-        # Get all potential parents
-        if object_type == 'Circuit':
-            aTypes = ["'Panel'"]
-        else:
-            aTypes = ["'Circuit'"]
-            if object_type == 'Panel':
-                aTypes.append( "'Transformer'" )
-
-        self.parents = get_distribution_dropdown( facility, aTypes )
-
-        # Get all locations
+        self.parents = get_distribution_dropdown( facility, object_type )
         self.locations = get_location_dropdown( facility )
 
 
