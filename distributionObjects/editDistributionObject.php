@@ -139,13 +139,13 @@
     var tPostData = new FormData();
     tPostData.append( 'object_type', g_sSortableTableType );
 
-    if ( typeof g_sUpdateTarget !== 'undefined' )
+    if ( g_sUpdateTarget )
     {
       var sId = findSortableTableRow( g_sUpdateTarget ).id;
     }
     else
     {
-      var sId = '0';
+      var sId = '';
     }
 
     tPostData.append( 'id', sId );
@@ -285,17 +285,7 @@
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
-
-      // --> KLUDGE. Move this filtering to backend -->
-      var bPathAllowed = ( tParent.text != g_sPath ) && ! tParent.text.startsWith( g_sPath + '.' );
-      var bVoltageAllowed = g_sParentVoltageId ? ( tParent.voltage_id == g_sParentVoltageId ) : true;
-      if ( bPathAllowed && bVoltageAllowed )
-      {
-      // <-- KLUDGE. Move this filtering to backend <--
-        sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
-      // --> KLUDGE. Move this filtering to backend -->
-      }
-      // <-- KLUDGE. Move this filtering to backend <--
+      sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );

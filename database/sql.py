@@ -157,7 +157,7 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility, object_type, id='0' ):
+def get_distribution_dropdown( facility, object_type, id=None ):
 
     if object_type == 'Panel':
         parent_types = "'Circuit','Transformer'"
@@ -169,21 +169,47 @@ def get_distribution_dropdown( facility, object_type, id='0' ):
         parent_types = "'Circuit'"
 
     dist_table = facility + '_Distribution'
-    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
-    rows = cur.fetchall()
+
+    # Get values needed for filtering the dropdown list
+    if id:
+        cur.execute( 'SELECT path, voltage_id FROM ' + dist_table + ' WHERE id=?', (id,) )
+        object = cur.fetchone()
+        object_path = object[0]
+        allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
+    else:
+        object_path = ''
+        allowed_voltage_id = 1 if object_type == 'Transformer' else 0
 
     device_table = facility + '_Device'
+    parents = []
 
-    objects = []
-    for row in rows:
-        # ( parent_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, row[0], 0, 0, id )
-        # if not ( parent_path or phase_b_tail or phase_c_tail ):
-            # print( '+', row[1] )
-            objects.append( { 'id': row[0], 'text': row[1], 'make_phase_dropdowns': not row[2], 'voltage_id': row[3], 'object_type': row[5] } )
-        # else:
-            # print( '-', row[1] )
+    # Get all potential parents by type
+    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
+    parent_rows = cur.fetchall()
 
-    return natsort.natsorted( objects, key=lambda x: x['text'] )
+    # Traverse list of potential parents
+    for parent_row in parent_rows:
+
+        parent_path = parent_row[1]
+        path_allowed = ( parent_path != object_path ) and ( not parent_path.startswith( object_path + '.' ) )
+
+        # Filter by path
+        if path_allowed:
+            parent_voltage_id = parent_row[3]
+            voltage_allowed = ( parent_voltage_id == allowed_voltage_id ) if allowed_voltage_id else True
+
+            # Filter by voltage
+            if voltage_allowed:
+                parent_id = parent_row[0]
+                # ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, id )
+                # parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+                parent_available = True # Replace this line with two lines above?
+
+                # Filter by availability of parent
+                if parent_available :
+                    parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2], 'voltage_id': parent_voltage_id, 'object_type': parent_row[5] } )
+
+    return natsort.natsorted( parents, key=lambda x: x['text'] )
 
 
 def test_path_availability( target_table, parent_id, tail ):
