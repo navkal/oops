@@ -6,7 +6,11 @@
   error_log( "==> post=" . print_r( $_POST, true ) );
 
   // Execute command
-  $command = quote( getenv( "PYTHON" ) ) . " ../database/getRestoreDropdowns.py 2>&1 " . $g_sContext;
+  $command = quote( getenv( "PYTHON" ) ) . ' ../database/getRestoreDropdowns.py 2>&1'
+    . ' -i ' . quote( $_POST['dist_object_id'] )
+    . ' -t ' . $_POST['object_type']
+    . $g_sContext;
+
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );

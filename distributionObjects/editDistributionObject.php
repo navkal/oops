@@ -137,16 +137,8 @@
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( 'object_type', g_sSortableTableType );
-
-    if ( g_sUpdateTarget )
-    {
-      var sId = findSortableTableRow( g_sUpdateTarget ).id;
-    }
-    else
-    {
-      var sId = '';
-    }
-
+    
+    var sId = g_sUpdateTarget ? findSortableTableRow( g_sUpdateTarget ).id : '';
     tPostData.append( 'id', sId );
 
     $.ajax(

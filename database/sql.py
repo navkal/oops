@@ -157,7 +157,9 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility, object_type, id=None ):
+def get_distribution_dropdown( facility=None, object_type=None, dist_object_id=None, dist_object_table_prefix='' ):
+
+    parents = []
 
     if object_type == 'Panel':
         parent_types = "'Circuit','Transformer'"
@@ -167,48 +169,52 @@ def get_distribution_dropdown( facility, object_type, id=None ):
         parent_types = "'Panel'"
     elif object_type == 'Device':
         parent_types = "'Circuit'"
-
-    dist_table = facility + '_Distribution'
-
-    # Get values needed for filtering the dropdown list
-    if id:
-        cur.execute( 'SELECT path, voltage_id FROM ' + dist_table + ' WHERE id=?', (id,) )
-        object = cur.fetchone()
-        object_path = object[0]
-        allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
     else:
-        object_path = ''
-        allowed_voltage_id = 1 if object_type == 'Transformer' else 0
+        parent_types = None
 
-    device_table = facility + '_Device'
-    parents = []
+    if parent_types:
 
-    # Get all potential parents by type
-    select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
-    parent_rows = cur.fetchall()
+        # Get values needed for filtering the dropdown list
+        if dist_object_id:
+            object_table = facility + dist_object_table_prefix + '_Distribution'
+            cur.execute( 'SELECT path, voltage_id FROM ' + object_table + ' WHERE id=?', (dist_object_id,) )
+            object = cur.fetchone()
+            object_path = object[0]
+            allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
+        else:
+            object_path = ''
+            allowed_voltage_id = 1 if object_type == 'Transformer' else 0
 
-    # Traverse list of potential parents
-    for parent_row in parent_rows:
 
-        # Filter by path
-        parent_path = parent_row[1]
-        path_allowed = ( parent_path != object_path ) and ( not parent_path.startswith( object_path + '.' ) )
+        dist_table = facility + '_Distribution'
+        device_table = facility + '_Device'
 
-        if path_allowed:
+        # Get all potential parents by type
+        select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
+        parent_rows = cur.fetchall()
 
-            # Filter by voltage
-            parent_voltage_id = parent_row[3]
-            voltage_allowed = ( parent_voltage_id == allowed_voltage_id ) if allowed_voltage_id else True
+        # Traverse list of potential parents
+        for parent_row in parent_rows:
 
-            if voltage_allowed:
+            # Filter by path
+            parent_path = parent_row[1]
+            path_allowed = ( parent_path != object_path ) and ( not parent_path.startswith( object_path + '.' ) )
 
-                # Filter by availability of parent
-                parent_id = parent_row[0]
-                ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, id )
-                parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+            if path_allowed:
 
-                if parent_available :
-                    parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2], 'voltage_id': parent_voltage_id, 'object_type': parent_row[5] } )
+                # Filter by voltage
+                parent_voltage_id = parent_row[3]
+                voltage_allowed = ( parent_voltage_id == allowed_voltage_id ) if allowed_voltage_id else True
+
+                if voltage_allowed:
+
+                    # Filter by availability of parent
+                    parent_id = parent_row[0]
+                    ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
+                    parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+
+                    if parent_available :
+                        parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2], 'voltage_id': parent_voltage_id, 'object_type': parent_row[5] } )
 
     return natsort.natsorted( parents, key=lambda x: x['text'] )
 
@@ -1984,7 +1990,7 @@ class allFacilities:
 
 
 class restoreDropdowns:
-    def __init__(self, enterprise, facility):
+    def __init__(self, dist_object_id, object_type, enterprise, facility):
 
         open_database( enterprise )
 
@@ -2001,11 +2007,8 @@ class restoreDropdowns:
         # Get locations
         self.locations = get_location_dropdown( facility )
 
-        # Get parents
-        self.device_parents = get_distribution_dropdown( facility, 'Device' )
-        self.circuit_parents = get_distribution_dropdown( facility, 'Circuit' )
-        self.transformer_parents = get_distribution_dropdown( facility, 'Transformer' )
-        self.panel_parents = get_distribution_dropdown( facility, 'Panel' )
+        # Get potential parents for the specified object
+        self.parents = get_distribution_dropdown( facility=facility, object_type=object_type, dist_object_id=dist_object_id, dist_object_table_prefix='_Removed' )
 
 
 class deviceDropdowns:
@@ -2014,7 +2017,7 @@ class deviceDropdowns:
         open_database( enterprise )
 
         # Get all potential sources
-        self.sources = get_distribution_dropdown( facility, 'Device' )
+        self.sources = get_distribution_dropdown( facility=facility, object_type='Device' )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )
@@ -2026,7 +2029,7 @@ class distributionDropdowns:
         open_database( enterprise )
 
         # Get all potential parents
-        self.parents = get_distribution_dropdown( facility, object_type, id )
+        self.parents = get_distribution_dropdown( facility=facility, object_type=object_type, dist_object_id=id )
 
         # Get all locations
         self.locations = get_location_dropdown( facility )

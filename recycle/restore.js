@@ -26,7 +26,11 @@ function getRestoreDropdowns()
 {
   // Post request to server
   var tPostData = new FormData();
-  tPostData.append( "postSecurity", "" );
+
+  var sId = ( g_tRestoreRow.remove_object_type in { Panel:'', Transformer:'', Circuit:'' } ) ? g_tRestoreRow.remove_object_id : '';
+  tPostData.append( 'dist_object_id', sId );
+
+  tPostData.append( 'object_type', g_tRestoreRow.remove_object_type );
 
   $.ajax(
     "recycle/getRestoreDropdowns.php",
@@ -155,50 +159,14 @@ function makeDropdowns( tRsp )
   // Generate parent dropdown
   var sHtmlParentPath = '';
 
-  switch( g_tRestoreRow.remove_object_type )
-  {
-    case 'Panel':
-      g_aParents = tRsp.panel_parents;
-      break;
-    case 'Transformer':
-      g_aParents = tRsp.transformer_parents;
-      break;
-    case 'Circuit':
-      g_aParents = tRsp.circuit_parents;
-      break;
-    case 'Device':
-      g_aParents = tRsp.device_parents;
-      break;
-  }
+  g_aParents = tRsp.parents;
 
   for ( var iParent in g_aParents )
   {
     var tParent = g_aParents[iParent];
-    var bParentAllowed = null;
-
-    switch( g_tRestoreRow.remove_object_type )
-    {
-      case 'Panel':
-        // --> KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID -->
-        bParentAllowed = ( tParent.object_type == 'Transformer' ) ? ( tParent.voltage_id < g_tRestoreRow.fields.voltage_id ) : ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id  );
-        // <-- KLUDGE: Assume that there are only two voltage levels and the higher voltage has the lower ID <--
-        break;
-      case 'Transformer':
-        bParentAllowed = ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id );
-        break;
-      case 'Circuit':
-        bParentAllowed = ( tParent.voltage_id == g_tRestoreRow.fields.voltage_id );
-        break;
-      case 'Device':
-        bParentAllowed = true;
-        break;
-    }
-
-    if ( bParentAllowed )
-    {
-      sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
-    }
+    sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
   }
+
   $( '#' + g_sParentIdId ).html( sHtmlParentPath );
   $( '#' + g_sParentIdId ).val( g_tRestoreRow.fields.parent_id );
 
