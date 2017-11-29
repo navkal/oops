@@ -190,22 +190,23 @@ def get_distribution_dropdown( facility, object_type, id=None ):
     # Traverse list of potential parents
     for parent_row in parent_rows:
 
+        # Filter by path
         parent_path = parent_row[1]
         path_allowed = ( parent_path != object_path ) and ( not parent_path.startswith( object_path + '.' ) )
 
-        # Filter by path
         if path_allowed:
+
+            # Filter by voltage
             parent_voltage_id = parent_row[3]
             voltage_allowed = ( parent_voltage_id == allowed_voltage_id ) if allowed_voltage_id else True
 
-            # Filter by voltage
             if voltage_allowed:
-                parent_id = parent_row[0]
-                # ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, id )
-                # parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
-                parent_available = True # Replace this line with two lines above?
 
                 # Filter by availability of parent
+                parent_id = parent_row[0]
+                ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, id )
+                parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+
                 if parent_available :
                     parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2], 'voltage_id': parent_voltage_id, 'object_type': parent_row[5] } )
 

@@ -140,11 +140,20 @@
     $( '#source_path' ).select2( { placeholder: 'Circuit' } );
     $( '#room_id' ).select2( { placeholder: 'Location' } );
 
+    // Allow user to select text in select2 rendering
+    allowSelect2SelectText( 'source_path' );
+    allowSelect2SelectText( 'room_id' );
+
+    // Set handler to focus on select2 object after user sets value
+    setSelect2CloseHandler();
+
     // Set change handler
     resetChangeHandler();
 
     // Clear messages
     clearMessages();
+
+    hideSpinner();
   }
 
   function initAddDialog()
@@ -169,15 +178,6 @@
   function onShownEditDialog()
   {
     $( '#source_path' ).focus();
-
-    // Allow user to select text in select2 rendering
-    allowSelect2SelectText( 'source_path' );
-    allowSelect2SelectText( 'room_id' );
-
-    // Set handler to focus on select2 object after user sets value
-    setSelect2CloseHandler();
-
-    hideSpinner();
   }
 
   function onChangeControl( tEvent )

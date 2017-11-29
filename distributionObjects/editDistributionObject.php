@@ -206,6 +206,15 @@
     $( '#phase_c_tail' ).select2( { placeholder: g_tPropertyRules['phase_c_tail'].label } );
     $( '#room_id' ).select2( { placeholder: g_tPropertyRules['room_id'].label } );
 
+    // Allow user to select text in select2 rendering
+    allowSelect2SelectText( 'parent_path' );
+    allowSelect2SelectText( 'phase_b_tail' );
+    allowSelect2SelectText( 'phase_c_tail' );
+    allowSelect2SelectText( 'room_id' );
+
+    // Set handler to focus on select2 object after user sets value
+    setSelect2CloseHandler();
+
     // Customize type-specific fields
     $( "#three_phase_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( '#three_phase_block label:contains(Yes) input' ).val( ( g_sSortableTableEditWhat == 'Panel' ) ? '1' : '' );
@@ -218,6 +227,8 @@
 
     // Clear messages
     clearMessages();
+
+    hideSpinner();
   }
 
   function initAddDialog()
@@ -301,17 +312,6 @@
     {
       $( '#parent_path' ).focus();
     }
-
-    // Allow user to select text in select2 rendering
-    allowSelect2SelectText( 'parent_path' );
-    allowSelect2SelectText( 'phase_b_tail' );
-    allowSelect2SelectText( 'phase_c_tail' );
-    allowSelect2SelectText( 'room_id' );
-
-    // Set handler to focus on select2 object after user sets value
-    setSelect2CloseHandler();
-
-    hideSpinner();
   }
 
   function onChangeControl( tEvent )
