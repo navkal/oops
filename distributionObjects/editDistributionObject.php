@@ -293,7 +293,7 @@
     for ( var iParent in aParents )
     {
       var tParent = aParents[iParent];
-      sHtmlParentPath += '<option value="' + tParent.id + '" object_type="' + tParent.object_type + '" voltage_id="' + tParent.voltage_id + '" >' + tParent.text + '</option>';
+      sHtmlParentPath += '<option value="' + tParent.id + '" >' + tParent.text + '</option>';
     }
 
     $( '#parent_path' ).html( sHtmlParentPath );
