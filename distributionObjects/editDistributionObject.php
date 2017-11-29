@@ -115,7 +115,6 @@
   var g_sPhaseCParentId = null;
   var g_sNumber = null;
   var g_sName = null;
-  var g_sParentVoltageId = null;
   var g_sLocationId = null;
   var g_sPath = null;
 
@@ -236,7 +235,6 @@
     g_sParentId = '';
     g_sNumber = '';
     g_sName = '';
-    g_sParentVoltageId = ( g_sSortableTableEditWhat == 'Transformer' ) ? '1' : '';
     g_sLocationId = '';
     g_sDescription = '';
     g_sPath = '';
@@ -258,7 +256,6 @@
     g_sPhaseCParentId = tRow.phase_c_parent_id;
     g_sNumber = tRow.number;
     g_sName = tRow.name;
-    g_sParentVoltageId = tRow.parent_voltage_id;
     g_sLocationId = tRow.room_id;
     g_sDescription = htmlentities_undo( tRow.circuit_descr || tRow.panel_descr || tRow.transformer_descr );
     g_sPath = tRow.path;
