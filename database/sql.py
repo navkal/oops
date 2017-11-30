@@ -214,7 +214,7 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
                     parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
 
                     if parent_available :
-                        parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2], 'voltage_id': parent_voltage_id, 'object_type': parent_row[5] } )
+                        parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2] } )
 
     return natsort.natsorted( parents, key=lambda x: x['text'] )
 
