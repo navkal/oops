@@ -2210,31 +2210,43 @@ class restoreRemovedObject:
 
     def restore_device( self, by, id, parent_id, room_id, comment, facility ):
 
-        # Determine source and target tables
-        source_table = facility + '_Removed_Device'
-        target_table = facility + '_Device'
+        # Initialize return values
+        self.messages = []
+        self.selectors = []
 
-        # Get fields from source table
-        cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
-        source_row = cur.fetchone()
+        # Determine whether parent is available
+        ( count, message, selector ) = test_device_parent_availability( facility, parent_id )
+        if count > 0:
+            self.messages.append( message )
+            self.selectors.append( selector )
 
-        # Copy source row and overwrite fields with updated values
-        restore_row = list( source_row )
-        restore_row.pop()
-        restore_row[1] = room_id
-        restore_row[2] = parent_id
-        name = restore_row[5]
-        restore_row[3] = make_device_description( name, room_id, facility )
-        cur.execute( 'INSERT INTO ' + target_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_row ) )
+        if len( self.messages ) == 0:
 
-        # Clean up removed object
-        cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
+            # Determine source and target tables
+            source_table = facility + '_Removed_Device'
+            target_table = facility + '_Device'
 
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        object_id = restore_row[0]
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreDevice'], by, facility_id, summarize_object( 'Device', object_id, facility ), comment, 'Device', object_id  ) )
+            # Get fields from source table
+            cur.execute( 'SELECT * FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
+            source_row = cur.fetchone()
+
+            # Copy source row and overwrite fields with updated values
+            restore_row = list( source_row )
+            restore_row.pop()
+            restore_row[1] = room_id
+            restore_row[2] = parent_id
+            name = restore_row[5]
+            restore_row[3] = make_device_description( name, room_id, facility )
+            cur.execute( 'INSERT INTO ' + target_table + ' (id, room_id, parent_id, description, power, name ) VALUES (?,?,?,?,?,?) ', tuple( restore_row ) )
+
+            # Clean up removed object
+            cur.execute( 'DELETE FROM ' + source_table + ' WHERE remove_id=?', ( id, ) )
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            object_id = restore_row[0]
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreDevice'], by, facility_id, summarize_object( 'Device', object_id, facility ), comment, 'Device', object_id  ) )
 
 
     def restore_location( self, by, id, comment, facility ):
