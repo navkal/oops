@@ -889,7 +889,7 @@ class sortableTable:
                     path = parent_path + '.' + tail
                     ( number, name ) = tail_to_number_name( tail )
 
-                    fields = { 'parent_id': parent_id, 'phase_b_parent_id': phase_b_parent_id, 'phase_c_parent_id': phase_c_parent_id, 'number': number, 'name': name, 'room_id': room_id, 'voltage_id': voltage_id }
+                    fields = { 'parent_id': parent_id, 'phase_b_parent_id': phase_b_parent_id, 'phase_c_parent_id': phase_c_parent_id, 'number': number, 'name': name, 'room_id': room_id }
 
                     ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_distribution_object_label( ptc )
