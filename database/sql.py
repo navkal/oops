@@ -214,7 +214,7 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
                     if phase_allowed:
 
                         # Filter by availability of parent
-                        ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_object_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
+                        ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( parent_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
                         parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
 
                         if parent_available :
