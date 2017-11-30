@@ -95,7 +95,7 @@ def format_device_description( name, location, location_old, location_descr ):
     return desc
 
 
-def make_search_result( source, voltage, location, location_old, location_descr, object_type, description, name ):
+def make_search_result( source, voltage, location, location_old, location_descr, description, name ):
 
     bar = ' | '
 
