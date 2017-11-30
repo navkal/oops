@@ -174,10 +174,13 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
 
     if parent_types:
 
+        dist_object_table = facility + dist_object_table_prefix + '_Distribution'
+        parent_table = facility + '_Distribution'
+        device_table = facility + '_Device'
+
         # Get values needed for filtering the dropdown list
         if dist_object_id:
-            object_table = facility + dist_object_table_prefix + '_Distribution'
-            cur.execute( 'SELECT path, voltage_id FROM ' + object_table + ' WHERE id=?', (dist_object_id,) )
+            cur.execute( 'SELECT path, voltage_id FROM ' + dist_object_table + ' WHERE id=?', (dist_object_id,) )
             object = cur.fetchone()
             object_path = object[0]
             allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
@@ -185,12 +188,8 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
             object_path = ''
             allowed_voltage_id = 1 if object_type == 'Transformer' else 0
 
-
-        dist_table = facility + '_Distribution'
-        device_table = facility + '_Device'
-
         # Get all potential parents by type
-        select_from_distribution( table=dist_table, fields=( dist_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
+        select_from_distribution( table=parent_table, fields=( parent_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
         parent_rows = cur.fetchall()
 
         # Traverse list of potential parents
@@ -208,13 +207,18 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
 
                 if voltage_allowed:
 
-                    # Filter by availability of parent
+                    # Filter by phase compatibility (between Circuit and parent Panel)
                     parent_id = parent_row[0]
-                    ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
-                    parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+                    ( phase_allowed, panel_path ) = test_phase_compatibility( dist_object_table, dist_object_id, object_type, parent_table, parent_id )
 
-                    if parent_available :
-                        parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2] } )
+                    if phase_allowed:
+
+                        # Filter by availability of parent
+                        ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( dist_object_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
+                        parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
+
+                        if parent_available :
+                            parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2] } )
 
     return natsort.natsorted( parents, key=lambda x: x['text'] )
 
@@ -309,7 +313,7 @@ def test_device_parent_availability( facility, parent_id ):
 
 def test_phase_compatibility( circuit_table, circuit_object_id, object_type, panel_table, panel_id  ):
 
-    if object_type == 'Circuit':
+    if ( object_type == 'Circuit' ) and circuit_object_id:
 
         cur.execute( 'SELECT three_phase FROM ' + circuit_table + ' WHERE id = ?', ( circuit_object_id, ) )
         circuit_three_phase = cur.fetchone()[0]
