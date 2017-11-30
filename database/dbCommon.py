@@ -121,6 +121,9 @@ def make_search_result( source, voltage, location, location_old, location_descr,
     else:
         search_result = name
 
+    # Remove excess spaces
+    search_result = ' '.join( search_result.split() )
+
     return search_result
 
 
