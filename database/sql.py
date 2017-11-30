@@ -307,15 +307,23 @@ def test_device_parent_availability( facility, parent_id ):
     return ( count, message, selector )
 
 
-def test_phase_compatibility( circuit_table, circuit_object_id, panel_table, panel_id  ):
+def test_phase_compatibility( circuit_table, circuit_object_id, object_type, panel_table, panel_id  ):
 
-    cur.execute( 'SELECT three_phase FROM ' + circuit_table + ' WHERE id = ?', ( circuit_object_id, ) )
-    circuit_three_phase = cur.fetchone()[0]
-    cur.execute( 'SELECT path, three_phase FROM ' + panel_table + ' WHERE id = ?', ( panel_id, ) )
-    panel_row = cur.fetchone()
-    panel_path = panel_row[0]
-    panel_three_phase = panel_row[1]
-    compatible = ( circuit_three_phase == panel_three_phase )
+    if object_type == 'Circuit':
+
+        cur.execute( 'SELECT three_phase FROM ' + circuit_table + ' WHERE id = ?', ( circuit_object_id, ) )
+        circuit_three_phase = cur.fetchone()[0]
+        cur.execute( 'SELECT path, three_phase FROM ' + panel_table + ' WHERE id = ?', ( panel_id, ) )
+        panel_row = cur.fetchone()
+        panel_path = panel_row[0]
+        panel_three_phase = panel_row[1]
+        compatible = ( circuit_three_phase == panel_three_phase )
+
+    else:
+
+        compatible = True
+        panel_path = ''
+
     return ( compatible, panel_path )
 
 
@@ -1386,11 +1394,10 @@ class updateDistributionObject:
 
         if len( self.messages ) == 0:
             # Determine compatibility between target object and its parent
-            if object_type == 'Circuit':
-                ( compatible, parent_path ) = test_phase_compatibility( target_table, id, target_table, parent_id )
-                if not compatible:
-                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
-                    self.selectors.append( '#parent_path' )
+            ( compatible, parent_path ) = test_phase_compatibility( target_table, id, object_type, target_table, parent_id )
+            if not compatible:
+                self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
+                self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
             # This should never happen, but it could occur with multiple users or multiple windows
@@ -2120,11 +2127,10 @@ class restoreRemovedObject:
 
         if len( self.messages ) == 0:
             # Determine compatibility between target object and its parent
-            if remove_object_type == 'Circuit':
-                ( compatible, parent_path ) = test_phase_compatibility( source_table, remove_object_id, target_table, parent_id )
-                if not compatible:
-                    self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
-                    self.selectors.append( '#parent_path' )
+            ( compatible, parent_path ) = test_phase_compatibility( source_table, remove_object_id, remove_object_type, target_table, parent_id )
+            if not compatible:
+                self.messages.append( "Phase configuration of Parent '" + parent_path + "' is not compatible." )
+                self.selectors.append( '#parent_path' )
 
         if len( self.messages ) == 0:
 
