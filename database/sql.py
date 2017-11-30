@@ -1326,7 +1326,7 @@ class addDistributionObject:
             # Generate search result text
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 
             # Add new object
             object_type_id = dbCommon.object_type_to_id( cur, object_type )
@@ -1445,7 +1445,7 @@ class updateDistributionObject:
                     ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                     new_desc_path = desc_path.replace( original_path, path, 1 )
                     new_desc_source = new_desc_path.split( '.' )[-2]
-                    desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
+                    desc_search_result = dbCommon.make_search_result( new_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_description, desc_tail )
                     cur.execute( 'UPDATE ' + target_table + ' SET path=?, search_result=?, source=? WHERE id=? ' , ( new_desc_path, desc_search_result, new_desc_source, desc_id ) )
 
                     # If path is affected in descendant of same object type, return descendant row, so that GUI will update in table
@@ -1460,7 +1460,7 @@ class updateDistributionObject:
             # Generate search result text
             voltage = get_voltage( voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 
             # Update target object
             cur.execute( 'UPDATE ' + target_table +
@@ -1607,10 +1607,9 @@ class updateLocation:
             tail = row[10]
             source = row[12]
             voltage = row[13]
-            object_type = row[14]
 
             # Generate the search result
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, object_descr, tail )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_descr, tail )
 
             # Save the new search result
             ptc_id = row[0]
@@ -2147,8 +2146,7 @@ class restoreRemovedObject:
             description = removed_root_row[9]
             voltage = removed_root_row[14]
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
-            object_type = removed_root_row[15]
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_type, description, tail )
+            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 
             # Overwrite original values with new values in root row
             restore_root_row = list( removed_root_row )
@@ -2214,6 +2212,7 @@ class restoreRemovedObject:
             # Log activity
             facility_id = facility_name_to_id( facility )
             object_id = removed_root_row[0]
+            object_type = removed_root_row[15]
             cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
                 VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restore' + object_type], by, facility_id, summarize_object( object_type, object_id, facility ), comment, object_type, object_id  ) )
 
