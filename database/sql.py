@@ -157,7 +157,7 @@ def get_location_dropdown( facility ):
     return natsort.natsorted( locations, key=lambda x: x['text'] )
 
 
-def get_distribution_dropdown( facility=None, object_type=None, dist_object_id=None, dist_object_table_prefix='' ):
+def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='', dist_object_table_prefix='' ):
 
     parents = []
 
@@ -242,49 +242,51 @@ def test_path_availability( target_table, parent_id, tail ):
     return ( test_id, path, source )
 
 
-def test_phase_parent_availability( target_table, device_table, phase_parent_id, allowed_id, report ):
+def test_phase_parent_availability( dist_table, device_table, object_type, phase_parent_id, allowed_id, report ):
 
     result = None
 
-    # Determine whether parent is available
-    cur.execute( 'SELECT COUNT(*) FROM ' + target_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
+    # Check whether parent is in use by a Panel or Transformer
+    cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
     count = cur.fetchone()[0]
 
-    if count == 0:
-        # Check whether parent is in use by a device
+    if ( count == 0 ) and ( object_type != 'Device' ):
+        # Check whether parent is in use by a Device
         cur.execute( 'SELECT COUNT(*) FROM ' + device_table + ' WHERE parent_id=?', ( phase_parent_id, ) )
         count = cur.fetchone()[0]
 
     if count > 0:
         # Report parent as unavailable
-        cur.execute( 'SELECT ' + report + ' FROM ' + target_table + ' WHERE id=?', ( phase_parent_id, ) )
+        cur.execute( 'SELECT ' + report + ' FROM ' + dist_table + ' WHERE id=?', ( phase_parent_id, ) )
         result = cur.fetchone()[0]
 
     return result
 
 
-def test_parent_availability( target_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, allowed_id ):
+def test_parent_availability( dist_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, allowed_id ):
+
+    # Ensure that Circuit->Panel and Circuit->Transformer parent->child relationships are exclusive
 
     parent_path = None
     phase_b_tail = None
     phase_c_tail = None
 
-    # Check only if target object is a Panel or a Transformer
-    if object_type in [ 'Panel', 'Transformer' ]:
+    # Check only if object seeking a parent is a Panel, Transformer, or Device
+    if object_type in [ 'Panel', 'Transformer', 'Device' ]:
 
-        cur.execute( 'SELECT object_type_id FROM ' + target_table + ' WHERE id=?', ( parent_id, ) );
-        parent_type = cur.fetchone()[0]
+        cur.execute( 'SELECT object_type_id FROM ' + dist_table + ' WHERE id=?', ( parent_id, ) );
+        parent_type_id = cur.fetchone()[0]
 
-        # Check only if requested parent is a Circuit
-        if parent_type == dbCommon.object_type_to_id( cur, 'Circuit' ):
+        # Check only if requested parent is a Circuit.  (For Panel objects, requested parent could be Transformer.)
+        if parent_type_id == dbCommon.object_type_to_id( cur, 'Circuit' ):
 
-            parent_path = test_phase_parent_availability( target_table, device_table, parent_id, allowed_id, 'path' )
+            parent_path = test_phase_parent_availability( dist_table, device_table, object_type, parent_id, allowed_id, 'path' )
 
             if phase_b_parent_id and int( phase_b_parent_id ):
-                phase_b_tail = test_phase_parent_availability( target_table, device_table, phase_b_parent_id, allowed_id, 'tail' )
+                phase_b_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_b_parent_id, allowed_id, 'tail' )
 
             if phase_c_parent_id and int( phase_c_parent_id ):
-                phase_c_tail = test_phase_parent_availability( target_table, device_table, phase_c_parent_id, allowed_id, 'tail' )
+                phase_c_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_c_parent_id, allowed_id, 'tail' )
 
     return ( parent_path, phase_b_tail, phase_c_tail )
 
