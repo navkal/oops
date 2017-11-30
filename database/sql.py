@@ -2176,12 +2176,11 @@ class restoreRemovedObject:
                 desc_description = desc[9]
                 desc_tail = desc[10]
                 desc_voltage = desc[14]
-                desc_object_type = desc[15]
                 ( desc_loc_new, desc_loc_old, desc_loc_descr ) = get_location( desc_room_id, facility )
                 restore_desc_path = desc_path.replace( removed_path, restore_path, 1 )
                 restore_desc_source = restore_desc_path.split( '.' )[-2]
 
-                restore_desc_search_result = dbCommon.make_search_result( restore_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_object_type, desc_description, desc_tail )
+                restore_desc_search_result = dbCommon.make_search_result( restore_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_description, desc_tail )
 
                 # Restore descendant object at original ID, with updated path, search result, and source
                 restore_desc_row = list( desc )
