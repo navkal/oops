@@ -291,6 +291,22 @@ def test_parent_availability( dist_table, device_table, object_type, parent_id, 
     return ( parent_path, phase_b_tail, phase_c_tail )
 
 
+def test_device_parent_availability( facility, parent_id ):
+
+    # Determine whether requested device parent is available
+    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? )', ( parent_id, parent_id, parent_id ) )
+    count = cur.fetchone()[0]
+
+    if count > 0:
+        message = "Circuit '" + get_path( parent_id, facility ) + "' is not available."
+        selector = '#source_path'
+    else:
+        message = ''
+        selector = ''
+
+    return ( count, message, selector )
+
+
 def test_phase_compatibility( circuit_table, circuit_object_id, panel_table, panel_id  ):
 
     cur.execute( 'SELECT three_phase FROM ' + circuit_table + ' WHERE id = ?', ( circuit_object_id, ) )
@@ -321,6 +337,7 @@ def tail_to_number_name( tail ):
         name = tail
 
     return ( number, name )
+
 
 def get_facility( facility_id ):
 
@@ -1461,11 +1478,10 @@ class addDevice:
         self.descendant_rows = []
 
         # Determine whether parent is available
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? )', ( parent_id, parent_id, parent_id ) )
-        count = cur.fetchone()[0]
+        ( count, message, selector ) = test_device_parent_availability( facility, parent_id )
         if count > 0:
-            self.messages.append( "Circuit '" + get_path( parent_id, facility ) + "' is not available." )
-            self.selectors.append( '#source_path' )
+            self.messages.append( message )
+            self.selectors.append( selector )
 
         if len( self.messages ) == 0:
 
@@ -1500,11 +1516,10 @@ class updateDevice:
         self.descendant_rows = []
 
         # Determine whether parent is available
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? )', ( parent_id, parent_id, parent_id ) )
-        count = cur.fetchone()[0]
+        ( count, message, selector ) = test_device_parent_availability( facility, parent_id )
         if count > 0:
-            self.messages.append( "Circuit '" + get_path( parent_id, facility ) + "' is not available." )
-            self.selectors.append( '#source_path' )
+            self.messages.append( message )
+            self.selectors.append( selector )
 
         if len( self.messages ) == 0:
 
