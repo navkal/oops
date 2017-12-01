@@ -28,6 +28,7 @@ DISTRIBUTION_FIELDS = '''
 
 DISTRIBUTION_ROW = 'id,' + DISTRIBUTION_FIELDS
 
+
 def open_database( enterprise ):
     if enterprise != None:
         global conn
@@ -606,6 +607,14 @@ def get_references( id_field_name, id, facility ):
     devices = cur.fetchone()[0]
 
     return ( panels, transformers, circuits, devices )
+
+
+# Remove n trailing elements from tuple tp
+def pop_n( tp, n, retuple ):
+    popped = list( tp )[:-n]
+    if retuple:
+        popped = tuple( popped )
+    return popped
 
 
 class device:
@@ -1698,10 +1707,7 @@ class removeDistributionObject:
 
             # Insert target object in table of removed objects
             removed_table = facility + '_Removed_Distribution'
-            row = list( row )
-            row.pop()
-            row.pop()
-            row = tuple( row )
+            row = pop_n( row, 2, True )
             cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *row, remove_id ) )
 
             # Delete target object
@@ -1733,10 +1739,7 @@ class removeDistributionObject:
                     self.removed_object_ids.append( descendant_id )
 
                 # Move current descendant to 'Removed' table
-                removed_desc = list( desc )
-                removed_desc.pop()
-                removed_desc.pop()
-                removed_desc = tuple( removed_desc )
+                removed_desc = pop_n( desc, 2, True )
                 cur.execute( 'INSERT INTO ' + removed_table + ' ( ' + DISTRIBUTION_ROW + ', remove_id ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ', ( *removed_desc, remove_id ) )
                 cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( descendant_id, ) )
 
@@ -2149,10 +2152,7 @@ class restoreRemovedObject:
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 
             # Overwrite original values with new values in root row
-            restore_root_row = list( removed_root_row )
-            restore_root_row.pop()
-            restore_root_row.pop()
-            restore_root_row.pop()
+            restore_root_row = pop_n( removed_root_row, 3, False )
             restore_root_row[1] = restore_path
             restore_root_row[4] = parent_id
             restore_root_row[5] = phase_b_parent_id
@@ -2183,10 +2183,7 @@ class restoreRemovedObject:
                 restore_desc_search_result = dbCommon.make_search_result( restore_desc_source, desc_voltage, desc_loc_new, desc_loc_old, desc_loc_descr, desc_description, desc_tail )
 
                 # Restore descendant object at original ID, with updated path, search result, and source
-                restore_desc_row = list( desc )
-                restore_desc_row.pop()
-                restore_desc_row.pop()
-                restore_desc_row.pop()
+                restore_desc_row = pop_n( desc, 3, False )
                 restore_desc_row[1] = restore_desc_path
                 restore_desc_row[11] = restore_desc_search_result
                 restore_desc_row[12] = restore_desc_source
