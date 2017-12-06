@@ -7,7 +7,7 @@
 
   // Get user attributes
   $sUsername = $_POST['username'];
-  $sPassword = quote( $_POST['password'] );
+  $sPassword = quote( $_POST['password'], false );
   $sRole = $_POST['role'];
   $sAuthFacilities = quote( $_POST['auth_facilities'] );
   $sStatus = $_POST['status'];

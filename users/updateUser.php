@@ -21,8 +21,8 @@
   // Update user
   $command = quote( getenv( "PYTHON" ) ) . " ../database/updateUser.py 2>&1 -b " . $_SESSION['panelSpy']['user']['username']
     . ' -u ' . $sUsername
-    . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . quote( $sOldPassword ) ) )
-    . ( ( $sPassword == '' ) ? '' : ( ' -p ' . quote( $sPassword ) ) )
+    . ( ( $sOldPassword == '' ) ? '' : ( ' -o ' . quote( $sOldPassword, false ) ) )
+    . ( ( $sPassword == '' ) ? '' : ( ' -p ' . quote( $sPassword, false ) ) )
     . ' -r ' . $sRole
     . ' -a ' . $sAuthFacilities
     . ' -s ' . $sStatus

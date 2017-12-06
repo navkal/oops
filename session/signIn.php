@@ -15,7 +15,7 @@
 
   // Look up user in database
   $sUsername = $_POST['username'];
-  $sPassword = quote( $_POST['password'] );
+  $sPassword = quote( $_POST['password'], false );
   $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword . $g_sContext;
   error_log( "==> command=" . $command );
   exec( $command, $output, $status );
