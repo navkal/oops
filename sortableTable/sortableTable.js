@@ -494,7 +494,7 @@ function styleTable( sId )
     // also {page:input} & {startRow:input} will add a modifiable input in place of the value
     // In v2.27.7, this can be set as a function
     // output: function(table, pager) { return 'page ' + pager.startRow + ' - ' + pager.endRow; }
-    output: '{startRow:input} – {endRow} / {totalRows} rows',
+    output: '{startRow:input} – {endRow} / {filteredRows} rows',
 
     // apply disabled classname (cssDisabled option) to the pager arrows when the rows
     // are at either extreme is visible; default is true
@@ -548,7 +548,8 @@ function styleTable( sId )
 
     tTable.tablesorterPager(pagerOptions);
 
-    $( '.pager' ).css( 'display', ( countSortableTableRows() == 0 ) ? 'none' : 'initial' );
+    // Optionally show pager
+    showPager();
 
   // <-- clean up this code <--
   // <-- clean up this code <--
@@ -570,8 +571,6 @@ function styleTable( sId )
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); g_aFilterState = $.tablesorter.getFilters( tTable ); } );
   }
-
-  $( '#' + sId ).addClass( 'table-condensed' );
 }
 
 function onSortableTableReady( tEvent )
@@ -620,6 +619,18 @@ function renumberIndex()
   {
     $( aCells[i] ).text( i + 1 );
   }
+
+  // Optionally show pager
+  showPager();
+}
+
+function showPager()
+{
+  // Determine the minimum page size supported by the pager
+  iMinPageSize = $( $( $( '.pagesize' )[0] ).find( 'option' )[0] ).val();
+
+  // Show the pager if the table has enough rows for paging
+  $( '.pager' ).css( 'display', ( countSortableTableRows() <= iMinPageSize ) ? 'none' : 'initial' );
 }
 
 function openImageWindowEtc( tEvent )

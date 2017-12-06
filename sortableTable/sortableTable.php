@@ -62,7 +62,7 @@
 
   <div id="content" class="panel panel-default">
 
-    <table id="sortableTable" >
+    <table id="sortableTable" class="table-condensed" >
     </table>
 
     <div id="sortableTableIsEmpty" class="panel-heading" style="display:none;text-align:center" >
