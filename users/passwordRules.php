@@ -31,9 +31,27 @@
       tPassword.closest( '.form-group' ).addClass( 'has-error' );
     }
 
-    if ( ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> ) || ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> ) || ( sPassword.indexOf( '"' ) != -1 ) )
+    if ( sPassword.length > <?=MAX_PASSWORD_LENGTH?> )
     {
-      aMessages.push( 'Password must contain between <?=MIN_PASSWORD_LENGTH?> and <?=MAX_PASSWORD_LENGTH?> characters other than quote (").' );
+      aMessages.push( 'Password may contain at most <?=MAX_PASSWORD_LENGTH?> characters.' );
+      tPassword.closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( sPassword.length < <?=MIN_PASSWORD_LENGTH?> )
+    {
+      aMessages.push( 'Password must contain at least <?=MIN_PASSWORD_LENGTH?> characters.' );
+      tPassword.closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( sPassword.indexOf( ' ' ) != -1 )
+    {
+      aMessages.push( 'Password may not contain spaces.' );
+      tPassword.closest( '.form-group' ).addClass( 'has-error' );
+    }
+
+    if ( sPassword.indexOf( '"' ) != -1 )
+    {
+      aMessages.push( 'Password may not contain quotes.' );
       tPassword.closest( '.form-group' ).addClass( 'has-error' );
     }
 
