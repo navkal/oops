@@ -19,9 +19,18 @@
 <script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.js"></script>
 <script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.widgets.js"></script>
 
+<!-- tablesorter pager styling -->
+<link rel="stylesheet" href="/lib/tablesorter/jquery.tablesorter.pager.css">
+
+<!-- tablesorter pager library -->
+<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.pager.js"></script>
 
 <style>
 .tablesorter .tablesorter-filter-row .disabled
+{
+  display: none;
+}
+.remove-me
 {
   display: none;
 }
@@ -47,6 +56,10 @@
   <div id="spinner" class="spinner" >
   </div>
 
+  <?php
+    include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
+  ?>
+
   <div id="content" class="panel panel-default">
 
     <table id="sortableTable" >
@@ -59,4 +72,8 @@
     </div>
 
   </div>
+
+  <?php
+    include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
+  ?>
 </div>
