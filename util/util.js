@@ -752,8 +752,8 @@ function childWindowsClose( aWindows )
 
 function resetChangeHandler()
 {
-  $( 'input,select,textarea' ).off( 'change' );
-  $( 'input,select,textarea' ).on( 'change', onChangeControl );
+  $( 'input:not(".pager input"), select:not(".pager select"), textarea:not(".pager textarea")' ).off( 'change' );
+  $( 'input:not(".pager input"), select:not(".pager select"), textarea:not(".pager textarea")' ).on( 'change', onChangeControl );
 }
 
 // Make labels for Add and Update input forms
