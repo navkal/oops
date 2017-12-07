@@ -457,12 +457,7 @@ function styleTable( sId )
 
     tTable.tablesorter( tSorter );
 
-
-
-    // --> clean up this code -->
-    // --> clean up this code -->
-    // --> clean up this code -->
-
+    // Initialize the pager
     var pagerOptions =
     {
       container: $( '.pager' ),
@@ -471,20 +466,13 @@ function styleTable( sId )
       savePages : false
     };
 
+    tTable.tablesorterPager( pagerOptions );
 
-    tTable.tablesorterPager(pagerOptions);
-
-    // Set pager completion handler to focus on page select control
+    // Focus on page select control
     tTable.bind( 'pagerComplete', function(){ $( $( '.gotoPage' )[0] ).focus(); } );
 
     // Optionally show pager
     showPager();
-
-    // <-- clean up this code <--
-    // <-- clean up this code <--
-    // <-- clean up this code <--
-
-
 
     $.tablesorter.setFilters( tTable, g_aFilterState, true );
 
