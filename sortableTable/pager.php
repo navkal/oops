@@ -9,18 +9,11 @@
   {
     cursor: pointer;
   }
-
-  .pager .pagerButtons
-  {
-    margin-left: 15px;
-    margin-right: 15px;
-    white-space: nowrap;
-  }
 </style>
 
 <div class="pager" style="display:none" >
 
-  <form class="form-inline" style="padding: 0px 5px;" >
+  <form class="form-inline" >
 
     <span style="float:left;">
       Page
@@ -28,7 +21,7 @@
       </select>
     </span>
 
-    <span class="pagerButtons">
+    <span style="white-space:nowrap;">
       <span class="glyphicon glyphicon-step-backward first" title="First Page" ></span>
       <span class="glyphicon glyphicon-backward prev" title="Previous Page" ></span>
       <span class="pagedisplay" id="<?=$sPageDisplayId?>"></span>
