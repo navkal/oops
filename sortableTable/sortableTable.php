@@ -57,6 +57,7 @@
   </div>
 
   <?php
+    $sPageDisplayId = 'pageDisplayTop';
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 
@@ -74,6 +75,7 @@
   </div>
 
   <?php
+    $sPageDisplayId = 'pageDisplayBottom';
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 </div>
