@@ -33,7 +33,7 @@
 </style>
 
 <div class="container-fluid">
-  <div id="tableTop" style="padding-bottom:15px" >
+  <div id="tableTop" style="padding-bottom:25px;" >
 
     <!-- Title -->
     <span id="sortableTableTitle" class="h4"></span>
@@ -57,7 +57,7 @@
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 
-  <div id="content" class="panel panel-default">
+  <div id="content" class="panel panel-default" style="margin-top:15px;">
 
     <table id="sortableTable" class="table-condensed" >
     </table>
