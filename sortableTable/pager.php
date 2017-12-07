@@ -5,12 +5,6 @@
 ?>
 
 <style>
-  .pager .glyphicon
-  {
-    font-size: 16px;
-    padding: 2px;
-  }
-
   .pager .glyphicon:hover:not(.disabled)
   {
     cursor: pointer;
@@ -26,7 +20,7 @@
 
 <div class="pager" style="display:none" >
 
-  <form class="form-inline" style="padding: 0px 10px;" >
+  <form class="form-inline" style="padding: 0px 5px;" >
 
     <span style="float:left;">
       Page
