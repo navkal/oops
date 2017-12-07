@@ -494,7 +494,7 @@ function styleTable( sId )
       // also {page:input} & {startRow:input} will add a modifiable input in place of the value
       // In v2.27.7, this can be set as a function
       // output: function(table, pager) { return 'page ' + pager.startRow + ' - ' + pager.endRow; }
-      output: 'Rows {startRow}–{endRow} of {filteredRows}',
+      output: '{startRow}–{endRow} / {filteredRows}',
 
       // apply disabled classname (cssDisabled option) to the pager arrows when the rows
       // are at either extreme is visible; default is true
