@@ -20,35 +20,53 @@
 
   <form class="form-inline" >
 
-    <!-- Page chooser -->
-    <span style="float:left;">
-      <small>Page</small>
-      <select class="gotoPage form-control input-sm">
-      </select>
-    </span>
+    <div class="container">
+      <div class="row">
 
-    <!-- Navigation and status -->
-    <span style="white-space:nowrap;">
-      <span class="glyphicon glyphicon-step-backward first" title="First Page" ></span>
-      <span class="glyphicon glyphicon-backward prev" title="Previous Page" ></span>
-      <small>
-        <span class="pagedisplay" id="<?=$sPageDisplayId?>"></span>
-      </small>
-      <span class="glyphicon glyphicon-forward next" title="Next Page" ></span>
-      <span class="glyphicon glyphicon-step-forward last" title="Last Page" ></span>
-    </span>
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-    <!-- Rows-per-page chooser -->
-    <span style="float:right;">
-      <small>Rows</small>
-      <select class="pagesize form-control input-sm">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-        <option value="all">All</option>
-      </select>
-    </span>
+          <!-- Navigation and status -->
+          <span style="white-space:nowrap;">
+            <span class="glyphicon glyphicon-step-backward first" title="First Page" ></span>
+            <span class="glyphicon glyphicon-backward prev" title="Previous Page" ></span>
+            <small>
+              <span class="pagedisplay" id="<?=$sPageDisplayId?>"></span>
+            </small>
+            <span class="glyphicon glyphicon-forward next" title="Next Page" ></span>
+            <span class="glyphicon glyphicon-step-forward last" title="Last Page" ></span>
+          </span>
+
+        </div>
+
+        <div class="col-xs-6 col-sm-2 col-sm-pull-8">
+
+          <!-- Page chooser -->
+          <span style="float:left;">
+            <small>Page</small>
+            <select class="gotoPage form-control input-sm">
+            </select>
+          </span>
+
+        </div>
+
+        <div class="col-xs-6 col-sm-2">
+
+          <!-- Rows-per-page chooser -->
+          <span style="float:right;">
+            <small>Rows</small>
+            <select class="pagesize form-control input-sm">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="all">All</option>
+            </select>
+          </span>
+
+        </div>
+
+      </div>
+    </div>
 
   </form>
 
