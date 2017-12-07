@@ -30,10 +30,6 @@
 {
   display: none;
 }
-.remove-me
-{
-  display: none;
-}
 </style>
 
 <div class="container-fluid">
