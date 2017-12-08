@@ -45,6 +45,7 @@
         <div>
           <select id="role" class="form-control">
             <option value="Visitor">Visitor</option>
+            <option value="Intern">Intern</option>
             <option value="Technician">Technician</option>
             <option value="Administrator">Administrator</option>
           </select>

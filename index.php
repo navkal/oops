@@ -68,6 +68,7 @@
           case 'Technician':
             $sSuffix = 'Tech';
             break;
+          case 'Intern':
           case 'Visitor':
           default:
             $sSuffix = '';
