@@ -33,7 +33,11 @@
 </style>
 
 <div class="container-fluid">
-  <div id="tableTop" style="padding-bottom:25px;" >
+
+  <div id="spinner" class="spinner" >
+  </div>
+
+  <div id="tableTop">
 
     <!-- Title -->
     <span id="sortableTableTitle" class="h4"></span>
@@ -49,11 +53,8 @@
     <small id="sortableTableSubtitle"></small>
   </div>
 
-  <div id="spinner" class="spinner" >
-  </div>
-
   <?php
-    $sPageDisplayId = 'pageDisplayTop';
+    $sWhichPager = 'Top';
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 
@@ -71,7 +72,7 @@
   </div>
 
   <?php
-    $sPageDisplayId = 'pageDisplayBottom';
+    $sWhichPager = 'Bottom';
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 </div>

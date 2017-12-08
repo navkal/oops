@@ -30,7 +30,7 @@
             <span class="glyphicon glyphicon-step-backward first" title="First Page" ></span>
             <span class="glyphicon glyphicon-backward prev" title="Previous Page" ></span>
             <small>
-              <span class="pagedisplay" id="<?=$sPageDisplayId?>"></span>
+              <span class="pagedisplay" id="pageDisplay<?=$sWhichPager?>"></span>
             </small>
             <span class="glyphicon glyphicon-forward next" title="Next Page" ></span>
             <span class="glyphicon glyphicon-step-forward last" title="Last Page" ></span>

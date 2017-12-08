@@ -24,14 +24,14 @@
 
 <div class="container">
 
-  <p>
+  <div style="padding-bottom:18px";>
     <span class="h4">Distribution</span>
     <?php
       // 'Add <object>' button goes here
     ?>
     <br/>
     <small><?=$_SESSION['panelSpy']['context']['facilityFullname']?></small>
-  </p>
+  </div>
 
   <!-- Search -->
   <div class="row" >

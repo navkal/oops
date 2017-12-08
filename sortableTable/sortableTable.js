@@ -544,10 +544,12 @@ function renumberIndex()
 function showPager()
 {
   // Determine the minimum page size supported by the pager
-  iMinPageSize = $( $( $( '.pagesize' )[0] ).find( 'option' )[0] ).val();
+  var iMinPageSize = $( $( $( '.pagesize' )[0] ).find( 'option' )[0] ).val();
+  var bShowPager = countSortableTableRows() > iMinPageSize;
 
   // Show the pager if the table has enough rows for paging
-  $( '.pager' ).css( 'display', ( countSortableTableRows() <= iMinPageSize ) ? 'none' : 'initial' );
+  $( '.pager' ).css( 'display', bShowPager ? 'initial' : 'none' );
+  $( '#tableTop' ).css( 'padding-bottom', bShowPager ? '20px' : '5px' );
 }
 
 function openImageWindowEtc( tEvent )
