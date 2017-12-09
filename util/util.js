@@ -628,11 +628,11 @@ function openActivityLogWindow( tEvent )
       break;
 
     case 'Location':
-      sSubtitle = tRow.loc_new || tRow.loc_old || tRow.loc_descr;
+      sSubtitle = tRow.formatted_location;
       break;
   }
 
-  var sUrl = '/activity/activityWindow.php?subtitle=' + sSubtitle + '&type=' + g_sSortableTableType + '&id=' + sObjectId;
+  var sUrl = '/activity/activityWindow.php?subtitle=' + encodeURI( sSubtitle ) + '&type=' + g_sSortableTableType + '&id=' + sObjectId;
 
   return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, 800, 900, false );
 }
