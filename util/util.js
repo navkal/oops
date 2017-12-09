@@ -624,7 +624,7 @@ function openActivityLogWindow( tEvent )
       break;
 
     case 'Circuit':
-      sSubtitle = tRow.circuit_decription;
+      sSubtitle = tRow.circuit_descr;
       break;
   }
 
