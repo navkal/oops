@@ -615,7 +615,7 @@ function openActivityLogWindow( tEvent )
 
   var sSubtitle = '';
   var tRow = findSortableTableRow( sObjectId );
-  switch( g_sSortableTableEditWhat )
+  switch( g_sSortableTableType )
   {
     case 'Panel':
     case 'Transformer':
@@ -628,7 +628,7 @@ function openActivityLogWindow( tEvent )
       break;
   }
 
-  var sUrl = '/activity/activityWindow.php?subtitle=' + sSubtitle + '&type=' + g_sSortableTableEditWhat + '&id=' + sObjectId;
+  var sUrl = '/activity/activityWindow.php?subtitle=' + sSubtitle + '&type=' + g_sSortableTableType + '&id=' + sObjectId;
 
   return childWindowOpen( tEvent, g_aActivityLogWindows, sUrl, "Activity Log", sObjectId, 800, 900, false );
 }
