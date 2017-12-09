@@ -619,12 +619,15 @@ function openActivityLogWindow( tEvent )
   {
     case 'Panel':
     case 'Transformer':
-    case 'Device':
       sSubtitle = tRow.name;
       break;
 
+    case 'Device':
+      sSubtitle = "'" + tRow.name + "' on " + tRow.parent_path.split( '.' ).slice( -2 ).join( '.' );
+      break;
+
     case 'Circuit':
-      sSubtitle = tRow.circuit_descr;
+      sSubtitle = tRow.path.split( '.' ).slice( -2 ).join( '.' );
       break;
 
     case 'Location':
