@@ -1093,7 +1093,6 @@ class location:
 
         if user_role == 'Technician':
             self.update_location = self.id
-            self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
             self.remove_what = 'formatted_location'
             if ( self.devices + self.panels + self.transformers + self.circuits ) == 0:
                 self.remove_location = self.id
@@ -1101,6 +1100,7 @@ class location:
                 self.remove_location = ''
 
         if ( user_role == 'Technician' ) or ( user_role == 'Intern' ):
+            self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
             self.activity_log = self.id
 
 class distributionTableRow:
