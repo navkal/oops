@@ -468,8 +468,8 @@ function styleTable( sId )
 
     tTable.tablesorterPager( pagerOptions );
 
-    // Focus on page select control
-    tTable.bind( 'pagerComplete', function(){ $( $( '.gotoPage' )[0] ).focus(); } );
+    // Set handler to focus on page select control
+    tTable.on( 'pagerComplete', onPagerComplete );
 
     // Optionally show pager
     showPager();
@@ -488,6 +488,15 @@ function styleTable( sId )
     // Set filter completion handler
     tTable.on( "filterEnd", function( event ){ renumberIndex(); g_aFilterState = $.tablesorter.getFilters( tTable ); } );
   }
+}
+
+function onPagerComplete()
+{
+  // Focus on the page select control
+  $( $( '.gotoPage' )[0] ).focus();
+
+  // Unbined the event
+  tTable.off( 'pagerComplete', onPagerComplete );
 }
 
 function onSortableTableReady( tEvent )
