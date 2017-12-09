@@ -58,7 +58,7 @@
     include $_SERVER["DOCUMENT_ROOT"]."/sortableTable/pager.php";
   ?>
 
-  <div id="content" class="panel panel-default" style="margin-top:15px;">
+  <div id="content" style="margin-top:15px;">
 
     <table id="sortableTable" class="table-condensed" >
     </table>
