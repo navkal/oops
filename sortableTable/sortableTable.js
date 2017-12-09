@@ -164,7 +164,11 @@ function loadSortableTable( tRsp, sStatus, tJqXhr )
         // If column has few values, use dropdown for filtering
         if ( Object.keys( tColumn.valMap ).length <= FILTER_SELECT_MAX )
         {
-          sFilter = ' class="filter-select filter-exact" ';
+          sFilter = ' class="filter-select filter-exact filter-onlyAvail" ';
+        }
+        else
+        {
+          sFilter = ' class="filter-match" ';
         }
       }
 
