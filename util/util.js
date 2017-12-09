@@ -626,6 +626,10 @@ function openActivityLogWindow( tEvent )
     case 'Circuit':
       sSubtitle = tRow.circuit_descr;
       break;
+
+    case 'Location':
+      sSubtitle = tRow.loc_new || tRow.loc_old || tRow.loc_descr;
+      break;
   }
 
   var sUrl = '/activity/activityWindow.php?subtitle=' + sSubtitle + '&type=' + g_sSortableTableType + '&id=' + sObjectId;
