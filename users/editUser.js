@@ -67,6 +67,7 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
 {
   var aFullnames = tRsp.sorted_fullnames;
   var tMap = tRsp.fullname_map;
+  var bAutoCheck = ( g_sAction == 'add' ) && ( aFullnames.length == 1 );
 
   var sHtml = '';
 
@@ -74,7 +75,7 @@ function makeFacilityCheckboxes( tRsp, sStatus, tJqXhr )
   {
     var sFullname = aFullnames[iFullname];
     var sName = tMap[sFullname];
-    var sChecked = ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ? 'checked ' : ''
+    var sChecked = ( bAutoCheck || ( g_tAuthFacilities && g_tAuthFacilities.fullname_map[sFullname] ) ) ? 'checked ' : ''
 
     sHtml +=
       '<li>'
