@@ -13,17 +13,17 @@
 <link rel="stylesheet" href="/sortableTable/sortableTable.css?version=<?=$iVersion?>">
 
 <!-- tablesorter Bootstrap theme -->
-<link rel="stylesheet" href="/lib/tablesorter/theme.bootstrap_3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/css/theme.bootstrap_3.min.css" integrity="sha256-dXZ9g5NdsPlD0182JqLz9UFael+Ug5AYo63RfujWPu8=" crossorigin="anonymous" />
 
 <!-- tablesorter basic libraries -->
-<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.min.js" integrity="sha256-UD/M/6ixbHIPJ/hTwhb9IXbHG2nZSiB97b4BSSAVm6o=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.widgets.min.js" integrity="sha256-/3WKCLORjkqCd7cddzHbnXGR31qqys81XQe2khfPvTY=" crossorigin="anonymous"></script>
 
 <!-- tablesorter pager styling -->
-<link rel="stylesheet" href="/lib/tablesorter/jquery.tablesorter.pager.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/css/jquery.tablesorter.pager.min.css" integrity="sha256-x+whz5gQKEXx3S3pxwmxPhC1OWpRiHaPXUW5Yt8/fzg=" crossorigin="anonymous" />
 
 <!-- tablesorter pager library -->
-<script type="text/javascript" src="/lib/tablesorter/jquery.tablesorter.pager.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/extras/jquery.tablesorter.pager.min.js" integrity="sha256-jkVgfYuH8sw4gTXCDEJMANM9Kf2xZLFWALNiAQ1AyZQ=" crossorigin="anonymous"></script>
 
 <style>
 .tablesorter .tablesorter-filter-row .disabled
