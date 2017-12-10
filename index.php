@@ -28,6 +28,12 @@
     }
   }
 
+  // Optionally restrict access to enterprise specified by environment variable
+  if ( $sEnterprise = getenv( 'PANEL_SPY_ENTERPRISE' ) )
+  {
+    $aUrlContext['enterprise'] = $sEnterprise;
+  }
+
 
   ///////////////////////////////////
   // Decide how to render the view //
