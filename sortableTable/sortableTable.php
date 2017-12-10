@@ -63,10 +63,8 @@
     <table id="sortableTable" class="table-condensed" >
     </table>
 
-    <div id="sortableTableIsEmpty" class="panel-heading" style="display:none;text-align:center" >
-      <h3 class="panel-title">
-        This table is empty.
-      </h3>
+    <div id="sortableTableIsEmpty" class="well" style="display:none;text-align:center" >
+      This table is empty.
     </div>
 
   </div>
