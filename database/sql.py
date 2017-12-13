@@ -1020,8 +1020,9 @@ class sortableTable:
             objects = cur.fetchall()
 
             # Add other fields to each row
+            bound_circuit_ids=get_bound_circuit_ids( facility )
             for obj in objects:
-                row = distributionTableRow( row=obj, bound_circuit_ids=get_bound_circuit_ids( facility ), user_role=user_role, enterprise=enterprise, facility=facility )
+                row = distributionTableRow( row=obj, bound_circuit_ids=bound_circuit_ids, user_role=user_role, enterprise=enterprise, facility=facility )
                 self.rows.append( row.__dict__ )
 
             self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
