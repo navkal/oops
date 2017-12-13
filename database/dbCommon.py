@@ -127,10 +127,23 @@ def make_search_result( source, voltage, location, location_old, location_descr,
     return search_result
 
 
+object_type_map = None
 def object_type_to_id( cur, object_type ):
-    cur.execute('SELECT id FROM DistributionObjectType WHERE object_type=?', (object_type,))
-    row = cur.fetchone()
-    return str( row[0] )
+
+    global object_type_map
+
+    # Load type-to-id map for future use
+    if not object_type_map:
+
+        object_type_map = {}
+
+        cur.execute( 'SELECT * FROM DistributionObjectType' )
+        rows = cur.fetchall()
+        for row in rows:
+            object_type_map[row[1]] = str( row[0] )
+
+    # Return ID corresponding to the supplied object type
+    return object_type_map[object_type]
 
 
 def path_to_id( cur, path, sFacility='' ):
