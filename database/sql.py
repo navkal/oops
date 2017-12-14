@@ -1147,20 +1147,6 @@ class distributionTableRow:
 
         ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility )
 
-        cur.execute(
-          '''SELECT COUNT( device_id )
-                FROM
-                    (SELECT
-                        ''' + facility + '''_Device.id AS device_id,
-                        ''' + facility + '''_Device.parent_id,
-                        ''' + facility + '''_Distribution.id,
-                        ''' + facility + '''_Distribution.path
-                    FROM ''' + facility + '''_Device
-                        LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)
-                    WHERE path = ?''', (self.path,) )
-
-        self.devices = cur.fetchone()[0]
-
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
         elif self.object_type == 'Panel':
