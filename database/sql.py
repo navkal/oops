@@ -542,37 +542,36 @@ def summarize_object( type, id, facility='' ):
     return summary
 
 
+panel_path_map = None
 def get_nearest_panel( type, id, facility ):
 
     if type == 'Panel':
         panel_id = id
         panel_path = get_path( id, facility )
     else:
-        dist_table = facility + '_Distribution'
-        device_table = facility + '_Device'
+        global panel_path_map
 
-        if ( type == 'Device' ):
-            initial_table = device_table
-        else:
-            initial_table = dist_table
+        # First time: Populate the panel path map
+        if not panel_path_map:
+            panel_path_map = {}
+            cur.execute( 'SELECT id, path from ' + facility + '_Distribution WHERE object_type_id=?', dbCommon.object_type_to_id( cur, 'Panel' ) )
+            rows = cur.fetchall()
+            for row in rows:
+                panel_path_map[row[1]] = row[0]
 
-        # Get parent_id of initial object
-        cur.execute( 'SELECT parent_id from ' + initial_table + ' WHERE id=?', ( id, ) )
-        parent_id = cur.fetchone()[0]
+        # For device type, get id of parent
+        if type == 'Device':
+            cur.execute( 'SELECT parent_id from ' + facility + '_Device WHERE id=?', ( id, ) )
+            id = cur.fetchone()[0]
 
-        # Traverse source hierarchy to nearest ancestor panel
-        panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-        object_type_id = ''
-        panel_id = ''
-        panel_path = ''
+        # Truncate path until it matches an entry in the panel path map
+        panel_path = get_path( id, facility )
 
-        while object_type_id != panel_type_id:
-            cur.execute( 'SELECT object_type_id, parent_id, id, path from ' + dist_table + ' WHERE id=?', ( parent_id, ) )
-            row = cur.fetchone()
-            object_type_id = row[0]
-            parent_id = row[1]
-            panel_id = row[2]
-            panel_path = row[3]
+        while not panel_path in panel_path_map:
+            panel_path = '.'.join( panel_path.split( '.' )[:-1] )
+
+        # Retrieve panel ID from map
+        panel_id = panel_path_map[panel_path]
 
     return ( str( panel_id ), panel_path )
 
