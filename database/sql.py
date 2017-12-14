@@ -587,6 +587,53 @@ def make_phase_label( three_phase ):
 
     return label
 
+"""
+==> alternative implementation of get_references() using pandas ==>
+==> not so good: triples or quadruples table retrieval time ==>
+
+import pandas as pd
+df_dist = None
+def get_references( id_field_name, id, facility, object_type=None ):
+
+    global df_dist
+    if df_dist is None:
+        df_dist = pd.read_sql_query( 'SELECT id, object_type_id, parent_id, room_id from ' + facility + '_Distribution', conn, index_col='id' )
+
+    if object_type == 'Panel':
+        ref_types = ['Circuit']
+    elif object_type == 'Transformer':
+        ref_types = ['Panel']
+    elif object_type == 'Circuit':
+        ref_types = ['Panel', 'Transformer', 'Device']
+    else:
+        ref_types = ['Panel', 'Transformer', 'Circuit', 'Device']
+
+    ( panels, transformers, circuits, devices ) = ( 0, 0, 0, 0 )
+
+    if 'Panel' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+        df_test = df_dist[ ( df_dist[id_field_name]==int(id) ) & ( df_dist['object_type_id']==object_type_id ) ]
+        panels = len( df_test )
+
+    if 'Transformer' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+        df_test = df_dist[ ( df_dist[id_field_name]==int(id) ) & ( df_dist['object_type_id']==object_type_id ) ]
+        transformers = len( df_test )
+
+    if 'Circuit' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+        df_test = df_dist[ ( df_dist[id_field_name]==int(id) ) & ( df_dist['object_type_id']==object_type_id ) ]
+        circuits = len( df_test )
+
+    if 'Device' in ref_types:
+        cur.execute( 'SELECT COUNT(id) FROM ' + facility + '_Device WHERE ' + id_field_name + '=?', (id,))
+        devices = cur.fetchone()[0]
+
+    return ( panels, transformers, circuits, devices )
+
+<== alternative implementation of get_references() using pandas <==
+"""
+
 
 def get_references( id_field_name, id, facility, object_type=None ):
 
@@ -1117,6 +1164,7 @@ class location:
         if ( user_role == 'Technician' ) or ( user_role == 'Intern' ):
             self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
             self.activity_log = self.id
+
 
 class distributionTableRow:
 
