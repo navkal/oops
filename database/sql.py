@@ -588,22 +588,37 @@ def make_phase_label( three_phase ):
     return label
 
 
-def get_references( id_field_name, id, facility ):
+def get_references( id_field_name, id, facility, object_type=None ):
 
-    object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
-    panels = cur.fetchone()[0]
+    if object_type == 'Panel':
+        ref_types = ['Circuit']
+    elif object_type == 'Transformer':
+        ref_types = ['Panel']
+    elif object_type == 'Circuit':
+        ref_types = ['Panel', 'Transformer', 'Device']
+    else:
+        ref_types = ['Panel', 'Transformer', 'Circuit', 'Device']
 
-    object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
-    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
-    transformers = cur.fetchone()[0]
+    ( panels, transformers, circuits, devices ) = ( 0, 0, 0, 0 )
 
-    object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
-    circuits = cur.fetchone()[0]
+    if 'Panel' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+        cur.execute( 'SELECT COUNT(id) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+        panels = cur.fetchone()[0]
 
-    cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE ' + id_field_name + '=?', (id,))
-    devices = cur.fetchone()[0]
+    if 'Transformer' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+        cur.execute( 'SELECT COUNT(id) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+        transformers = cur.fetchone()[0]
+
+    if 'Circuit' in ref_types:
+        object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+        cur.execute( 'SELECT COUNT(id) FROM ' + facility + '_Distribution WHERE ' + id_field_name + '=? AND object_type_id=?', ( id, object_type_id ) )
+        circuits = cur.fetchone()[0]
+
+    if 'Device' in ref_types:
+        cur.execute( 'SELECT COUNT(id) FROM ' + facility + '_Device WHERE ' + id_field_name + '=?', (id,))
+        devices = cur.fetchone()[0]
 
     return ( panels, transformers, circuits, devices )
 
@@ -733,7 +748,7 @@ class distributionObject:
         else:
             self.panel_image = ''
 
-        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility )
+        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility, object_type=self.object_type )
 
         if getkids:
 
@@ -1145,7 +1160,7 @@ class distributionTableRow:
         else:
             self.panel_image = ''
 
-        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility )
+        ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'parent_id', self.id, facility, object_type=self.object_type )
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
