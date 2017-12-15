@@ -1076,30 +1076,31 @@ class sortableTable:
 
 
     def make_activity_table( self, target_object_type, target_object_id, facility ):
-            # Retrieve all objects of requested type
+
+        # Retrieve all objects of requested type
+        if target_object_type and target_object_id:
+            where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
+        else:
+            where = ''
+        cur.execute('SELECT * FROM Activity' + where)
+        objects = cur.fetchall()
+
+        # Make table rows
+        for obj in objects:
             if target_object_type and target_object_id:
-                where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
+                facility_fullname = ''
+                event_target = ''
             else:
-                where = ''
-            cur.execute('SELECT * FROM Activity' + where)
-            objects = cur.fetchall()
+                ( facility, facility_fullname ) = get_facility( obj[4] )
+                event_target = obj[5]
 
-            # Make table rows
-            for obj in objects:
-                if target_object_type and target_object_id:
-                    facility_fullname = ''
-                    event_target = ''
-                else:
-                    ( facility, facility_fullname ) = get_facility( obj[4] )
-                    event_target = obj[5]
+            row = { 'id': obj[0], 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
 
-                row = { 'id': obj[0], 'timestamp': obj[1], 'event_type': obj[2], 'event_trigger': obj[3], 'facility_fullname': facility_fullname, 'event_target': event_target, 'event_result': obj[6] }
+            self.rows.append( row )
 
-                self.rows.append( row )
+        self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
 
-            
 class userTableRow:
     def __init__(self, user_id=None, row=None, enterprise=None):
         open_database( enterprise )
