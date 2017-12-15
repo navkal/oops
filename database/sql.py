@@ -978,7 +978,7 @@ class sortableTable:
                     ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
                     origin = make_distribution_object_label( ptc )
 
-                if remove_object_type == 'Device':
+                elif remove_object_type == 'Device':
                     cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
                     device_row = cur.fetchone()
                     room_id = device_row[1]
