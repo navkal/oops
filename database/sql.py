@@ -942,62 +942,7 @@ class sortableTable:
         self.rows = []
 
         if table_object_type == 'Recycle':
-            recycle_table = facility + '_Recycle'
-            cur.execute( 'SELECT * FROM ' + recycle_table )
-            objects = cur.fetchall()
-
-            for obj in objects:
-
-                recycle_id = obj[0]
-                timestamp = obj[1]
-                remove_object_type = obj[2]
-                parent_path = obj[3]
-                loc_new = obj[4]
-                loc_old = obj[5]
-                loc_descr = obj[6]
-                remove_comment = obj[7]
-                remove_object_id = obj[8]
-
-                if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
-                    dist_table = facility + '_Removed_Distribution'
-                    select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
-                    ptc_row = cur.fetchone()
-                    parent_id = ptc_row[4]
-                    phase_b_parent_id = ptc_row[5]
-                    phase_c_parent_id = ptc_row[6]
-                    voltage_id = ptc_row[7]
-                    room_id = ptc_row[8]
-                    description = ptc_row[9]
-                    tail = ptc_row[10]
-                    voltage = ptc_row[14]
-                    path = parent_path + '.' + tail
-                    ( number, name ) = tail_to_number_name( tail )
-
-                    fields = { 'parent_id': parent_id, 'phase_b_parent_id': phase_b_parent_id, 'phase_c_parent_id': phase_c_parent_id, 'number': number, 'name': name, 'room_id': room_id }
-
-                    ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
-                    origin = make_distribution_object_label( ptc )
-
-                elif remove_object_type == 'Device':
-                    cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
-                    device_row = cur.fetchone()
-                    room_id = device_row[1]
-                    parent_id = device_row[2]
-                    name = device_row[5]
-                    origin = make_device_label( name=name, parent_path=parent_path, loc_new=loc_new, loc_old=loc_old, loc_descr=loc_descr, facility=facility )
-
-                    fields = { 'name': name, 'parent_id': parent_id, 'room_id': room_id }
-
-                elif remove_object_type == 'Location':
-                    cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
-                    room = cur.fetchone()
-                    fields = { 'loc_new': room[1], 'loc_old': room[2], 'loc_descr': room[4] }
-                    origin = '<span class="glyphicon glyphicon-map-marker"></span>' + dbCommon.format_location( loc_new, loc_old, loc_descr )
-
-                row = { 'id': recycle_id, 'timestamp': timestamp, 'remove_object_type': remove_object_type, 'remove_object_origin': origin, 'remove_comment': remove_comment, 'remove_object_id': remove_object_id, 'restore_object': recycle_id, 'fields': fields }
-                self.rows.append( row )
-
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
+            self.make_recycle_table( facility )
 
         elif table_object_type == 'Activity':
             # Retrieve all objects of requested type
@@ -1090,6 +1035,69 @@ class sortableTable:
 
         print('found ' + str(len(self.rows)) + ' rows' )
 
+        
+        
+    def make_recycle_table( self, facility ):
+        
+            recycle_table = facility + '_Recycle'
+            cur.execute( 'SELECT * FROM ' + recycle_table )
+            objects = cur.fetchall()
+
+            for obj in objects:
+
+                recycle_id = obj[0]
+                timestamp = obj[1]
+                remove_object_type = obj[2]
+                parent_path = obj[3]
+                loc_new = obj[4]
+                loc_old = obj[5]
+                loc_descr = obj[6]
+                remove_comment = obj[7]
+                remove_object_id = obj[8]
+
+                if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
+                    dist_table = facility + '_Removed_Distribution'
+                    select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
+                    ptc_row = cur.fetchone()
+                    parent_id = ptc_row[4]
+                    phase_b_parent_id = ptc_row[5]
+                    phase_c_parent_id = ptc_row[6]
+                    voltage_id = ptc_row[7]
+                    room_id = ptc_row[8]
+                    description = ptc_row[9]
+                    tail = ptc_row[10]
+                    voltage = ptc_row[14]
+                    path = parent_path + '.' + tail
+                    ( number, name ) = tail_to_number_name( tail )
+
+                    fields = { 'parent_id': parent_id, 'phase_b_parent_id': phase_b_parent_id, 'phase_c_parent_id': phase_c_parent_id, 'number': number, 'name': name, 'room_id': room_id }
+
+                    ptc = { 'object_type': 'Distribution', 'source': parent_path, 'voltage': voltage, 'loc_new': loc_new, 'loc_old': loc_old, 'loc_descr': loc_descr, 'description': description, 'path': path }
+                    origin = make_distribution_object_label( ptc )
+
+                elif remove_object_type == 'Device':
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_Device WHERE id = ?', (remove_object_id,))
+                    device_row = cur.fetchone()
+                    room_id = device_row[1]
+                    parent_id = device_row[2]
+                    name = device_row[5]
+                    origin = make_device_label( name=name, parent_path=parent_path, loc_new=loc_new, loc_old=loc_old, loc_descr=loc_descr, facility=facility )
+
+                    fields = { 'name': name, 'parent_id': parent_id, 'room_id': room_id }
+
+                elif remove_object_type == 'Location':
+                    cur.execute('SELECT * FROM ' + facility + '_Removed_Room WHERE id = ?', (remove_object_id,))
+                    room = cur.fetchone()
+                    fields = { 'loc_new': room[1], 'loc_old': room[2], 'loc_descr': room[4] }
+                    origin = '<span class="glyphicon glyphicon-map-marker"></span>' + dbCommon.format_location( loc_new, loc_old, loc_descr )
+
+                row = { 'id': recycle_id, 'timestamp': timestamp, 'remove_object_type': remove_object_type, 'remove_object_origin': origin, 'remove_comment': remove_comment, 'remove_object_id': remove_object_id, 'restore_object': recycle_id, 'fields': fields }
+                self.rows.append( row )
+
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
+        
+        
+        
 
 class userTableRow:
     def __init__(self, user_id=None, row=None, enterprise=None):
