@@ -948,18 +948,7 @@ class sortableTable:
             self.make_activity_table( target_object_type, target_object_id, facility )
 
         elif table_object_type == 'User':
-            # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM User')
-            objects = cur.fetchall()
-
-            # Make table rows
-            for obj in objects:
-                role_id = obj[3]
-                if role_id:
-                    row = userTableRow( row=obj, enterprise=enterprise )
-                    self.rows.append( row.__dict__ )
-
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
+            self.make_user_table( enterprise )
 
         elif table_object_type == 'Device':
             # Retrieve all objects of requested type
@@ -1099,6 +1088,21 @@ class sortableTable:
             self.rows.append( row )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['timestamp'], reverse=True )
+
+
+    def make_user_table( self, enterprise ):
+            # Retrieve all objects of requested type
+            cur.execute('SELECT * FROM User')
+            objects = cur.fetchall()
+
+            # Make table rows
+            for obj in objects:
+                role_id = obj[3]
+                if role_id:
+                    row = userTableRow( row=obj, enterprise=enterprise )
+                    self.rows.append( row.__dict__ )
+
+            self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
 
 
 class userTableRow:
