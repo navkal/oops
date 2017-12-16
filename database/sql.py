@@ -678,7 +678,7 @@ def pop_n( tp, n, retuple ):
     return popped
 
 
-class device:
+class deviceTableRow:
     def __init__(self,id=None,row=None,enterprise=None,facility=None,user_role=None):
         open_database( enterprise )
 
@@ -832,7 +832,7 @@ class distributionObject:
             self.devices = []
             for i in range( len (dev_ids) ):
                 dev_id = dev_ids[i][0]
-                dev = device( id=dev_id, enterprise=enterprise, facility=facility )
+                dev = deviceTableRow( id=dev_id, enterprise=enterprise, facility=facility )
                 self.devices.append( [ dev.id, dev.loc_new, dev.loc_old, dev.loc_descr, dev.description, dev.label ] )
 
 
@@ -1085,7 +1085,7 @@ class sortableTable:
 
         # Add other fields to each row
         for obj in objects:
-            row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
+            row = deviceTableRow( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
             self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
@@ -1605,7 +1605,7 @@ class addDevice:
             conn.commit()
 
             # Return row
-            row = device( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+            row = deviceTableRow( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
             self.row = row.__dict__
 
 
@@ -1645,7 +1645,7 @@ class updateDevice:
             conn.commit()
 
             # Return row
-            row = device( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+            row = deviceTableRow( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
             self.row = row.__dict__
 
 

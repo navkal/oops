@@ -17,7 +17,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.type == 'Device':
-        object_class = 'device'
+        object_class = 'deviceTableRow'
     else:
         object_class = 'distributionObject'
 
