@@ -957,18 +957,7 @@ class sortableTable:
             self.make_location_table( user_role, facility )
 
         else:
-            # Retrieve all objects of requested type
-            dist_table = facility + '_Distribution'
-            select_from_distribution( table=dist_table, condition='object_type=?', params=(table_object_type,) )
-            objects = cur.fetchall()
-
-            # Add other fields to each row
-            bound_circuit_ids=get_bound_circuit_ids( facility )
-            for obj in objects:
-                row = distributionTableRow( row=obj, bound_circuit_ids=bound_circuit_ids, user_role=user_role, enterprise=enterprise, facility=facility )
-                self.rows.append( row.__dict__ )
-
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
+            self.make_distribution_table( table_object_type, user_role, enterprise, facility )
 
         print('found ' + str(len(self.rows)) + ' rows' )
 
@@ -1114,6 +1103,22 @@ class sortableTable:
             self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['loc_new'] )
+
+
+    def make_distribution_table( self, table_object_type, user_role, enterprise, facility ):
+
+        # Retrieve all objects of requested type
+        dist_table = facility + '_Distribution'
+        select_from_distribution( table=dist_table, condition='object_type=?', params=(table_object_type,) )
+        objects = cur.fetchall()
+
+        # Add other fields to each row
+        bound_circuit_ids=get_bound_circuit_ids( facility )
+        for obj in objects:
+            row = distributionTableRow( row=obj, bound_circuit_ids=bound_circuit_ids, user_role=user_role, enterprise=enterprise, facility=facility )
+            self.rows.append( row.__dict__ )
+
+        self.rows = natsort.natsorted( self.rows, key=lambda x: x['path'] )
 
 
 class userTableRow:
