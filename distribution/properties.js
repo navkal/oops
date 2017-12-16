@@ -51,6 +51,8 @@ function showProperties()
   switch( sType )
   {
     case 'Panel':
+      $( '#panelImage' ).show();
+      // --> No break <--
     case 'Transformer':
       var aPath = g_tProperties['path'].split( '.' );
       sTitle = aPath[ aPath.length - 1 ];
