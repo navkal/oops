@@ -951,29 +951,7 @@ class sortableTable:
             self.make_user_table( enterprise )
 
         elif table_object_type == 'Device':
-            # Retrieve all objects of requested type
-            cur.execute(
-              '''SELECT *
-                  FROM
-                    (SELECT
-                        ''' + facility + '''_Device.id,
-                        ''' + facility + '''_Device.room_id,
-                        ''' + facility + '''_Device.parent_id,
-                        ''' + facility + '''_Device.description,
-                        ''' + facility + '''_Device.name,
-                        ''' + facility + '''_Distribution.path,
-                        ''' + facility + '''_Distribution.id
-                    FROM ''' + facility + '''_Device
-                        LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)''')
-
-            objects = cur.fetchall()
-
-            # Add other fields to each row
-            for obj in objects:
-                row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
-                self.rows.append( row.__dict__ )
-
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
+            self.make_device_table( user_role, enterprise, facility )
 
         elif table_object_type == 'Location':
             # Retrieve all objects of requested type
@@ -1104,6 +1082,33 @@ class sortableTable:
                 self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
+
+
+    def make_device_table( self, user_role, enterprise, facility ):
+
+        # Retrieve all objects of requested type
+        cur.execute(
+          '''SELECT *
+              FROM
+                (SELECT
+                    ''' + facility + '''_Device.id,
+                    ''' + facility + '''_Device.room_id,
+                    ''' + facility + '''_Device.parent_id,
+                    ''' + facility + '''_Device.description,
+                    ''' + facility + '''_Device.name,
+                    ''' + facility + '''_Distribution.path,
+                    ''' + facility + '''_Distribution.id
+                FROM ''' + facility + '''_Device
+                    LEFT JOIN ''' + facility + '''_Distribution ON ''' + facility + '''_Device.parent_id = ''' + facility + '''_Distribution.id)''')
+
+        objects = cur.fetchall()
+
+        # Add other fields to each row
+        for obj in objects:
+            row = device( row=obj, enterprise=enterprise, facility=facility, user_role=user_role )
+            self.rows.append( row.__dict__ )
+
+        self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
 
 
 class userTableRow:
