@@ -954,16 +954,7 @@ class sortableTable:
             self.make_device_table( user_role, enterprise, facility )
 
         elif table_object_type == 'Location':
-            # Retrieve all objects of requested type
-            cur.execute('SELECT * FROM ' + facility + '_Room')
-            objects = cur.fetchall()
-
-            # Add other fields to each row
-            for obj in objects:
-                row = location( row=obj, facility=facility, user_role=user_role )
-                self.rows.append( row.__dict__ )
-
-            self.rows = natsort.natsorted( self.rows, key=lambda x: x['loc_new'] )
+            self.make_location_table( user_role, facility )
 
         else:
             # Retrieve all objects of requested type
@@ -1109,6 +1100,20 @@ class sortableTable:
             self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['source_path'] )
+
+
+    def make_location_table( self, user_role, facility ):
+
+        # Retrieve all objects of requested type
+        cur.execute('SELECT * FROM ' + facility + '_Room')
+        objects = cur.fetchall()
+
+        # Add other fields to each row
+        for obj in objects:
+            row = location( row=obj, facility=facility, user_role=user_role )
+            self.rows.append( row.__dict__ )
+
+        self.rows = natsort.natsorted( self.rows, key=lambda x: x['loc_new'] )
 
 
 class userTableRow:
