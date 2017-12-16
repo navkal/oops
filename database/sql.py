@@ -1099,7 +1099,7 @@ class sortableTable:
 
         # Add other fields to each row
         for obj in objects:
-            row = location( row=obj, facility=facility, user_role=user_role )
+            row = locationTableRow( row=obj, facility=facility, user_role=user_role )
             self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['loc_new'] )
@@ -1168,7 +1168,7 @@ class userTableRow:
         self.user_description = row[4]
 
 
-class location:
+class locationTableRow:
     def __init__(self, id=None, row=None, enterprise=None, facility=None, user_role=None):
         open_database( enterprise )
 
@@ -1667,7 +1667,7 @@ class addLocation:
         conn.commit()
 
         # Return row
-        row = location( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        row = locationTableRow( id=target_object_id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
         self.messages = []
 
@@ -1741,7 +1741,7 @@ class updateLocation:
         self.messages = []
         self.selectors = []
         self.descendant_rows = []
-        row = location( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+        row = locationTableRow( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
         self.row = row.__dict__
 
 
