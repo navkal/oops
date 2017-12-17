@@ -31,11 +31,11 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <span id="propertiesTitle" class="panel-title" ></span>
-          <span id="panelImage" class="pull-right" style="display:none;" >
-            <button class="btn btn-link btn-xs" onclick="alert('moo')" title="Panel Image" >
+          <a id="panelImage" class="pull-right" style="display:none;" >
+            <button class="btn btn-link btn-xs" onclick="openImageWindow(event)" title="Panel Image" >
               <span class="glyphicon glyphicon-picture" style="font-size:18px;"></span>
             </button>
-          </span>
+          </a>
         </div>
         <div class="panel-body">
           <div id="objectArea" style="overflow:auto;">

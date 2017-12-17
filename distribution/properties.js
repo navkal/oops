@@ -45,16 +45,18 @@ function saveProperties( tRsp, sStatus, tJqXhr )
 
 function showProperties()
 {
-  // Display title
+  // Display title and optional image link
   var sTitle = '';
   var sType = g_tProperties['object_type'] ? g_tProperties['object_type'] : 'Device';
+  var sPath = g_tProperties['path'];
   switch( sType )
   {
     case 'Panel':
+      $( '#panelImage' ).attr( 'path', sPath );
       $( '#panelImage' ).show();
       // --> No break <--
     case 'Transformer':
-      var aPath = g_tProperties['path'].split( '.' );
+      var aPath = sPath.split( '.' );
       sTitle = aPath[ aPath.length - 1 ];
       aSplit = sTitle.split( '-' );
       if ( ( aSplit.length > 1 ) && /^\d+$/.test( aSplit[0] ) )
