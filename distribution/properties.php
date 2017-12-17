@@ -32,7 +32,7 @@
         <div class="panel-heading">
           <span id="propertiesTitle" class="panel-title" ></span>
           <a id="panelImage" class="pull-right" style="display:none;" >
-            <button class="btn btn-link btn-xs" onclick="window.opener.openImageWindowEtc(event)" title="Panel Image" >
+            <button class="btn btn-link btn-xs" onclick="window.opener.openImageWindow(event)" title="Panel Image" >
               <span class="glyphicon glyphicon-picture" style="font-size:18px;"></span>
             </button>
           </a>
