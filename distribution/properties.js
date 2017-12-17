@@ -6,6 +6,8 @@ $( document ).ready( loadProperties );
 
 function loadProperties()
 {
+  $( window ).on( 'unload', closeChildWindows );
+
   if ( g_tProperties )
   {
     showProperties();
@@ -138,4 +140,9 @@ function goDown()
   var tButton = window.opener.$( '#circuitTree a[path="' +  sPath + '"] .propertiesButton' );
   tButton.addClass( 'btnDown' );
   tButton.click();
+}
+
+function closeChildWindows()
+{
+  childWindowsClose( g_aImageWindows );
 }
