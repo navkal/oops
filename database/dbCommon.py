@@ -215,6 +215,32 @@ def voltage_to_id( cur, voltage ):
     return voltage_id
 
 
+def select_from_distribution( cur, table=None, fields=None, condition='', params=None ):
+
+    if not fields:
+        fields = table + '.*'
+
+    if condition:
+        where = ' WHERE '
+    else:
+        where = ''
+
+    sql = '''
+      SELECT
+        ''' + fields + ''',
+        Voltage.voltage,
+        DistributionObjectType.object_type
+      FROM ''' + table + '''
+        LEFT JOIN Voltage ON ''' + table + '''.voltage_id=Voltage.id
+        LEFT JOIN DistributionObjectType ON ''' + table + '''.object_type_id=DistributionObjectType.id
+      ''' + where + condition
+
+    if params:
+        cur.execute( sql, params )
+    else:
+        cur.execute( sql )
+
+
 def check_database( cur ):
     cur.execute( 'SELECT facility_name, facility_fullname FROM Facility' )
     fac_rows = cur.fetchall()
@@ -224,10 +250,14 @@ def check_database( cur ):
 def check_facility( cur, facility, label ):
     print( '==============check_database=============>', facility, label )
 
-    tree = make_tree( facility )
+    tree = make_tree( cur, facility )
 
-def make_tree( facility ):
+def make_tree( cur, facility ):
     print( 'make_tree', facility )
 
+    dist_table = facility + '_Distribution'
+    select_from_distribution( cur, table=dist_table )
+    rows = cur.fetchall()
+    print( len( rows ) )
 
 

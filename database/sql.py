@@ -190,7 +190,7 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
             allowed_voltage_id = 1 if object_type == 'Transformer' else 0
 
         # Get all potential parents by type
-        select_from_distribution( table=parent_table, fields=( parent_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
+        dbCommon.select_from_distribution( cur, table=parent_table, fields=( parent_table + '.id, path, three_phase, voltage_id' ), condition=( 'DistributionObjectType.object_type IN (' + parent_types + ')' ) )
         parent_rows = cur.fetchall()
 
         # Traverse list of potential parents
@@ -403,7 +403,7 @@ def get_location( room_id, facility ):
 
 def get_three_phase( id, facility ):
     dist_table = facility + '_Distribution'
-    select_from_distribution( table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(id,) )
+    dbCommon.select_from_distribution( cur, table=dist_table, fields='three_phase', condition=(dist_table + '.id=?'), params=(id,) )
     three_phase = cur.fetchone()[0]
     return three_phase
 
@@ -411,7 +411,7 @@ def get_three_phase( id, facility ):
 def get_voltage_id( id, facility ):
     if id:
         dist_table = facility + '_Distribution'
-        select_from_distribution( table=dist_table, fields='voltage_id', condition=(dist_table + '.id=?'), params=(id,) )
+        dbCommon.select_from_distribution( cur, table=dist_table, fields='voltage_id', condition=(dist_table + '.id=?'), params=(id,) )
         voltage_id = cur.fetchone()[0]
     else:
         voltage_id = 1
@@ -427,7 +427,7 @@ def get_bound_sibling_circuits( id, object_type, three_phase, target_table ):
     if object_type == 'Circuit' and not three_phase:
 
         # Look for actual or implied child of this circuit
-        select_from_distribution( table=target_table, fields='parent_id, phase_b_parent_id, phase_c_parent_id', condition=('parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?'), params=( id, id, id, ) )
+        dbCommon.select_from_distribution( cur, table=target_table, fields='parent_id, phase_b_parent_id, phase_c_parent_id', condition=('parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=?'), params=( id, id, id, ) )
         child_rows = cur.fetchall()
 
         # If exactly one child found, collect all (1, 2, or 3) parents of the child
@@ -436,7 +436,7 @@ def get_bound_sibling_circuits( id, object_type, three_phase, target_table ):
             phase_a_parent_id = converged_row[0]
             phase_b_parent_id = converged_row[1]
             phase_c_parent_id = converged_row[2]
-            select_from_distribution( table=target_table, condition=(target_table + '.id=? OR ' + target_table + '.id=? OR ' + target_table + '.id=?'), params=(phase_a_parent_id, phase_b_parent_id, phase_c_parent_id,) )
+            dbCommon.select_from_distribution( cur, table=target_table, condition=(target_table + '.id=? OR ' + target_table + '.id=? OR ' + target_table + '.id=?'), params=(phase_a_parent_id, phase_b_parent_id, phase_c_parent_id,) )
             circuit_rows = cur.fetchall()
 
     return circuit_rows
@@ -459,36 +459,10 @@ def get_bound_circuit_ids( facility ):
     return bound_circuit_ids
 
 
-def select_from_distribution( table=None, fields=None, condition='', params=None ):
-
-    if not fields:
-        fields = table + '.*'
-
-    if condition:
-        where = ' WHERE '
-    else:
-        where = ''
-
-    sql = '''
-      SELECT
-        ''' + fields + ''',
-        Voltage.voltage,
-        DistributionObjectType.object_type
-      FROM ''' + table + '''
-        LEFT JOIN Voltage ON ''' + table + '''.voltage_id=Voltage.id
-        LEFT JOIN DistributionObjectType ON ''' + table + '''.object_type_id=DistributionObjectType.id
-      ''' + where + condition
-
-    if params:
-        cur.execute( sql, params )
-    else:
-        cur.execute( sql )
-
-
 def summarize_distribution_object( id, facility ):
 
     dist_table = facility + '_Distribution'
-    select_from_distribution( table=dist_table, fields='path, room_id, description', condition=(dist_table + '.id=?'), params=(id,) )
+    dbCommon.select_from_distribution( cur, table=dist_table, fields='path, room_id, description', condition=(dist_table + '.id=?'), params=(id,) )
 
     row = cur.fetchone()
     path = row[0]
@@ -741,9 +715,9 @@ class distributionObject:
         dist_table = facility + '_Distribution'
 
         if id:
-            select_from_distribution( table=dist_table, condition=(dist_table + '.id = ?'), params=(id,) )
+            dbCommon.select_from_distribution( cur, table=dist_table, condition=(dist_table + '.id = ?'), params=(id,) )
         else:
-            select_from_distribution( table=dist_table, condition='parent_id=""' )
+            dbCommon.select_from_distribution( cur, table=dist_table, condition='parent_id=""' )
 
         #initialize distribution object properties
         row = cur.fetchone()
@@ -775,11 +749,11 @@ class distributionObject:
         self.parent_path = get_path( self.parent_id, facility )
 
         if phase_b_parent_id:
-            select_from_distribution( table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_b_parent_id,) )
+            dbCommon.select_from_distribution( cur, table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_b_parent_id,) )
             self.phase_b_tail = cur.fetchone()[0]
 
         if phase_c_parent_id:
-            select_from_distribution( table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_c_parent_id,) )
+            dbCommon.select_from_distribution( cur, table=dist_table, fields='tail', condition=(dist_table + '.id=?'), params=(phase_c_parent_id,) )
             self.phase_c_tail = cur.fetchone()[0]
 
         # Get room information
@@ -982,7 +956,7 @@ class sortableTable:
 
             if ( remove_object_type == 'Panel' ) or ( remove_object_type == 'Transformer' ) or ( remove_object_type == 'Circuit' ) :
                 dist_table = facility + '_Removed_Distribution'
-                select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
+                dbCommon.select_from_distribution( cur, table=dist_table, condition=(dist_table + '.id=?'), params=(remove_object_id,) )
                 ptc_row = cur.fetchone()
                 parent_id = ptc_row[4]
                 phase_b_parent_id = ptc_row[5]
@@ -1109,7 +1083,7 @@ class sortableTable:
 
         # Retrieve all objects of requested type
         dist_table = facility + '_Distribution'
-        select_from_distribution( table=dist_table, condition='object_type=?', params=(table_object_type,) )
+        dbCommon.select_from_distribution( cur, table=dist_table, condition='object_type=?', params=(table_object_type,) )
         objects = cur.fetchall()
 
         # Add other fields to each row
@@ -1204,7 +1178,7 @@ class distributionTableRow:
 
         if not row:
             dist_table = facility + '_Distribution'
-            select_from_distribution( table=dist_table, condition=(dist_table + '.id=?'), params=(id,) )
+            dbCommon.select_from_distribution( cur, table=dist_table, condition=(dist_table + '.id=?'), params=(id,) )
             row = cur.fetchone()
 
         self.id = str( row[0] )
@@ -1521,7 +1495,7 @@ class updateDistributionObject:
             if path != original_path:
 
                 # Retrieve all descendants of the target object
-                select_from_distribution( table=target_table, condition=('path LIKE "' + original_path + '.%"') )
+                dbCommon.select_from_distribution( cur, table=target_table, condition=('path LIKE "' + original_path + '.%"') )
                 descendants = cur.fetchall()
 
                 # Update path, search result, and source of all descendants
@@ -1689,7 +1663,7 @@ class updateLocation:
 
         # Get distribution objects that refer to this location
         dist_table = facility + '_Distribution'
-        select_from_distribution( table=dist_table, condition=(dist_table + '.room_id=?'), params=(id,) )
+        dbCommon.select_from_distribution( cur, table=dist_table, condition=(dist_table + '.room_id=?'), params=(id,) )
         rows = cur.fetchall()
 
         # Traverse distribution objects
@@ -1756,7 +1730,7 @@ class removeDistributionObject:
 
         # Get row to be deleted
         target_table = facility + '_Distribution'
-        select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
+        dbCommon.select_from_distribution( cur, table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
         path = row[1]
         three_phase = row[3]
@@ -1810,7 +1784,7 @@ class removeDistributionObject:
                 cur.execute( 'DELETE FROM ' + dev_table + ' WHERE id=?', ( device_id, ) )
 
             # Retrieve all descendants of deleted object
-            select_from_distribution( table=target_table, condition=( 'path LIKE "' + path + '.%"' ) )
+            dbCommon.select_from_distribution( cur, table=target_table, condition=( 'path LIKE "' + path + '.%"' ) )
             descendants = cur.fetchall()
 
             # Move all descendants and their respective attached devices to 'Removed' tables
@@ -2224,7 +2198,7 @@ class restoreRemovedObject:
         if len( self.messages ) == 0:
 
             # Get root object from source table
-            select_from_distribution( table=source_table, condition=(source_table + '.id=?'), params=(remove_object_id,) )
+            dbCommon.select_from_distribution( cur, table=source_table, condition=(source_table + '.id=?'), params=(remove_object_id,) )
             removed_root_row = cur.fetchone()
             removed_path = removed_root_row[1]
 
@@ -2249,7 +2223,7 @@ class restoreRemovedObject:
             cur.execute( 'INSERT OR IGNORE INTO ' + target_table + ' ( ' + DISTRIBUTION_ROW + ') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', tuple( restore_root_row ) )
 
             # Get Distribution descendants
-            select_from_distribution( table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
+            dbCommon.select_from_distribution( cur, table=source_table, condition=('remove_id=? AND ' + source_table + '.id<>?'), params=(id,remove_object_id) )
             descendants = cur.fetchall()
 
             # Update path, search result, and source of all descendants; restore at original IDs
