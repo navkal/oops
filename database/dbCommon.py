@@ -213,3 +213,10 @@ def voltage_to_id( cur, voltage ):
     row = cur.fetchone()
     voltage_id = row[0]
     return voltage_id
+
+
+def check_database( cur ):
+    cur.execute( 'SELECT * FROM Facility' )
+    fac_rows = cur.fetchall()
+    for fac_row in fac_rows:
+        print( '==============check_database=============>', fac_row )
