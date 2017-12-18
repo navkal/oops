@@ -221,5 +221,13 @@ def check_database( cur ):
     for fac_row in fac_rows:
         check_facility( cur, fac_row[0], fac_row[1] )
 
-def check_facility( cur, facility_name, facility_fullname ):
-    print( '==============check_database=============>', facility_name, facility_fullname )
+def check_facility( cur, facility, label ):
+    print( '==============check_database=============>', facility, label )
+
+    tree = make_tree( facility )
+
+def make_tree( facility ):
+    print( 'make_tree', facility )
+
+
+
