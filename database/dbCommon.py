@@ -1,5 +1,6 @@
 import hashlib
 import time
+import pandas as pd
 
 def hash( text ):
     h = hashlib.md5()
@@ -215,49 +216,58 @@ def voltage_to_id( cur, voltage ):
     return voltage_id
 
 
-def select_from_distribution( cur, table=None, fields=None, condition='', params=None ):
+def check_database( conn, cur ):
 
-    if not fields:
-        fields = table + '.*'
+    messages = []
 
-    if condition:
-        where = ' WHERE '
-    else:
-        where = ''
-
-    sql = '''
-      SELECT
-        ''' + fields + ''',
-        Voltage.voltage,
-        DistributionObjectType.object_type
-      FROM ''' + table + '''
-        LEFT JOIN Voltage ON ''' + table + '''.voltage_id=Voltage.id
-        LEFT JOIN DistributionObjectType ON ''' + table + '''.object_type_id=DistributionObjectType.id
-      ''' + where + condition
-
-    if params:
-        cur.execute( sql, params )
-    else:
-        cur.execute( sql )
-
-
-def check_database( cur ):
+    # Retrieve list of facilities
     cur.execute( 'SELECT facility_name, facility_fullname FROM Facility' )
     fac_rows = cur.fetchall()
+
+    # Check all facilities
     for fac_row in fac_rows:
-        check_facility( cur, fac_row[0], fac_row[1] )
 
-def check_facility( cur, facility, label ):
-    print( '==============check_database=============>', facility, label )
+        facility_name = fac_row[0]
+        facility_fullname = fac_row[1]
 
-    tree = make_tree( cur, facility )
+        messages += check_facility( conn, facility_name, facility_fullname )
 
-def make_tree( cur, facility ):
-    print( 'make_tree', facility )
+    print( ' num messages=' + str( len( messages ) ) )
 
-    dist_table = facility + '_Distribution'
-    select_from_distribution( cur, table=dist_table )
-    rows = cur.fetchall()
-    print( len( rows ) )
+def check_facility( conn, facility_name, facility_fullname ):
+
+    print( '==============check_facility=============>', facility_name, facility_fullname )
+
+    messages = []
+
+    df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
+
+    messages += check_distribution_root( df, facility_fullname )
+
+    return messages
 
 
+def check_distribution_root( df, facility_fullname ):
+
+    messages = []
+
+    # Get the root
+    df_root = df[ df['parent_id'] == '' ]
+
+    num_roots = len( df_root )
+
+    print( num_roots )
+
+    if num_roots != 1:
+        messages.append( make_message( facility_fullname, 'error', 'Distribution tree has ' + num_roots + ' roots' ) )
+
+    return messages
+
+
+
+
+def make_message( facility_fullname, severity, text ):
+    if severity in ( 'error', 'warning' ):
+        return( { 'facility_fullname': facility_fullname, 'severity': severity, 'text': text } )
+    else:
+        raise ValueError( 'make_message(): Unknown message severity=' + severity )
