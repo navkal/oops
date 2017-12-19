@@ -50,7 +50,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     df_root = df[ df['parent_id'] == '' ]
     n_roots = len( df_root )
     if n_roots != 1:
-        messages.append( make_message( facility_fullname, 'error', 'Distribution tree has ' + n_roots + ' roots' ) )
+        messages.append( make_message( facility_fullname, 'Error', 'Distribution tree has ' + n_roots + ' roots' ) )
 
     # Verify that all paths descend from root
     root_path = df_root.iloc[0]['path']
@@ -58,12 +58,12 @@ def check_distribution_root( cur, df, facility_fullname ):
     n_nodes = len( df )
     n_desc = len( df_desc )
     if n_nodes - n_desc != 1:
-        messages.append( make_message( facility_fullname, 'error', "Not all paths descend from root '" + root_path + "'" ) )
+        messages.append( make_message( facility_fullname, 'Error', "Not all paths descend from root '" + root_path + "'" ) )
 
     # Verify that root is a Panel
     root_object_type_id = df_root.iloc[0]['object_type_id']
     if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
-        messages.append( make_message( facility_fullname, 'error', 'Root is not a Panel' ) )
+        messages.append( make_message( facility_fullname, 'Error', 'Root is not a Panel' ) )
 
     return messages
 
@@ -84,7 +84,7 @@ def check_voltages( cur, df, facility_fullname ):
     len_volt = len( df_hi ) + len( df_lo )
     len_no_volt = len( df ) - len_volt
     if len_no_volt:
-        messages.append( make_message( facility_fullname, 'error', str( len_no_volt ) + ' elements have no voltage' ) )
+        messages.append( make_message( facility_fullname, 'Error', str( len_no_volt ) + ' elements have no voltage' ) )
 
     # Get all transformers
     df_trans = df[ df['object_type_id'] == dbCommon.object_type_to_id( cur, 'Transformer' ) ]
@@ -96,7 +96,7 @@ def check_voltages( cur, df, facility_fullname ):
 
         # Verify that current transformer has low voltage
         if row['voltage_id'] != lo_id:
-            messages.append( make_message( facility_fullname, 'error', "Transformer '" + path + "' has wrong voltage"  ) )
+            messages.append( make_message( facility_fullname, 'Error', "Transformer '" + path + "' has wrong voltage"  ) )
 
         descendant_prefix = path + '.'
         df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
@@ -105,12 +105,12 @@ def check_voltages( cur, df, facility_fullname ):
         # Verify that current transformer has no high-voltage descendants
         num_hi_descendants = len( df_hi_descendants )
         if num_hi_descendants:
-            messages.append( make_message( facility_fullname, 'error', "Transformer '" + path + "' has " + str( num_hi_descendants ) + ' high-voltage descendants'  ) )
+            messages.append( make_message( facility_fullname, 'Error', "Transformer '" + path + "' has " + str( num_hi_descendants ) + ' high-voltage descendants'  ) )
 
         # Verify that transformer has at least one (low-voltage) descendant
         num_lo_descendants = len( df_lo_descendants )
         if num_lo_descendants == 0:
-            messages.append( make_message( facility_fullname, 'warning', "Transformer '" + path + "' has " + str( num_lo_descendants ) + ' low-voltage descendants'  ) )
+            messages.append( make_message( facility_fullname, 'Warning', "Transformer '" + path + "' has " + str( num_lo_descendants ) + ' low-voltage descendants'  ) )
 
     # Extract list of low-voltage nodes that are not transformers
     df_lo_not_trans = df_lo[ df_lo['object_type_id'] != dbCommon.object_type_to_id( cur, 'Transformer' )]
@@ -126,7 +126,7 @@ def check_voltages( cur, df, facility_fullname ):
         df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
         num_trans_descendants = len( df_trans_descendants )
         if num_trans_descendants:
-            messages.append( make_message( facility_fullname, 'error', "Low-voltage " + object_type + " '" + path + "' has " + str( num_trans_descendants ) + ' Transformer descendants'  ) )
+            messages.append( make_message( facility_fullname, 'Error', "Low-voltage " + object_type + " '" + path + "' has " + str( num_trans_descendants ) + ' Transformer descendants'  ) )
 
         # Verify that current low-voltage node descends from a Transformer
         ancestor_path = path
@@ -137,7 +137,7 @@ def check_voltages( cur, df, facility_fullname ):
             found = len( df_found ) > 0
 
         if not found:
-            messages.append( make_message( facility_fullname, 'error', "Low-voltage " + object_type + " '" + path + "' has no Transformer ancestor"  ) )
+            messages.append( make_message( facility_fullname, 'Error', "Low-voltage " + object_type + " '" + path + "' has no Transformer ancestor"  ) )
 
     return messages
 
@@ -151,7 +151,7 @@ def check_three_phase( cur, df, facility_fullname ):
 
 
 def make_message( facility_fullname, severity, text ):
-    if severity in ( 'error', 'warning' ):
+    if severity in ( 'Error', 'Warning' ):
         return( { 'facility_fullname': facility_fullname, 'severity': severity, 'text': text } )
     else:
         raise ValueError( 'make_message(): Unknown message severity=' + severity )
@@ -161,7 +161,7 @@ def format_message( message ):
     formatted_message = ''
 
     formatted_message += message['facility_fullname'] + ': '
-    formatted_message += '[' + message['severity'].title() + '] '
+    formatted_message += '[' + message['severity'] + '] '
     formatted_message += message['text']
 
     return formatted_message
