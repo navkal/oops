@@ -251,15 +251,24 @@ def check_distribution_root( df, facility_fullname ):
 
     messages = []
 
-    # Get the root
+    # Verify that there is exactly one root
     df_root = df[ df['parent_id'] == '' ]
+    n_roots = len( df_root )
+    if n_roots != 1:
+        messages.append( make_message( facility_fullname, 'error', 'Distribution tree has ' + n_roots + ' roots' ) )
 
-    num_roots = len( df_root )
+    # Verify that all paths descend from root
+    root_path = df_root.iloc[0]['path']
+    df_desc = df[ df['path'].str.startswith( root_path + '.' )]
+    n_nodes = len( df )
+    n_desc = len( df_desc )
+    if n_nodes - n_desc != 1:
+        messages.append( make_message( facility_fullname, 'error', "Not all paths descend from root '" + root_path + "'" ) )
 
-    print( num_roots )
+    print( 'nodes:', n_nodes, ', roots:', n_roots, ', root path:', root_path, ', descendants:', n_desc )
 
-    if num_roots != 1:
-        messages.append( make_message( facility_fullname, 'error', 'Distribution tree has ' + num_roots + ' roots' ) )
+    if len( messages ):
+        print( messages )
 
     return messages
 
