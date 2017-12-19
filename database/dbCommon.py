@@ -242,13 +242,13 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
 
-    messages += check_distribution_root( df, facility_fullname )
+    messages += check_distribution_root( cur, df, facility_fullname )
     messages += check_voltages( cur, df, facility_fullname )
 
     return messages
 
 
-def check_distribution_root( df, facility_fullname ):
+def check_distribution_root( cur, df, facility_fullname ):
 
     messages = []
 
@@ -265,6 +265,11 @@ def check_distribution_root( df, facility_fullname ):
     n_desc = len( df_desc )
     if n_nodes - n_desc != 1:
         messages.append( make_message( facility_fullname, 'error', "Not all paths descend from root '" + root_path + "'" ) )
+
+    # Verify that root is a Panel
+    root_object_type_id = df_root.iloc[0]['object_type_id']
+    if root_object_type_id != object_type_to_id( cur, 'Panel' ):
+        messages.append( make_message( facility_fullname, 'error', 'Root is not a Panel' ) )
 
     print( 'nodes:', n_nodes, ', roots:', n_roots, ', root path:', root_path, ', descendants:', n_desc )
 
