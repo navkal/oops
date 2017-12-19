@@ -245,6 +245,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_distribution_root( cur, df, facility_fullname )
     messages += check_voltages( cur, df, facility_fullname )
 
+    if len( messages ):
+        print( messages )
+
     return messages
 
 
@@ -273,9 +276,6 @@ def check_distribution_root( cur, df, facility_fullname ):
 
     print( 'nodes:', n_nodes, ', roots:', n_roots, ', root path:', root_path, ', descendants:', n_desc )
 
-    if len( messages ):
-        print( messages )
-
     return messages
 
 
@@ -292,12 +292,22 @@ def check_voltages( cur, df, facility_fullname ):
 
     df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
     for index, row in df_trans.iterrows():
-        print( index, row['path'] )
-    
-    
-    print( 'num trans:', len(df_trans) );
-    print( 'num hi:', len(df_hi) );
-    print( 'num lo:', len(df_lo) );
+        trans_path = row['path']
+        print( index, trans_path )
+
+        descendant_prefix = trans_path + '.'
+        df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
+        df_lo_descendants = df_lo[ df_lo['path'].str.startswith( descendant_prefix ) ]
+
+        print( 'df_hi_descendants', len( df_hi_descendants ), 'df_lo_descendants', len( df_lo_descendants ) )
+
+        # Verify that there are no high-voltage descendants of current transformer
+        num_hi_descendants = len( df_hi_descendants )
+        if num_hi_descendants:
+            messages.append( make_message( facility_fullname, 'error', "Transformer '" + trans_path + "' has " + str( num_hi_descendants ) + ' high-voltage descendants'  ) )
+
+
+
 
 
     return messages
