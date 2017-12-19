@@ -282,9 +282,19 @@ def check_distribution_root( cur, df, facility_fullname ):
 def check_voltages( cur, df, facility_fullname ):
 
     messages = []
-    df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
 
+    df_hi = df[ df['voltage_id'] == voltage_to_id( cur, '277/480' ) ]
+    df_lo = df[ df['voltage_id'] == voltage_to_id( cur, '120/208' ) ]
+    len_volt = len( df_hi ) + len( df_lo )
+    len_no_volt = len( df ) - len_volt
+    if len_no_volt:
+        messages.append( make_message( facility_fullname, 'error', str( len_no_volt ) + ' nodes have no voltage' ) )
+
+    df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
     print( 'num trans:', len(df_trans) );
+    print( 'num hi:', len(df_hi) );
+    print( 'num lo:', len(df_lo) );
+
 
     return messages
 
