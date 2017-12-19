@@ -298,7 +298,7 @@ def check_voltages( cur, df, facility_fullname ):
     len_volt = len( df_hi ) + len( df_lo )
     len_no_volt = len( df ) - len_volt
     if len_no_volt:
-        messages.append( make_message( facility_fullname, 'error', str( len_no_volt ) + ' nodes have no voltage' ) )
+        messages.append( make_message( facility_fullname, 'error', str( len_no_volt ) + ' elements have no voltage' ) )
 
     # Get all transformers
     df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
@@ -326,24 +326,34 @@ def check_voltages( cur, df, facility_fullname ):
         if num_lo_descendants == 0:
             messages.append( make_message( facility_fullname, 'warning', "Transformer '" + path + "' has " + str( num_lo_descendants ) + ' low-voltage descendants'  ) )
 
-    # Iterate over list of low-voltage nodes
-    for index, row in df_lo.iterrows():
+    # Extract list of low-voltage nodes that are not transformers
+    df_lo_not_trans = df_lo[ df_lo['object_type_id'] != object_type_to_id( cur, 'Transformer' )]
+
+    # Iterate over low-voltage nodes that are not transformers
+    for index, row in df_lo_not_trans.iterrows():
+
         path = row['path']
         object_type = get_object_type( cur, row['object_type_id'] )
-        descendant_prefix = path + '.'
-        df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
 
         # Verify that current low-voltage node has no descendant transformers
+        descendant_prefix = path + '.'
+        df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
         num_trans_descendants = len( df_trans_descendants )
         if num_trans_descendants:
             messages.append( make_message( facility_fullname, 'error', "Low-voltage " + object_type + " '" + path + "' has " + str( num_trans_descendants ) + ' Transformer descendants'  ) )
 
+        # Verify that current low-voltage node descends from a Transformer
+        ancestor_path = path
+        found = False
+        while '.' in ancestor_path and not found:
+            ancestor_path = '.'.join( ancestor_path.split( '.' )[:-1] )
+            df_found = df_trans[ df_trans['path'] == ancestor_path ]
+            found = len( df_found ) > 0
 
-
+        if not found:
+            messages.append( make_message( facility_fullname, 'error', "Low-voltage " + object_type + " '" + path + "' has no Transformer ancestor"  ) )
 
     return messages
-
-
 
 
 def make_message( facility_fullname, severity, text ):
