@@ -283,9 +283,13 @@ def check_voltages( cur, df, facility_fullname ):
 
     messages = []
 
+    # Get high and low voltage IDs
+    hi_id = voltage_to_id( cur, '277/480' )
+    lo_id = voltage_to_id( cur, '120/208' )
+
     # Verify that all nodes have a voltage
-    df_hi = df[ df['voltage_id'] == voltage_to_id( cur, '277/480' ) ]
-    df_lo = df[ df['voltage_id'] == voltage_to_id( cur, '120/208' ) ]
+    df_hi = df[ df['voltage_id'] == hi_id ]
+    df_lo = df[ df['voltage_id'] == lo_id ]
     len_volt = len( df_hi ) + len( df_lo )
     len_no_volt = len( df ) - len_volt
     if len_no_volt:
@@ -298,6 +302,11 @@ def check_voltages( cur, df, facility_fullname ):
     for index, row in df_trans.iterrows():
 
         trans_path = row['path']
+
+        # Verify that current transformer has low voltage
+        if row['voltage_id'] != lo_id:
+            messages.append( make_message( facility_fullname, 'error', "Transformer '" + trans_path + "' has wrong voltage"  ) )
+
         descendant_prefix = trans_path + '.'
         df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
         df_lo_descendants = df_lo[ df_lo['path'].str.startswith( descendant_prefix ) ]
