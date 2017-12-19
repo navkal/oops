@@ -60,7 +60,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     n_nodes = len( df )
     n_desc = len( df_desc )
     if n_nodes - n_desc != 1:
-        messages.append( make_error_message( facility_fullname, "Not all paths descend from root '" + root_path + "'." ) )
+        messages.append( make_error_message( facility_fullname, 'Not all paths descend from root ' + root_path + '.' ) )
 
     # Verify that root is a Panel
     root_object_type_id = df_root.iloc[0]['object_type_id']
@@ -98,7 +98,7 @@ def check_voltages( cur, df, facility_fullname ):
 
         # Verify that current transformer has low voltage
         if row['voltage_id'] != lo_id:
-            messages.append( make_error_message( facility_fullname, "Transformer '" + path + "' has wrong voltage."  ) )
+            messages.append( make_error_message( facility_fullname, 'Transformer ' + path + ' has wrong voltage.'  ) )
 
         descendant_prefix = path + '.'
         df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
@@ -107,12 +107,12 @@ def check_voltages( cur, df, facility_fullname ):
         # Verify that current transformer has no high-voltage descendants
         num_hi_descendants = len( df_hi_descendants )
         if num_hi_descendants:
-            messages.append( make_error_message( facility_fullname, "Transformer '" + path + "' has " + str( num_hi_descendants ) + ' high-voltage descendants.'  ) )
+            messages.append( make_error_message( facility_fullname, 'Transformer ' + path + ' has ' + str( num_hi_descendants ) + ' high-voltage descendants.'  ) )
 
         # Verify that transformer has at least one (low-voltage) descendant
         num_lo_descendants = len( df_lo_descendants )
         if num_lo_descendants == 0:
-            messages.append( make_warning_message( facility_fullname, "Transformer '" + path + "' has " + str( num_lo_descendants ) + ' low-voltage descendants.'  ) )
+            messages.append( make_warning_message( facility_fullname, 'Transformer ' + path + ' has ' + str( num_lo_descendants ) + ' low-voltage descendants.'  ) )
 
     # Extract list of low-voltage nodes that are not transformers
     df_lo_not_trans = df_lo[ df_lo['object_type_id'] != dbCommon.object_type_to_id( cur, 'Transformer' )]
@@ -128,7 +128,7 @@ def check_voltages( cur, df, facility_fullname ):
         df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
         num_trans_descendants = len( df_trans_descendants )
         if num_trans_descendants:
-            messages.append( make_error_message( facility_fullname, "Low-voltage " + object_type + " '" + path + "' has " + str( num_trans_descendants ) + ' Transformer descendants.'  ) )
+            messages.append( make_error_message( facility_fullname, 'Low-voltage ' + object_type + ' ' + path + ' has ' + str( num_trans_descendants ) + ' Transformer descendants.'  ) )
 
         # Verify that current low-voltage node descends from a Transformer
         ancestor_path = path
@@ -139,7 +139,7 @@ def check_voltages( cur, df, facility_fullname ):
             found = len( df_found ) > 0
 
         if not found:
-            messages.append( make_error_message( facility_fullname, "Low-voltage " + object_type + " '" + path + "' has no Transformer ancestor."  ) )
+            messages.append( make_error_message( facility_fullname, 'Low-voltage ' + object_type + ' ' + path + ' has no Transformer ancestor.'  ) )
 
     return messages
 
@@ -172,24 +172,24 @@ def check_three_phase( cur, df, facility_fullname ):
         granny_a_id = df.loc[ row['parent_id'] ]['parent_id']
         granny_b_id = df.loc[ row['phase_b_parent_id'] ]['parent_id']
         if granny_a_id != granny_b_id:
-            messages.append( make_error_message( facility_fullname, 'Parent and Phase B Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' are not siblings." ) )
+            messages.append( make_error_message( facility_fullname, 'Parent and Phase B Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ' ' + row['path'] + ' are not siblings.' ) )
 
         # Verify that Phase B Parent is a Circuit object
         b_parent_object_type_id = df.loc[ row['phase_b_parent_id'] ]['object_type_id']
         if b_parent_object_type_id != circuit_object_type_id:
-            messages.append( make_error_message( facility_fullname, 'Phase B Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' is not a Circuit." ) )
+            messages.append( make_error_message( facility_fullname, 'Phase B Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ' ' + row['path'] + ' is not a Circuit.' ) )
 
         if row['phase_c_parent_id']:
 
             # Verify that Phase C Parent is sibling of Parent
             granny_c_id = df.loc[ row['phase_c_parent_id'] ]['parent_id']
             if granny_a_id != granny_c_id:
-                messages.append( make_error_message( facility_fullname, 'Parent and Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' are not siblings." ) )
+                messages.append( make_error_message( facility_fullname, 'Parent and Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ' ' + row['path'] + ' are not siblings.' ) )
 
             # Verify that Phase C Parent is a Circuit object
             c_parent_object_type_id = df.loc[ row['phase_c_parent_id'] ]['object_type_id']
             if c_parent_object_type_id != circuit_object_type_id:
-                messages.append( make_error_message( facility_fullname, 'Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' is not a Circuit." ) )
+                messages.append( make_error_message( facility_fullname, 'Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ' ' + row['path'] + ' is not a Circuit.' ) )
 
 
     return messages
@@ -200,6 +200,23 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     print( 'Checking distribution parentage')
 
     messages = []
+
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+
+    # Verify that all Panels have valid parent types
+    df_pan = df[ df['object_type_id'] == dbCommon.object_type_to_id( cur, 'Panel' ) ]
+    for index, row in df_pan.iterrows():
+        panel_parent_id = row['parent_id']
+
+        if panel_parent_id:
+            parent_type_id = df.loc[ panel_parent_id ]['object_type_id']
+            parent_type_id = 1
+            if parent_type_id not in [ transformer_type_id, circuit_type_id ]:
+                messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
+
+
 
     return messages
 

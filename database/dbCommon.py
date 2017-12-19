@@ -167,7 +167,7 @@ def get_object_type( cur, object_type_id ):
         for row in rows:
             object_type_id_map[str(row[0])] = row[1]
 
-    return object_type_id_map[object_type_id]
+    return object_type_id_map[ str( object_type_id ) ]
 
 
 def get_role( cur, role_id ):
