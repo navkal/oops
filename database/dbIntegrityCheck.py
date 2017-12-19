@@ -36,6 +36,8 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_distribution_root( cur, df, facility_fullname )
     messages += check_voltages( cur, df, facility_fullname )
     messages += check_three_phase( cur, df, facility_fullname )
+    messages += check_distribution_parentage( cur, df, facility_fullname )
+    messages += check_device_parentage( cur, df, facility_fullname )
 
     return messages
 
@@ -189,6 +191,24 @@ def check_three_phase( cur, df, facility_fullname ):
             if c_parent_object_type_id != circuit_object_type_id:
                 messages.append( make_error_message( facility_fullname, 'Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' is not a Circuit." ) )
 
+
+    return messages
+
+
+def check_distribution_parentage( cur, df, facility_fullname ):
+
+    print( 'Checking distribution parentage')
+
+    messages = []
+
+    return messages
+
+
+def check_device_parentage( cur, df, facility_fullname ):
+
+    print( 'Checking device parentage')
+
+    messages = []
 
     return messages
 
