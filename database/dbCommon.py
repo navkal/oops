@@ -230,11 +230,11 @@ def check_database( conn, cur ):
         facility_name = fac_row[0]
         facility_fullname = fac_row[1]
 
-        messages += check_facility( conn, facility_name, facility_fullname )
+        messages += check_facility( conn, cur, facility_name, facility_fullname )
 
     print( ' num messages=' + str( len( messages ) ) )
 
-def check_facility( conn, facility_name, facility_fullname ):
+def check_facility( conn, cur, facility_name, facility_fullname ):
 
     print( '==============check_facility=============>', facility_name, facility_fullname )
 
@@ -243,6 +243,7 @@ def check_facility( conn, facility_name, facility_fullname ):
     df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
 
     messages += check_distribution_root( df, facility_fullname )
+    messages += check_voltages( cur, df, facility_fullname )
 
     return messages
 
@@ -259,7 +260,7 @@ def check_distribution_root( df, facility_fullname ):
 
     # Verify that all paths descend from root
     root_path = df_root.iloc[0]['path']
-    df_desc = df[ df['path'].str.startswith( root_path + '.' )]
+    df_desc = df[ df['path'].str.startswith( root_path + '.' ) ]
     n_nodes = len( df )
     n_desc = len( df_desc )
     if n_nodes - n_desc != 1:
@@ -269,6 +270,16 @@ def check_distribution_root( df, facility_fullname ):
 
     if len( messages ):
         print( messages )
+
+    return messages
+
+
+def check_voltages( cur, df, facility_fullname ):
+
+    messages = []
+    df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
+
+    print( 'num trans:', len(df_trans) );
 
     return messages
 
