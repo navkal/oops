@@ -152,9 +152,22 @@ def path_to_id( cur, path, sFacility='' ):
     return str( index[0] )
 
 
+object_type_id_map = None
 def get_object_type( cur, object_type_id ):
-    cur.execute( 'SELECT object_type FROM DistributionObjectType WHERE id = ?', (object_type_id,))
-    return cur.fetchone()[0]
+
+    global object_type_id_map
+
+    # Load type-to-id map for future use
+    if not object_type_id_map:
+
+        object_type_id_map = {}
+
+        cur.execute( 'SELECT * FROM DistributionObjectType' )
+        rows = cur.fetchall()
+        for row in rows:
+            object_type_id_map[str(row[0])] = row[1]
+
+    return object_type_id_map[object_type_id]
 
 
 def get_role( cur, role_id ):
