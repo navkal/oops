@@ -168,6 +168,11 @@ def check_three_phase( cur, df, facility_fullname ):
 
         if granny_a_id != granny_b_id:
             messages.append( make_error_message( facility_fullname, 'Parent and Phase B Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' are not siblings." ) )
+            
+        if row['phase_c_parent_id']:
+            granny_c_id = df.loc[ row['phase_c_parent_id'] ]['parent_id']
+            if granny_a_id != granny_c_id:
+                messages.append( make_error_message( facility_fullname, 'Parent and Phase C Parent of ' + dbCommon.get_object_type( cur, row['object_type_id'] ) + " '" + row['path'] + "' are not siblings." ) )
 
 
     return messages
