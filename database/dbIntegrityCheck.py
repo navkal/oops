@@ -206,7 +206,8 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
 
     # Verify that all Panels have valid parent types
-    df_pan = df[ df['object_type_id'] == dbCommon.object_type_to_id( cur, 'Panel' ) ]
+    df_pan = df[ df['object_type_id'] == panel_type_id ]
+    print( 'Panels', len( df_pan ) )
     for index, row in df_pan.iterrows():
         parent_id = row['parent_id']
 
@@ -216,6 +217,19 @@ def check_distribution_parentage( cur, df, facility_fullname ):
                 messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
 
+    # Verify that all Transformers have valid parent types
+    df_tran = df[ df['object_type_id'] == transformer_type_id ]
+    print( 'Transformers', len( df_tran ) )
+    for index, row in df_tran.iterrows():
+        parent_id = row['parent_id']
+
+
+
+    # Verify that all Circuits have valid parent types
+    df_circ = df[ df['object_type_id'] == circuit_type_id ]
+    print( 'Circuits', len( df_circ ) )
+    for index, row in df_circ.iterrows():
+        parent_id = row['parent_id']
 
     return messages
 
