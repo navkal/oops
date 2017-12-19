@@ -212,7 +212,6 @@ def check_distribution_parentage( cur, df, facility_fullname ):
 
         if panel_parent_id:
             parent_type_id = df.loc[ panel_parent_id ]['object_type_id']
-            parent_type_id = 1
             if parent_type_id not in [ transformer_type_id, circuit_type_id ]:
                 messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
