@@ -146,6 +146,10 @@ def check_three_phase( cur, df, facility_fullname ):
 
     print( 'Checking three-phase connections')
 
+    df_bc_kids = df[ ( df['phase_b_parent_id'] != '' ) | ( df['phase_c_parent_id'] != '' ) ]
+    
+    print( 'B/C kids:', len( df_bc_kids ) )
+
     messages = []
     return messages
 
