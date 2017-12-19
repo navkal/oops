@@ -291,6 +291,10 @@ def check_voltages( cur, df, facility_fullname ):
         messages.append( make_message( facility_fullname, 'error', str( len_no_volt ) + ' nodes have no voltage' ) )
 
     df_trans = df[ df['object_type_id'] == object_type_to_id( cur, 'Transformer' ) ]
+    for index, row in df_trans.iterrows():
+        print( index, row['path'] )
+    
+    
     print( 'num trans:', len(df_trans) );
     print( 'num hi:', len(df_hi) );
     print( 'num lo:', len(df_lo) );
