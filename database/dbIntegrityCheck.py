@@ -17,11 +17,17 @@ def check_database( conn, cur ):
 
         messages += check_facility( conn, cur, facility_name, facility_fullname )
 
-    print( ' num messages=' + str( len( messages ) ) )
+    print( '\nAnomalies found: ' + str( len( messages ) )  )
+
+    for message in messages:
+        print( '- ' + format_message( message ) )
+
+    return messages
+
 
 def check_facility( conn, cur, facility_name, facility_fullname ):
 
-    print( '==============check_facility=============>', facility_name, facility_fullname )
+    print( "\n-- Facility '" + facility_fullname + "' --")
 
     messages = []
 
@@ -29,14 +35,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     messages += check_distribution_root( cur, df, facility_fullname )
     messages += check_voltages( cur, df, facility_fullname )
-
-    if len( messages ):
-        print( messages )
+    messages += check_three_phase( cur, df, facility_fullname )
 
     return messages
 
 
 def check_distribution_root( cur, df, facility_fullname ):
+
+    print( 'Checking distribution root')
 
     messages = []
 
@@ -59,12 +65,12 @@ def check_distribution_root( cur, df, facility_fullname ):
     if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
         messages.append( make_message( facility_fullname, 'error', 'Root is not a Panel' ) )
 
-    print( 'nodes:', n_nodes, ', roots:', n_roots, ', root path:', root_path, ', descendants:', n_desc )
-
     return messages
 
 
 def check_voltages( cur, df, facility_fullname ):
+
+    print( 'Checking voltages')
 
     messages = []
 
@@ -136,8 +142,27 @@ def check_voltages( cur, df, facility_fullname ):
     return messages
 
 
+def check_three_phase( cur, df, facility_fullname ):
+
+    print( 'Checking three-phase connections')
+
+    messages = []
+    return messages
+
+
 def make_message( facility_fullname, severity, text ):
     if severity in ( 'error', 'warning' ):
         return( { 'facility_fullname': facility_fullname, 'severity': severity, 'text': text } )
     else:
         raise ValueError( 'make_message(): Unknown message severity=' + severity )
+
+
+def format_message( message ):
+    formatted_message = ''
+
+    formatted_message += message['facility_fullname'] + ': '
+    formatted_message += '[' + message['severity'].title() + '] '
+    formatted_message += message['text']
+
+    return formatted_message
+
