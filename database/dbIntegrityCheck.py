@@ -37,7 +37,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_voltages( cur, df, facility_fullname )
     messages += check_three_phase( cur, df, facility_fullname )
     messages += check_distribution_parentage( cur, df, facility_fullname )
-    messages += check_device_parentage( cur, df, facility_fullname )
+
+    df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
+    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
 
     return messages
 
@@ -246,11 +248,21 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     return messages
 
 
-def check_device_parentage( cur, df, facility_fullname ):
+def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
     print( 'Checking device parentage')
 
     messages = []
+
+    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+
+    for index, row in df_dev.iterrows():
+        parent_id = row['parent_id']
+        parent = df.loc[parent_id]
+        parent_type_id = parent['object_type_id']
+
+        if parent_type_id != circuit_type_id:
+            messages.append( make_error_message( facility_fullname, 'Device connected to ' + parent['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
     return messages
 
