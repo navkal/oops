@@ -37,6 +37,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_voltages( cur, df, facility_fullname )
     messages += check_three_phase( cur, df, facility_fullname )
     messages += check_distribution_parentage( cur, df, facility_fullname )
+    messages += check_circuit_numbers( cur, df, facility_fullname )
 
     df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
     messages += check_device_parentage( cur, df, df_dev, facility_fullname )
@@ -49,7 +50,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
 def check_distribution_root( cur, df, facility_fullname ):
 
-    print( 'Checking distribution root')
+    print( 'Checking Distribution root')
 
     messages = []
 
@@ -77,7 +78,7 @@ def check_distribution_root( cur, df, facility_fullname ):
 
 def check_voltages( cur, df, facility_fullname ):
 
-    print( 'Checking voltages')
+    print( 'Checking Voltages')
 
     messages = []
 
@@ -202,7 +203,7 @@ def check_three_phase( cur, df, facility_fullname ):
 
 def check_distribution_parentage( cur, df, facility_fullname ):
 
-    print( 'Checking distribution parentage')
+    print( 'Checking Distribution parentage')
 
     messages = []
 
@@ -248,12 +249,50 @@ def check_distribution_parentage( cur, df, facility_fullname ):
         if parent_type_id != panel_type_id:
             messages.append( make_error_message( facility_fullname, 'Circuit ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
+
+    return messages
+
+
+def check_circuit_numbers( cur, df, facility_fullname ):
+
+    print( 'Checking Circuit numbers')
+
+    messages = []
+
+    # Get all panels
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    df_pan = df[ df['object_type_id'] == panel_type_id ]
+
+    # Iterate over panels
+    for index, row in df_pan.iterrows():
+
+        # Get all children of current panel
+        df_kids = df[ df['parent_id'] == index ]
+
+        # Initialize map of circuit numbers
+        circuit_num_map = {}
+
+        # Iterate over children of current panel
+        for kid_index, kid_row in df_kids.iterrows():
+
+            # Get leading part of tail
+            tail = df_kids.loc[kid_index]['tail']
+            tail_split = tail.split( '-' )
+            leading = tail.split( '-' )[0]
+
+            # If leading part is a number, look for duplicate in circuit number map
+            if leading.isdigit():
+                if leading in circuit_num_map:
+                    messages.append( make_warning_message( facility_fullname, 'Panel ' + row['path'] + ' has multiple Circuits with Number ' + leading + '.'  ) )
+                else:
+                    circuit_num_map[leading] = tail
+
     return messages
 
 
 def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
-    print( 'Checking device parentage')
+    print( 'Checking Device parentage')
 
     messages = []
 
@@ -272,7 +311,7 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
 def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
-    print( 'Checking location references')
+    print( 'Checking Location references')
 
     messages = []
 
