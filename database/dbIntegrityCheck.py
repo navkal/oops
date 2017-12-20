@@ -205,23 +205,35 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
     circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
 
-    # Verify that all Panels have valid parent types
+    # Verify that all Panels have valid parent types and no unexpected siblings
     df_pan = df[ df['object_type_id'] == panel_type_id ]
     for index, row in df_pan.iterrows():
         parent_id = row['parent_id']
 
         if parent_id:
+            # Validate parent type
             parent_type_id = df.loc[ parent_id ]['object_type_id']
             if parent_type_id not in [ transformer_type_id, circuit_type_id ]:
                 messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
-    # Verify that all Transformers have valid parent types
+            # If parent is a Circuit, verify that there are no siblings
+            if parent_type_id == circuit_type_id:
+                df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
+                if ( len( df_sibs ) - 1 ):
+                    messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has unexpected siblings.' ) )
+
+    # Verify that all Transformers have valid parent types and no siblings
     df_tran = df[ df['object_type_id'] == transformer_type_id ]
     for index, row in df_tran.iterrows():
         parent_id = row['parent_id']
         parent_type_id = df.loc[ parent_id ]['object_type_id']
         if parent_type_id != circuit_type_id:
             messages.append( make_error_message( facility_fullname, 'Transformer ' + row['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
+
+        # Verify that there are no siblings
+        df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
+        if ( len( df_sibs ) - 1 ):
+            messages.append( make_error_message( facility_fullname, 'Transformer ' + row['path'] + ' has unexpected siblings.' ) )
 
     # Verify that all Circuits have valid parent types
     df_circ = df[ df['object_type_id'] == circuit_type_id ]
