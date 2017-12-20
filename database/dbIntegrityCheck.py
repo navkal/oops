@@ -283,7 +283,7 @@ def check_circuit_numbers( cur, df, facility_fullname ):
             # If leading part is a number, look for duplicate in circuit number map
             if leading.isdigit():
                 if leading in circuit_num_map:
-                    messages.append( make_warning_message( facility_fullname, 'Panel ' + row['path'] + ' has multiple Circuits with Number ' + leading + '.'  ) )
+                    messages.append( make_warning_message( facility_fullname, 'Panel ' + row['path'] + ' has multiple Circuits numbered ' + leading + '.'  ) )
                 else:
                     circuit_num_map[leading] = tail
 
@@ -315,7 +315,6 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
     messages = []
 
-    i = 0
     for index, row in df_loc.iterrows():
 
         df_refs = df[ df['room_id'] == index ]
