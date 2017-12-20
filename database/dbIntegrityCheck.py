@@ -41,6 +41,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
     messages += check_device_parentage( cur, df, df_dev, facility_fullname )
 
+    df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn, index_col='id' )
+    messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
+
     return messages
 
 
@@ -263,6 +266,28 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
         if parent_type_id != circuit_type_id:
             messages.append( make_error_message( facility_fullname, 'Device connected to ' + parent['path'] + ' has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
+
+    return messages
+
+
+def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
+
+    print( 'Checking location references')
+
+    messages = []
+
+    i = 0
+    for index, row in df_loc.iterrows():
+
+        df_refs = df[ df['room_id'] == index ]
+        n_refs = len( df_refs )
+
+        if not n_refs:
+            df_refs = df_dev[ df_dev['room_id'] == index ]
+            n_refs = len( df_refs )
+
+        if not n_refs:
+            messages.append( make_warning_message( facility_fullname, 'Location [' +  dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ) + '] is not referenced' ) )
 
     return messages
 
