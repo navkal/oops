@@ -358,26 +358,26 @@ def check_location_names( cur, df_loc, facility_fullname ):
 '''
 --> Reporting utilities -->
 '''
-def make_error_message( facility_fullname, affected_object_type, affected_object_descr, message_text ):
-    return make_message( 'Error', facility_fullname, affected_object_type, affected_object_descr, message_text )
+def make_error_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
+    return make_message( 'Error', facility_fullname, affected_category, affected_element, anomaly_descr )
 
-def make_warning_message( facility_fullname, affected_object_type, affected_object_descr, message_text ):
-    return make_message( 'Warning', facility_fullname, affected_object_type, affected_object_descr, message_text )
+def make_warning_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
+    return make_message( 'Warning', facility_fullname, affected_category, affected_element, anomaly_descr )
 
-def make_message( severity, facility_fullname, affected_object_type, affected_object_descr, message_text ):
+def make_message( severity, facility_fullname, affected_category, affected_element, anomaly_descr ):
 
     if severity not in ( 'Error', 'Warning' ):
         raise ValueError( 'make_message(): Unknown severity=' + severity )
 
-    if affected_object_type not in ( 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
-        raise ValueError( 'make_message(): Unknown affected_object_type: ' + affected_object_type )
+    if affected_category not in ( 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
+        raise ValueError( 'make_message(): Unknown affected_category: ' + affected_category )
 
     message = {
       'facility_fullname': facility_fullname,
       'severity': severity,
-      'affected_object_type': affected_object_type,
-      'affected_object_descr': affected_object_descr,
-      'message_text': message_text
+      'affected_category': affected_category,
+      'affected_element': affected_element,
+      'anomaly_descr': anomaly_descr
     }
 
     return message
@@ -387,9 +387,9 @@ def format_message( message ):
 
     formatted_message += message['facility_fullname'] + ': '
     formatted_message += '[' + message['severity'] + '] '
-    formatted_message += '[' + message['affected_object_type'] + '] '
-    formatted_message += '[' + message['affected_object_descr'] + '] '
-    formatted_message += '[' + message['message_text'] + ']'
+    formatted_message += '[' + message['affected_category'] + '] '
+    formatted_message += '[' + message['affected_element'] + '] '
+    formatted_message += '[' + message['anomaly_descr'] + ']'
 
     return formatted_message
 '''

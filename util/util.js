@@ -522,21 +522,21 @@ var g_tPropertyRules =
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  affected_object_type:
+  affected_category:
   {
     label: "Category",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  affected_object_descr:
+  affected_element:
   {
     label: "Element",
     showInPropertiesWindow: false,
     showInSortableTable: true,
     displayIndex: displayIndex ++
   },
-  message_text:
+  anomaly_descr:
   {
     label: "Anomaly",
     showInPropertiesWindow: false,
