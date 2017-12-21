@@ -93,7 +93,7 @@ def check_voltages( cur, df, facility_fullname ):
     len_volt = len( df_hi ) + len( df_lo )
     len_no_volt = len( df ) - len_volt
     if len_no_volt:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Voltage', str( len_no_volt ) + ' elements have no Voltage setting.' ) )
+        messages.append( make_error_message( facility_fullname, 'Distribution', 'Voltage', str( len_no_volt ) + ' elements have no voltage.' ) )
 
     # Get all transformers
     df_trans = df[ df['object_type_id'] == dbCommon.object_type_to_id( cur, 'Transformer' ) ]
@@ -105,7 +105,7 @@ def check_voltages( cur, df, facility_fullname ):
 
         # Verify that current transformer has low voltage
         if row['voltage_id'] != lo_id:
-            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has wrong Voltage setting.'  ) )
+            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has wrong voltage.'  ) )
 
         descendant_prefix = path + '.'
         df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
@@ -135,7 +135,7 @@ def check_voltages( cur, df, facility_fullname ):
         df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
         num_trans_descendants = len( df_trans_descendants )
         if num_trans_descendants:
-            messages.append( make_error_message( facility_fullname, object_type, path, 'Low-voltage element has ' + str( num_trans_descendants ) + ' Transformer descendants.'  ) )
+            messages.append( make_error_message( facility_fullname, object_type, path, 'Has low voltage, but has ' + str( num_trans_descendants ) + ' Transformer descendants.'  ) )
 
         # Verify that current low-voltage node descends from a Transformer
         ancestor_path = path
@@ -146,7 +146,7 @@ def check_voltages( cur, df, facility_fullname ):
             found = len( df_found ) > 0
 
         if not found:
-            messages.append( make_error_message( facility_fullname, object_type, path, 'Low-voltage element not descended from Transformer.'  ) )
+            messages.append( make_error_message( facility_fullname, object_type, path, 'Has low voltage, but is not descended from Transformer.'  ) )
 
     return messages
 
