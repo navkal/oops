@@ -324,7 +324,7 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
             n_refs = len( df_refs )
 
         if not n_refs:
-            messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ), 'Not referenced.' ) )
+            messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ), 'Has no references.' ) )
 
     return messages
 
