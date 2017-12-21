@@ -515,6 +515,34 @@ var g_tPropertyRules =
       },
     displayIndex: displayIndex ++
   },
+  severity:
+  {
+    label: "Severity",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  affected_object_type:
+  {
+    label: "Category",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  affected_object_descr:
+  {
+    label: "Element",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
+  message_text:
+  {
+    label: "Anomaly",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   parent_path:
   {
     label: "Parent",
