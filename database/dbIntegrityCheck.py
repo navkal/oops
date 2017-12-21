@@ -44,6 +44,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn, index_col='id' )
     messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
+    messages += check_location_names( cur, df_loc, facility_fullname )
 
     return messages
 
@@ -225,7 +226,7 @@ def check_distribution_parentage( cur, df, facility_fullname ):
             # If parent is a Circuit, verify that there are no siblings
             if parent_type_id == circuit_type_id:
                 df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
-                if ( len( df_sibs ) - 1 ):
+                if len( df_sibs ) > 1:
                     messages.append( make_error_message( facility_fullname, 'Panel ' + row['path'] + ' has unexpected siblings.' ) )
 
     # Verify that all Transformers have valid parent types and no siblings
@@ -238,7 +239,7 @@ def check_distribution_parentage( cur, df, facility_fullname ):
 
         # Verify that there are no siblings
         df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
-        if ( len( df_sibs ) - 1 ):
+        if len( df_sibs ) > 1:
             messages.append( make_error_message( facility_fullname, 'Transformer ' + row['path'] + ' has unexpected siblings.' ) )
 
     # Verify that all Circuits have valid parent types
@@ -325,7 +326,31 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
             n_refs = len( df_refs )
 
         if not n_refs:
-            messages.append( make_warning_message( facility_fullname, 'Location [' +  dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ) + '] is not referenced' ) )
+            messages.append( make_warning_message( facility_fullname, 'Location [' +  dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ) + '] is not referenced.' ) )
+
+    return messages
+
+
+def check_location_names( cur, df_loc, facility_fullname ):
+
+    print( 'Checking Location names')
+
+    messages = []
+
+    for index, row in df_loc.iterrows():
+        if row['room_num']:
+            df_dup = df_loc[ df_loc['room_num'] == row['room_num'] ]
+            n_dup = len( df_dup )
+
+            if n_dup > 1:
+                messages.append( make_warning_message( facility_fullname, 'Duplicate found for Current Location ' + row['room_num'] + '.' ) )
+
+        if row['old_num']:
+            df_dup = df_loc[ df_loc['old_num'] == row['old_num'] ]
+            n_dup = len( df_dup )
+
+            if n_dup > 1:
+                messages.append( make_warning_message( facility_fullname, 'Duplicate found for Previous Location ' + row['old_num'] + '.' ) )
 
     return messages
 
