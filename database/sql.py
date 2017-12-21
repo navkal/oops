@@ -7,6 +7,7 @@ import time
 import uuid
 import natsort
 import dbCommon
+import dbIntegrityCheck
 
 
 conn = None
@@ -947,6 +948,9 @@ class sortableTable:
         elif table_object_type == 'Activity':
             self.make_activity_table( target_object_type, target_object_id, facility )
 
+        elif table_object_type == 'Integrity':
+            self.make_integrity_table( enterprise )
+
         elif table_object_type == 'User':
             self.make_user_table( enterprise )
 
@@ -1062,6 +1066,10 @@ class sortableTable:
                 self.rows.append( row.__dict__ )
 
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
+
+
+    def make_integrity_table( self, enterprise ):
+        self.rows = dbIntegrityCheck.check_database( conn, cur )
 
 
     def make_device_table( self, user_role, enterprise, facility ):

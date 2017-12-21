@@ -3,6 +3,7 @@ Panel Spy,,
 panelSpy@gmail.com,,
 users,Users,users/users.php
 activity,Activity Log,activity/activity.php
+integrity,Data Integrity,integrity/integrity.php
 about,About,about/about.php
 contact,Contact,contact/contact.php
 php,PHP Information,pi/pi.php
