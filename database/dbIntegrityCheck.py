@@ -342,6 +342,7 @@ def check_location_names( cur, df_loc, facility_fullname ):
 
             if n_dup > 1:
                 messages.append( make_warning_message( facility_fullname, 'Current Location', row['room_num'], 'Has duplicates.' ) )
+                df_loc = df_loc[ df_loc['room_num'] != row['room_num'] ]
 
         if row['old_num']:
             df_dup = df_loc[ df_loc['old_num'] == row['old_num'] ]
@@ -349,6 +350,7 @@ def check_location_names( cur, df_loc, facility_fullname ):
 
             if n_dup > 1:
                 messages.append( make_warning_message( facility_fullname, 'Previous Location', row['old_num'], 'Has duplicates.' ) )
+                df_loc = df_loc[ df_loc['old_num'] != row['old_num'] ]
 
     return messages
 
