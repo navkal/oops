@@ -59,7 +59,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     df_root = df[ df['parent_id'] == '' ]
     n_roots = len( df_root )
     if n_roots != 1:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Structure', 'Has ' + n_roots + ' roots.' ) )
+        messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Has ' + str( n_roots ) + ' roots.' ) )
 
     # Verify that all paths descend from root
     root_path = df_root.iloc[0]['path']
@@ -67,7 +67,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     n_nodes = len( df )
     n_desc = len( df_desc )
     if n_nodes - n_desc != 1:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Structure', 'Some paths not descended from root ' + root_path + '.' ) )
+        messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Some paths not descended from root ' + root_path + '.' ) )
 
     # Verify that root is a Panel
     root_object_type_id = df_root.iloc[0]['object_type_id']
