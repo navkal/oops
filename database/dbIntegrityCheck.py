@@ -72,7 +72,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     # Verify that root is a Panel
     root_object_type_id = df_root.iloc[0]['object_type_id']
     if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Root', 'Root is not a Panel.' ) )
+        messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Root is not a Panel.' ) )
 
     return messages
 
