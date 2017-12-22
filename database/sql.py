@@ -7,7 +7,6 @@ import time
 import uuid
 import natsort
 import dbCommon
-import dbIntegrityCheck
 
 
 conn = None
@@ -1069,6 +1068,7 @@ class sortableTable:
 
 
     def make_integrity_table( self, enterprise ):
+        import dbIntegrityCheck
         self.rows = dbIntegrityCheck.check_database( conn, cur )
 
 
