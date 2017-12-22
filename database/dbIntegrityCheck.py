@@ -1,7 +1,10 @@
 import dbCommon
 import pandas as pd
+import time
 
 def check_database( conn, cur ):
+
+    start_time = time.time()
 
     messages = []
 
@@ -21,6 +24,8 @@ def check_database( conn, cur ):
 
     for message in messages:
         print( '- ' + format_message( message ) )
+
+    print( '\nElapsed Seconds: ' + str( time.time() - start_time ) )
 
     return messages
 
