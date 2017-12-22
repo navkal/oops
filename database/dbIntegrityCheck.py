@@ -108,13 +108,22 @@ def check_voltages( cur, df, facility_fullname ):
 
         path = row['path']
 
-        # Verify that current transformer has low voltage
-        if row['voltage_id'] != lo_id:
-            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has wrong voltage.'  ) )
+        df_lo_ancestors = df_lo.copy()
+        df_lo_ancestors['is_ancestor'] = df_lo_ancestors.apply( lambda x: path.startswith( x['path'] + '.' ), axis=1 )
+        df_lo_ancestors = df_lo_ancestors[ df_lo_ancestors['is_ancestor'] ]
 
         descendant_prefix = path + '.'
         df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
         df_lo_descendants = df_lo[ df_lo['path'].str.startswith( descendant_prefix ) ]
+
+        # Verify that current transformer has low voltage
+        if row['voltage_id'] != lo_id:
+            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has wrong voltage.'  ) )
+
+        # Verify that current transformer has no low-voltage ancestors
+        num_lo_ancestors = len( df_lo_ancestors )
+        if num_lo_ancestors:
+            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has ' + str( num_lo_ancestors ) + ' low-voltage ancestors.'  ) )
 
         # Verify that current transformer has no high-voltage descendants
         num_hi_descendants = len( df_hi_descendants )
@@ -125,33 +134,6 @@ def check_voltages( cur, df, facility_fullname ):
         num_lo_descendants = len( df_lo_descendants )
         if num_lo_descendants == 0:
             messages.append( make_warning_message( facility_fullname, 'Transformer', path, 'Has no low-voltage descendants.'  ) )
-
-    # Extract list of low-voltage nodes that are not transformers
-    df_lo_not_trans = df_lo[ df_lo['object_type_id'] != dbCommon.object_type_to_id( cur, 'Transformer' )]
-
-    # Iterate over low-voltage nodes that are not transformers
-    for index, row in df_lo_not_trans.iterrows():
-
-        path = row['path']
-        object_type = dbCommon.get_object_type( cur, row['object_type_id'] )
-
-        # Verify that current low-voltage node has no descendant transformers
-        descendant_prefix = path + '.'
-        df_trans_descendants = df_trans[ df_trans['path'].str.startswith( descendant_prefix ) ]
-        num_trans_descendants = len( df_trans_descendants )
-        if num_trans_descendants:
-            messages.append( make_error_message( facility_fullname, object_type, path, 'Has low voltage, but has ' + str( num_trans_descendants ) + ' Transformer descendants.'  ) )
-
-        # Verify that current low-voltage node descends from a Transformer
-        ancestor_path = path
-        found = False
-        while '.' in ancestor_path and not found:
-            ancestor_path = '.'.join( ancestor_path.split( '.' )[:-1] )
-            df_found = df_trans[ df_trans['path'] == ancestor_path ]
-            found = len( df_found ) > 0
-
-        if not found:
-            messages.append( make_error_message( facility_fullname, object_type, path, 'Has low voltage, but is not descended from Transformer.'  ) )
 
     return messages
 
