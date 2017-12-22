@@ -64,7 +64,7 @@
     </table>
 
     <div id="sortableTableIsEmpty" class="well" style="display:none;text-align:center" >
-      This table is empty.
+      No entries found.
     </div>
 
   </div>
