@@ -1038,8 +1038,10 @@ class sortableTable:
     def make_activity_table( self, target_object_type, target_object_id, facility ):
 
         # Retrieve all objects of requested type
-        if target_object_type and target_object_id:
-            where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '"'
+        if target_object_type and target_object_id and facility:
+            where = ' WHERE target_object_type="' + target_object_type + '" AND target_object_id="' + target_object_id + '" AND facility_id="' + facility_name_to_id( facility ) + '"'
+        elif facility:
+            where = ' WHERE facility_id="' + facility_name_to_id( facility ) + '"'
         else:
             where = ''
         cur.execute('SELECT * FROM Activity' + where)

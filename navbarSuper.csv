@@ -1,0 +1,17 @@
+Panel Spy,,
+&copy; 2017 Panel Spy. All rights reserved.,,
+panelSpy@gmail.com,,
+distribution,Distribution,distribution/distribution.php
+panels,Panels,panels/panels.php
+transformers,Transformers,transformers/transformers.php
+circuits,Circuits,circuits/circuits.php
+devices,Devices,devices/devices.php
+locations,Locations,locations/locations.php
+recycle,Recycle Bin,recycle/recycle.php
+topology,Topology,topology/topology.php
+activity,Activity Log,activity/activity.php
+integrity,Data Integrity,integrity/integrity.php
+settings,Settings,settings/settings.php
+about,About,about/about.php
+contact,Contact,contact/contact.php
+#php,PHP Information,pi/pi.php

@@ -71,6 +71,9 @@
           case 'Administrator':
             $sSuffix = 'Admin';
             break;
+          case 'Supervisor':
+            $sSuffix = 'Super';
+            break;
           case 'Technician':
             $sSuffix = 'Tech';
             break;
