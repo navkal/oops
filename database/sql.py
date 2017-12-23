@@ -114,7 +114,11 @@ def facility_name_to_id( facility_name ):
 
 def username_to_id( username ):
     cur.execute( 'SELECT id FROM User WHERE lower( username )=?', ( username.lower(), ) )
-    id = cur.fetchone()[0]
+    row = cur.fetchone()
+    if row:
+        id = row[0]
+    else:
+        id = None
     return id
 
 
@@ -2031,28 +2035,35 @@ class updateUser:
     def __init__(self, by, username, oldPassword, password, role, auth_facilities, status, first_name, last_name, email_address, organization, description, enterprise):
         open_database( enterprise )
 
-        # Get initial state of object for Activity log
-        target_object_id = username_to_id( username )
-        before_summary = summarize_object( 'User', target_object_id )
-
         self.messages = []
         self.selectors = []
         self.descendant_rows = []
         self.row = {}
         self.user = {}
 
-        if password != None:
-            if oldPassword != None:
-                # Authenticate credentials to change password
-                user = changePassword( by, username, oldPassword, password )
-                if user.signInId == '':
-                    self.messages.append( 'Old Password not valid.' )
-                    self.selectors.append( '#oldPassword' )
-            else:
-                # Change password without authentication
-                cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) )
-                conn.commit()
+        # Get initial state of object for Activity log
+        target_object_id = username_to_id( username )
 
+        if not target_object_id:
+
+            self.messages.append( 'User not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
+
+        if len( self.messages ) == 0:
+
+            before_summary = summarize_object( 'User', target_object_id )
+
+            if password != None:
+                if oldPassword != None:
+                    # Authenticate credentials to change password
+                    user = changePassword( by, username, oldPassword, password )
+                    if user.signInId == '':
+                        self.messages.append( 'Old Password not valid.' )
+                        self.selectors.append( '#oldPassword' )
+                else:
+                    # Change password without authentication
+                    cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash(password), ( by != username ), username.lower() ) )
+                    conn.commit()
 
         if len( self.messages ) == 0:
 
