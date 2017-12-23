@@ -187,8 +187,14 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
         if dist_object_id:
             cur.execute( 'SELECT path, voltage_id FROM ' + dist_object_table + ' WHERE id=?', (dist_object_id,) )
             object = cur.fetchone()
-            object_path = object[0]
-            allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
+            if object:
+                object_path = object[0]
+                allowed_voltage_id = 1 if object_type == 'Transformer' else object[1]
+            else:
+                object_path = ''
+                cur.execute( 'SELECT MAX(id) FROM Voltage' )
+                max_voltage_id = cur.fetchone()[0]
+                allowed_voltage_id = max_voltage_id + 1
         else:
             object_path = ''
             allowed_voltage_id = 1 if object_type == 'Transformer' else 0
