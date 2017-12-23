@@ -2062,18 +2062,33 @@ class removeUser:
     def __init__(self, by, id, enterprise):
         open_database( enterprise )
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( 'User', id )
+        # Initialize return values
+        self.messages = []
+        self.selectors = []
+        self.removed_object_ids = []
 
-        # Delete the user
-        cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
-        self.removed_object_ids = [id]
+        # Verify that user exists
+        cur.execute( 'SELECT id FROM User WHERE id=?', ( id, ) )
+        row = cur.fetchone()
 
-        # Log activity
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeUser'], by, '', before_summary, '', 'User', id  ) )
+        if not row:
+            self.messages.append( 'User not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
 
-        conn.commit()
+        if len( self.messages ) == 0:
+
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( 'User', id )
+
+            # Delete the user
+            cur.execute( 'DELETE FROM User WHERE id=?', ( id, ) )
+            self.removed_object_ids = [id]
+
+            # Log activity
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeUser'], by, '', before_summary, '', 'User', id  ) )
+
+            conn.commit()
 
 
 class authFacilities:
