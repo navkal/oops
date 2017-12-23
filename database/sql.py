@@ -1868,44 +1868,50 @@ class removeDevice:
         self.selectors = []
         self.removed_object_ids = []
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( 'Device', id, facility )
-
         # Get row to be deleted
         target_table = facility + '_Device'
         cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
         row = cur.fetchone()
-        room_id = row[1]
-        parent_id = row[2]
 
-        # Get parent path
-        parent_path = get_path( parent_id, facility )
+        if not row:
+            self.messages.append( 'Object not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
 
-        # Get location
-        ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
+        if len( self.messages ) == 0:
 
-        # Create entry in Recycle Bin
-        timestamp = time.time()
-        recycle_table = facility + '_Recycle'
-        object_type = 'Device'
-        cur.execute( 'INSERT INTO ' + recycle_table + ''' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id )
-            VALUES(?,?,?,?,?,?,?,?) ''',( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
-        remove_id = cur.lastrowid
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( 'Device', id, facility )
+            room_id = row[1]
+            parent_id = row[2]
 
-        # Insert target object in table of removed objects
-        removed_table = facility + '_Removed_Device'
-        cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+            # Get parent path
+            parent_path = get_path( parent_id, facility )
 
-        # Delete target object
-        cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
-        self.removed_object_ids = [id]
+            # Get location
+            ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
 
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeDevice'], by, facility_id, before_summary, comment, 'Device', id  ) )
+            # Create entry in Recycle Bin
+            timestamp = time.time()
+            recycle_table = facility + '_Recycle'
+            object_type = 'Device'
+            cur.execute( 'INSERT INTO ' + recycle_table + ''' ( remove_timestamp, remove_object_type, parent_path, loc_new, loc_old, loc_descr, remove_comment, remove_object_id )
+                VALUES(?,?,?,?,?,?,?,?) ''',( timestamp, object_type, parent_path, loc_new, loc_old, loc_descr, comment, id ) )
+            remove_id = cur.lastrowid
 
-        conn.commit()
+            # Insert target object in table of removed objects
+            removed_table = facility + '_Removed_Device'
+            cur.execute( 'INSERT INTO ' + removed_table + ' ( id, room_id, parent_id, description, power, name, remove_id ) VALUES(?,?,?,?,?,?,?) ', ( *row, remove_id ) )
+
+            # Delete target object
+            cur.execute( 'DELETE FROM ' + target_table + ' WHERE id=?', ( id, ) )
+            self.removed_object_ids = [id]
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['removeDevice'], by, facility_id, before_summary, comment, 'Device', id  ) )
+
+            conn.commit()
 
 
 class removeLocation:
