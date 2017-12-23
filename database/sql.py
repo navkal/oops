@@ -1874,7 +1874,7 @@ class removeDevice:
         row = cur.fetchone()
 
         if not row:
-            self.messages.append( 'Object not found.  Press F5 to refresh the view.' )
+            self.messages.append( 'Device not found.  Press F5 to refresh the view.' )
             self.selectors.append( '' )
 
         if len( self.messages ) == 0:
@@ -1923,24 +1923,30 @@ class removeLocation:
         self.selectors = []
         self.removed_object_ids = []
 
-        # This should never happen, but is possible with multiple users or multiple windows
-        cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (id,))
-        reference_count = cur.fetchone()[0]
-        if reference_count == 0:
-            cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
+        # Get row to be deleted
+        target_table = facility + '_Room'
+        cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
+        row = cur.fetchone()
+
+        if not row:
+            self.messages.append( 'Location not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
+
+        if len( self.messages ) == 0:
+
+            # This should never happen, but is possible with multiple users or multiple windows
+            cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Device WHERE room_id = ?', (id,))
             reference_count = cur.fetchone()[0]
-        if reference_count > 0:
-            self.messages.append( "Location is not available for removal." )
+            if reference_count == 0:
+                cur.execute( 'SELECT COUNT(*) FROM ' + facility + '_Distribution WHERE room_id = ?', (id,))
+                reference_count = cur.fetchone()[0]
+            if reference_count > 0:
+                self.messages.append( "Location is not available for removal." )
 
         if len( self.messages ) == 0:
 
             # Get initial state of object for Activity log
             before_summary = summarize_object( 'Location', id, facility )
-
-            # Get row to be deleted
-            target_table = facility + '_Room'
-            cur.execute('SELECT * FROM ' + target_table + ' WHERE id = ?', (id,))
-            row = cur.fetchone()
             loc_new = row[1]
             loc_old = row[2]
             loc_descr = row[4]
