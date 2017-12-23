@@ -1462,26 +1462,38 @@ class updateDistributionObject:
         self.row = {}
         self.descendant_rows = []
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( object_type, id, facility )
-
         target_table = facility + '_Distribution'
-        user_role = username_to_role( by )
 
-        # Determine whether path is available
-        if parent_id:
-            ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
-        else:
-            test_id = None
-            path = tail
-            source = ''
+        # Verify that object exists
+        cur.execute( 'SELECT id FROM ' + facility + '_Distribution WHERE id = ?', (id,) )
+        row = cur.fetchone()
 
-        if ( test_id != None ) and ( test_id != id ):
-            # Path is neither available nor original
-            self.messages.append( "Path '" + path + "' is not available." )
-            self.selectors = [ '#parent_path', '#number', '#name' ]
+        if not row:
+            self.messages.append( 'Object not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
 
         if len( self.messages ) == 0:
+
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( object_type, id, facility )
+
+            user_role = username_to_role( by )
+
+            # Determine whether path is available
+            if parent_id:
+                ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+            else:
+                test_id = None
+                path = tail
+                source = ''
+
+            if ( test_id != None ) and ( test_id != id ):
+                # Path is neither available nor original
+                self.messages.append( "Path '" + path + "' is not available." )
+                self.selectors = [ '#parent_path', '#number', '#name' ]
+
+        if len( self.messages ) == 0:
+
             if parent_id:
                 # Determine whether parent and B/C connections are available
                 device_table = facility + '_Device'
