@@ -1766,18 +1766,25 @@ class removeDistributionObject:
         target_table = facility + '_Distribution'
         select_from_distribution( table=target_table, condition=(target_table + '.id=?'), params=(id,) )
         row = cur.fetchone()
-        path = row[1]
-        three_phase = row[3]
-        parent_id = row[4]
-        room_id = row[8]
-        object_type = row[14]
 
-        # This should never happen, but it could occur with multiple users or multiple windows
-        if object_type == 'Circuit':
-            sibling_circuits = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
-            if sibling_circuits and len( sibling_circuits ) > 1:
-                self.messages.append( 'Cannot remove Circuit because it is bound in a multi-phase connection.' )
-                self.selectors.append( '' )
+        if not row:
+            self.messages.append( 'Object not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
+
+        if len( self.messages ) == 0:
+
+            path = row[1]
+            three_phase = row[3]
+            parent_id = row[4]
+            room_id = row[8]
+            object_type = row[14]
+
+            # This should never happen, but it could occur with multiple users or multiple windows
+            if object_type == 'Circuit':
+                sibling_circuits = get_bound_sibling_circuits( id, object_type, three_phase, target_table )
+                if sibling_circuits and len( sibling_circuits ) > 1:
+                    self.messages.append( 'Cannot remove Circuit because it is bound in a multi-phase connection.' )
+                    self.selectors.append( '' )
 
         if len( self.messages ) == 0:
 
