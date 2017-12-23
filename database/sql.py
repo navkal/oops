@@ -733,13 +733,13 @@ class deviceTableRow:
         else:
             self.panel_image = ''
 
-        if user_role == 'Technician':
+        if user_role in ( 'Supervisor', 'Technician' ) :
             self.update_device = self.id
             self.remove_device = self.id
             self.remove_what = 'name'
             self.formatted_location = formatted_location
 
-        if ( user_role == 'Technician' ) or ( user_role == 'Intern' ):
+        if user_role in ( 'Supervisor', 'Technician', 'Intern' ) :
             self.activity_log = self.id
 
 
@@ -1203,7 +1203,7 @@ class locationTableRow:
 
         ( self.panels, self.transformers, self.circuits, self.devices ) = get_references( 'room_id', self.id, facility )
 
-        if user_role == 'Technician':
+        if user_role in ( 'Supervisor', 'Technician' ):
             self.update_location = self.id
             self.remove_what = 'formatted_location'
             if ( self.devices + self.panels + self.transformers + self.circuits ) == 0:
@@ -1211,7 +1211,7 @@ class locationTableRow:
             else:
                 self.remove_location = ''
 
-        if ( user_role == 'Technician' ) or ( user_role == 'Intern' ):
+        if user_role in ( 'Supervisor', 'Technician', 'Intern' ):
             self.formatted_location = dbCommon.format_location( self.loc_new, self.loc_old, self.loc_descr )
             self.activity_log = self.id
 
@@ -1268,7 +1268,7 @@ class distributionTableRow:
         elif self.object_type == 'Transformer':
             self.transformer_descr = self.description
 
-        if user_role == 'Technician':
+        if user_role in ( 'Supervisor', 'Technician' ):
             self.parent_voltage_id = self.voltage_id
             if self.object_type == 'Circuit':
                 self.update_circuit = self.id
@@ -1295,7 +1295,7 @@ class distributionTableRow:
                 self.remove_transformer = self.id
                 self.remove_what = 'path'
 
-        if ( user_role == 'Technician' ) or ( user_role == 'Intern' ):
+        if user_role in ( 'Supervisor', 'Technician', 'Intern' ):
             self.activity_log = self.id
 
 class addNote:

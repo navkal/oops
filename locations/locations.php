@@ -9,7 +9,8 @@
 <script>
   g_sSortableTableTitle = 'Locations';
   g_sSortableTableType = 'Location';
-  if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
+
+  if ( '<?=in_array( $_SESSION['panelSpy']['user']['role'], ['Supervisor', 'Technician'] )?>' )
   {
     g_sSortableTableEditWhat = 'Location';
     g_sRemoveCodeFolder = 'locations';

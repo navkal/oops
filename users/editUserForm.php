@@ -47,6 +47,7 @@
             <option value="Visitor">Visitor</option>
             <option value="Intern">Intern</option>
             <option value="Technician">Technician</option>
+            <option value="Supervisor">Supervisor</option>
             <option value="Administrator">Administrator</option>
           </select>
         </div>

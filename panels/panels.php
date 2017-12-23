@@ -13,7 +13,7 @@
   g_sSortableTableTitle = 'Panels';
   g_sSortableTableType = 'Panel';
 
-  if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
+  if ( '<?=in_array( $_SESSION['panelSpy']['user']['role'], ['Supervisor', 'Technician'] )?>' )
   {
     g_sSortableTableEditWhat = "Panel";
     g_sRemoveCodeFolder = 'panels';

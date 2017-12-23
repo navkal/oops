@@ -13,7 +13,7 @@
   g_sSortableTableTitle = 'Transformers';
   g_sSortableTableType = 'Transformer';
 
-  if ( '<?=( $_SESSION['panelSpy']['user']['role'] == 'Technician' )?>' )
+  if ( '<?=in_array( $_SESSION['panelSpy']['user']['role'], ['Supervisor', 'Technician'] )?>' )
   {
     g_sSortableTableEditWhat = "Transformer";
     g_sRemoveCodeFolder = 'transformers';
