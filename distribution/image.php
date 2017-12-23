@@ -22,9 +22,16 @@
 
     $sResult = $output[ count( $output ) - 1 ];
     $tObject = json_decode( $sResult );
-    $sImageFilename = $tObject->image_filename;
 
-    $sImg = '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $sImageFilename;
+    if ( isset( $tObject->image_filename ) )
+    {
+      $sImg =   '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $tObject->image_filename;
+    }
+    else
+    {
+      $sImg = '';
+      $sPath = '';
+    }
   ?>
 
   <!-- Head -->
