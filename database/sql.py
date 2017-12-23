@@ -958,7 +958,7 @@ class sortableTable:
             self.make_activity_table( target_object_type, target_object_id, facility )
 
         elif table_object_type == 'Integrity':
-            self.make_integrity_table( enterprise )
+            self.make_integrity_table( enterprise, facility )
 
         elif table_object_type == 'User':
             self.make_user_table( enterprise )
@@ -1079,9 +1079,9 @@ class sortableTable:
         self.rows = natsort.natsorted( self.rows, key=lambda x: x['username'] )
 
 
-    def make_integrity_table( self, enterprise ):
+    def make_integrity_table( self, enterprise, facility ):
         import dbIntegrityCheck
-        self.rows = dbIntegrityCheck.check_database( conn, cur )
+        self.rows = dbIntegrityCheck.check_database( conn, cur, facility )
 
 
     def make_device_table( self, user_role, enterprise, facility ):

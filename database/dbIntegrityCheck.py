@@ -2,17 +2,22 @@ import dbCommon
 import pandas as pd
 import time
 
-def check_database( conn, cur ):
+def check_database( conn, cur, facility=None ):
 
     start_time = time.time()
 
     messages = []
 
-    # Retrieve list of facilities
-    cur.execute( 'SELECT facility_name, facility_fullname FROM Facility' )
+    if facility:
+        # Retrieve requested facility
+        cur.execute( 'SELECT facility_name, facility_fullname FROM Facility WHERE facility_name=?', (facility,) )
+    else:
+        # Retrieve list of facilities
+        cur.execute( 'SELECT facility_name, facility_fullname FROM Facility' )
+
     fac_rows = cur.fetchall()
 
-    # Check all facilities
+    # Check each facility in list
     for fac_row in fac_rows:
 
         facility_name = fac_row[0]
