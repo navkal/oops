@@ -1638,11 +1638,21 @@ class updateDevice:
         self.selectors = []
         self.descendant_rows = []
 
-        # Determine whether parent is available
-        ( count, message, selector ) = test_device_parent_availability( facility, parent_id )
-        if count > 0:
-            self.messages.append( message )
-            self.selectors.append( selector )
+        # Determine whether device is available
+        target_table = facility + '_Device'
+        cur.execute( 'SELECT id FROM ' + target_table + ' WHERE id = ?', (id,) )
+        row = cur.fetchone()
+        if not row:
+            self.messages.append( 'Device not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
+
+        if len( self.messages ) == 0:
+
+            # Determine whether parent is available
+            ( count, message, selector ) = test_device_parent_availability( facility, parent_id )
+            if count > 0:
+                self.messages.append( message )
+                self.selectors.append( selector )
 
         if len( self.messages ) == 0:
 
