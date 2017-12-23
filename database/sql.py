@@ -1706,73 +1706,85 @@ class updateLocation:
     def __init__( self, by, id, loc_new, loc_old, loc_descr, enterprise, facility ):
         open_database( enterprise )
 
-        # Get initial state of object for Activity log
-        before_summary = summarize_object( 'Location', id, facility )
-
-        # Update specified location
-        target_table = facility + '_Room'
-        cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
-            ( loc_new, loc_old, loc_descr, id ) )
-
-
-        # Update search results of distribution objects that refer to this location
-
-        # Get distribution objects that refer to this location
-        dist_table = facility + '_Distribution'
-        select_from_distribution( table=dist_table, condition=(dist_table + '.room_id=?'), params=(id,) )
-        rows = cur.fetchall()
-
-        # Traverse distribution objects
-        for row in rows:
-            # Get search result fragments
-            object_descr = row[9]
-            tail = row[10]
-            source = row[12]
-            voltage = row[13]
-
-            # Generate the search result
-            search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_descr, tail )
-
-            # Save the new search result
-            ptc_id = row[0]
-            cur.execute( 'UPDATE ' + facility + '_Distribution SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
-
-
-        # Update descriptions of devices that refer to this location
-
-        # Get devices that refer to this location
-        cur.execute('SELECT * FROM ' + facility + '_Device WHERE room_id = ?', (id,))
-        rows = cur.fetchall()
-
-        # Traverse devices
-        for row in rows:
-
-            name = row[5]
-
-            # Generate device description
-            desc = dbCommon.append_location( '', loc_new, loc_old, loc_descr, '' )
-            if desc:
-                desc = name + ':' + desc
-            else:
-                desc = name
-
-            dev_id = row[0]
-            cur.execute( 'UPDATE ' + facility + '_Device SET description=? WHERE id=?', ( desc, dev_id ) )
-
-
-        # Log activity
-        facility_id = facility_name_to_id( facility )
-        cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
-            VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, summarize_object( 'Location', id, facility ), 'Location', id  ) )
-
-        conn.commit()
-
-        # Return row
         self.messages = []
         self.selectors = []
         self.descendant_rows = []
-        row = locationTableRow( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
-        self.row = row.__dict__
+
+        # Verify that target location exists
+        target_table = facility + '_Room'
+        cur.execute( 'SELECT id FROM ' + target_table + ' WHERE id = ?', (id,) )
+        row = cur.fetchone()
+
+        if not row:
+            self.messages.append( 'Location not found.  Press F5 to refresh the view.' )
+            self.selectors.append( '' )
+
+        if len( self.messages ) == 0:
+
+            # Get initial state of object for Activity log
+            before_summary = summarize_object( 'Location', id, facility )
+
+            # Update specified location
+            target_table = facility + '_Room'
+            cur.execute( '''UPDATE ''' + target_table + ''' SET room_num=?, old_num=?, description=? WHERE id=?''',
+                ( loc_new, loc_old, loc_descr, id ) )
+
+
+            # Update search results of distribution objects that refer to this location
+
+            # Get distribution objects that refer to this location
+            dist_table = facility + '_Distribution'
+            select_from_distribution( table=dist_table, condition=(dist_table + '.room_id=?'), params=(id,) )
+            rows = cur.fetchall()
+
+            # Traverse distribution objects
+            for row in rows:
+                # Get search result fragments
+                object_descr = row[9]
+                tail = row[10]
+                source = row[12]
+                voltage = row[13]
+
+                # Generate the search result
+                search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, object_descr, tail )
+
+                # Save the new search result
+                ptc_id = row[0]
+                cur.execute( 'UPDATE ' + facility + '_Distribution SET search_result=? WHERE id=?', ( search_result, ptc_id ) )
+
+
+            # Update descriptions of devices that refer to this location
+
+            # Get devices that refer to this location
+            cur.execute('SELECT * FROM ' + facility + '_Device WHERE room_id = ?', (id,))
+            rows = cur.fetchall()
+
+            # Traverse devices
+            for row in rows:
+
+                name = row[5]
+
+                # Generate device description
+                desc = dbCommon.append_location( '', loc_new, loc_old, loc_descr, '' )
+                if desc:
+                    desc = name + ':' + desc
+                else:
+                    desc = name
+
+                dev_id = row[0]
+                cur.execute( 'UPDATE ' + facility + '_Device SET description=? WHERE id=?', ( desc, dev_id ) )
+
+
+            # Log activity
+            facility_id = facility_name_to_id( facility )
+            cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
+                VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['updateLocation'], by, facility_id, before_summary, summarize_object( 'Location', id, facility ), 'Location', id  ) )
+
+            conn.commit()
+
+            # Return row
+            row = locationTableRow( id=id, enterprise=enterprise, facility=facility, user_role=username_to_role( by ) )
+            self.row = row.__dict__
 
 
 class removeDistributionObject:
