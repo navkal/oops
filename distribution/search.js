@@ -280,20 +280,20 @@ function loadSearchResults( tResults )
         sHtml += sResultFormat;
         sHtml += '</div>';
       }
-
-      // Replace HTML in results div
-      $( '#search-results' ).html( sHtml );
-
-      // Set handlers
-      $( '#search .search-result' ).on( 'mousedown', selectSearchResult );
-
-      // Show the results menu
-      showSearchResults();
     }
     else
     {
-      closeSearchResults();
+      sHtml = '<div class="search-result">No match found.</div>';
     }
+
+    // Replace HTML in results div
+    $( '#search-results' ).html( sHtml );
+
+    // Set handlers
+    $( '#search .search-result' ).on( 'mousedown', selectSearchResult );
+
+    // Show the results menu
+    showSearchResults();
   }
 }
 
@@ -311,7 +311,10 @@ function selectSearchResult( tEvent )
 
   // Navigate to selected search result in tree
   g_sSearchTargetPath = tTarget.attr( 'path' );
-  navigateToSearchTarget();
+  if ( g_sSearchTargetPath )
+  {
+    navigateToSearchTarget();
+  }
 }
 
 function showSearchResults( tEvent )
