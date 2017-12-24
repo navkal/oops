@@ -294,7 +294,7 @@ function loadSearchResults( tResults )
     $( '#search-results' ).html( sHtml );
 
     // Set handlers
-    $( '#search .search-result' ).on( 'mousedown', selectSearchResult );
+    $( '#search .search-result[path]' ).on( 'mousedown', selectSearchResult );
 
     // Show the results menu
     showSearchResults();
@@ -315,10 +315,7 @@ function selectSearchResult( tEvent )
 
   // Navigate to selected search result in tree
   g_sSearchTargetPath = tTarget.attr( 'path' );
-  if ( g_sSearchTargetPath )
-  {
-    navigateToSearchTarget();
-  }
+  navigateToSearchTarget();
 }
 
 function showSearchResults( tEvent )
