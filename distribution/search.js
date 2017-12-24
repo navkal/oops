@@ -287,7 +287,7 @@ function loadSearchResults( tResults )
     }
     else
     {
-      sHtml = '<div class="search-result">No match found.</div>';
+      sHtml = '<div class="search-result bg-danger text-danger">No match found.</div>';
     }
 
     // Replace HTML in results div

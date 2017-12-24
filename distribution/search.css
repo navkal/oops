@@ -30,30 +30,30 @@
   overflow: visible;
 }
 
-.search-result:hover
+.search-result[path]:hover
 {
   cursor: pointer;
   color: #fff;
   background-color: #0097cf;
 }
 
-.search-result.search-cursor
+.search-result[path].search-cursor
 {
   color: #fff;
   background-color: #0097cf;
 }
 
-.search-result:hover .search-result-highlight
+.search-result[path]:hover .search-result-highlight
 {
   border: 1px #e6f8ff solid;
 }
 
-.search-result.search-cursor .search-result-highlight
+.search-result[path].search-cursor .search-result-highlight
 {
   border: 1px #e6f8ff solid;
 }
 
-.search-result:not(.search-cursor):not(:hover) .search-result-highlight
+.search-result[path]:not(.search-cursor):not(:hover) .search-result-highlight
 {
   border: 1px #0097cf solid;
 }
