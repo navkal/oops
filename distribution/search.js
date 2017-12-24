@@ -117,7 +117,7 @@ function getSearchResults( tEvent )
 
 function cycleCursor( tEvent )
 {
-  var nResults = $( '#search .search-result' ).length;
+  var nResults = $( '#search .search-result[path]' ).length;
 
   if ( nResults )
   {
