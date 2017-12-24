@@ -6,7 +6,7 @@ import json
 import context
 
 printctl.off()
-import sql
+import sqlSearch
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description='search' )
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-      searchResults = sql.search( args.searchText, args.searchTargets, args.enterprise, args.facility );
+      searchResults = sqlSearch.search( args.searchText, args.searchTargets, args.enterprise, args.facility );
     except:
       dict = { 'Error': 'Failed to search for [' + args.searchText + '] in targets [' + args.searchTargets + ']' }
     else:

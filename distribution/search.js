@@ -75,6 +75,7 @@ function listSearchTargets( tEvent )
   }
 }
 
+var g_startTime = null;
 function getSearchResults( tEvent )
 {
   var sText = $( '#search-input' ).val();
@@ -95,6 +96,7 @@ function getSearchResults( tEvent )
       tPostData.append( "searchText", sText );
       tPostData.append( "searchTargets", g_sSearchTargets );
 
+      g_startTime = Date.now();
       $.ajax(
         "distribution/search.php",
         {
@@ -234,6 +236,8 @@ function scrollToVisible( tMenu, tResult, iCursor, nResults )
 
 function loadSearchResults( tResults )
 {
+  console.log( '==> Search time: ' + ( Date.now() - g_startTime ) + ' ms' );
+
   // If handling response to latest request, update results display
   if ( tResults.requestTime == g_iLastRequestTime )
   {
