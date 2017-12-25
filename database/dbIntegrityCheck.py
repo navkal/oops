@@ -258,25 +258,30 @@ def check_circuit_numbers( cur, df, facility_fullname ):
     for index, row in df_pan.iterrows():
 
         # Get all children of current panel
-        df_kids = df[ df['parent_id'] == index ]
+        df_kids = df[ df['parent_id'] == index ].copy()
 
-        # Initialize map of circuit numbers
-        circuit_num_map = {}
+        # Create number column
+        df_kids['number'] = df_kids.apply( lambda x: x['tail'].split( '-' )[0], axis=1 )
 
-        # Iterate over children of current panel
-        for kid_index, kid_row in df_kids.iterrows():
+        # Count distinct 'number' values. Index of series sr_counts is 'number' value.
+        sr_counts = df_kids['number'].value_counts()
 
-            # Get leading part of tail
-            tail = df_kids.loc[kid_index]['tail']
-            tail_split = tail.split( '-' )
-            leading = tail.split( '-' )[0]
+        # Extract entries that represent duplicated 'number' values
+        sr_dups = sr_counts[sr_counts > 1]
 
-            # If leading part is a number, look for duplicate in circuit number map
-            if leading.isdigit():
-                if leading in circuit_num_map:
-                    messages.append( make_warning_message( facility_fullname, 'Panel', row['path'], 'Has multiple Circuits numbered ' + leading + '.'  ) )
-                else:
-                    circuit_num_map[leading] = tail
+        # If any 'number' values are duplicated, report anomaly
+        if sr_dups.any():
+
+            # Iterate over duplicates
+            for idx in sr_dups.index.values:
+
+                # Extract circuits with duplicate 'number' values
+                df_dups = df_kids[ df_kids['number'] == idx ]
+                
+                for index, row in df_dups.iterrows():
+                    df_other_tails = df_dups.drop( index )
+                    tails = df_other_tails['tail'].tolist()
+                    messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'The following Circuits originate at the same switch number: ' + ', '.join( tails ) + '.'  ) )
 
     return messages
 
