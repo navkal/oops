@@ -87,7 +87,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
 def check_distribution_root( cur, df, facility_fullname ):
 
-    print( 'Checking Distribution root')
+    print( 'Checking distribution root')
 
     messages = []
 
@@ -115,7 +115,7 @@ def check_distribution_root( cur, df, facility_fullname ):
 
 def check_voltages( cur, df, facility_fullname ):
 
-    print( 'Checking Voltages')
+    print( 'Checking voltages')
 
     messages = []
 
@@ -221,7 +221,7 @@ def check_three_phase( cur, df, facility_fullname ):
 
 def check_distribution_parentage( cur, df, facility_fullname ):
 
-    print( 'Checking Distribution parentage')
+    print( 'Checking distribution parentage')
 
     messages = []
 
@@ -272,7 +272,7 @@ def check_distribution_parentage( cur, df, facility_fullname ):
 
 def check_circuit_numbers( cur, df, facility_fullname ):
 
-    print( 'Checking Circuit numbers')
+    print( 'Checking circuit numbers')
 
     messages = []
 
@@ -314,7 +314,7 @@ def check_circuit_numbers( cur, df, facility_fullname ):
 
 def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
-    print( 'Checking Device parentage')
+    print( 'Checking device parentage')
 
     messages = []
 
@@ -333,7 +333,7 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
 def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
-    print( 'Checking Location references')
+    print( 'Checking location references')
 
     messages = []
 
@@ -354,7 +354,7 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
 def check_location_names( cur, df_loc, facility_fullname ):
 
-    print( 'Checking Location names')
+    print( 'Checking location names')
 
     messages = []
 
