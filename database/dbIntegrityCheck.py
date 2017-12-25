@@ -30,7 +30,7 @@ def check_database( conn, cur, facility=None ):
     for message in messages:
         print( '- ' + format_message( message ) )
 
-    print( '\nElapsed Seconds: ' + str( time.time() - start_time ) )
+    print( '\nTotal elapsed seconds: ' + str( time.time() - start_time ) )
 
     return messages
 
@@ -41,20 +41,46 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     messages = []
 
+    t = time.time()
+    print( 'Loading dataframes' )
     df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
-
-    messages += check_distribution_root( cur, df, facility_fullname )
-    messages += check_voltages( cur, df, facility_fullname )
-    messages += check_three_phase( cur, df, facility_fullname )
-    messages += check_distribution_parentage( cur, df, facility_fullname )
-    messages += check_circuit_numbers( cur, df, facility_fullname )
-
     df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
-    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
-
     df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn, index_col='id' )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_distribution_root( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_voltages( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_three_phase( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_distribution_parentage( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_circuit_numbers( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+
+    t = time.time()
+    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+
+    t = time.time()
     messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
     messages += check_location_names( cur, df_loc, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
 
@@ -277,11 +303,11 @@ def check_circuit_numbers( cur, df, facility_fullname ):
 
                 # Extract circuits with duplicate 'number' values
                 df_dups = df_kids[ df_kids['number'] == idx ]
-                
+
                 for index, row in df_dups.iterrows():
                     df_other_tails = df_dups.drop( index )
                     tails = df_other_tails['tail'].tolist()
-                    messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'The following Circuits originate at the same switch number: ' + ', '.join( tails ) + '.'  ) )
+                    messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
 
     return messages
 
