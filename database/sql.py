@@ -777,7 +777,7 @@ class distributionObject:
             self.circuit_descr = self.description
         elif self.object_type == 'Panel':
             self.panel_descr = self.description
-            self.three_phase = three_phase
+            self.three_phase_panel = three_phase
         elif self.object_type == 'Transformer':
             self.transformer_descr = self.description
 
@@ -1163,9 +1163,11 @@ class distributionTableRow:
 
         if self.object_type == 'Circuit':
             self.circuit_descr = self.description
+            self.three_phase = three_phase
         elif self.object_type == 'Panel':
             self.panel_descr = self.description
             self.three_phase = three_phase
+            self.three_phase_panel = three_phase
         elif self.object_type == 'Transformer':
             self.transformer_descr = self.description
 

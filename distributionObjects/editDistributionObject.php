@@ -137,7 +137,7 @@
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( 'object_type', g_sSortableTableType );
-    
+
     var sId = g_sUpdateTarget ? findSortableTableRow( g_sUpdateTarget ).id : '';
     tPostData.append( 'id', sId );
 
@@ -208,8 +208,8 @@
 
     // Customize type-specific fields
     $( "#three_phase_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
-    $( '#three_phase_block label:contains(Yes) input' ).val( ( g_sSortableTableEditWhat == 'Panel' ) ? '1' : '' );
-    $( '#three_phase_block label:contains(No) input' ).val( ( g_sSortableTableEditWhat == 'Panel' ) ? '0' : '' );
+    $( '#three_phase_block label:contains(Yes) input' ).val( ( g_sSortableTableEditWhat == 'Transformer' ) ? '' : '1' );
+    $( '#three_phase_block label:contains(No) input' ).val( ( g_sSortableTableEditWhat == 'Transformer' ) ? '' : '0' );
     $( "#panel_photo_upload_block" ).css( 'display', ( g_sSortableTableEditWhat == 'Panel' ) ? 'block' : 'none' );
     $( '#phase_b_tail_container, #phase_c_tail_container' ).closest( '.form-group' ).css( 'display', ( g_sSortableTableEditWhat == 'Circuit' ) ? 'none' : 'block' );
 
@@ -375,7 +375,7 @@
       var sHyphen = ( sNumber && sName ) ? '-' : '';
       tPostData.append( 'tail', sNumber + sHyphen + sName );
 
-      tPostData.append( 'three_phase', $( '#three_phase_block input[name=three_phase]:checked' ).val() );
+      tPostData.append( 'three_phase', ( g_sSortableTableEditWhat == 'Transformer' ) ? '' : $( '#three_phase_block input[name=three_phase]:checked' ).val() );
 
       tPostData.append( 'room_id', $( '#room_id' ).val() );
       tPostData.append( 'description', htmlentities( $( '#description textarea' ).val() ) );
