@@ -2,6 +2,8 @@ import dbCommon
 import pandas as pd
 import time
 
+one_facility = False
+
 def check_database( conn, cur, facility=None ):
 
     start_time = time.time()
@@ -11,6 +13,8 @@ def check_database( conn, cur, facility=None ):
     if facility:
         # Retrieve requested facility
         cur.execute( 'SELECT facility_name, facility_fullname FROM Facility WHERE facility_name=?', (facility,) )
+        global one_facility
+        one_facility = True
     else:
         # Retrieve list of facilities
         cur.execute( 'SELECT facility_name, facility_fullname FROM Facility' )
@@ -394,7 +398,7 @@ def make_message( severity, facility_fullname, affected_category, affected_eleme
         raise ValueError( 'make_message(): Unknown affected_category: ' + affected_category )
 
     message = {
-      'facility_fullname': facility_fullname,
+      'facility_fullname': '' if one_facility else facility_fullname,
       'severity': severity,
       'affected_category': affected_category,
       'affected_element': affected_element,
