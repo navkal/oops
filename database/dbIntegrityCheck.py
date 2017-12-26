@@ -354,31 +354,9 @@ def check_location_names( cur, df_loc, facility_fullname ):
     print( 'Checking location names')
 
     messages = []
-    '''
 
     messages += check_location_field( cur, df_loc, facility_fullname, 'room_num', 'Current Location' )
     messages += check_location_field( cur, df_loc, facility_fullname, 'old_num', 'Previous Location' )
-
-
-    '''
-
-    for index, row in df_loc.iterrows():
-        if row['room_num']:
-            df_dup = df_loc[ df_loc['room_num'] == row['room_num'] ]
-            n_dup = len( df_dup )
-
-            if n_dup > 1:
-                messages.append( make_warning_message( facility_fullname, 'Current Location', row['room_num'], 'Occurs ' + str( n_dup ) + ' times.' ) )
-                df_loc = df_loc[ df_loc['room_num'] != row['room_num'] ]
-
-        if row['old_num']:
-            df_dup = df_loc[ df_loc['old_num'] == row['old_num'] ]
-            n_dup = len( df_dup )
-
-            if n_dup > 1:
-                messages.append( make_warning_message( facility_fullname, 'Previous Location', row['old_num'], 'Occurs ' + str( n_dup ) + ' times.' ) )
-                df_loc = df_loc[ df_loc['old_num'] != row['old_num'] ]
-
 
     return messages
 
@@ -398,7 +376,7 @@ def check_location_field( cur, df_loc, facility_fullname, field, category ):
 
     # Iterate over duplicates
     for index in sr_dups.index.values:
-        messages.append( make_warning_message( facility_fullname, category, index, '==========> Occurs ' + str( sr_dups.loc[index] ) + ' times.' ) )
+        messages.append( make_warning_message( facility_fullname, category, index, 'Occurs ' + str( sr_dups.loc[index] ) + ' times.' ) )
 
     return messages
 
