@@ -297,19 +297,16 @@ def check_circuit_numbers( cur, df, facility_fullname ):
         # Extract entries that represent duplicated 'number' values
         sr_dups = sr_counts[sr_counts > 1]
 
-        # If any 'number' values are duplicated, report anomaly
-        if sr_dups.any():
+        # Iterate over duplicates
+        for idx in sr_dups.index.values:
 
-            # Iterate over duplicates
-            for idx in sr_dups.index.values:
+            # Extract circuits with duplicate 'number' values
+            df_dups = df_kids[ df_kids['number'] == idx ]
 
-                # Extract circuits with duplicate 'number' values
-                df_dups = df_kids[ df_kids['number'] == idx ]
-
-                for index, row in df_dups.iterrows():
-                    df_other_tails = df_dups.drop( index )
-                    tails = df_other_tails['tail'].tolist()
-                    messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
+            for i, row in df_dups.iterrows():
+                df_other_tails = df_dups.drop( i )
+                tails = df_other_tails['tail'].tolist()
+                messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
 
     return messages
 
@@ -357,6 +354,13 @@ def check_location_names( cur, df_loc, facility_fullname ):
     print( 'Checking location names')
 
     messages = []
+    '''
+
+    messages += check_location_field( cur, df_loc, facility_fullname, 'room_num', 'Current Location' )
+    messages += check_location_field( cur, df_loc, facility_fullname, 'old_num', 'Previous Location' )
+
+
+    '''
 
     for index, row in df_loc.iterrows():
         if row['room_num']:
@@ -374,6 +378,27 @@ def check_location_names( cur, df_loc, facility_fullname ):
             if n_dup > 1:
                 messages.append( make_warning_message( facility_fullname, 'Previous Location', row['old_num'], 'Occurs ' + str( n_dup ) + ' times.' ) )
                 df_loc = df_loc[ df_loc['old_num'] != row['old_num'] ]
+
+
+    return messages
+
+
+def check_location_field( cur, df_loc, facility_fullname, field, category ):
+
+    messages = []
+
+    # Get all locations with non-empty field value
+    df_loc_new = df_loc[ df_loc[field] != '' ]
+
+    # Count distinct field values. Index of series sr_counts is field value.
+    sr_counts = df_loc_new[field].value_counts()
+
+    # Extract series entries that represent duplicated field values
+    sr_dups = sr_counts[sr_counts > 1]
+
+    # Iterate over duplicates
+    for index in sr_dups.index.values:
+        messages.append( make_warning_message( facility_fullname, category, index, '==========> Occurs ' + str( sr_dups.loc[index] ) + ' times.' ) )
 
     return messages
 
