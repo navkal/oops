@@ -335,17 +335,17 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
     messages = []
 
-    for index, row in df_loc.iterrows():
+    df_loc = df_loc.reset_index()
 
-        df_refs = df[ df['room_id'] == index ]
-        n_refs = len( df_refs )
+    # Create column representing number of references to each location
+    df_loc['n_refs'] = df_loc.apply( lambda x: len( df[ df['room_id'] == x['id'] ] ) + len( df_dev[ df_dev['room_id'] == x['id'] ] ), axis=1 )
 
-        if not n_refs:
-            df_refs = df_dev[ df_dev['room_id'] == index ]
-            n_refs = len( df_refs )
+    # Extract locations with no references
+    df_no_refs = df_loc[ df_loc['n_refs'] == 0 ]
 
-        if not n_refs:
-            messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ), 'Has no references.' ) )
+    # Report locations that have no references
+    for index, row in df_no_refs.iterrows():
+        messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ), 'Has no references.' ) )
 
     return messages
 
