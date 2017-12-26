@@ -48,7 +48,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     print( 'Loading dataframes' )
     df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
-    df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
+    df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn )
     df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
