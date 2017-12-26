@@ -49,7 +49,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Loading dataframes' )
     df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
     df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn, index_col='id' )
-    df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn, index_col='id' )
+    df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -338,8 +338,6 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
     print( 'Checking location references')
 
     messages = []
-
-    df_loc = df_loc.reset_index()
 
     # Create column representing number of references to each location
     df_loc['n_refs'] = df_loc.apply( lambda x: len( df[ df['room_id'] == x['id'] ] ) + len( df_dev[ df_dev['room_id'] == x['id'] ] ), axis=1 )
