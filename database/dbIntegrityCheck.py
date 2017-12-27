@@ -338,15 +338,20 @@ def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
 
     messages = []
 
-    # Create column representing number of references to each location
-    df_loc['n_refs'] = df_loc.apply( lambda x: len( df[ df['room_id'] == x['id'] ] ) + len( df_dev[ df_dev['room_id'] == x['id'] ] ), axis=1 )
+    # Merge room table with distribution table
+    df_no_dup = df.drop_duplicates( subset='room_id' )
+    df_merge = pd.merge( df_loc, df_no_dup, how='left', left_on='id', right_on='room_id' )
+
+    # Merge again, with device table
+    df_no_dup = df_dev.drop_duplicates( subset='room_id' )
+    df_merge = pd.merge( df_merge, df_no_dup, how='left', left_on='id', right_on='room_id' )
 
     # Extract locations with no references
-    df_no_refs = df_loc[ df_loc['n_refs'] == 0 ]
+    df_no_refs = df_merge[ df_merge['path'].isnull() & df_merge['name'].isnull() ]
 
     # Report locations that have no references
     for index, row in df_no_refs.iterrows():
-        messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description'] ), 'Has no references.' ) )
+        messages.append( make_warning_message( facility_fullname, 'Location', dbCommon.format_location( row['room_num'], row['old_num'], row['description_x'] ), 'Has no references.' ) )
 
     return messages
 
