@@ -263,11 +263,10 @@ def check_distribution_parentage( cur, df, facility_fullname ):
 
     # Verify that all Circuits have valid parent types
     df_circ = df[ df['object_type_id'] == circuit_type_id ]
-    for index, row in df_circ.iterrows():
-        parent_id = row['parent_id']
-        parent_type_id = df.loc[ parent_id ]['object_type_id']
-        if parent_type_id != panel_type_id:
-            messages.append( make_error_message( facility_fullname, 'Circuit', row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
+    df_join = df_circ.join( df, on='parent_id', how='left', lsuffix='_of_circuit', rsuffix='_of_parent' )
+    df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != panel_type_id ]
+    for index, row in df_wrong_parent_type.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Circuit', row['path_of_circuit'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
 
     return messages
 
