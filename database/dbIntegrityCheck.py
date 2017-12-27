@@ -319,13 +319,15 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
     circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
 
-    for index, row in df_dev.iterrows():
-        parent_id = row['parent_id']
-        parent = df.loc[parent_id]
-        parent_type_id = parent['object_type_id']
+    # Join dataframes to associate devices with their parents
+    df_join = df_dev.join( df, on='parent_id', how='left', lsuffix='_of_device', rsuffix='_of_parent' )
 
-        if parent_type_id != circuit_type_id:
-            messages.append( make_error_message( facility_fullname, 'Device', 'Connected to ' + parent['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
+    # Extract devices whose parents are of wrong type
+    df_wrong_parent_type = df_join[ df_join['object_type_id'] != circuit_type_id ]
+
+    # Report anomalies
+    for index, row in df_wrong_parent_type.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Device', 'Connected to ' + row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['parent_type_id'] ) + ').' ) )
 
     return messages
 
