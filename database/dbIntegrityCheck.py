@@ -69,6 +69,10 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
+    messages += check_distribution_siblings( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
     messages += check_circuit_numbers( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
@@ -231,24 +235,15 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
     circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
 
-    # Verify that all Panels have valid parent types and no unexpected siblings
-    df_pan = df[ df['object_type_id'] == panel_type_id ]
-    for index, row in df_pan.iterrows():
+    # Verify that all Panels have valid parent types
+    df_pan_no_root = df[ ( df['object_type_id'] == panel_type_id ) & ( df['parent_id'] != '' )]
+    for index, row in df_pan_no_root.iterrows():
         parent_id = row['parent_id']
+        parent_type_id = df.loc[ parent_id ]['object_type_id']
+        if parent_type_id not in [ transformer_type_id, circuit_type_id ]:
+            messages.append( make_error_message( facility_fullname, 'Panel', row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
-        if parent_id:
-            # Validate parent type
-            parent_type_id = df.loc[ parent_id ]['object_type_id']
-            if parent_type_id not in [ transformer_type_id, circuit_type_id ]:
-                messages.append( make_error_message( facility_fullname, 'Panel', row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
-
-            # If parent is a Circuit, verify that there are no siblings
-            if parent_type_id == circuit_type_id:
-                df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
-                if len( df_sibs ) > 1:
-                    messages.append( make_error_message( facility_fullname, 'Panel', row['path'], 'Has unexpected siblings.' ) )
-
-    # Verify that all Transformers have valid parent types and no siblings
+    # Verify that all Transformers have valid parent types
     df_tran = df[ df['object_type_id'] == transformer_type_id ]
     for index, row in df_tran.iterrows():
         parent_id = row['parent_id']
@@ -256,17 +251,43 @@ def check_distribution_parentage( cur, df, facility_fullname ):
         if parent_type_id != circuit_type_id:
             messages.append( make_error_message( facility_fullname, 'Transformer', row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, parent_type_id ) + ').' ) )
 
-        # Verify that there are no siblings
-        df_sibs = df.loc[ ( df['parent_id'] == parent_id ) ]
-        if len( df_sibs ) > 1:
-            messages.append( make_error_message( facility_fullname, 'Transformer', row['path'], 'Has unexpected siblings.' ) )
-
     # Verify that all Circuits have valid parent types
     df_circ = df[ df['object_type_id'] == circuit_type_id ]
     df_join = df_circ.join( df, on='parent_id', how='left', lsuffix='_of_circuit', rsuffix='_of_parent' )
     df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != panel_type_id ]
     for index, row in df_wrong_parent_type.iterrows():
         messages.append( make_error_message( facility_fullname, 'Circuit', row['path_of_circuit'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
+
+    return messages
+
+
+def check_distribution_siblings( cur, df, facility_fullname ):
+
+    print( 'Checking distribution siblings')
+
+    messages = []
+
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+
+    df_n_sibs = df['parent_id'].value_counts().to_frame( 'n_sibs' )
+
+    # Verify that Panels attached to Circuits have no siblings
+    df_pan = df[ df['object_type_id'] == panel_type_id ]
+    df_join = df_pan.join( df, on='parent_id', how='left', lsuffix='_of_panel', rsuffix='_of_parent' )
+    df_join = df_join.join( df_n_sibs, on='parent_id_of_panel' )
+    df_has_sibs = df_join[ ( df_join['object_type_id_of_parent'] == circuit_type_id ) & ( df_join['n_sibs'] > 1 ) ]
+    for index, row in df_has_sibs.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
+
+    # Verify that Transformers have no siblings
+    df_tran = df[ df['object_type_id'] == transformer_type_id ]
+    df_join = df_tran.join( df, on='parent_id', how='left', lsuffix='_of_transformer', rsuffix='_of_parent' )
+    df_join = df_join.join( df_n_sibs, on='parent_id_of_transformer' )
+    df_has_sibs = df_join[ df_join['n_sibs'] > 1 ]
+    for index, row in df_has_sibs.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
 
     return messages
 
