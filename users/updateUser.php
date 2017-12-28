@@ -39,7 +39,12 @@
     . ' -d ' . $sDescription
     . $g_sContext;
 
-  error_log( "==> command=" . $command );
+  // Log command without password
+  $sCommandMinusPassword = preg_replace( '/ -o .* -p/', ' -o ' . $sPasswordMask . ' -p', $command, 1 );
+  $sCommandMinusPassword = preg_replace( '/ -p .* -r/', ' -p ' . $sPasswordMask . ' -r', $sCommandMinusPassword, 1 );
+  error_log( "==> command=" . $sCommandMinusPassword );
+
+  // Execute command
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
