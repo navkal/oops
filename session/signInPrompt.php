@@ -20,7 +20,7 @@
         <img src="brand.ico" class="img-responsive" alt="Panel Spy" style="width:50%; max-width:250px; margin:auto">
       </div>
       <div class="row">
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
           <form onsubmit="submitCredentials(); return false;" >
             <div style="text-align:center;" >
               <input type="text" id="username" class="form-control" placeholder="Username" required autofocus >
