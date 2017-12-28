@@ -3,7 +3,12 @@
   require_once $_SERVER["DOCUMENT_ROOT"] . "/../common/util.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
-  error_log( "==> post=" . print_r( $_POST, true ) );
+
+  // Log post array without password
+  $sPasswordMask = '<PASSWORD>';
+  $aPostMinusPassword = $_POST;
+  $aPostMinusPassword['password'] = $sPasswordMask;
+  error_log( "==> post=" . print_r( $aPostMinusPassword, true ) );
 
   // Get user attributes
   $sUsername = $_POST['username'];
@@ -31,7 +36,7 @@
     . ' -d ' . $sDescription
     . $g_sContext;
 
-  error_log( "==> command=" . $command );
+  error_log( "==> command=" . preg_replace( '/ -p .* -r /', ' -p ' . $sPasswordMask . ' -r ', $command, 1 ) );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
