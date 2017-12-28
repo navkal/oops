@@ -34,10 +34,17 @@
 
     // Save user structure
     $_SESSION['panelSpy']['user'] = $aUser;
+
+    // Clear failure flag
+    $_SESSION['panelSpy']['signInFailed'] = false;
+
     error_log( '==> Signed in. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
   }
   else
   {
+    // Set failure flag
+    $_SESSION['panelSpy']['signInFailed'] = true;
+
     error_log( '==> Sign-in failed. Context=' . print_r( $_SESSION['panelSpy']['context'], true ) );
   }
 
