@@ -4,7 +4,12 @@
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/postSecurity.php";
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
 
-  error_log( "==> post=" . print_r( $_POST, true ) );
+  // Log post array without password
+  $sPasswordMask = '<PASSWORD>';
+  $aPostMinusPassword = $_POST;
+  $aPostMinusPassword['oldPassword'] = $sPasswordMask;
+  $aPostMinusPassword['password'] = $sPasswordMask;
+  error_log( "==> post=" . print_r( $aPostMinusPassword, true ) );
 
   // Get parameters
   $sUsername = $_POST['username'];
@@ -13,7 +18,9 @@
 
   // Execute command
   $command = quote( getenv( "PYTHON" ) ) . " ../database/changePassword.py 2>&1 -u " . $sUsername . ' -o ' . $sOldPassword . ' -p ' . $sPassword . $g_sContext;
-  error_log( "==> command=" . $command );
+  $sCommandMinusPassword = preg_replace( '/ -o .* -p/', ' -o ' . $sPasswordMask . ' -p', $command, 1 );
+  $sCommandMinusPassword = preg_replace( '/ -p .* -y/', ' -p ' . $sPasswordMask . ' -y', $sCommandMinusPassword, 1 );
+  error_log( "==> command=" . $sCommandMinusPassword );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 

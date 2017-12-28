@@ -21,7 +21,7 @@
   $sUsername = $_POST['username'];
   $sPassword = quote( $_POST['password'], false );
   $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword . $g_sContext;
-  error_log( "==> command=" . preg_replace( '/ -p .* -/', ' -p ' . $sPasswordMask . ' -', $command, 1 ) );
+  error_log( "==> command=" . preg_replace( '/ -p .* -y/', ' -p ' . $sPasswordMask . ' -y', $command, 1 ) );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
