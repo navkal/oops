@@ -8,7 +8,11 @@
     abort();
   }
 
-  error_log( "==> post=" . print_r( $_POST, true ) );
+  // Log post array without password
+  $sPasswordMask = '<PASSWORD>';
+  $aPostMinusPassword = $_POST;
+  $aPostMinusPassword['password'] = $sPasswordMask;
+  error_log( "==> post=" . print_r( $aPostMinusPassword, true ) );
 
   // Initialize session storage
   $_SESSION['panelSpy']['user'] = [];
@@ -17,7 +21,7 @@
   $sUsername = $_POST['username'];
   $sPassword = quote( $_POST['password'], false );
   $command = quote( getenv( "PYTHON" ) ) . " ../database/signIn.py 2>&1 -u " . $sUsername . ' -p ' . $sPassword . $g_sContext;
-  error_log( "==> command=" . $command );
+  error_log( "==> command=" . preg_replace( '/ -p .* -/', ' -p ' . $sPasswordMask . ' -', $command, 1 ) );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 

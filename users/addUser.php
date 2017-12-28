@@ -36,7 +36,7 @@
     . ' -d ' . $sDescription
     . $g_sContext;
 
-  error_log( "==> command=" . preg_replace( '/ -p .* -r /', ' -p ' . $sPasswordMask . ' -r ', $command, 1 ) );
+  error_log( "==> command=" . preg_replace( '/ -p .* -/', ' -p ' . $sPasswordMask . ' -', $command, 1 ) );
   exec( $command, $output, $status );
   error_log( "==> output=" . print_r( $output, true ) );
 
