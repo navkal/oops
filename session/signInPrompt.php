@@ -23,8 +23,12 @@
         <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
           <form onsubmit="submitCredentials(); return false;" >
             <div style="text-align:center;" >
-              <input type="text" id="username" class="form-control" placeholder="Username" required autofocus >
-              <input type="password" id="password" class="form-control" placeholder="Password" required >
+              <div class="form-group">
+                <input type="text" id="username" class="form-control" placeholder="Username" required autofocus >
+              </div>
+              <div class="form-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" required >
+              </div>
               <button type="submit" class="btn btn-primary btn-block" >Sign In</button>
             </div>
           </form>
