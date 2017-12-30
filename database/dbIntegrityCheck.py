@@ -47,9 +47,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     t = time.time()
     print( 'Loading dataframes' )
-    df = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Distribution', conn, index_col='id' )
-    df_dev = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Device', conn )
-    df_loc = pd.read_sql_query( 'SELECT * from ' + facility_name + '_Room', conn )
+    df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
+    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
+    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -57,8 +57,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
+    messages += check_voltages( conn, cur, facility_name, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    '''
+    t = time.time()
     messages += check_voltages( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
+    '''
 
     t = time.time()
     messages += check_three_phase( cur, df, facility_fullname )
@@ -119,6 +125,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
+'''
 def check_voltages( cur, df, facility_fullname ):
 
     print( 'Checking voltages')
@@ -171,6 +178,79 @@ def check_voltages( cur, df, facility_fullname ):
         num_lo_descendants = len( df_lo_descendants )
         if num_lo_descendants == 0:
             messages.append( make_warning_message( facility_fullname, 'Transformer', path, 'Has no low-voltage descendants.'  ) )
+
+    return messages
+'''
+
+
+def check_voltages( conn, cur, facility_name, facility_fullname ):
+
+    print( 'Checking voltages')
+
+    messages = []
+
+    # Retrieve Distribution table
+    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path FROM ' + facility_name + '_Distribution' )
+    rows = cur.fetchall()
+
+    # Build dictionary representing Distribution tree
+    dc_tree = {}
+    for row in rows:
+        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'kid_ids':[] }
+
+    root_id = None
+    for row in rows:
+        if row[1]:
+            dc_tree[row[1]]['kid_ids'].append( row[0] )
+        else:
+            root_id = row[0]
+
+    # Traverse the tree
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    hi_voltage_id = dbCommon.voltage_to_id( cur, '277/480' )
+    lo_voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
+    messages += traverse( cur, dc_tree, root_id, hi_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
+
+    return messages
+
+
+def traverse( cur, dc_tree, subtree_root_id, expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname ):
+
+    messages = []
+
+    # Traverse kids of current subtree root
+    for kid_id in dc_tree[subtree_root_id]['kid_ids']:
+
+        kid = dc_tree[kid_id]
+        path = kid['path']
+
+        if kid['object_type_id'] == transformer_type_id:
+
+            # Verify that this transformer is not descended from another transformer
+            if expected_voltage_id == lo_voltage_id:
+                messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Is descended from another Transformer.'  ) )
+
+            # Verify that this transformer has low voltage
+            if kid['voltage_id'] != lo_voltage_id:
+                messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has unexpected voltage ' + dbCommon.get_voltage( cur, kid['voltage_id'] ) + '.' ) )
+
+            # Verify that this transformer has children
+            if len( kid['kid_ids'] ) == 0:
+                messages.append( make_warning_message( facility_fullname, 'Transformer', path, 'Has no children.'  ) )
+
+            # Change expected voltage for descendants of this transformer
+            new_expected_voltage_id = lo_voltage_id
+
+        else:
+
+            # Verify that this (non-transformer) object has expected voltage
+            if kid['voltage_id'] != expected_voltage_id:
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), path, 'Has unexpected voltage ' + dbCommon.get_voltage( kid['voltage_id'] ) + '.'  ) )
+
+            new_expected_voltage_id = expected_voltage_id
+
+        # Traverse subtree rooted at current object
+        messages += traverse( cur, dc_tree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
 
     return messages
 

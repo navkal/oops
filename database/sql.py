@@ -377,12 +377,6 @@ def get_facility( facility_id ):
     return ( facility_name, facility_fullname )
 
 
-def get_voltage( voltage_id ):
-    cur.execute( 'SELECT voltage FROM Voltage WHERE id = ?', (voltage_id,) )
-    voltage = cur.fetchone()[0]
-    return voltage
-
-
 def get_path( id, facility ):
 
     cur.execute('SELECT path FROM ' + facility + '_Distribution WHERE id = ?', (id,))
@@ -1339,7 +1333,7 @@ class addDistributionObject:
                 voltage_id = get_voltage_id( parent_id, facility )
 
             # Generate search result text
-            voltage = get_voltage( voltage_id )
+            voltage = dbCommon.get_voltage( cur, voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 
@@ -1485,7 +1479,7 @@ class updateDistributionObject:
             voltage_id = get_voltage_id( id, facility )
 
             # Generate search result text
-            voltage = get_voltage( voltage_id )
+            voltage = dbCommon.get_voltage( cur, voltage_id )
             ( loc_new, loc_old, loc_descr ) = get_location( room_id, facility )
             search_result = dbCommon.make_search_result( source, voltage, loc_new, loc_old, loc_descr, description, tail )
 

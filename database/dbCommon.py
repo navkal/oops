@@ -226,8 +226,25 @@ def summarize_user( cur, id ):
     return summary
 
 
+voltage_map = None
 def voltage_to_id( cur, voltage ):
-    cur.execute( 'SELECT id FROM Voltage WHERE voltage=?', (voltage,) )
-    row = cur.fetchone()
-    voltage_id = row[0]
-    return voltage_id
+
+    global voltage_map
+
+    if not voltage_map:
+
+        voltage_map = {}
+
+        cur.execute( 'SELECT * FROM Voltage' )
+        rows = cur.fetchall()
+
+        for row in rows:
+            voltage_map[row[1]] = row[0]
+
+    return voltage_map[voltage]
+
+
+def get_voltage( cur, voltage_id ):
+    cur.execute( 'SELECT voltage FROM Voltage WHERE id = ?', (voltage_id,) )
+    voltage = cur.fetchone()[0]
+    return voltage
