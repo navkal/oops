@@ -77,10 +77,6 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += old_check_circuit_numbers( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
     messages += check_circuit_numbers( cur, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
@@ -320,45 +316,6 @@ def check_distribution_siblings( cur, df, facility_fullname ):
     return messages
 
 
-def old_check_circuit_numbers( cur, df, facility_fullname ):
-
-    print( 'Checking circuit numbers')
-
-    messages = []
-
-    # Get all panels
-    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-    df_pan = df[ df['object_type_id'] == panel_type_id ]
-
-    # Iterate over panels
-    for index, row in df_pan.iterrows():
-
-        # Get all children of current panel
-        df_kids = df[ df['parent_id'] == index ].copy()
-
-        # Create number column
-        df_kids['number'] = df_kids.apply( lambda x: x['tail'].split( '-' )[0], axis=1 )
-
-        # Count distinct 'number' values. Index of series sr_counts is 'number' value.
-        sr_counts = df_kids['number'].value_counts()
-
-        # Extract entries that represent duplicated 'number' values
-        sr_dups = sr_counts[sr_counts > 1]
-
-        # Iterate over duplicates
-        for idx in sr_dups.index.values:
-
-            # Extract circuits with duplicate 'number' values
-            df_dups = df_kids[ df_kids['number'] == idx ]
-
-            for i, row in df_dups.iterrows():
-                df_other_tails = df_dups.drop( i )
-                tails = df_other_tails['tail'].tolist()
-                messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
-
-    return messages
-
-
 def check_circuit_numbers( cur, facility_name, facility_fullname ):
 
     print( 'Checking circuit numbers')
@@ -377,29 +334,39 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
 
     messages = []
 
-    root_is_a_panel = subtree[subtree_root_id]['object_type_id'] == panel_type_id
-    dc_kid_numbers = {}
+    # Initialize dictionary of circuit numbers
+    dc_circuit_numbers = {}
 
     # Traverse kids of current subtree root
     for kid_id in subtree[subtree_root_id]['kid_ids']:
 
         kid = subtree[kid_id]
 
-        if root_is_a_panel:
+        if subtree[subtree_root_id]['object_type_id'] == panel_type_id:
             number = kid['tail'].split( '-' )[0]
             if number:
-                if number in dc_kid_numbers:
-                    dc_kid_numbers[number].append( kid['path'] )
+                if number in dc_circuit_numbers:
+                    dc_circuit_numbers[number]['paths'].append( kid['path'] )
+                    dc_circuit_numbers[number]['tails'].append( kid['tail'] )
                 else:
-                    dc_kid_numbers[number] = [ kid['path'] ]
+                    dc_circuit_numbers[number] = { 'paths': [ kid['path'] ], 'tails': [ kid['tail'] ] }
 
         # Traverse subtree rooted at current object
         messages += traverse_circuit_numbers( cur, subtree, kid_id, panel_type_id, facility_fullname )
 
     # Report duplicate circuit numbers
-    for number in dc_kid_numbers:
-        if len( dc_kid_numbers[number] ) > 1:
-            print( number, dc_kid_numbers[number] )
+    for number in dc_circuit_numbers:
+        ls_paths = dc_circuit_numbers[number]['paths']
+        ls_tails = dc_circuit_numbers[number]['tails']
+
+        if len( ls_paths ) > 1:
+            num_paths = len( ls_paths )
+            for i_path in range( 0, num_paths ):
+                path = ls_paths[i_path]
+                ls_other_tails = ls_tails[:]
+                del ls_other_tails[i_path]
+                s_other_tails = ', '.join( ls_other_tails )
+                messages.append( make_warning_message( facility_fullname, 'Circuit', path, 'Originates at the same switch number as: ' + s_other_tails + '.'  ) )
 
     return messages
 
