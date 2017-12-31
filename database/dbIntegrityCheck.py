@@ -49,23 +49,12 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages = []
 
     t = time.time()
-    print( 'Loading data structures' )
+    print( 'Loading distribution dataframe' )
     df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
-    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
-    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
-    make_tree( cur, facility_name )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     messages += check_distribution_root( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    messages += check_voltages( cur, facility_name, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    messages += check_three_phase( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -77,11 +66,21 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_circuit_numbers( cur, facility_name, facility_fullname )
+    messages += check_three_phase( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    print( 'Loading device dataframe' )
+    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    print( 'Loading location dataframe' )
+    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -90,6 +89,19 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     t = time.time()
     messages += check_location_names( cur, df_loc, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    print( 'Loading tree' )
+    make_tree( cur, facility_name )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_voltages( cur, facility_name, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    messages += check_circuit_numbers( cur, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
