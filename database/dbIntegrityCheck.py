@@ -76,11 +76,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_distribution_siblings( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    '''
     t = time.time()
-    messages += check_circuit_numbers( cur, df, facility_fullname )
+    messages += old_check_circuit_numbers( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
-    '''
 
     t = time.time()
     messages += check_circuit_numbers( cur, facility_name, facility_fullname )
@@ -104,7 +102,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 def make_tree( cur, facility_name ):
 
     # Retrieve Distribution table
-    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path FROM ' + facility_name + '_Distribution' )
+    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path, tail FROM ' + facility_name + '_Distribution' )
     rows = cur.fetchall()
 
     # Build dictionary representing Distribution tree
@@ -113,7 +111,7 @@ def make_tree( cur, facility_name ):
 
     dc_tree = {}
     for row in rows:
-        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'kid_ids':[] }
+        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'tail': row[5], 'kid_ids':[] }
 
     for row in rows:
         if row[1]:
@@ -322,8 +320,7 @@ def check_distribution_siblings( cur, df, facility_fullname ):
     return messages
 
 
-'''
-def check_circuit_numbers( cur, df, facility_fullname ):
+def old_check_circuit_numbers( cur, df, facility_fullname ):
 
     print( 'Checking circuit numbers')
 
@@ -360,7 +357,6 @@ def check_circuit_numbers( cur, df, facility_fullname ):
                 messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
 
     return messages
-'''
 
 
 def check_circuit_numbers( cur, facility_name, facility_fullname ):
@@ -381,18 +377,29 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
 
     messages = []
 
+    root_is_a_panel = subtree[subtree_root_id]['object_type_id'] == panel_type_id
+    dc_kid_numbers = {}
+
     # Traverse kids of current subtree root
     for kid_id in subtree[subtree_root_id]['kid_ids']:
 
         kid = subtree[kid_id]
-        path = kid['path']
 
-        if kid['object_type_id'] == panel_type_id:
-
-            print( 'traverse_circuit_numbers() found a Panel!', kid['path'] )
+        if root_is_a_panel:
+            number = kid['tail'].split( '-' )[0]
+            if number:
+                if number in dc_kid_numbers:
+                    dc_kid_numbers[number].append( kid['path'] )
+                else:
+                    dc_kid_numbers[number] = [ kid['path'] ]
 
         # Traverse subtree rooted at current object
         messages += traverse_circuit_numbers( cur, subtree, kid_id, panel_type_id, facility_fullname )
+
+    # Report duplicate circuit numbers
+    for number in dc_kid_numbers:
+        if len( dc_kid_numbers[number] ) > 1:
+            print( number, dc_kid_numbers[number] )
 
     return messages
 
