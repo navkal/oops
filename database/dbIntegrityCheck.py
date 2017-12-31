@@ -342,31 +342,41 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
 
         kid = subtree[kid_id]
 
+        # If subtree root is a panel, look for duplicate numbers among kids
         if subtree[subtree_root_id]['object_type_id'] == panel_type_id:
+
+            # Get number of current circuit
             number = kid['tail'].split( '-' )[0]
+
             if number:
+
+                # Map circuit number to paths and tails
                 if number in dc_circuit_numbers:
+                    # Entry for this number already exists; append path and tail of current circuit
                     dc_circuit_numbers[number]['paths'].append( kid['path'] )
                     dc_circuit_numbers[number]['tails'].append( kid['tail'] )
                 else:
+                    # Create new entry for current circuit number
                     dc_circuit_numbers[number] = { 'paths': [ kid['path'] ], 'tails': [ kid['tail'] ] }
 
         # Traverse subtree rooted at current object
         messages += traverse_circuit_numbers( cur, subtree, kid_id, panel_type_id, facility_fullname )
 
-    # Report duplicate circuit numbers
+    # Look for duplicate circuit numbers
     for number in dc_circuit_numbers:
+
         ls_paths = dc_circuit_numbers[number]['paths']
         ls_tails = dc_circuit_numbers[number]['tails']
 
-        if len( ls_paths ) > 1:
-            num_paths = len( ls_paths )
-            for i_path in range( 0, num_paths ):
+        # If there are multiple paths corresponding to this circuit number, report warning
+        n_paths = len( ls_paths )
+
+        if n_paths > 1:
+            for i_path in range( 0, n_paths ):
                 path = ls_paths[i_path]
                 ls_other_tails = ls_tails[:]
                 del ls_other_tails[i_path]
-                s_other_tails = ', '.join( ls_other_tails )
-                messages.append( make_warning_message( facility_fullname, 'Circuit', path, 'Originates at the same switch number as: ' + s_other_tails + '.'  ) )
+                messages.append( make_warning_message( facility_fullname, 'Circuit', path, 'Originates at the same switch number as: ' + ', '.join( ls_other_tails ) + '.'  ) )
 
     return messages
 
