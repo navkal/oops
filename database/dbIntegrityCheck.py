@@ -32,10 +32,16 @@ def check_database( conn, cur, facility=None ):
 
         messages += check_facility( conn, cur, facility_name, facility_fullname )
 
+
+    # Sort the messages by severity, etc.
+    messages = sorted( messages, key=lambda x: [ x['facility_fullname'], x['severity'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
+
     print( '\nAnomalies found: ' + str( len( messages ) )  )
 
+    i = 1
     for message in messages:
-        print( '- ' + format_message( message ) )
+        print( str(i) + '. ' +  format_message( message ) )
+        i += 1
 
     print( '\nTotal elapsed seconds: ' + str( time.time() - start_time ) )
 
@@ -488,8 +494,8 @@ def make_message( severity, facility_fullname, affected_category, affected_eleme
         raise ValueError( 'make_message(): Unknown affected_category: ' + affected_category )
 
     message = {
-      'facility_fullname': '' if one_facility else facility_fullname,
       'severity': severity,
+      'facility_fullname': '' if one_facility else facility_fullname,
       'affected_category': affected_category,
       'affected_element': affected_element,
       'anomaly_descr': anomaly_descr
@@ -500,8 +506,8 @@ def make_message( severity, facility_fullname, affected_category, affected_eleme
 def format_message( message ):
     formatted_message = ''
 
-    formatted_message += message['facility_fullname'] + ': '
-    formatted_message += '[' + message['severity'] + '] '
+    formatted_message += message['severity'] + ': '
+    formatted_message += '[' + message['facility_fullname'] + '] '
     formatted_message += '[' + message['affected_category'] + '] '
     formatted_message += '[' + message['affected_element'] + '] '
     formatted_message += '[' + message['anomaly_descr'] + ']'

@@ -40,6 +40,13 @@ var g_tPropertyRules =
     columnType: 'timestamp',
     displayIndex: displayIndex ++
   },
+  severity:
+  {
+    label: "Severity",
+    showInPropertiesWindow: false,
+    showInSortableTable: true,
+    displayIndex: displayIndex ++
+  },
   facility_fullname:
   {
     label: "Facility",
@@ -513,13 +520,6 @@ var g_tPropertyRules =
         var tRow = findSortableTableRow( sId );
         return ' title="Remove [' + tRow.username + ']" ';
       },
-    displayIndex: displayIndex ++
-  },
-  severity:
-  {
-    label: "Severity",
-    showInPropertiesWindow: false,
-    showInSortableTable: true,
     displayIndex: displayIndex ++
   },
   affected_category:
