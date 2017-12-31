@@ -76,8 +76,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_distribution_siblings( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
+    '''
     t = time.time()
     messages += check_circuit_numbers( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+    '''
+
+    t = time.time()
+    messages += check_circuit_numbers( cur, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -316,6 +322,7 @@ def check_distribution_siblings( cur, df, facility_fullname ):
     return messages
 
 
+'''
 def check_circuit_numbers( cur, df, facility_fullname ):
 
     print( 'Checking circuit numbers')
@@ -351,6 +358,41 @@ def check_circuit_numbers( cur, df, facility_fullname ):
                 df_other_tails = df_dups.drop( i )
                 tails = df_other_tails['tail'].tolist()
                 messages.append( make_warning_message( facility_fullname, 'Circuit', row['path'], 'Originates at the same switch number as: ' + ', '.join( tails ) + '.'  ) )
+
+    return messages
+'''
+
+
+def check_circuit_numbers( cur, facility_name, facility_fullname ):
+
+    print( 'Checking circuit numbers')
+
+    messages = []
+
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+
+    # Traverse the tree
+    messages += traverse_circuit_numbers( cur, dc_tree, root_id, panel_type_id, facility_fullname )
+
+    return messages
+
+
+def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, facility_fullname ):
+
+    messages = []
+
+    # Traverse kids of current subtree root
+    for kid_id in subtree[subtree_root_id]['kid_ids']:
+
+        kid = subtree[kid_id]
+        path = kid['path']
+
+        if kid['object_type_id'] == panel_type_id:
+
+            print( 'traverse_circuit_numbers() found a Panel!', kid['path'] )
+
+        # Traverse subtree rooted at current object
+        messages += traverse_circuit_numbers( cur, subtree, kid_id, panel_type_id, facility_fullname )
 
     return messages
 
