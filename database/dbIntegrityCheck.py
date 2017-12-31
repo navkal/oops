@@ -57,7 +57,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_voltages( conn, cur, facility_name, facility_fullname )
+    messages += check_voltages( cur, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     '''
@@ -183,7 +183,7 @@ def check_voltages( cur, df, facility_fullname ):
 '''
 
 
-def check_voltages( conn, cur, facility_name, facility_fullname ):
+def check_voltages( cur, facility_name, facility_fullname ):
 
     print( 'Checking voltages')
 
