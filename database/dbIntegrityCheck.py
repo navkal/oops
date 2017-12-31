@@ -3,6 +3,9 @@ import pandas as pd
 import time
 
 one_facility = False
+dc_tree = None
+root_id = None
+
 
 def check_database( conn, cur, facility=None ):
 
@@ -46,10 +49,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages = []
 
     t = time.time()
-    print( 'Loading dataframes' )
+    print( 'Loading data structures' )
     df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
     df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
     df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
+    make_tree( cur, facility_name )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -59,12 +63,6 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     messages += check_voltages( cur, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    '''
-    t = time.time()
-    messages += check_voltages( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-    '''
 
     t = time.time()
     messages += check_three_phase( cur, df, facility_fullname )
@@ -97,6 +95,27 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     return messages
 
 
+def make_tree( cur, facility_name ):
+
+    # Retrieve Distribution table
+    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path FROM ' + facility_name + '_Distribution' )
+    rows = cur.fetchall()
+
+    # Build dictionary representing Distribution tree
+    global dc_tree
+    global root_id
+
+    dc_tree = {}
+    for row in rows:
+        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'kid_ids':[] }
+
+    for row in rows:
+        if row[1]:
+            dc_tree[row[1]]['kid_ids'].append( row[0] )
+        else:
+            root_id = row[0]
+
+
 def check_distribution_root( cur, df, facility_fullname ):
 
     print( 'Checking distribution root')
@@ -125,103 +144,30 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
-'''
-def check_voltages( cur, df, facility_fullname ):
-
-    print( 'Checking voltages')
-
-    messages = []
-
-    # Get high and low voltage IDs
-    hi_id = dbCommon.voltage_to_id( cur, '277/480' )
-    lo_id = dbCommon.voltage_to_id( cur, '120/208' )
-
-    # Verify that all nodes have a voltage
-    df_hi = df[ df['voltage_id'] == hi_id ]
-    df_lo = df[ df['voltage_id'] == lo_id ]
-    len_volt = len( df_hi ) + len( df_lo )
-    len_no_volt = len( df ) - len_volt
-    if len_no_volt:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Voltage', str( len_no_volt ) + ' elements have no voltage.' ) )
-
-    # Get all transformers
-    df_trans = df[ df['object_type_id'] == dbCommon.object_type_to_id( cur, 'Transformer' ) ]
-
-    # Iterate over list of transformers
-    for index, row in df_trans.iterrows():
-
-        path = row['path']
-
-        df_lo_ancestors = df_lo.copy()
-        df_lo_ancestors['is_ancestor'] = df_lo_ancestors.apply( lambda x: path.startswith( x['path'] + '.' ), axis=1 )
-        df_lo_ancestors = df_lo_ancestors[ df_lo_ancestors['is_ancestor'] ]
-
-        descendant_prefix = path + '.'
-        df_hi_descendants = df_hi[ df_hi['path'].str.startswith( descendant_prefix ) ]
-        df_lo_descendants = df_lo[ df_lo['path'].str.startswith( descendant_prefix ) ]
-
-        # Verify that current transformer has low voltage
-        if row['voltage_id'] != lo_id:
-            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has wrong voltage.'  ) )
-
-        # Verify that current transformer has no low-voltage ancestors
-        num_lo_ancestors = len( df_lo_ancestors )
-        if num_lo_ancestors:
-            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has ' + str( num_lo_ancestors ) + ' low-voltage ancestors.'  ) )
-
-        # Verify that current transformer has no high-voltage descendants
-        num_hi_descendants = len( df_hi_descendants )
-        if num_hi_descendants:
-            messages.append( make_error_message( facility_fullname, 'Transformer', path, 'Has ' + str( num_hi_descendants ) + ' high-voltage descendants.'  ) )
-
-        # Verify that transformer has at least one (low-voltage) descendant
-        num_lo_descendants = len( df_lo_descendants )
-        if num_lo_descendants == 0:
-            messages.append( make_warning_message( facility_fullname, 'Transformer', path, 'Has no low-voltage descendants.'  ) )
-
-    return messages
-'''
-
-
 def check_voltages( cur, facility_name, facility_fullname ):
 
     print( 'Checking voltages')
 
     messages = []
 
-    # Retrieve Distribution table
-    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path FROM ' + facility_name + '_Distribution' )
-    rows = cur.fetchall()
-
-    # Build dictionary representing Distribution tree
-    dc_tree = {}
-    for row in rows:
-        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'kid_ids':[] }
-
-    root_id = None
-    for row in rows:
-        if row[1]:
-            dc_tree[row[1]]['kid_ids'].append( row[0] )
-        else:
-            root_id = row[0]
-
-    # Traverse the tree
     transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
     hi_voltage_id = dbCommon.voltage_to_id( cur, '277/480' )
     lo_voltage_id = dbCommon.voltage_to_id( cur, '120/208' )
-    messages += traverse( cur, dc_tree, root_id, hi_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
+
+    # Traverse the tree
+    messages += traverse_voltages( cur, dc_tree, root_id, hi_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
 
     return messages
 
 
-def traverse( cur, dc_tree, subtree_root_id, expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname ):
+def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname ):
 
     messages = []
 
     # Traverse kids of current subtree root
-    for kid_id in dc_tree[subtree_root_id]['kid_ids']:
+    for kid_id in subtree[subtree_root_id]['kid_ids']:
 
-        kid = dc_tree[kid_id]
+        kid = subtree[kid_id]
         path = kid['path']
 
         if kid['object_type_id'] == transformer_type_id:
@@ -250,7 +196,7 @@ def traverse( cur, dc_tree, subtree_root_id, expected_voltage_id, transformer_ty
             new_expected_voltage_id = expected_voltage_id
 
         # Traverse subtree rooted at current object
-        messages += traverse( cur, dc_tree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
+        messages += traverse_voltages( cur, subtree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
 
     return messages
 
