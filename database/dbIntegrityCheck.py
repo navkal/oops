@@ -54,31 +54,33 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages = []
 
     t = time.time()
-    print( 'Loading distribution dataframe' )
+    print( 'Loading data' )
+    ( dc_tree, root_id ) = make_tree( cur, facility_name )
     df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
+    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
+    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     messages += check_distribution_root( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
-    
+
     if len( messages ) == 0:
 
         t = time.time()
         messages += check_distribution_parentage( cur, df, facility_fullname )
         print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-        t = time.time()
-        messages += check_distribution_siblings( cur, df, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
+    if len( messages ) == 0:
 
         t = time.time()
         messages += check_three_phase( cur, df, facility_fullname )
         print( 'Elapsed seconds:', time.time() - t, '\n' )
 
+    if len( messages ) == 0:
+
         t = time.time()
-        print( 'Loading tree' )
-        ( dc_tree, root_id ) = make_tree( cur, facility_name )
+        messages += check_distribution_siblings( cur, df, facility_fullname )
         print( 'Elapsed seconds:', time.time() - t, '\n' )
 
         t = time.time()
@@ -89,19 +91,9 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
         messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
         print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    t = time.time()
-    print( 'Loading device dataframe' )
-    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    print( 'Loading location dataframe' )
-    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
+        t = time.time()
+        messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
