@@ -61,18 +61,33 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     messages += check_distribution_root( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
+    
+    if len( messages ) == 0:
 
-    t = time.time()
-    messages += check_distribution_parentage( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
+        t = time.time()
+        messages += check_distribution_parentage( cur, df, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    t = time.time()
-    messages += check_distribution_siblings( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
+        t = time.time()
+        messages += check_distribution_siblings( cur, df, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    t = time.time()
-    messages += check_three_phase( cur, df, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
+        t = time.time()
+        messages += check_three_phase( cur, df, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+        t = time.time()
+        print( 'Loading tree' )
+        ( dc_tree, root_id ) = make_tree( cur, facility_name )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+        t = time.time()
+        messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+        t = time.time()
+        messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
+        print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     print( 'Loading device dataframe' )
@@ -94,19 +109,6 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     t = time.time()
     messages += check_location_names( cur, df_loc, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    print( 'Loading tree' )
-    ( dc_tree, root_id ) = make_tree( cur, facility_name )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
-    print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-    t = time.time()
-    messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
@@ -138,24 +140,27 @@ def check_distribution_root( cur, df, facility_fullname ):
 
     messages = []
 
-    # Verify that there is exactly one root
     df_root = df[ df['parent_id'] == '' ]
+
+    # Verify that there is exactly one root
     n_roots = len( df_root )
-    if n_roots != 1:
+    if n_roots == 1:
+
+        # Verify that all paths descend from root
+        root_path = df_root.iloc[0]['path']
+        df_desc = df[ df['path'].str.startswith( root_path + '.' ) ]
+        n_nodes = len( df )
+        n_desc = len( df_desc )
+        if n_nodes - n_desc != 1:
+            messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Some paths not descended from root ' + root_path + '.' ) )
+
+        # Verify that root is a Panel
+        root_object_type_id = df_root.iloc[0]['object_type_id']
+        if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
+            messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Root is not a Panel.' ) )
+
+    else:
         messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Has ' + str( n_roots ) + ' roots.' ) )
-
-    # Verify that all paths descend from root
-    root_path = df_root.iloc[0]['path']
-    df_desc = df[ df['path'].str.startswith( root_path + '.' ) ]
-    n_nodes = len( df )
-    n_desc = len( df_desc )
-    if n_nodes - n_desc != 1:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Some paths not descended from root ' + root_path + '.' ) )
-
-    # Verify that root is a Panel
-    root_object_type_id = df_root.iloc[0]['object_type_id']
-    if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Root is not a Panel.' ) )
 
     return messages
 
