@@ -3,8 +3,7 @@ import pandas as pd
 import time
 
 one_facility = False
-dc_tree = None
-root_id = None
+
 
 
 def check_database( conn, cur, facility=None ):
@@ -99,15 +98,15 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     t = time.time()
     print( 'Loading tree' )
-    make_tree( cur, facility_name )
+    ( dc_tree, root_id ) = make_tree( cur, facility_name )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_voltages( cur, facility_name, facility_fullname )
+    messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_circuit_numbers( cur, facility_name, facility_fullname )
+    messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
@@ -120,9 +119,6 @@ def make_tree( cur, facility_name ):
     rows = cur.fetchall()
 
     # Build dictionary representing Distribution tree
-    global dc_tree
-    global root_id
-
     dc_tree = {}
     for row in rows:
         dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'tail': row[5], 'kid_ids':[] }
@@ -132,6 +128,8 @@ def make_tree( cur, facility_name ):
             dc_tree[row[1]]['kid_ids'].append( row[0] )
         else:
             root_id = row[0]
+
+    return dc_tree, root_id
 
 
 def check_distribution_root( cur, df, facility_fullname ):
@@ -162,7 +160,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
-def check_voltages( cur, facility_name, facility_fullname ):
+def check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname ):
 
     print( 'Checking voltages')
 
@@ -334,7 +332,7 @@ def check_distribution_siblings( cur, df, facility_fullname ):
     return messages
 
 
-def check_circuit_numbers( cur, facility_name, facility_fullname ):
+def check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname ):
 
     print( 'Checking circuit numbers')
 
