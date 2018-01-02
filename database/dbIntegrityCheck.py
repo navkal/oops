@@ -29,8 +29,10 @@ def check_database( conn, cur, facility=None ):
         facility_name = fac_row[0]
         facility_fullname = fac_row[1]
 
-        messages += check_facility( conn, cur, facility_name, facility_fullname )
-
+        try:
+            messages += check_facility( conn, cur, facility_name, facility_fullname )
+        except:
+            messages.append( make_error_message( facility_fullname, 'Facility', 'Data', 'Integrity check failed.' ) )
 
     # Sort the messages by severity, etc.
     messages = sorted( messages, key=lambda x: [ x['facility_fullname'], x['severity'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
@@ -485,7 +487,7 @@ def make_message( severity, facility_fullname, affected_category, affected_eleme
     if severity not in ( 'Error', 'Warning' ):
         raise ValueError( 'make_message(): Unknown severity=' + severity )
 
-    if affected_category not in ( 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
+    if affected_category not in ( 'Facility', 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
         raise ValueError( 'make_message(): Unknown affected_category: ' + affected_category )
 
     message = {
