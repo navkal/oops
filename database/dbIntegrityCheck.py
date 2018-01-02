@@ -32,7 +32,7 @@ def check_database( conn, cur, facility=None ):
         try:
             messages += check_facility( conn, cur, facility_name, facility_fullname )
         except:
-            messages.append( make_error_message( facility_fullname, 'Facility', 'Data', 'Integrity check failed.' ) )
+            messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Integrity check could not run to completion.' ) )
 
     # Sort the messages by severity, etc.
     messages = sorted( messages, key=lambda x: [ x['facility_fullname'], x['severity'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
@@ -67,35 +67,29 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages += check_distribution_root( cur, df, facility_fullname )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    if len( messages ) == 0:
+    t = time.time()
+    messages += check_distribution_parentage( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-        t = time.time()
-        messages += check_distribution_parentage( cur, df, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
+    t = time.time()
+    messages += check_three_phase( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    if len( messages ) == 0:
+    t = time.time()
+    messages += check_distribution_siblings( cur, df, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-        t = time.time()
-        messages += check_three_phase( cur, df, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
+    t = time.time()
+    messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-    if len( messages ) == 0:
+    t = time.time()
+    messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
-        t = time.time()
-        messages += check_distribution_siblings( cur, df, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-        t = time.time()
-        messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-        t = time.time()
-        messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
-
-        t = time.time()
-        messages += check_device_parentage( cur, df, df_dev, facility_fullname )
-        print( 'Elapsed seconds:', time.time() - t, '\n' )
+    t = time.time()
+    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
     messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
@@ -476,6 +470,9 @@ def check_location_field( cur, df_loc, facility_fullname, field, category ):
 '''
 --> Reporting utilities -->
 '''
+def make_critical_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
+    return make_message( 'Critical', facility_fullname, affected_category, affected_element, anomaly_descr )
+
 def make_error_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
     return make_message( 'Error', facility_fullname, affected_category, affected_element, anomaly_descr )
 
@@ -484,7 +481,7 @@ def make_warning_message( facility_fullname, affected_category, affected_element
 
 def make_message( severity, facility_fullname, affected_category, affected_element, anomaly_descr ):
 
-    if severity not in ( 'Error', 'Warning' ):
+    if severity not in ( 'Critical', 'Error', 'Warning' ):
         raise ValueError( 'make_message(): Unknown severity=' + severity )
 
     if affected_category not in ( 'Facility', 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
