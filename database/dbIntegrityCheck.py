@@ -5,7 +5,6 @@ import time
 one_facility = False
 
 
-
 def check_database( conn, cur, facility=None ):
 
     start_time = time.time()
@@ -29,10 +28,7 @@ def check_database( conn, cur, facility=None ):
         facility_name = fac_row[0]
         facility_fullname = fac_row[1]
 
-        try:
-            messages += check_facility( conn, cur, facility_name, facility_fullname )
-        except:
-            messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Data Integrity check halted due to unrecoverable error.' ) )
+        messages += check_facility( conn, cur, facility_name, facility_fullname )
 
     # Sort the messages by severity, etc.
     messages = sorted( messages, key=lambda x: [ x['facility_fullname'], x['severity'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
