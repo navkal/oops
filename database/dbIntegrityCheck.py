@@ -345,7 +345,7 @@ def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, trans
 
             # Verify that this (non-transformer) object has expected voltage
             if kid['voltage_id'] != expected_voltage_id:
-                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), path, 'Has unexpected voltage ' + dbCommon.get_voltage( kid['voltage_id'] ) + '.'  ) )
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), path, 'Has unexpected voltage ' + dbCommon.get_voltage( cur, kid['voltage_id'] ) + '.'  ) )
 
             new_expected_voltage_id = expected_voltage_id
 
