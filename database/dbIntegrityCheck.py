@@ -64,11 +64,19 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_distribution_root( cur, df, facility_fullname )
+    print( 'Checking distribution root')
+    try:
+        messages += check_distribution_root( cur, df, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution root.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_distribution_parentage( cur, df, facility_fullname )
+    print( 'Checking distribution parentage')
+    try:
+        messages += check_distribution_parentage( cur, df, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -124,8 +132,6 @@ def make_tree( cur, facility_name ):
 
 def check_distribution_root( cur, df, facility_fullname ):
 
-    print( 'Checking distribution root')
-
     messages = []
 
     df_root = df[ df['parent_id'] == '' ]
@@ -149,6 +155,38 @@ def check_distribution_root( cur, df, facility_fullname ):
 
     else:
         messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Has ' + str( n_roots ) + ' roots.' ) )
+
+    return messages
+
+
+def check_distribution_parentage( cur, df, facility_fullname ):
+
+    messages = []
+
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+
+    # Verify that all Panels have valid parent types
+    df_pan_no_root = df[ ( df['object_type_id'] == panel_type_id ) & ( df['parent_id'] != '' )]
+    df_join = df_pan_no_root.join( df, on='parent_id', how='left', lsuffix='_of_panel', rsuffix='_of_parent' )
+    df_wrong_parent_type = df_join[ ( df_join['object_type_id_of_parent'] != transformer_type_id ) & ( df_join['object_type_id_of_parent'] != circuit_type_id ) ]
+    for index, row in df_wrong_parent_type.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
+
+    # Verify that all Transformers have valid parent types
+    df_tran = df[ df['object_type_id'] == transformer_type_id ]
+    df_join = df_tran.join( df, on='parent_id', how='left', lsuffix='_of_transformer', rsuffix='_of_parent' )
+    df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != circuit_type_id ]
+    for index, row in df_wrong_parent_type.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Transformer', row['path_of_transformer'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
+
+    # Verify that all Circuits have valid parent types
+    df_circ = df[ df['object_type_id'] == circuit_type_id ]
+    df_join = df_circ.join( df, on='parent_id', how='left', lsuffix='_of_circuit', rsuffix='_of_parent' )
+    df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != panel_type_id ]
+    for index, row in df_wrong_parent_type.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Circuit', row['path_of_circuit'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
 
     return messages
 
@@ -256,40 +294,6 @@ def check_three_phase( cur, df, facility_fullname ):
             c_parent_object_type_id = df.loc[ row['phase_c_parent_id'] ]['object_type_id']
             if c_parent_object_type_id != circuit_object_type_id:
                 messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent is not a Circuit.' ) )
-
-    return messages
-
-
-def check_distribution_parentage( cur, df, facility_fullname ):
-
-    print( 'Checking distribution parentage')
-
-    messages = []
-
-    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
-    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-
-    # Verify that all Panels have valid parent types
-    df_pan_no_root = df[ ( df['object_type_id'] == panel_type_id ) & ( df['parent_id'] != '' )]
-    df_join = df_pan_no_root.join( df, on='parent_id', how='left', lsuffix='_of_panel', rsuffix='_of_parent' )
-    df_wrong_parent_type = df_join[ ( df_join['object_type_id_of_parent'] != transformer_type_id ) & ( df_join['object_type_id_of_parent'] != circuit_type_id ) ]
-    for index, row in df_wrong_parent_type.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
-
-    # Verify that all Transformers have valid parent types
-    df_tran = df[ df['object_type_id'] == transformer_type_id ]
-    df_join = df_tran.join( df, on='parent_id', how='left', lsuffix='_of_transformer', rsuffix='_of_parent' )
-    df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != circuit_type_id ]
-    for index, row in df_wrong_parent_type.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Transformer', row['path_of_transformer'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
-
-    # Verify that all Circuits have valid parent types
-    df_circ = df[ df['object_type_id'] == circuit_type_id ]
-    df_join = df_circ.join( df, on='parent_id', how='left', lsuffix='_of_circuit', rsuffix='_of_parent' )
-    df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != panel_type_id ]
-    for index, row in df_wrong_parent_type.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Circuit', row['path_of_circuit'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
 
     return messages
 
