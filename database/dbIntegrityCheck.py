@@ -231,9 +231,8 @@ def check_three_phase( cur, df, facility_fullname ):
 
     # Verify that no element has a Phase C parent without a Phase B parent
     df_c_only = df[ ( df['phase_b_parent_id'] == '' ) & ( df['phase_c_parent_id'] != '' ) ]
-    n_c_only = len( df_c_only )
-    if n_c_only:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Structure', str( n_c_only) + ' elements have a Phase C Parent but no Phase B Parent.'  ) )
+    for index, row in df_c_only.iterrows():
+        messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Has a Phase C Parent but no Phase B Parent.'  ) )
 
     # Verify that no element has a Phase B parent without a Phase C parent
     df_b_only = df[ ( df['phase_b_parent_id'] != '' ) & ( df['phase_c_parent_id'] == '' ) ]
