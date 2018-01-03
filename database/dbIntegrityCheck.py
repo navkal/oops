@@ -53,7 +53,10 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 
     t = time.time()
     print( 'Loading data' )
-    ( dc_tree, root_id ) = make_tree( cur, facility_name )
+    try:
+        ( dc_tree, root_id ) = make_tree( cur, facility_name )
+    except:
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Could not load tree.' ) )
     df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
     df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
     df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
@@ -64,7 +67,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_root( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution root.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution root.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -72,7 +75,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_parentage( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -80,7 +83,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_three_phase( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking three-phase connections.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check three-phase connections.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -88,7 +91,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_siblings( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution siblings.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution siblings.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -96,7 +99,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking voltages.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check voltages.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -104,7 +107,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking circuit numbers.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check circuit numbers.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -112,7 +115,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_device_parentage( cur, df, df_dev, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking device parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check device parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -120,7 +123,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking location references.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check location references.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -128,7 +131,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_names( cur, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking location names.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check location names.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
@@ -484,6 +487,9 @@ def check_location_field( cur, df_loc, facility_fullname, field, category ):
 '''
 --> Reporting utilities -->
 '''
+def make_alert_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
+    return make_message( 'Alert', facility_fullname, affected_category, affected_element, anomaly_descr )
+
 def make_critical_message( facility_fullname, affected_category, affected_element, anomaly_descr ):
     return make_message( 'Critical', facility_fullname, affected_category, affected_element, anomaly_descr )
 
@@ -495,7 +501,7 @@ def make_warning_message( facility_fullname, affected_category, affected_element
 
 def make_message( severity, facility_fullname, affected_category, affected_element, anomaly_descr ):
 
-    if severity not in ( 'Critical', 'Error', 'Warning' ):
+    if severity not in ( 'Alert', 'Critical', 'Error', 'Warning' ):
         raise ValueError( 'make_message(): Unknown severity=' + severity )
 
     if affected_category not in ( 'Facility', 'Distribution', 'Panel', 'Transformer', 'Circuit', 'Device', 'Current Location', 'Previous Location', 'Location' ):
