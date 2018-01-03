@@ -88,7 +88,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_distribution_siblings( cur, df, facility_fullname )
+    print( 'Checking distribution siblings')
+    try:
+        messages += check_distribution_siblings( cur, df, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking distribution siblings.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -243,6 +247,35 @@ def check_three_phase( cur, df, facility_fullname ):
     return messages
 
 
+def check_distribution_siblings( cur, df, facility_fullname ):
+
+    messages = []
+
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+
+    df_n_sibs = df['parent_id'].value_counts().to_frame( 'n_sibs' )
+
+    # Verify that Panels attached to Circuits have no siblings
+    df_pan = df[ df['object_type_id'] == panel_type_id ]
+    df_join = df_pan.join( df, on='parent_id', how='left', lsuffix='_of_panel', rsuffix='_of_parent' )
+    df_join = df_join.join( df_n_sibs, on='parent_id_of_panel' )
+    df_has_sibs = df_join[ ( df_join['object_type_id_of_parent'] == circuit_type_id ) & ( df_join['n_sibs'] > 1 ) ]
+    for index, row in df_has_sibs.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
+
+    # Verify that Transformers have no siblings
+    df_tran = df[ df['object_type_id'] == transformer_type_id ]
+    df_join = df_tran.join( df, on='parent_id', how='left', lsuffix='_of_transformer', rsuffix='_of_parent' )
+    df_join = df_join.join( df_n_sibs, on='parent_id_of_transformer' )
+    df_has_sibs = df_join[ df_join['n_sibs'] > 1 ]
+    for index, row in df_has_sibs.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
+
+    return messages
+
+
 def check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname ):
 
     print( 'Checking voltages')
@@ -296,37 +329,6 @@ def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, trans
 
         # Traverse subtree rooted at current object
         messages += traverse_voltages( cur, subtree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
-
-    return messages
-
-
-def check_distribution_siblings( cur, df, facility_fullname ):
-
-    print( 'Checking distribution siblings')
-
-    messages = []
-
-    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
-    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
-    circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-
-    df_n_sibs = df['parent_id'].value_counts().to_frame( 'n_sibs' )
-
-    # Verify that Panels attached to Circuits have no siblings
-    df_pan = df[ df['object_type_id'] == panel_type_id ]
-    df_join = df_pan.join( df, on='parent_id', how='left', lsuffix='_of_panel', rsuffix='_of_parent' )
-    df_join = df_join.join( df_n_sibs, on='parent_id_of_panel' )
-    df_has_sibs = df_join[ ( df_join['object_type_id_of_parent'] == circuit_type_id ) & ( df_join['n_sibs'] > 1 ) ]
-    for index, row in df_has_sibs.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
-
-    # Verify that Transformers have no siblings
-    df_tran = df[ df['object_type_id'] == transformer_type_id ]
-    df_join = df_tran.join( df, on='parent_id', how='left', lsuffix='_of_transformer', rsuffix='_of_parent' )
-    df_join = df_join.join( df_n_sibs, on='parent_id_of_transformer' )
-    df_has_sibs = df_join[ df_join['n_sibs'] > 1 ]
-    for index, row in df_has_sibs.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
 
     return messages
 
