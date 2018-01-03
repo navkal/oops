@@ -96,7 +96,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
+    print( 'Checking voltages')
+    try:
+        messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking voltages.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -277,8 +281,6 @@ def check_distribution_siblings( cur, df, facility_fullname ):
 
 
 def check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname ):
-
-    print( 'Checking voltages')
 
     messages = []
 
