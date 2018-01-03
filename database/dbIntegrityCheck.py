@@ -295,7 +295,7 @@ def check_distribution_siblings( cur, df, facility_fullname ):
     df_join = df_join.join( df_n_sibs, on='parent_id_of_transformer' )
     df_has_sibs = df_join[ df_join['n_sibs'] > 1 ]
     for index, row in df_has_sibs.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Panel', row['path_of_panel'], 'Has unexpected siblings.' ) )
+        messages.append( make_error_message( facility_fullname, 'Transformer', row['path_of_transformer'], 'Has unexpected siblings.' ) )
 
     return messages
 
