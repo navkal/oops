@@ -80,7 +80,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_three_phase( cur, df, facility_fullname )
+    print( 'Checking three-phase connections')
+    try:
+        messages += check_three_phase( cur, df, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking three-phase connections.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -191,6 +195,54 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     return messages
 
 
+def check_three_phase( cur, df, facility_fullname ):
+
+    messages = []
+
+    # Verify that no element has a Phase C parent without a Phase B parent
+    df_c_only = df[ ( df['phase_b_parent_id'] == '' ) & ( df['phase_c_parent_id'] != '' ) ]
+    n_c_only = len( df_c_only )
+    if n_c_only:
+        messages.append( make_error_message( facility_fullname, 'Distribution', 'Structure', str( n_c_only) + ' elements have a Phase C Parent but no Phase B Parent.'  ) )
+
+    # Verify that no element has a Phase B parent without a Phase C parent
+    df_b_only = df[ ( df['phase_b_parent_id'] != '' ) & ( df['phase_c_parent_id'] == '' ) ]
+    n_b_only = len( df_b_only )
+    if n_b_only:
+        messages.append( make_warning_message( facility_fullname, 'Distribution', 'Structure', str( n_b_only) + ' elements have a Phase B Parent but no Phase C Parent.'  ) )
+
+    # Verify that phase parents are siblings and circuits
+    circuit_object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
+    df_phase = df[ df['phase_b_parent_id'] != '' ]
+
+    for index, row in df_phase.iterrows():
+
+        # Verify that Phase B Parent is sibling of Parent
+        granny_a_id = df.loc[ row['parent_id'] ]['parent_id']
+        granny_b_id = df.loc[ row['phase_b_parent_id'] ]['parent_id']
+        if granny_a_id != granny_b_id:
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase B Parent are not siblings.' ) )
+
+        # Verify that Phase B Parent is a Circuit object
+        b_parent_object_type_id = df.loc[ row['phase_b_parent_id'] ]['object_type_id']
+        if b_parent_object_type_id != circuit_object_type_id:
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase B Parent is not a Circuit.' ) )
+
+        if row['phase_c_parent_id']:
+
+            # Verify that Phase C Parent is sibling of Parent
+            granny_c_id = df.loc[ row['phase_c_parent_id'] ]['parent_id']
+            if granny_a_id != granny_c_id:
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase C Parent are not siblings.' ) )
+
+            # Verify that Phase C Parent is a Circuit object
+            c_parent_object_type_id = df.loc[ row['phase_c_parent_id'] ]['object_type_id']
+            if c_parent_object_type_id != circuit_object_type_id:
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent is not a Circuit.' ) )
+
+    return messages
+
+
 def check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname ):
 
     print( 'Checking voltages')
@@ -244,56 +296,6 @@ def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, trans
 
         # Traverse subtree rooted at current object
         messages += traverse_voltages( cur, subtree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
-
-    return messages
-
-
-def check_three_phase( cur, df, facility_fullname ):
-
-    print( 'Checking three-phase connections')
-
-    messages = []
-
-    # Verify that no element has a Phase C parent without a Phase B parent
-    df_c_only = df[ ( df['phase_b_parent_id'] == '' ) & ( df['phase_c_parent_id'] != '' ) ]
-    n_c_only = len( df_c_only )
-    if n_c_only:
-        messages.append( make_error_message( facility_fullname, 'Distribution', 'Structure', str( n_c_only) + ' elements have a Phase C Parent but no Phase B Parent.'  ) )
-
-    # Verify that no element has a Phase B parent without a Phase C parent
-    df_b_only = df[ ( df['phase_b_parent_id'] != '' ) & ( df['phase_c_parent_id'] == '' ) ]
-    n_b_only = len( df_b_only )
-    if n_b_only:
-        messages.append( make_warning_message( facility_fullname, 'Distribution', 'Structure', str( n_b_only) + ' elements have a Phase B Parent but no Phase C Parent.'  ) )
-
-    # Verify that phase parents are siblings and circuits
-    circuit_object_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
-    df_phase = df[ df['phase_b_parent_id'] != '' ]
-
-    for index, row in df_phase.iterrows():
-
-        # Verify that Phase B Parent is sibling of Parent
-        granny_a_id = df.loc[ row['parent_id'] ]['parent_id']
-        granny_b_id = df.loc[ row['phase_b_parent_id'] ]['parent_id']
-        if granny_a_id != granny_b_id:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase B Parent are not siblings.' ) )
-
-        # Verify that Phase B Parent is a Circuit object
-        b_parent_object_type_id = df.loc[ row['phase_b_parent_id'] ]['object_type_id']
-        if b_parent_object_type_id != circuit_object_type_id:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase B Parent is not a Circuit.' ) )
-
-        if row['phase_c_parent_id']:
-
-            # Verify that Phase C Parent is sibling of Parent
-            granny_c_id = df.loc[ row['phase_c_parent_id'] ]['parent_id']
-            if granny_a_id != granny_c_id:
-                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase C Parent are not siblings.' ) )
-
-            # Verify that Phase C Parent is a Circuit object
-            c_parent_object_type_id = df.loc[ row['phase_c_parent_id'] ]['object_type_id']
-            if c_parent_object_type_id != circuit_object_type_id:
-                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent is not a Circuit.' ) )
 
     return messages
 
