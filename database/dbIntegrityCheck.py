@@ -112,7 +112,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+    print( 'Checking device parentage')
+    try:
+        messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking device parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -403,8 +407,6 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
 
 
 def check_device_parentage( cur, df, df_dev, facility_fullname ):
-
-    print( 'Checking device parentage')
 
     messages = []
 
