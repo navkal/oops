@@ -52,14 +52,21 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     messages = []
 
     t = time.time()
-    print( 'Loading data' )
+    print( 'Loading tree' )
     try:
         ( dc_tree, root_id ) = make_tree( cur, facility_name )
     except:
-        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Could not load tree.' ) )
-    df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
-    df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
-    df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while loading tree.' ) )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
+    print( 'Loading dataframes' )
+    try:
+        df = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Distribution', conn, index_col='id' )
+        df_dev = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Device', conn )
+        df_loc = pd.read_sql_query( 'SELECT * FROM ' + facility_name + '_Room', conn )
+    except:
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while loading dataframes.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -67,7 +74,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_root( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution root.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution root.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -75,7 +82,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_parentage( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -83,7 +90,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_three_phase( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check three-phase connections.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking three-phase connections.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -91,7 +98,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_siblings( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check distribution siblings.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution siblings.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -99,7 +106,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check voltages.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking voltages.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -107,7 +114,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check circuit numbers.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking circuit numbers.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -115,7 +122,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_device_parentage( cur, df, df_dev, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check device parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device parentage.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -123,7 +130,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check location references.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location references.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -131,7 +138,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_names( cur, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Could not check location names.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location names.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
