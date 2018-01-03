@@ -120,7 +120,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
+    print( 'Checking location references')
+    try:
+        messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking location references.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -426,8 +430,6 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
 
 def check_location_refs( cur, df, df_dev, df_loc, facility_fullname ):
-
-    print( 'Checking location references')
 
     messages = []
 
