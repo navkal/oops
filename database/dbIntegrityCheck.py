@@ -432,7 +432,7 @@ def check_device_parentage( cur, df, df_dev, facility_fullname ):
 
     # Report anomalies
     for index, row in df_wrong_parent_type.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Device', 'Connected to ' + row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ').' ) )
+        messages.append( make_error_message( facility_fullname, 'Device', "'" + row['name'] + "'" + ' on ' + row['path'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id'] ) + ').' ) )
 
     return messages
 
