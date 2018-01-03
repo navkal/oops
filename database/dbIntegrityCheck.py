@@ -104,7 +104,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
+    print( 'Checking circuit numbers')
+    try:
+        messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Encountered error while checking circuit numbers.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -336,8 +340,6 @@ def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, trans
 
 
 def check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname ):
-
-    print( 'Checking circuit numbers')
 
     messages = []
 
