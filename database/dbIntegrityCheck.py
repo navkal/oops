@@ -86,6 +86,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
+    print( 'Checking distribution paths')
+    try:
+        messages += check_distribution_paths( cur, dc_tree, root_id, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
     print( 'Checking three-phase connections')
     try:
         messages += check_three_phase( cur, df, facility_fullname )
@@ -177,10 +185,12 @@ def check_distribution_root( cur, df, facility_fullname ):
         # Verify that all paths descend from root
         root_path = df_root.iloc[0]['path']
         df_desc = df[ df['path'].str.startswith( root_path + '.' ) ]
-        n_nodes = len( df )
-        n_desc = len( df_desc )
-        if n_nodes - n_desc != 1:
-            messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Some paths not descended from root ' + root_path + '.' ) )
+
+        df_bad = df[ ~df.index.isin( df_desc.index.values ) ]
+        df_bad = df_bad[ ~df_bad.index.isin( df_root.index.values ) ]
+
+        for index, row in df_bad.iterrows():
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Path does not descend from root ' + root_path + '.'  ) )
 
         # Verify that root is a Panel
         root_object_type_id = df_root.iloc[0]['object_type_id']
@@ -221,6 +231,13 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     df_wrong_parent_type = df_join[ df_join['object_type_id_of_parent'] != panel_type_id ]
     for index, row in df_wrong_parent_type.iterrows():
         messages.append( make_error_message( facility_fullname, 'Circuit', row['path_of_circuit'], 'Has parent of wrong type (' + dbCommon.get_object_type( cur, row['object_type_id_of_parent'] ) + ').' ) )
+
+    return messages
+
+
+def check_distribution_paths( cur, dc_tree, root_id, facility_fullname ):
+
+    messages = []
 
     return messages
 
