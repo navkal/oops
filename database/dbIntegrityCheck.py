@@ -78,19 +78,19 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    print( 'Checking distribution parentage')
+    print( 'Checking distribution hierarchy')
     try:
-        messages += check_distribution_parentage( cur, df, facility_fullname )
+        messages += check_distribution_hierarchy( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution hierarchy.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    print( 'Checking distribution paths')
+    print( 'Checking paths')
     try:
         messages += check_paths( cur, dc_tree, root_id, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking paths.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -126,11 +126,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    print( 'Checking device parentage')
+    print( 'Checking device hierarchy')
     try:
-        messages += check_device_parentage( cur, df, df_dev, facility_fullname )
+        messages += check_device_hierarchy( cur, df, df_dev, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device parentage.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device hierarchy.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -203,7 +203,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
-def check_distribution_parentage( cur, df, facility_fullname ):
+def check_distribution_hierarchy( cur, df, facility_fullname ):
 
     messages = []
 
@@ -479,7 +479,7 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
     return messages
 
 
-def check_device_parentage( cur, df, df_dev, facility_fullname ):
+def check_device_hierarchy( cur, df, df_dev, facility_fullname ):
 
     messages = []
 
