@@ -88,7 +88,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     print( 'Checking distribution paths')
     try:
-        messages += check_distribution_paths( cur, dc_tree, root_id, facility_fullname )
+        messages += check_paths( cur, dc_tree, root_id, facility_fullname )
     except:
         messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
@@ -155,13 +155,13 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
 def make_tree( cur, facility_name ):
 
     # Retrieve Distribution table
-    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path, tail FROM ' + facility_name + '_Distribution' )
+    cur.execute( 'SELECT id, parent_id, object_type_id, voltage_id, path, source, tail FROM ' + facility_name + '_Distribution' )
     rows = cur.fetchall()
 
     # Build dictionary representing Distribution tree
     dc_tree = {}
     for row in rows:
-        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'tail': row[5], 'kid_ids':[] }
+        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'source': row[5], 'tail': row[6], 'kid_ids':[] }
 
     for row in rows:
         if row[1]:
@@ -235,9 +235,26 @@ def check_distribution_parentage( cur, df, facility_fullname ):
     return messages
 
 
-def check_distribution_paths( cur, dc_tree, root_id, facility_fullname ):
+def check_paths( cur, dc_tree, root_id, facility_fullname ):
 
     messages = []
+
+    messages += traverse_paths( cur, dc_tree, root_id, facility_fullname )
+
+    return messages
+
+
+def traverse_paths( cur, subtree, subtree_root_id, facility_fullname ):
+
+    messages = []
+
+    path = subtree[subtree_root_id]['path']
+
+    # Traverse kids of current subtree root
+    for kid_id in subtree[subtree_root_id]['kid_ids']:
+
+        kid = subtree[kid_id]
+        kid_path = kid['path']
 
     return messages
 
