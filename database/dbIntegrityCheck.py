@@ -271,9 +271,9 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
     # Verify name syntax
     if ( name != None ):
         if name.isdigit():
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, subtree_root_type_id ), subtree_root_path, 'Name ' + name + ' must contain at least one non-digit character.'  ) )
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, subtree_root_type_id ), subtree_root_path, 'Name ' + "'" + name + "'" + ' must contain at least one non-digit character.'  ) )
         elif name_pattern.match( name ) == None:
-            print( 'bad name', name )
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, subtree_root_type_id ), subtree_root_path, 'Name ' + "'" + name + "'" + ' can contain only alphanumeric, hyphen, and underscore characters.'  ) )
 
     # Verify that name is present for Panel or Transformer
     if ( subtree_root_type_id in ( panel_type_id, transformer_type_id ) ) and ( name == None ):
