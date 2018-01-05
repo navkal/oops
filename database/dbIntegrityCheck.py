@@ -1,8 +1,10 @@
 import dbCommon
 import pandas as pd
 import time
+import re
 
 one_facility = False
+name_pattern = re.compile( r"^[A-Z0-9_\-]+$" )
 
 
 def check_database( conn, cur, facility=None ):
@@ -239,29 +241,54 @@ def check_paths( cur, dc_tree, root_id, facility_fullname ):
 
     messages = []
 
-    messages += traverse_paths( cur, dc_tree, root_id, facility_fullname )
+    panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
+    transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
+
+    messages += traverse_paths( cur, dc_tree, root_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
 
-
-def traverse_paths( cur, subtree, subtree_root_id, facility_fullname ):
+def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
 
     messages = []
 
-    subtree_root_path = subtree[subtree_root_id]['path']
-    subtree_root_tail = subtree[subtree_root_id]['tail']
+    # Extract fields of subtree root
+    subtree_root = subtree[subtree_root_id]
+    subtree_root_path = subtree_root['path']
+    subtree_root_tail = subtree_root['tail']
+    subtree_root_type_id = subtree_root['object_type_id']
 
+    # Separate subtree root tail into number and name
+    a_tail = subtree_root_tail.split( '-', maxsplit=1 )
+    if len( a_tail ) == 1:
+        if a_tail[0].isdigit():
+            num = a_tail[0]
+            name = None
+        else:
+            num = None
+            name = a_tail[0]
+    else:
+        num = a_tail[0]
+        name = a_tail[1]
 
-    # Check format of tail
-    '''
-    Allowed characters: Uppsercase alpha, digit, hyphen, underscore
-    Allowed format:
-      All digits before first hyphen
-      At least one non-digit after first hyphen
-    '''
+    # Verify number syntax
+    if ( num != None ) and not num.isdigit():
+        print( 'bad number', num )
+
+    # Verify name syntax
+    if ( name != None ):
+        if name.isdigit():
+            print( 'name is all digits' )
+        elif name_pattern.match( name ) == None:
+            print( 'bad name', name )
+
+    # Verify that name is present for Panel or Transformer
+    if ( subtree_root_type_id in ( panel_type_id, transformer_type_id ) ) and ( name == None ):
+        print( 'P/T must have name' )
+
 
     # Traverse kids of current subtree root
-    for kid_id in subtree[subtree_root_id]['kid_ids']:
+    for kid_id in subtree_root['kid_ids']:
 
         kid = subtree[kid_id]
 
@@ -269,19 +296,22 @@ def traverse_paths( cur, subtree, subtree_root_id, facility_fullname ):
         kid_path_leading = '.'.join( a_kid_path[:-1] )
         kid_path_trailing = '.'.join( a_kid_path[-1:] )
 
+        # Verify that leading portion of kid path matches parent path
         if kid_path_leading != subtree_root_path:
             print( '=========bad leading' )
             exit(1)
 
+        # Verify that kid tail matches trailing element of kid path
         if kid_path_trailing != kid['tail']:
             print( '=========bad trailing' )
             exit(1)
 
+        # Verify that kid source matches parent tail
         if kid['source'] != subtree_root_tail:
             print( '=========bad tail' )
             exit(1)
 
-        messages += traverse_paths( cur, subtree, kid_id, facility_fullname )
+        messages += traverse_paths( cur, subtree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
 
