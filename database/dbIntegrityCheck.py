@@ -88,11 +88,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    print( 'Checking paths')
+    print( 'Checking distribution paths')
     try:
-        messages += check_paths( cur, dc_tree, root_id, facility_fullname )
+        messages += check_distribution_paths( cur, dc_tree, root_id, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking paths.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -237,18 +237,18 @@ def check_distribution_hierarchy( cur, df, facility_fullname ):
     return messages
 
 
-def check_paths( cur, dc_tree, root_id, facility_fullname ):
+def check_distribution_paths( cur, dc_tree, root_id, facility_fullname ):
 
     messages = []
 
     panel_type_id = dbCommon.object_type_to_id( cur, 'Panel' )
     transformer_type_id = dbCommon.object_type_to_id( cur, 'Transformer' )
 
-    messages += traverse_paths( cur, dc_tree, root_id, panel_type_id, transformer_type_id, facility_fullname )
+    messages += traverse_distribution_paths( cur, dc_tree, root_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
 
-def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
+def traverse_distribution_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
 
     messages = []
 
@@ -300,7 +300,7 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
         if kid['source'] != subtree_root_tail:
             messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Internal database error.  Source '  + "'" + kid['source'] + "'" + ' should match tail of parent ' + "'" + subtree_root_tail + "'" + ' .'  ) )
 
-        messages += traverse_paths( cur, subtree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
+        messages += traverse_distribution_paths( cur, subtree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
 
