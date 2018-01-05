@@ -258,22 +258,15 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
     subtree_root_tail = subtree_root['tail']
     subtree_root_type_id = subtree_root['object_type_id']
 
-    # Separate subtree root tail into number and name
+    # Extract name from subtree root tail
     a_tail = subtree_root_tail.split( '-', maxsplit=1 )
-    if len( a_tail ) == 1:
-        if a_tail[0].isdigit():
-            num = a_tail[0]
-            name = None
-        else:
-            num = None
-            name = a_tail[0]
-    else:
-        num = a_tail[0]
-        name = a_tail[1]
+    name = None
 
-    # Verify number syntax
-    if ( num != None ) and not num.isdigit():
-        print( 'bad number', num )
+    if a_tail[0].isdigit():
+        if len( a_tail ) > 1:
+            name = a_tail[1]
+    else:
+        name = subtree_root_tail
 
     # Verify name syntax
     if ( name != None ):
