@@ -184,16 +184,6 @@ def check_distribution_root( cur, df, facility_fullname ):
     n_roots = len( df_root )
     if n_roots == 1:
 
-        # Verify that all paths descend from root
-        root_path = df_root.iloc[0]['path']
-        df_desc = df[ df['path'].str.startswith( root_path + '.' ) ]
-
-        df_bad = df[ ~df.index.isin( df_desc.index.values ) ]
-        df_bad = df_bad[ ~df_bad.index.isin( df_root.index.values ) ]
-
-        for index, row in df_bad.iterrows():
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Path does not descend from root ' + root_path + '.'  ) )
-
         # Verify that root is a Panel
         root_object_type_id = df_root.iloc[0]['object_type_id']
         if root_object_type_id != dbCommon.object_type_to_id( cur, 'Panel' ):
@@ -290,7 +280,7 @@ def traverse_distribution_paths( cur, subtree, subtree_root_id, panel_type_id, t
 
         # Verify that leading portion of kid path matches parent path
         if kid_path_leading != subtree_root_path:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Internal database error.  Path should be child of ' + "'" + subtree_root_path + "'" + '.'  ) )
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Path should be child of ' + "'" + subtree_root_path + "'" + '.'  ) )
 
         # Verify that kid tail matches trailing element of kid path
         if kid_path_trailing != kid['tail']:
