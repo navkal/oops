@@ -290,18 +290,15 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
 
         # Verify that leading portion of kid path matches parent path
         if kid_path_leading != subtree_root_path:
-            print( '=========bad leading' )
-            exit(1)
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Wrong path.  Should be child of ' + "'" + subtree_root_path + "'" + '.'  ) )
 
         # Verify that kid tail matches trailing element of kid path
         if kid_path_trailing != kid['tail']:
             print( '=========bad trailing' )
-            exit(1)
 
         # Verify that kid source matches parent tail
         if kid['source'] != subtree_root_tail:
             print( '=========bad tail' )
-            exit(1)
 
         messages += traverse_paths( cur, subtree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
