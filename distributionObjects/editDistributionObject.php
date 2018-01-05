@@ -326,11 +326,6 @@
         case 'phase_b_tail':
           updatePhaseCDropdown( $( '#phase_b_tail' ).val() );
           break;
-
-        case 'name':
-          // Convert to uppercase
-          tControl.val( sVal.toUpperCase() );
-          break;
       }
 
       // Special handling for select2 objects

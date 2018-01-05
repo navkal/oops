@@ -298,10 +298,6 @@ function onChangeControl( tEvent )
           case 'phase_b_tail':
             updatePhaseCDropdown( $( '#phase_b_tail' ).val() );
             break;
-
-          case 'name':
-            tControl.val( sVal.toUpperCase() );
-            break;
         }
 
         break;

@@ -4,7 +4,7 @@ import time
 import re
 
 one_facility = False
-name_pattern = re.compile( r"^[A-Z0-9_\-]+$" )
+name_pattern = re.compile( r'^[a-zA-Z0-9\-_]+$' )
 
 
 def check_database( conn, cur, facility=None ):
