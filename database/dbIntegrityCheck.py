@@ -271,7 +271,7 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
     # Verify name syntax
     if ( name != None ):
         if name.isdigit():
-            print( 'name is all digits' )
+            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, subtree_root_type_id ), subtree_root_path, 'Name ' + name + ' must contain at least one non-digit character.'  ) )
         elif name_pattern.match( name ) == None:
             print( 'bad name', name )
 
