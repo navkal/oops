@@ -279,7 +279,6 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
     if ( subtree_root_type_id in ( panel_type_id, transformer_type_id ) ) and ( name == None ):
         print( 'P/T must have name' )
 
-
     # Traverse kids of current subtree root
     for kid_id in subtree_root['kid_ids']:
 
