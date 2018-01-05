@@ -277,7 +277,7 @@ def traverse_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_ty
 
     # Verify that name is present for Panel or Transformer
     if ( subtree_root_type_id in ( panel_type_id, transformer_type_id ) ) and ( name == None ):
-        print( 'P/T must have name' )
+        messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, subtree_root_type_id ), subtree_root_path, 'Has no name.'  ) )
 
     # Traverse kids of current subtree root
     for kid_id in subtree_root['kid_ids']:
