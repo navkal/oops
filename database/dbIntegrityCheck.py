@@ -80,6 +80,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
+    print( 'Checking connectivity')
+    try:
+        messages += check_connectivity( cur, dc_tree, root_id, facility_fullname )
+    except:
+        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking connectivity.' ) )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
     print( 'Checking distribution hierarchy')
     try:
         messages += check_distribution_hierarchy( cur, df, facility_fullname )
@@ -163,7 +171,7 @@ def make_tree( cur, facility_name ):
     # Build dictionary representing Distribution tree
     dc_tree = {}
     for row in rows:
-        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'source': row[5], 'tail': row[6], 'kid_ids':[] }
+        dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'source': row[5], 'tail': row[6], 'connected': False, 'kid_ids':[] }
 
     for row in rows:
         if row[1]:
@@ -191,6 +199,37 @@ def check_distribution_root( cur, df, facility_fullname ):
 
     else:
         messages.append( make_error_message( facility_fullname, 'Distribution', 'Tree', 'Has ' + str( n_roots ) + ' roots.' ) )
+
+    return messages
+
+
+def check_connectivity( cur, dc_tree, root_id, facility_fullname ):
+
+    messages = []
+
+    messages += traverse_connectivity( cur, dc_tree, root_id, facility_fullname )
+
+    for id in dc_tree:
+        node = dc_tree[id]
+        if not node['connected']:
+            print( 'not connected', node['path'] )
+
+
+    return messages
+
+
+def traverse_connectivity( cur, dc_tree, subtree_root_id, facility_fullname ):
+
+    messages = []
+
+    subtree_root = dc_tree[subtree_root_id]
+
+    # Indicate that this node is connected to the tree
+    subtree_root['connected'] = True
+
+    # Traverse kids of current subtree root
+    for kid_id in subtree_root['kid_ids']:
+        messages += traverse_connectivity( cur, dc_tree, kid_id, facility_fullname )
 
     return messages
 
