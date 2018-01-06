@@ -238,12 +238,12 @@ def check_distribution_paths( cur, dc_tree, root_id, facility_fullname ):
 
     return messages
 
-def traverse_distribution_paths( cur, subtree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
+def traverse_distribution_paths( cur, dc_tree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
 
     messages = []
 
     # Extract fields of subtree root
-    subtree_root = subtree[subtree_root_id]
+    subtree_root = dc_tree[subtree_root_id]
     subtree_root_path = subtree_root['path']
     subtree_root_tail = subtree_root['tail']
     subtree_root_type_id = subtree_root['object_type_id']
@@ -272,7 +272,7 @@ def traverse_distribution_paths( cur, subtree, subtree_root_id, panel_type_id, t
     # Traverse kids of current subtree root
     for kid_id in subtree_root['kid_ids']:
 
-        kid = subtree[kid_id]
+        kid = dc_tree[kid_id]
 
         a_kid_path = kid['path'].split( '.' )
         kid_path_leading = '.'.join( a_kid_path[:-1] )
@@ -290,7 +290,7 @@ def traverse_distribution_paths( cur, subtree, subtree_root_id, panel_type_id, t
         if kid['source'] != subtree_root_tail:
             messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Source '  + "'" + kid['source'] + "'" + ' does not match tail of parent ' + "'" + subtree_root_tail + "'" + ' .'  ) )
 
-        messages += traverse_distribution_paths( cur, subtree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
+        messages += traverse_distribution_paths( cur, dc_tree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
 
@@ -384,14 +384,14 @@ def check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname ):
     return messages
 
 
-def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname ):
+def traverse_voltages( cur, dc_tree, subtree_root_id, expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname ):
 
     messages = []
 
     # Traverse kids of current subtree root
-    for kid_id in subtree[subtree_root_id]['kid_ids']:
+    for kid_id in dc_tree[subtree_root_id]['kid_ids']:
 
-        kid = subtree[kid_id]
+        kid = dc_tree[kid_id]
         path = kid['path']
 
         if kid['object_type_id'] == transformer_type_id:
@@ -420,7 +420,7 @@ def traverse_voltages( cur, subtree, subtree_root_id, expected_voltage_id, trans
             new_expected_voltage_id = expected_voltage_id
 
         # Traverse subtree rooted at current object
-        messages += traverse_voltages( cur, subtree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
+        messages += traverse_voltages( cur, dc_tree, kid_id, new_expected_voltage_id, transformer_type_id, hi_voltage_id, lo_voltage_id, facility_fullname )
 
     return messages
 
@@ -437,7 +437,7 @@ def check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullna
     return messages
 
 
-def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, facility_fullname ):
+def traverse_circuit_numbers( cur, dc_tree, subtree_root_id, panel_type_id, facility_fullname ):
 
     messages = []
 
@@ -445,12 +445,12 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
     dc_circuit_numbers = {}
 
     # Traverse kids of current subtree root
-    for kid_id in subtree[subtree_root_id]['kid_ids']:
+    for kid_id in dc_tree[subtree_root_id]['kid_ids']:
 
-        kid = subtree[kid_id]
+        kid = dc_tree[kid_id]
 
         # If subtree root is a panel, look for duplicate numbers among kids
-        if subtree[subtree_root_id]['object_type_id'] == panel_type_id:
+        if dc_tree[subtree_root_id]['object_type_id'] == panel_type_id:
 
             # Get number of current circuit
             number = kid['tail'].split( '-' )[0]
@@ -467,7 +467,7 @@ def traverse_circuit_numbers( cur, subtree, subtree_root_id, panel_type_id, faci
                     dc_circuit_numbers[number] = { 'paths': [ kid['path'] ], 'tails': [ kid['tail'] ] }
 
         # Traverse subtree rooted at current object
-        messages += traverse_circuit_numbers( cur, subtree, kid_id, panel_type_id, facility_fullname )
+        messages += traverse_circuit_numbers( cur, dc_tree, kid_id, panel_type_id, facility_fullname )
 
     # Look for duplicate circuit numbers
     for number in dc_circuit_numbers:
