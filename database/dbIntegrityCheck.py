@@ -56,7 +56,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     print( 'Loading tree' )
     try:
-        ( dc_tree, root_id ) = make_tree( cur, facility_name )
+        ( dc_tree, root_id, dc_orphans ) = make_tree( cur, facility_name )
     except:
         messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while loading tree.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
@@ -82,7 +82,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     t = time.time()
     print( 'Checking distribution connectivity')
     try:
-        messages += check_distribution_connectivity( cur, dc_tree, root_id, facility_fullname )
+        messages += check_distribution_connectivity( cur, dc_tree, root_id, dc_orphans, facility_fullname )
     except:
         messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution connectivity.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
@@ -170,16 +170,24 @@ def make_tree( cur, facility_name ):
 
     # Build dictionary representing Distribution tree
     dc_tree = {}
+    dc_orphans = {}
+
     for row in rows:
         dc_tree[row[0]] = { 'id': row[0], 'parent_id': row[1], 'object_type_id': row[2], 'voltage_id': row[3], 'path': row[4], 'source': row[5], 'tail': row[6], 'connected': False, 'kid_ids':[] }
 
     for row in rows:
-        if row[1]:
-            dc_tree[row[1]]['kid_ids'].append( row[0] )
-        else:
-            root_id = row[0]
+        id = row[0]
+        parent_id = row[1]
 
-    return dc_tree, root_id
+        if parent_id:
+            if parent_id in dc_tree:
+                dc_tree[parent_id]['kid_ids'].append( id )
+            else:
+                dc_orphans[id] = { 'object_type_id': row[2], 'path': row[4] }
+        else:
+            root_id = id
+
+    return dc_tree, root_id, dc_orphans
 
 
 def check_distribution_root( cur, df, facility_fullname ):
@@ -203,7 +211,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
-def check_distribution_connectivity( cur, dc_tree, root_id, facility_fullname ):
+def check_distribution_connectivity( cur, dc_tree, root_id, dc_orphans, facility_fullname ):
 
     messages = []
 
@@ -225,7 +233,13 @@ def check_distribution_connectivity( cur, dc_tree, root_id, facility_fullname ):
     for path in loop_expression:
         df_discon_roots = df_discon_roots[ ~ df_discon_roots['path'].str.startswith( path + '.' ) ]
 
-    # Report disconnected roots
+    # Add non-root orphans found during loading of tree
+    for orphan_id in dc_orphans:
+        df_discon_roots = df_discon_roots.append( dc_orphans[orphan_id], ignore_index=True )
+
+    df_discon_roots = df_discon_roots.drop_duplicates( subset=['path'] )
+
+    # Report disconnected roots and non-root orphans
     for index, row in df_discon_roots.iterrows():
         messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Disconnected from Distribution tree.'  ) )
 
