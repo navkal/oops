@@ -76,7 +76,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_root( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution root.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution root.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -84,7 +84,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_connectivity( cur, dc_tree, root_id, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking connectivity.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking connectivity.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -92,7 +92,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_hierarchy( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution hierarchy.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution hierarchy.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -100,7 +100,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_paths( cur, dc_tree, root_id, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution paths.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -108,7 +108,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_three_phase( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking three-phase connections.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking three-phase connections.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -116,7 +116,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_distribution_siblings( cur, df, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution siblings.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution siblings.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -124,7 +124,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_voltages( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking voltages.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking voltages.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -132,7 +132,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_circuit_numbers( cur, dc_tree, root_id, facility_name, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking circuit numbers.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking circuit numbers.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -140,7 +140,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_device_hierarchy( cur, df, df_dev, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device hierarchy.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device hierarchy.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -148,7 +148,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_refs( cur, df, df_dev, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location references.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location references.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -156,7 +156,7 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     try:
         messages += check_location_names( cur, df_loc, facility_fullname )
     except:
-        messages.append( make_critical_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location names.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking location names.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return messages
@@ -227,7 +227,7 @@ def check_connectivity( cur, dc_tree, root_id, facility_fullname ):
 
     # Report disconnected roots
     for index, row in df_discon_roots.iterrows():
-        messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Inconsistency in database: Node is disconnected from Distribution tree.'  ) )
+        messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Disconnected from Distribution tree.'  ) )
 
     return messages
 
@@ -333,15 +333,15 @@ def traverse_distribution_paths( cur, dc_tree, subtree_root_id, panel_type_id, t
 
         # Verify that leading portion of kid path matches parent path
         if kid_path_leading != subtree_root_path:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Path is not child of ' + "'" + subtree_root_path + "'" + '.'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Path is not child of ' + "'" + subtree_root_path + "'" + '.'  ) )
 
         # Verify that kid tail matches trailing element of kid path
         if kid_path_trailing != kid['tail']:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Tail '  + "'" + kid['tail'] + "'" + ' does not match last segment of path.'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Tail '  + "'" + kid['tail'] + "'" + ' does not match last segment of path.'  ) )
 
         # Verify that kid source matches parent tail
         if kid['source'] != subtree_root_tail:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Source '  + "'" + kid['source'] + "'" + ' does not match tail of parent ' + "'" + subtree_root_tail + "'" + ' .'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Source '  + "'" + kid['source'] + "'" + ' does not match tail of parent ' + "'" + subtree_root_tail + "'" + ' .'  ) )
 
         messages += traverse_distribution_paths( cur, dc_tree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
