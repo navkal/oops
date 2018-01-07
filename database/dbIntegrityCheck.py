@@ -333,15 +333,15 @@ def traverse_distribution_paths( cur, dc_tree, subtree_root_id, panel_type_id, t
 
         # Verify that leading portion of kid path matches parent path
         if kid_path_leading != subtree_root_path:
-            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Path is not child of ' + "'" + subtree_root_path + "'" + '.'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Path is not child of ' + "'" + subtree_root_path + "'" + '.'  ) )
 
         # Verify that kid tail matches trailing element of kid path
         if kid_path_trailing != kid['tail']:
-            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Tail '  + "'" + kid['tail'] + "'" + ' does not match last segment of path.'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Tail '  + "'" + kid['tail'] + "'" + ' does not match last segment of path.'  ) )
 
         # Verify that kid source matches parent tail
         if kid['source'] != subtree_root_tail:
-            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Inconsistency in database: Source '  + "'" + kid['source'] + "'" + ' does not match tail of parent ' + "'" + subtree_root_tail + "'" + ' .'  ) )
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, kid['object_type_id'] ), kid['path'], 'Source '  + "'" + kid['source'] + "'" + ' does not match tail of parent ' + "'" + subtree_root_tail + "'" + '.'  ) )
 
         messages += traverse_distribution_paths( cur, dc_tree, kid_id, panel_type_id, transformer_type_id, facility_fullname )
 
