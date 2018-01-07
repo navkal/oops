@@ -207,13 +207,27 @@ def check_connectivity( cur, dc_tree, root_id, facility_fullname ):
 
     messages = []
 
+    # Identify all connected nodes
     messages += traverse_connectivity( cur, dc_tree, root_id, facility_fullname )
+
+    # Build list of disconnected paths
+    dc_discon = { 'path': [], 'object_type_id': [] }
 
     for id in dc_tree:
         node = dc_tree[id]
         if not node['connected']:
-            print( 'not connected', node['path'] )
+            dc_discon['path'].append( node['path'] )
+            dc_discon['object_type_id'].append( node['object_type_id'] )
 
+    # Identify relative roots among disconnected paths
+    df_discon_roots = pd.DataFrame( dc_discon )
+    loop_expression = ( path for path in dc_discon['path'] if len( df_discon_roots ) > 1 )
+    for path in loop_expression:
+        df_discon_roots = df_discon_roots[ ~ df_discon_roots['path'].str.startswith( path + '.' ) ]
+
+    # Report disconnected roots
+    for index, row in df_discon_roots.iterrows():
+        messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Inconsistency in database: Node is disconnected from Distribution tree.'  ) )
 
     return messages
 
