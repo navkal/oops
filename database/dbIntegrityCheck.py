@@ -80,11 +80,11 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
-    print( 'Checking connectivity')
+    print( 'Checking distribution connectivity')
     try:
-        messages += check_connectivity( cur, dc_tree, root_id, facility_fullname )
+        messages += check_distribution_connectivity( cur, dc_tree, root_id, facility_fullname )
     except:
-        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking connectivity.' ) )
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking distribution connectivity.' ) )
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
@@ -203,7 +203,7 @@ def check_distribution_root( cur, df, facility_fullname ):
     return messages
 
 
-def check_connectivity( cur, dc_tree, root_id, facility_fullname ):
+def check_distribution_connectivity( cur, dc_tree, root_id, facility_fullname ):
 
     messages = []
 
@@ -290,6 +290,7 @@ def check_distribution_paths( cur, dc_tree, root_id, facility_fullname ):
     messages += traverse_distribution_paths( cur, dc_tree, root_id, panel_type_id, transformer_type_id, facility_fullname )
 
     return messages
+
 
 def traverse_distribution_paths( cur, dc_tree, subtree_root_id, panel_type_id, transformer_type_id, facility_fullname ):
 
