@@ -382,29 +382,47 @@ def check_three_phase( cur, df, facility_fullname ):
     df_phase = df[ df['phase_b_parent_id'] != '' ]
 
     for index, row in df_phase.iterrows():
+        parent_id = row['parent_id']
+        phase_b_parent_id = row['phase_b_parent_id']
+        phase_c_parent_id = row['phase_c_parent_id']
 
-        # Verify that Phase B Parent is sibling of Parent
-        granny_a_id = df.loc[ row['parent_id'] ]['parent_id']
-        granny_b_id = df.loc[ row['phase_b_parent_id'] ]['parent_id']
-        if granny_a_id != granny_b_id:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase B Parent are not siblings.' ) )
+        parents_found = True
 
-        # Verify that Phase B Parent is a Circuit object
-        b_parent_object_type_id = df.loc[ row['phase_b_parent_id'] ]['object_type_id']
-        if b_parent_object_type_id != circuit_object_type_id:
-            messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase B Parent is not a Circuit.' ) )
+        if parent_id not in df.index.values:
+            parents_found = False
 
-        if row['phase_c_parent_id']:
+        if phase_b_parent_id not in df.index.values:
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase B Parent not found in Distribution tree.' ) )
+            parents_found = False
 
-            # Verify that Phase C Parent is sibling of Parent
-            granny_c_id = df.loc[ row['phase_c_parent_id'] ]['parent_id']
-            if granny_a_id != granny_c_id:
-                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase C Parent are not siblings.' ) )
+        if phase_c_parent_id and ( phase_c_parent_id not in df.index.values ):
+            messages.append( make_critical_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent not found in Distribution tree.' ) )
+            parents_found = False
 
-            # Verify that Phase C Parent is a Circuit object
-            c_parent_object_type_id = df.loc[ row['phase_c_parent_id'] ]['object_type_id']
-            if c_parent_object_type_id != circuit_object_type_id:
-                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent is not a Circuit.' ) )
+        if parents_found:
+
+            # Verify that Phase B Parent is sibling of Parent
+            granny_a_id = df.loc[parent_id]['parent_id']
+            granny_b_id = df.loc[phase_b_parent_id]['parent_id']
+            if granny_a_id != granny_b_id:
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase B Parent are not siblings.' ) )
+
+            # Verify that Phase B Parent is a Circuit object
+            b_parent_object_type_id = df.loc[phase_b_parent_id]['object_type_id']
+            if b_parent_object_type_id != circuit_object_type_id:
+                messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase B Parent is not a Circuit.' ) )
+
+            if phase_c_parent_id:
+
+                # Verify that Phase C Parent is sibling of Parent
+                granny_c_id = df.loc[phase_c_parent_id]['parent_id']
+                if granny_a_id != granny_c_id:
+                    messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Parent and Phase C Parent are not siblings.' ) )
+
+                # Verify that Phase C Parent is a Circuit object
+                c_parent_object_type_id = df.loc[phase_c_parent_id]['object_type_id']
+                if c_parent_object_type_id != circuit_object_type_id:
+                    messages.append( make_error_message( facility_fullname, dbCommon.get_object_type( cur, row['object_type_id'] ), row['path'], 'Phase C Parent is not a Circuit.' ) )
 
     return messages
 
