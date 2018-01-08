@@ -594,7 +594,7 @@ def check_device_connectivity( cur, df, df_dev, facility_fullname ):
 
     # Report anomalies
     for index, row in df_discon.iterrows():
-        messages.append( make_error_message( facility_fullname, 'Device', row['description_of_device'], 'Disconnected from Distribution tree.' ) )
+        messages.append( make_critical_message( facility_fullname, 'Device', row['description_of_device'], 'Disconnected from Distribution tree.' ) )
 
     return messages
 
