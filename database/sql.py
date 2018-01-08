@@ -159,7 +159,9 @@ def get_location_dropdown( facility ):
         location = { 'id': row[0], 'text': dbCommon.format_location( row[1], row[2], row[4] )  }
         locations.append( location )
 
-    return natsort.natsorted( locations, key=lambda x: x['text'] )
+    locations = natsort.natsorted( locations, key=lambda x: x['text'] )
+
+    return locations
 
 
 def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='', dist_object_table_prefix='' ):
@@ -231,7 +233,9 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
                         if parent_available :
                             parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2] } )
 
-    return natsort.natsorted( parents, key=lambda x: x['text'] )
+    parents = natsort.natsorted( parents, key=lambda x: x['text'] )
+
+    return parents
 
 
 def test_path_availability( target_table, parent_id, tail ):
