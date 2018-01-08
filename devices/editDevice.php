@@ -60,10 +60,11 @@
   var g_sName = null;
   var g_sLocationId = null;
 
+  var g_sSpinnerHideShow = '#editDialog .glyphicon-remove, #editDialog .modal-body, #editDialog .modal-footer'
 
   function onShowEditDialog()
   {
-    showSpinner();
+    showSpinner( g_sSpinnerHideShow );
 
     $( '#source_path_container' ).html( '<select id="source_path" class="form-control" style="width: 100%" ></select>' );
     $( '#room_id_container' ).html( '<select id="room_id" class="form-control" style="width: 100%" ></select>' );
@@ -153,7 +154,7 @@
     // Clear messages
     clearMessages();
 
-    hideSpinner();
+    hideSpinner( g_sSpinnerHideShow );
   }
 
   function initAddDialog()
