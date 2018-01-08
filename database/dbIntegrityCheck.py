@@ -33,7 +33,7 @@ def check_database( conn, cur, facility=None ):
         messages += check_facility( conn, cur, facility_name, facility_fullname )
 
     # Sort the messages by severity, etc.
-    messages = sorted( messages, key=lambda x: [ x['facility_fullname'], x['severity'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
+    messages = sorted( messages, key=lambda x: [ x['severity'], x['facility_fullname'], x['affected_category'], x['affected_element'], x['anomaly_descr'] ] )
 
     print( '\nAnomalies found: ' + str( len( messages ) )  )
 
