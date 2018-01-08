@@ -136,6 +136,14 @@ def check_facility( conn, cur, facility_name, facility_fullname ):
     print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     t = time.time()
+    print( 'Checking device connectivity')
+    try:
+        messages += check_device_connectivity( cur, df, df_dev, facility_fullname )
+    except:
+        messages.append( make_alert_message( facility_fullname, 'Facility', 'Data', 'Exception while checking device connectivity.' ) )
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
+    t = time.time()
     print( 'Checking device hierarchy')
     try:
         messages += check_device_hierarchy( cur, df, df_dev, facility_fullname )
@@ -574,6 +582,23 @@ def traverse_circuit_numbers( cur, dc_tree, subtree_root_id, panel_type_id, faci
     return messages
 
 
+def check_device_connectivity( cur, df, df_dev, facility_fullname ):
+
+    messages = []
+
+    # Join dataframes to associate devices with their parents
+    df_join = df_dev.join( df, on='parent_id', how='left', lsuffix='_of_device', rsuffix='_of_parent' )
+
+    # Extract devices whose parents don't exist
+    df_discon = df_join[ df_join['path'].isnull() ]
+
+    # Report anomalies
+    for index, row in df_discon.iterrows():
+        messages.append( make_error_message( facility_fullname, 'Device', row['description_of_device'], 'Disconnected from Distribution tree.' ) )
+
+    return messages
+
+
 def check_device_hierarchy( cur, df, df_dev, facility_fullname ):
 
     messages = []
@@ -581,7 +606,7 @@ def check_device_hierarchy( cur, df, df_dev, facility_fullname ):
     circuit_type_id = dbCommon.object_type_to_id( cur, 'Circuit' )
 
     # Join dataframes to associate devices with their parents
-    df_join = df_dev.join( df, on='parent_id', how='left', lsuffix='_of_device', rsuffix='_of_parent' )
+    df_join = df_dev.join( df, on='parent_id', how='inner', lsuffix='_of_device', rsuffix='_of_parent' )
 
     # Extract devices whose parents are of wrong type
     df_wrong_parent_type = df_join[ df_join['object_type_id'] != circuit_type_id ]
