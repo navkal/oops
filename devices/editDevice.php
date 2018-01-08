@@ -72,11 +72,14 @@
     getDropdowns();
   }
 
+  var g_iStartGetTime = null;
   function getDropdowns()
   {
     // Post request to server
     var tPostData = new FormData();
     tPostData.append( "postSecurity", "" );
+
+    g_iStartGetTime = Date.now();
 
     $.ajax(
       "devices/getDeviceDropdowns.php",
@@ -94,6 +97,9 @@
 
   function makeDropdowns( tRsp, sStatus, tJqXhr )
   {
+    console.log( '=> Time to retrieve dropdowns: ' + ( Date.now() - g_iStartGetTime ) + ' ms' );
+    var iStartLoadTime = Date.now();
+
     var sHtmlSourcePath = '';
     var aSources = tRsp.sources;
     for ( var iSource in aSources )
@@ -114,6 +120,8 @@
     $( '#room_id' ).html( sHtmlLocation );
 
     loadEditDialog()
+
+    console.log( '=> Time to load dialog: ' + ( Date.now() - iStartLoadTime ) + ' ms' );
   }
 
   function loadEditDialog()
