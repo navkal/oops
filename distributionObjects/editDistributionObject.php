@@ -120,9 +120,11 @@
 
   var g_tDropdowns = null;
 
+  var g_sSpinnerHideShow = '.modal-body, .modal-footer'
+
   function onShowEditDialog()
   {
-    showSpinner();
+    showSpinner( g_sSpinnerHideShow );
 
     $( '#parent_path_container' ).html( '<select id="parent_path" class="form-control" style="width: 100%" ></select>' );
     $( '#phase_b_tail_container' ).html( '<select id="phase_b_tail" class="form-control" style="width: 100%" ></select>' );
@@ -225,7 +227,7 @@
     // Clear messages
     clearMessages();
 
-    hideSpinner();
+    hideSpinner( g_sSpinnerHideShow );
 
     console.log( '=> Time to load dialog: ' + ( Date.now() - iStartLoadTime ) + ' ms' );
   }

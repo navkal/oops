@@ -845,13 +845,23 @@ function clearWaitCursor()
   $( '#content' ).css( 'display', 'block' );
 }
 
-function showSpinner()
+function showSpinner( sHideSelector )
 {
+  if ( sHideSelector )
+  {
+    $( sHideSelector ).css( 'visibility', 'hidden' );
+  }
+
   $( '#spinner' ).css( 'display', 'block' );
 }
 
-function hideSpinner()
+function hideSpinner( sShowSelector )
 {
+  if ( sShowSelector )
+  {
+    $( sShowSelector ).css( 'visibility', 'visible' );
+  }
+
   $( '#spinner' ).css( 'display', 'none' );
 }
 
