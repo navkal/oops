@@ -132,6 +132,7 @@
     getDropdowns();
   }
 
+  var g_iStartGetTime = null;
   function getDropdowns()
   {
     // Post request to server
@@ -140,6 +141,8 @@
 
     var sId = g_sUpdateTarget ? findSortableTableRow( g_sUpdateTarget ).id : '';
     tPostData.append( 'id', sId );
+
+    g_iStartGetTime = Date.now();
 
     $.ajax(
       "distributionObjects/getDistributionObjectDropdowns.php",
@@ -157,6 +160,9 @@
 
   function loadEditDialog( tRsp, sStatus, tJqXhr )
   {
+    console.log( '=> Time to retrieve dropdowns: ' + ( Date.now() - g_iStartGetTime ) + ' ms' );
+    var iStartLoadTime = Date.now();
+
     g_tDropdowns = tRsp;
 
     // Customize ID of description field
@@ -220,6 +226,8 @@
     clearMessages();
 
     hideSpinner();
+
+    console.log( '=> Time to load dialog: ' + ( Date.now() - iStartLoadTime ) + ' ms' );
   }
 
   function initAddDialog()
