@@ -235,7 +235,7 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
                     if phase_allowed:
 
                         # Filter by availability of parent
-                        ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( parent_table, device_table, object_type, parent_id, 0, 0, dist_object_id )
+                        ( phase_a_path, phase_b_tail, phase_c_tail ) = test_parent_availability( parent_table, device_table, object_type, parent_id, 0, 0, dist_object_id, use_cache=True )
                         parent_available = not ( phase_a_path or phase_b_tail or phase_c_tail )
 
                         if parent_available :
@@ -292,7 +292,8 @@ def test_phase_parent_availability( dist_table, device_table, object_type, phase
     return result
 
 
-def test_parent_availability( dist_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, allowed_id ):
+id_type_map = None
+def test_parent_availability( dist_table, device_table, object_type, parent_id, phase_b_parent_id, phase_c_parent_id, allowed_id, use_cache=False ):
 
     # Ensure that Circuit->Panel and Circuit->Transformer parent->child relationships are exclusive
 
@@ -303,8 +304,22 @@ def test_parent_availability( dist_table, device_table, object_type, parent_id, 
     # Check only if object seeking a parent is a Panel, Transformer, or Device
     if object_type in [ 'Panel', 'Transformer', 'Device' ]:
 
-        cur.execute( 'SELECT object_type_id FROM ' + dist_table + ' WHERE id=?', ( parent_id, ) );
-        parent_type_id = cur.fetchone()[0]
+        if use_cache:
+
+            global id_type_map
+            if id_type_map == None:
+                id_type_map = {}
+                cur.execute( 'SELECT id, object_type_id FROM ' + dist_table )
+                rows = cur.fetchall()
+                for row in rows:
+                    id_type_map[row[0]] = row[1]
+
+            parent_type_id = id_type_map[parent_id]
+
+        else:
+
+            cur.execute( 'SELECT object_type_id FROM ' + dist_table + ' WHERE id=?', ( parent_id, ) );
+            parent_type_id = cur.fetchone()[0]
 
         # Check only if requested parent is a Circuit.  (For Panel objects, requested parent could be Transformer.)
         if parent_type_id == dbCommon.object_type_to_id( cur, 'Circuit' ):
