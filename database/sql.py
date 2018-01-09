@@ -151,6 +151,9 @@ def facility_names_to_ids( name_csv ):
 
 def get_location_dropdown( facility ):
 
+    t = time.time()
+    print( 'Getting location dropdown' )
+
     cur.execute('SELECT * FROM ' + facility + '_Room')
     rows = cur.fetchall()
 
@@ -161,10 +164,15 @@ def get_location_dropdown( facility ):
 
     locations = natsort.natsorted( locations, key=lambda x: x['text'] )
 
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
+
     return locations
 
 
 def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='', dist_object_table_prefix='' ):
+
+    t = time.time()
+    print( 'Getting distribution dropdown' )
 
     parents = []
 
@@ -234,6 +242,8 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
                             parents.append( { 'id': parent_id, 'text': parent_path, 'make_phase_dropdowns': not parent_row[2] } )
 
     parents = natsort.natsorted( parents, key=lambda x: x['text'] )
+
+    print( 'Elapsed seconds:', time.time() - t, '\n' )
 
     return parents
 
