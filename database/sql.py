@@ -345,13 +345,6 @@ def test_phase_parent_availability( dist_table, device_table, object_type, phase
 
         count = a_count + b_count + c_count
 
-        cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
-        test_count = cur.fetchone()[0]
-
-        if count != test_count:
-            print( '=====================> BAD!  WRONG!!!', 'count', count, 'test_count', test_count )
-            exit(1)
-
     else:
 
         cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
