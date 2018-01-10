@@ -250,25 +250,32 @@ def get_distribution_dropdown( facility=None, object_type=None, dist_object_id='
 
 def test_path_availability( target_table, parent_id, tail ):
 
+    # Initialize result
+    ( parent_not_found, test_id, path, source ) = ( None, None, None, None )
+
     # Get parent path
     cur.execute('SELECT path FROM ' + target_table + ' WHERE id = ?', (parent_id,))
-    parent_path = cur.fetchone()[0]
+    parent_path_rows = cur.fetchall()
+    parent_not_found = len( parent_path_rows ) == 0
 
-    # Format test path
-    path = parent_path + '.' + tail
+    if not parent_not_found:
 
-    # Attempt to get test id
-    cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (path,))
-    test_row = cur.fetchone()
+        parent_path = parent_path_rows[0][0]
 
-    if test_row:
-        test_id = str( test_row[0] )
-    else:
-        test_id = None
+        # Format test path
+        path = parent_path + '.' + tail
 
-    # Return results
-    source  = parent_path.split( '.' )[-1]
-    return ( test_id, path, source )
+        # Attempt to get test id
+        cur.execute('SELECT id FROM ' + target_table + ' WHERE path = ?', (path,))
+        test_row = cur.fetchone()
+
+        if test_row:
+            test_id = str( test_row[0] )
+
+        # Return results
+        source  = parent_path.split( '.' )[-1]
+
+    return ( parent_not_found, test_id, path, source )
 
 
 a_map = None
@@ -1396,9 +1403,13 @@ class addDistributionObject:
         target_table = facility + '_Distribution'
 
         # Determine whether path is available
-        ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+        ( parent_not_found, test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
 
-        if test_id:
+        if parent_not_found:
+            # Parent does not exist
+            self.messages.append( "Parent not found." )
+            self.selectors = [ '#parent_path' ]
+        elif test_id:
             # Path already in use
             self.messages.append( "Path '" + path + "' is not available." )
             self.selectors = [ '#parent_path', '#number', '#name' ]
@@ -1418,7 +1429,7 @@ class addDistributionObject:
                 self.selectors.append( '#phase_c_tail' )
 
         if len( self.messages ) == 0:
-            # Path is not in use; okay to add
+            # Path is available; okay to add
 
             # Propagate three_phase property from Panel to Circuit
             if object_type == 'Circuit':
@@ -1490,13 +1501,15 @@ class updateDistributionObject:
 
             # Determine whether path is available
             if parent_id:
-                ( test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
+                ( parent_not_found, test_id, path, source ) = test_path_availability( target_table, parent_id, tail )
             else:
-                test_id = None
-                path = tail
-                source = ''
+                ( parent_not_found, test_id, path, source ) = ( False, None, tail, '' )
 
-            if ( test_id != None ) and ( test_id != id ):
+            if parent_not_found:
+                # Parent does not exist
+                self.messages.append( "Parent not found." )
+                self.selectors = [ '#parent_path' ]
+            elif ( test_id != None ) and ( test_id != id ):
                 # Path is neither available nor original
                 self.messages.append( "Path '" + path + "' is not available." )
                 self.selectors = [ '#parent_path', '#number', '#name' ]
@@ -2285,9 +2298,13 @@ class restoreRemovedObject:
         target_table = facility + '_Distribution'
 
         # Determine whether requested path is available
-        ( test_id, restore_path, source ) = test_path_availability( target_table, parent_id, tail )
+        ( parent_not_found, test_id, restore_path, source ) = test_path_availability( target_table, parent_id, tail )
 
-        if test_id:
+        if parent_not_found:
+            # Parent does not exist
+            self.messages.append( "Parent not found." )
+            self.selectors = [ '#parent_path' ]
+        elif test_id:
             # Path already in use
             self.messages.append( "Path '" + restore_path + "' is not available." )
             self.selectors = [ '#parent_path', '#number', '#name' ]
