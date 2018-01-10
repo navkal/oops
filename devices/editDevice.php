@@ -60,7 +60,7 @@
   var g_sName = null;
   var g_sLocationId = null;
 
-  var g_sSpinnerHideShow = '#editDialog .glyphicon-remove, #editDialog .modal-body, #editDialog .modal-footer'
+  var g_sSpinnerHideShow = '#editDialog .modal-header, #editDialog .modal-body, #editDialog .modal-footer'
 
   function onShowEditDialog()
   {
