@@ -276,8 +276,6 @@ b_map = None
 c_map = None
 def test_phase_parent_availability( dist_table, device_table, object_type, phase_parent_id, allowed_id, report, use_cache ):
 
-    # print( 'phase_parent_id', phase_parent_id )
-
     result = None
 
     # Check whether parent is in use by a Panel or Transformer
@@ -328,7 +326,6 @@ def test_phase_parent_availability( dist_table, device_table, object_type, phase
                 a_count -= 1
         else:
             a_count = 0
-        # print( 'a_count', a_count )
 
         if phase_parent_id in b_map:
             b_kids = b_map[phase_parent_id]
@@ -337,7 +334,6 @@ def test_phase_parent_availability( dist_table, device_table, object_type, phase
                 b_count -= 1
         else:
             b_count = 0
-        # print( 'b_count', b_count )
 
         if phase_parent_id in c_map:
             c_kids = c_map[phase_parent_id]
@@ -346,17 +342,15 @@ def test_phase_parent_availability( dist_table, device_table, object_type, phase
                 c_count -= 1
         else:
             c_count = 0
-        # print( 'c_count', c_count )
 
         count = a_count + b_count + c_count
-        # print( 'count', count )
 
-        # cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
-        # test_count = cur.fetchone()[0]
-        
-        # if count != test_count:
-            # print( '=====================> BAD!  WRONG!!!', count, test_count )
-            # exit(1)
+        cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
+        test_count = cur.fetchone()[0]
+
+        if count != test_count:
+            print( '=====================> BAD!  WRONG!!!', 'count', count, 'test_count', test_count )
+            exit(1)
 
     else:
 

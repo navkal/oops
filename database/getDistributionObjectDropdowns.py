@@ -5,7 +5,7 @@ import argparse
 import json
 import context
 
-printctl.off()
+#printctl.off()
 import sql
 
 if __name__ == '__main__':
