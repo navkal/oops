@@ -271,13 +271,97 @@ def test_path_availability( target_table, parent_id, tail ):
     return ( test_id, path, source )
 
 
-def test_phase_parent_availability( dist_table, device_table, object_type, phase_parent_id, allowed_id, report ):
+a_map = None
+b_map = None
+c_map = None
+def test_phase_parent_availability( dist_table, device_table, object_type, phase_parent_id, allowed_id, report, use_cache ):
+
+    # print( 'phase_parent_id', phase_parent_id )
 
     result = None
 
     # Check whether parent is in use by a Panel or Transformer
-    cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
-    count = cur.fetchone()[0]
+
+    if use_cache:
+
+        global a_map
+        global b_map
+        global c_map
+
+        if a_map == None:
+
+            a_map = {}
+            b_map = {}
+            c_map = {}
+
+            cur.execute( 'SELECT id, parent_id, phase_b_parent_id, phase_c_parent_id FROM ' + dist_table )
+            rows = cur.fetchall()
+
+            for row in rows:
+                id = str( row[0] )
+                parent_id = row[1]
+                phase_b_parent_id = row[2]
+                phase_c_parent_id = row[3]
+
+                if parent_id:
+                    if parent_id not in a_map:
+                        a_map[parent_id] = [id]
+                    else:
+                        a_map[parent_id].append( id )
+
+                if phase_b_parent_id:
+                    if phase_b_parent_id not in b_map:
+                        b_map[phase_b_parent_id] = [id]
+                    else:
+                        b_map[phase_b_parent_id].append( id )
+
+                if phase_c_parent_id:
+                    if phase_c_parent_id not in c_map:
+                        c_map[phase_c_parent_id] = [id]
+                    else:
+                        c_map[phase_c_parent_id].append( id )
+
+        if phase_parent_id in a_map:
+            a_kids = a_map[phase_parent_id]
+            a_count = len( a_kids )
+            if allowed_id in a_kids:
+                a_count -= 1
+        else:
+            a_count = 0
+        # print( 'a_count', a_count )
+
+        if phase_parent_id in b_map:
+            b_kids = b_map[phase_parent_id]
+            b_count = len( b_kids )
+            if allowed_id in b_kids:
+                b_count -= 1
+        else:
+            b_count = 0
+        # print( 'b_count', b_count )
+
+        if phase_parent_id in c_map:
+            c_kids = c_map[phase_parent_id]
+            c_count = len( c_kids )
+            if allowed_id in c_kids:
+                c_count -= 1
+        else:
+            c_count = 0
+        # print( 'c_count', c_count )
+
+        count = a_count + b_count + c_count
+        # print( 'count', count )
+
+        # cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
+        # test_count = cur.fetchone()[0]
+        
+        # if count != test_count:
+            # print( '=====================> BAD!  WRONG!!!', count, test_count )
+            # exit(1)
+
+    else:
+
+        cur.execute( 'SELECT COUNT(*) FROM ' + dist_table + ' WHERE ( parent_id=? OR phase_b_parent_id=? OR phase_c_parent_id=? ) AND id<>?', ( phase_parent_id, phase_parent_id, phase_parent_id, allowed_id ) )
+        count = cur.fetchone()[0]
 
     if ( count == 0 ) and ( object_type != 'Device' ):
         # Check whether parent is in use by a Device
@@ -324,13 +408,13 @@ def test_parent_availability( dist_table, device_table, object_type, parent_id, 
         # Check only if requested parent is a Circuit.  (For Panel objects, requested parent could be Transformer.)
         if parent_type_id == dbCommon.object_type_to_id( cur, 'Circuit' ):
 
-            parent_path = test_phase_parent_availability( dist_table, device_table, object_type, parent_id, allowed_id, 'path' )
+            parent_path = test_phase_parent_availability( dist_table, device_table, object_type, parent_id, allowed_id, 'path', use_cache )
 
             if phase_b_parent_id and int( phase_b_parent_id ):
-                phase_b_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_b_parent_id, allowed_id, 'tail' )
+                phase_b_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_b_parent_id, allowed_id, 'tail', use_cache )
 
             if phase_c_parent_id and int( phase_c_parent_id ):
-                phase_c_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_c_parent_id, allowed_id, 'tail' )
+                phase_c_tail = test_phase_parent_availability( dist_table, device_table, object_type, phase_c_parent_id, allowed_id, 'tail', use_cache )
 
     return ( parent_path, phase_b_tail, phase_c_tail )
 
