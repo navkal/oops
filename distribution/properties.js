@@ -69,7 +69,7 @@ function showProperties()
       break;
 
     case 'Circuit':
-      sTitle = g_tProperties['description'];
+      sTitle = g_tProperties['description'] || g_tProperties['path'];
       break;
 
     case 'Device':
