@@ -52,8 +52,11 @@ function showProperties()
   switch( sType )
   {
     case 'Panel':
-      $( '#panelImage' ).attr( 'path', sPath );
-      $( '#panelImage' ).show();
+      if ( g_tProperties['panel_image'] )
+      {
+        $( '#panelImage' ).attr( 'path', sPath );
+        $( '#panelImage' ).show();
+      }
       // --> No break <--
     case 'Transformer':
       var aPath = sPath.split( '.' );
