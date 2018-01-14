@@ -32,7 +32,7 @@
   <p>
     The Panel Spy team is proud to bring this innovative application to the world of building management.
     Your feedback is important to us.
-    Please use the Contact page to convey your suggestions and comments.
+    Please use the <a href="/?page=contact">Contact</a> page to convey your suggestions and comments.
   </p>
 
   <p>
@@ -44,7 +44,7 @@
   <dl class="dl-horizontal">
     <dt>Anil Navkal</dt>
     <dd>Lead</dd>
-    <dt><a href="http://www.NikhilNavkal.com" target="_blank">Nikhil Navkal</a></dt>
+    <dt>Nikhil Navkal</dt>
     <dd>Developer, database</dd>
     <dt>Naomi Navkal</dt>
     <dd>Developer, user interface</dd>
