@@ -1,4 +1,4 @@
-// Copyright 2017 Panel Spy.  All rights reserved.
+// Copyright 2018 Panel Spy.  All rights reserved.
 
 var g_sRemoveId = null;
 var g_sRemoveCodeFolder = null;

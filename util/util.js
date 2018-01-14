@@ -1,4 +1,4 @@
-// Copyright 2017 Panel Spy.  All rights reserved.
+// Copyright 2018 Panel Spy.  All rights reserved.
 
 // Map of property rules, initialized in display order
 var displayIndex = 0;
