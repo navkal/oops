@@ -64,7 +64,6 @@
         <img id="hover" src="about/hover.png" class="img-responsive" style="max-width:250px; margin:auto; display:none;" alt="Distribution">
       </div>
 
-
   </div>
 </div>
 
