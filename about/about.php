@@ -59,9 +59,28 @@
 
     </div>
 
-    <div class="hidden-xs col-sm-4 col-md-4 col-lg-5">
-      <img src="about/label.jpg" class="img-responsive" style="max-width:250px; margin:auto;" alt="Panel Label">
-    </div>
+      <div class="hidden-xs col-sm-4 col-md-4 col-lg-5">
+        <img id="label" src="about/label.jpg" class="img-responsive" style="max-width:250px; margin:auto;" alt="Panel Label">
+        <img id="hover" src="about/hover.png" class="img-responsive" style="max-width:250px; margin:auto; display:none;" alt="Distribution">
+      </div>
+
 
   </div>
 </div>
+
+<script>
+  $( '#label' ).mouseover( showHover );
+  $( '#hover' ).mouseleave( showLabel );
+
+  function showHover()
+  {
+    $( '#label' ).hide();
+    $( '#hover' ).show();
+  }
+
+  function showLabel()
+  {
+    $( '#label' ).show();
+    $( '#hover' ).hide();
+  }
+</script>
