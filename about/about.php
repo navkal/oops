@@ -46,17 +46,6 @@
         Thank you for using Panel Spy!
       </p>
 
-      <br/>
-
-      <dl class="dl-horizontal">
-        <dt>Anil Navkal</dt>
-        <dd>Lead</dd>
-        <dt>Nikhil Navkal</dt>
-        <dd>Developer, database</dd>
-        <dt>Naomi Navkal</dt>
-        <dd>Developer, user interface</dd>
-      </dl>
-
     </div>
 
       <div class="hidden-xs col-sm-4 col-md-4 col-lg-5">
