@@ -25,7 +25,7 @@
 
     if ( isset( $tObject->image_filename ) )
     {
-      $sImg =   '../database/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $tObject->image_filename;
+      $sImg =   '../enterprises/' . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . '/images/' . $tObject->image_filename;
     }
     else
     {

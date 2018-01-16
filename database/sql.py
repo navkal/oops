@@ -34,7 +34,7 @@ def open_database( enterprise ):
         global conn
         global cur
         if conn == None:
-            conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
+            conn = sqlite3.connect('../enterprises/' + enterprise + '/database.sqlite')
         if cur == None:
             cur = conn.cursor()
 
@@ -828,7 +828,7 @@ class deviceTableRow:
 
         # Get panel image
         ( panel_id, panel_path ) = get_nearest_panel( self.object_type, self.id, facility )
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
+        filename = '../enterprises/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
         if os.path.isfile( filename ):
             self.panel_image = panel_path
         else:
@@ -900,7 +900,7 @@ class distributionObject:
         self.label = make_distribution_object_label( self.__dict__ )
 
         # Add image filename
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
+        filename = '../enterprises/' + enterprise + '/' + facility + '/images/' + self.id + '.jpg'
         if os.path.isfile( filename ):
             self.panel_image = filename
         else:
@@ -919,7 +919,7 @@ class distributionObject:
                 child_id = str( child_paths[i][0] )
                 child_path = child_paths[i][1]
                 child = distributionObject( id=child_id, getkids=False, enterprise=enterprise, facility=facility )
-                filename = '../database/' + enterprise + '/' + facility + '/images/' + child_id + '.jpg'
+                filename = '../enterprises/' + enterprise + '/' + facility + '/images/' + child_id + '.jpg'
                 if os.path.isfile( filename ):
                     child.imagefile = filename
                 else:
@@ -1254,7 +1254,7 @@ class distributionTableRow:
 
         # Add image filename
         ( panel_id, panel_path ) = get_nearest_panel( self.object_type, self.id, facility )
-        filename = '../database/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
+        filename = '../enterprises/' + enterprise + '/' + facility + '/images/' + panel_id + '.jpg'
         if os.path.isfile( filename ):
             self.panel_image = panel_path
         else:
@@ -1457,7 +1457,7 @@ class addDistributionObject:
             # Copy uploaded image file
             if filename:
                 id = dbCommon.path_to_id( cur, path, facility )
-                target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
+                target = '../enterprises/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
                 shutil.copy2( filename, target )
 
             # Log activity
@@ -1553,7 +1553,7 @@ class updateDistributionObject:
 
             # Copy uploaded image file
             if filename:
-                target = '../database/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
+                target = '../enterprises/' + enterprise + '/' + facility + '/images/' + id + '.jpg'
                 shutil.copy2( filename, target )
 
             # Get original path of target element

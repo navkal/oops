@@ -45,7 +45,7 @@
   </div>
   <div class="clearfix" >
     <?php
-      require_once $_SERVER["DOCUMENT_ROOT"]."/database/" . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . "/topology.svg";
+      require_once $_SERVER["DOCUMENT_ROOT"]."/enterprises/" . $_SESSION['panelSpy']['context']['enterprise'] . '/' . $_SESSION['panelSpy']['context']['facility'] . "/topology.svg";
     ?>
   </div>
 </div>

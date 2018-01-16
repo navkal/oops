@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser = context.add_context_args( parser )
     args = parser.parse_args()
 
-    conn = sqlite3.connect('database/' + args.enterprise + '/database.sqlite')
+    conn = sqlite3.connect('enterprises/' + args.enterprise + '/database.sqlite')
     cur = conn.cursor()
     cur.execute( 'UPDATE User SET password=?, force_change_password=? WHERE lower(username)=?', ( dbCommon.hash('recoverAdmin'), True, 'admin' ) )
     conn.commit()

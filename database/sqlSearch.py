@@ -5,7 +5,7 @@ import sqlite3
 
 class search:
     def __init__(self, searchText, searchTargets=None, enterprise=None, facility=None):
-        conn = sqlite3.connect('../database/' + enterprise + '/database.sqlite')
+        conn = sqlite3.connect('../enterprises/' + enterprise + '/database.sqlite')
         cur = conn.cursor()
 
         if searchTargets:
