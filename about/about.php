@@ -2,6 +2,16 @@
 
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/util/security.php";
+  require_once $_SERVER["DOCUMENT_ROOT"]."/util/context.php";
+
+  $command = quote( getenv( "PYTHON" ) ) . " database/getBuildTime.py 2>&1 " . $g_sContext;
+  error_log( "==> command=" . $command );
+  exec( $command, $output, $status );
+  error_log( "==> output=" . print_r( $output, true ) );
+
+  $sResult = $output[ count( $output ) - 1 ];
+  $tObject = json_decode( $sResult );
+  $sBuildDate = date( 'n/j/Y', $tObject->build_time );
 ?>
 
 <div class="container">
@@ -13,6 +23,9 @@
       <div style="padding-bottom:18px";>
         <span class="h4">About Panel Spy</span>
         <br/>
+        <small>Build <?=$sBuildDate?></small>
+        <br/>
+        <small><?=$_SESSION['panelSpy']['context']['enterpriseFullname']?></small>
       </div>
 
       <p>

@@ -34,7 +34,10 @@ def open_database( enterprise ):
         global conn
         global cur
         if conn == None:
-            conn = sqlite3.connect('../enterprises/' + enterprise + '/database.sqlite')
+            db = '../enterprises/' + enterprise + '/database.sqlite'
+            if not os.path.isfile( db ):
+                db = db[3:]
+            conn = sqlite3.connect( db )
         if cur == None:
             cur = conn.cursor()
 
@@ -2471,3 +2474,11 @@ class restoreRemovedObject:
         object_id = restore_row[0]
         cur.execute('''INSERT INTO Activity ( timestamp, event_type, username, facility_id, event_target, event_result, target_object_type, target_object_id )
             VALUES (?,?,?,?,?,?,?,?)''', ( time.time(), dbCommon.dcEventTypes['restoreLocation'], by, facility_id, summarize_object( 'Location', object_id, facility ), comment, 'Location', object_id  ) )
+
+
+class buildTime:
+    def __init__(self, enterprise):
+        open_database( enterprise )
+        cur.execute( 'SELECT timestamp FROM Activity' )
+        row = cur.fetchone()
+        self.build_time = int( row[0] )
