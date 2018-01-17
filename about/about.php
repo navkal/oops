@@ -39,7 +39,16 @@
       <p>
         The Panel Spy team is proud to bring this innovative application to the world of building management.
         Your feedback is important to us.
-        Please use the <a href="/?page=contact">Contact</a> page to convey your suggestions and comments.
+        Please use the
+        <a href="/?page=contact">
+          <b>Contact</b>
+        </a>
+        page or e-mail
+        <a href="mailto:<?php global $mailto; echo $mailto; ?>">
+          <span class="glyphicon glyphicon-envelope" title="<?=$mailto?>" style="padding-left:2px; padding-right:2px;">
+          </span>
+        </a>
+        to convey your suggestions and comments.
       </p>
 
       <p>
