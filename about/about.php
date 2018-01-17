@@ -20,12 +20,15 @@
 
     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-7">
 
-      <div style="padding-bottom:18px";>
+      <div style="padding-bottom:35px";>
         <span class="h4">About Panel Spy</span>
-        <br/>
-        <small>Build <?=$sBuildDate?></small>
-        <br/>
-        <small><?=$_SESSION['panelSpy']['context']['enterpriseFullname']?></small>
+        <span class="pull-right">
+          <small>
+            <?=$_SESSION['panelSpy']['context']['enterpriseFullname']?>
+            <br/>
+            <span class="text-muted">Build <?=$sBuildDate?></span>
+          </small>
+        </span>
       </div>
 
       <p>
