@@ -42,7 +42,7 @@ function goBack( tEvent, sPath )
   else
   {
     // Not currently on Distribution page.  Navigate to page and then to panel.
-    var sGotoUrl = '/?goto=' + sPath;
+    var sGotoUrl = '/?page=distribution&goto=' + sPath;
     tMain.location.assign( sGotoUrl );
   }
 }

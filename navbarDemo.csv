@@ -1,6 +1,7 @@
 Panel Spy,,
 &copy; 2018 Panel Spy. All rights reserved.,,
 panelSpy@gmail.com,,
+about,About,about/about.php
 distribution,Distribution,distribution/distribution.php
 panels,Panels,panels/panels.php
 transformers,Transformers,transformers/transformers.php
@@ -8,6 +9,5 @@ circuits,Circuits,circuits/circuits.php
 devices,Devices,devices/devices.php
 locations,Locations,locations/locations.php
 topology,Topology,topology/topology.php
-about,About,about/about.php
 contact,Contact,contact/contact.php
 #php,PHP Information,pi/pi.php
