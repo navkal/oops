@@ -45,7 +45,7 @@
         </a>
         page or e-mail
         <a href="mailto:<?php global $mailto; echo $mailto; ?>">
-          <span class="glyphicon glyphicon-envelope" title="<?=$mailto?>" style="padding-left:2px; padding-right:2px;">
+          <span class="glyphicon glyphicon-envelope" title="<?=$mailto?>" style="padding-left:3px; padding-right:3px;">
           </span>
         </a>
         to convey your suggestions and comments.
