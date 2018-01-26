@@ -35,11 +35,13 @@ def open_database( enterprise ):
         global cur
         if conn == None:
             db = '../enterprises/' + enterprise + '/database.sqlite'
+
             if not os.path.isfile( db ):
                 db = db[3:]
-            conn = sqlite3.connect( db )
-        if cur == None:
-            cur = conn.cursor()
+
+            if os.path.isfile( db ):
+                conn = sqlite3.connect( db )
+                cur = conn.cursor()
 
 
 def make_device_label( name=None, parent_path=None, room_id=None, loc_new='', loc_old='', loc_descr='', facility=None ):
@@ -1336,30 +1338,32 @@ class signInUser:
         self.role = ''
         self.signInId = ''
 
-        # Retrieve the user
-        cur.execute('SELECT * FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
-        user_row = cur.fetchone()
+        if conn != None:
 
-        # If we got a user row, load remaining user fields
-        if user_row and user_row[6]:
+            # Retrieve the user
+            cur.execute('SELECT * FROM User WHERE lower(username) = ? AND password = ?', (username.lower(), dbCommon.hash(password),))
+            user_row = cur.fetchone()
 
-            self.username = user_row[1]
-            role_id = user_row[3]
-            cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
-            self.role = cur.fetchone()[0]
-            self.user_description = user_row[4]
-            self.forceChangePassword = user_row[5]
-            self.signInId = str( uuid.uuid1() )
-            self.status = 'Enabled'
-            self.first_name = user_row[7]
-            self.last_name = user_row[8]
-            self.email_address = user_row[9]
-            self.organization = user_row[10]
+            # If we got a user row, load remaining user fields
+            if user_row and user_row[6]:
 
-            if enterprise != None:
-                # Include enterprise fullname; PHP caller will move it to session context
-                cur.execute( 'SELECT enterprise_fullname FROM Enterprise WHERE enterprise_name = ?', (enterprise,))
-                self.enterprise_fullname = cur.fetchone()[0]
+                self.username = user_row[1]
+                role_id = user_row[3]
+                cur.execute('SELECT role FROM Role WHERE id = ?', (role_id,))
+                self.role = cur.fetchone()[0]
+                self.user_description = user_row[4]
+                self.forceChangePassword = user_row[5]
+                self.signInId = str( uuid.uuid1() )
+                self.status = 'Enabled'
+                self.first_name = user_row[7]
+                self.last_name = user_row[8]
+                self.email_address = user_row[9]
+                self.organization = user_row[10]
+
+                if enterprise != None:
+                    # Include enterprise fullname; PHP caller will move it to session context
+                    cur.execute( 'SELECT enterprise_fullname FROM Enterprise WHERE enterprise_name = ?', (enterprise,))
+                    self.enterprise_fullname = cur.fetchone()[0]
 
 
 class changePassword:
