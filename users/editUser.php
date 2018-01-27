@@ -110,9 +110,8 @@
   function initAddDialog()
   {
     g_sAction = 'add';
-    g_sUsername = '';
-    formatLabels( 3 );
 
+    g_sUsername = '';
     g_sSubmitLabel = 'Add User';
     g_sRole = 'Visitor';
     g_sStatus = 'Enabled';
@@ -122,6 +121,8 @@
     g_sOrganization = '';
     g_sDescription = '';
     g_tAuthFacilities = null;
+
+    formatLabels( 3 );
 
     $( '.adminHide' ).show();
 
@@ -134,7 +135,6 @@
   function initUpdateDialog()
   {
     g_sAction = 'update';
-    formatLabels( 4 );
 
     g_sSubmitLabel = 'Update User';
     g_bUsernameDisabled = true;
@@ -151,6 +151,8 @@
     g_sOrganization = tRow.organization;
     g_sDescription = tRow.user_description;
     g_tAuthFacilities = tRow.facilities_maps;
+
+    formatLabels( 4 );
 
     g_bDoValidation = false;
 
