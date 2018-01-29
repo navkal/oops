@@ -40,12 +40,12 @@
       <p>
         <b>Panel Spy</b> addresses these challenges by providing a dynamic, online model of your building’s electrical distribution network.
         It allows you to manage your entire inventory of panels, transformers, circuits, and devices, tracking their properties, connectivity, and locations.
-        Most critically, <b>Panel Spy</b> allows you to update all of these features in real time.
+        Most critically, <b>Panel Spy</b> allows you to update your inventory in real time.
       </p>
 
       <p>
-        <b>Panel Spy</b> controls access to the model through user roles that reflect worker responsibility.
-        An electrical intern, for example, could be assigned a role restricted to viewing and navigation, whereas a full-fledged technician could assume a role that allows alteration of the model and recording of contemporaneous notes about work being done.
+        <b>Panel Spy</b> controls access to the online model through user roles that reflect worker responsibilities.
+        An electrical intern, for example, might be assigned a role restricted to viewing and navigation, whereas a full-fledged technician would assume a role that allows alteration of the model and recording of contemporaneous notes about work being done.
       </p>
 
       <p>
@@ -68,7 +68,7 @@
       </p>
 
       <p>
-        Thank you for using Panel Spy!
+        Thank you for using <b>Panel Spy</b>!
       </p>
       <br/>
 
