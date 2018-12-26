@@ -1,5 +1,6 @@
 AddType application/x-httpd-php .htm .html
 Options -Indexes
+Header set Access-Control-Allow-Origin "*"
 
 ErrorDocument 403 /util/403.php
 ErrorDocument 404 /util/404.php
